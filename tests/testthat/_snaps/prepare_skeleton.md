@@ -12,8 +12,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 4L, spatial_unit = 1L
-            ),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 4L, spatial_unit = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
