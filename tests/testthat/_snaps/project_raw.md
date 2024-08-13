@@ -83,16 +83,12 @@
             42, 40, 38, 36, NA
           ),
           rep(
-            c(
-              1L, 2L, 1L, 2L, 1L, 2L, 1L, 5L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L,
-              3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 7L, 6L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L,
-              3L, 1L, 2L, 1L, 204L
-            ),
-            c(
-              1L, 1L, 9L, 1L, 1L, 1L, 8L, 1L, 2L, 4L, 1L, 2L, 2L, 3L, 1L, 3L, 1L, 3L, 1L,
-              1L, 1L, 1L, 4L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 9L, 1L, 1L, 1L, 14L, 1L, 26L, 1L,
-              2L, 5L, 1L, 32L, 1L
-            )
+            c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 5L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 
+            1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 7L, 6L, 1L, 
+            2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 204L),
+            c(1L, 1L, 9L, 1L, 1L, 1L, 8L, 1L, 2L, 4L, 1L, 2L, 2L, 3L, 1L, 
+            3L, 1L, 3L, 1L, 1L, 1L, 1L, 4L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 9L, 
+            1L, 1L, 1L, 14L, 1L, 26L, 1L, 2L, 5L, 1L, 32L, 1L)
           )
         ),
         MIG_CH = rep(
@@ -107,16 +103,14 @@
             10, 13, 16, 17, 12, 11, 10, 9, 8, 10, 9, 8, 10, 5, 3, NA
           ),
           rep(
-            c(
-              1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 4L, 1L,
-              2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 3L, 1L,
-              3L, 1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 1L, 2L, 3L, 1L, 204L
-            ),
-            c(
-              14L, 1L, 20L, 1L, 1L, 1L, 17L, 1L, 1L, 2L, 17L, 1L, 4L, 1L, 1L, 1L, 1L, 1L,
-              11L, 1L, 1L, 1L, 2L, 1L, 1L, 1L, 1L, 11L, 2L, 5L, 1L, 4L, 1L, 2L, 1L, 7L, 1L,
-              3L, 1L, 1L, 1L, 10L, 1L, 1L, 1L, 1L, 1L, 3L, 1L, 1L, 1L, 1L
-            )
+            c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 
+            2L, 1L, 4L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 
+            1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 
+            1L, 2L, 3L, 1L, 204L),
+            c(14L, 1L, 20L, 1L, 1L, 1L, 17L, 1L, 1L, 2L, 17L, 1L, 4L, 1L, 
+            1L, 1L, 1L, 1L, 11L, 1L, 1L, 1L, 2L, 1L, 1L, 1L, 1L, 11L, 2L, 
+            5L, 1L, 4L, 1L, 2L, 1L, 7L, 1L, 3L, 1L, 1L, 1L, 10L, 1L, 1L, 
+            1L, 1L, 1L, 3L, 1L, 1L, 1L, 1L)
           )
         ),
         MIG_SUB = numeric(408),
@@ -466,19 +460,15 @@
           ),
           rep(
             rep(
-              c(
-                1L, 2L, 1L, 2L, 1L, 2L, 1L, 5L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L,
-                3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 7L, 6L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L,
-                3L, 1L, 2L, 1L, 204L
-              ),
+              c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 5L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 
+              1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 7L, 6L, 1L, 
+              2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 204L),
               5
             ),
             rep(
-              c(
-                1L, 1L, 9L, 1L, 1L, 1L, 8L, 1L, 2L, 4L, 1L, 2L, 2L, 3L, 1L, 3L, 1L, 3L, 1L,
-                1L, 1L, 1L, 4L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 9L, 1L, 1L, 1L, 14L, 1L, 26L, 1L,
-                2L, 5L, 1L, 32L, 1L
-              ),
+              c(1L, 1L, 9L, 1L, 1L, 1L, 8L, 1L, 2L, 4L, 1L, 2L, 2L, 3L, 1L, 
+              3L, 1L, 3L, 1L, 1L, 1L, 1L, 4L, 2L, 2L, 1L, 2L, 2L, 1L, 1L, 9L, 
+              1L, 1L, 1L, 14L, 1L, 26L, 1L, 2L, 5L, 1L, 32L, 1L),
               5
             )
           )
@@ -502,19 +492,17 @@
           ),
           rep(
             rep(
-              c(
-                1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 4L, 1L,
-                2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 3L, 1L,
-                3L, 1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 1L, 2L, 3L, 1L, 204L
-              ),
+              c(1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 
+              2L, 1L, 4L, 1L, 2L, 1L, 2L, 1L, 2L, 1L, 2L, 3L, 1L, 2L, 1L, 2L, 
+              1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 1L, 2L, 1L, 2L, 1L, 3L, 1L, 3L, 
+              1L, 2L, 3L, 1L, 204L),
               5
             ),
             rep(
-              c(
-                14L, 1L, 20L, 1L, 1L, 1L, 17L, 1L, 1L, 2L, 17L, 1L, 4L, 1L, 1L, 1L, 1L, 1L,
-                11L, 1L, 1L, 1L, 2L, 1L, 1L, 1L, 1L, 11L, 2L, 5L, 1L, 4L, 1L, 2L, 1L, 7L, 1L,
-                3L, 1L, 1L, 1L, 10L, 1L, 1L, 1L, 1L, 1L, 3L, 1L, 1L, 1L, 1L
-              ),
+              c(14L, 1L, 20L, 1L, 1L, 1L, 17L, 1L, 1L, 2L, 17L, 1L, 4L, 1L, 
+              1L, 1L, 1L, 1L, 11L, 1L, 1L, 1L, 2L, 1L, 1L, 1L, 1L, 11L, 2L, 
+              5L, 1L, 4L, 1L, 2L, 1L, 7L, 1L, 3L, 1L, 1L, 1L, 10L, 1L, 1L, 
+              1L, 1L, 1L, 3L, 1L, 1L, 1L, 1L),
               5
             )
           )
