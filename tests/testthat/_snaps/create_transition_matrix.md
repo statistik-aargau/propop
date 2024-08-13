@@ -8,8 +8,7 @@
       new(
         "dgCMatrix" |>
           structure(package = "Matrix"),
-        i = c(1L, 2L, 2L, 4L, 5L, 5L, 1L, 7L, 2L, 8L, 2L, 8L, 4L, 10L, 5L, 
-        11L, 5L, 11L),
+        i = c(1L, 2L, 2L, 4L, 5L, 5L, 1L, 7L, 2L, 8L, 2L, 8L, 4L, 10L, 5L, 11L, 5L, 11L),
         p = c(0L, 1L, 2L, 3L, 4L, 5L, 6L, 8L, 10L, 12L, 14L, 16L, 18L),
         Dim = c(12L, 12L),
         Dimnames = list(NULL, NULL),
