@@ -18,14 +18,16 @@ The package was developed for use with
 and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
 from the Swiss Federal Statistical Office (FSO). `propop` uses the same matrix 
 calculation method as the FSO and therefore reveals almost identical results 
-(see vignette [Evaluate projections](articles/evaluate.html)). The package 
-can be used to project the development of different **demographic groups** for 
-different **scenarios** and at different **spatial levels** (e.g., single 
-canton or municipalities within a canton). 
+(see vignette 
+[Evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html)). 
+The package can be used to project the development of different 
+**demographic groups** for different **scenarios** and at different 
+**spatial levels** (e.g., single canton or municipalities within a canton). 
 
 Although the package was developed for use in Switzerland, it should in principle 
 also work for other contexts, provided the required input data is available in 
-the [specified form](articles/prepare_data.html).
+the 
+[specified form](https://statistik-aargau.github.io/propop/articles/prepare_data.html).
 
 ## Installation
 
@@ -39,11 +41,11 @@ devtools::install_github("statistik-aargau/propop")
 ## Vignettes
 
 The package currently includes three vignettes. The first vignette demonstrates 
-[how to download and prepare](articles/prepare_data.html) the FSO population 
-data and parameters. The second vignette illustrates in more detail 
-[how to project](articles/run_projections.html) the population development for 
-single and multiple regions. The third vignette shows 
-[how to evaluate projections](articles/evaluate.html).
+[how to download and prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
+the FSO population data and parameters. The second vignette illustrates in more detail 
+[how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
+the population development for single and multiple regions. The third vignette shows 
+[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html).
 
 ## Features, limitations, future plans
 

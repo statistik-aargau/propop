@@ -41,7 +41,7 @@ Description: The purpose of this package is to project the development of the
     population at different spatial levels (e.g., cantons, districts, 
     municipalities) using the cohort component method and the parameters 
     provided by the Federal Statistical Office (FSO).
-URL: https://github.com/statistik-aargau/propop
+URL: https://statistik-aargau.github.io/propop
 BugReports: https://github.com/statistik-aargau/propop
 License: GPL (>= 3)
 Depends: 

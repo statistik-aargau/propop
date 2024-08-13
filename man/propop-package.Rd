@@ -12,7 +12,7 @@ The purpose of this package is to project the development of the population at d
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/statistik-aargau/propop}
+  \item \url{https://statistik-aargau.github.io/propop}
   \item Report bugs at \url{https://github.com/statistik-aargau/propop}
 }
 
