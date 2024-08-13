@@ -1,0 +1,77 @@
+Package: propop
+Title: Project Population Growth in Switzerland using the Cohort Component Method
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Norah", "Efosa", , "norah.efosa@ag.ch", 
+      role = c("aut", "cre")),
+    person(
+      "Adrian", "Gadient", , "adrian.gadient@ag.ch", role = c("aut"), 
+    comment = c(ORCID = "0000-0003-0026-3153")),
+    person(
+      "Niklas", "Haffert", 
+      role = c("aut"),  
+      email = "niklas.haffert@sg.ch"
+    ),
+    person(
+      "Tina", "Cornioley",
+      role = "aut",
+      email = "tina.cornioley@vd.ch"
+    ),
+    person(
+      "Jan", "Wunder",
+      role = "aut",
+      email = "jan.wunder@sg.ch"
+    ),
+    person(
+      "Andrea", "Plüss",
+      role = "ctb",
+      email = "andrea.pluess@ag.ch"
+    ),
+    person(
+      "Nadine", "Herrmann",
+      role = "ctb"
+    ),
+    person(
+    "Statistik", "Aargau",
+    role = c("fnd", "cph")
+    )
+    )
+Description: The purpose of this package is to project the development of the
+    population at different spatial levels (e.g., cantons, districts, 
+    municipalities) using the cohort component method and the parameters 
+    provided by the Federal Statistical Office (FSO).
+URL: https://github.com/statistik-aargau/propop
+BugReports: https://github.com/statistik-aargau/propop
+License: GPL (>= 3)
+Depends: 
+    R (>= 2.10)
+Imports: 
+    assertthat,
+    cli,
+    dplyr,
+    Matrix,
+    stringi,
+    tibble,
+    tidyr
+Suggests: 
+    BFS,
+    constructive,
+    devtools,
+    DT,
+    ggplot2,
+    htmltools,
+    knitr,
+    purrr,
+    rmarkdown,
+    stringr,
+    testthat,
+    vctrs
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list( markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxyglobals::global_roclet") )
+RoxygenNote: 7.3.1
+Config/testthat/edition: 3

@@ -1,0 +1,218 @@
+---
+title: "Evaluate projections"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Evaluate projections}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE}
+# library(propop)
+devtools::load_all()
+```
+# Evaluate projections
+
+`propop` provides a function to **compare projections against a benchmark**. 
+The benchmark can be the actual population development (i.e., official records) 
+or a base model (e.g., when testing alternative models). 
+
+## Get the data
+
+To run the evaluation function, we need the benchmark data and the 
+results from the projection.  
+
+Get the *population records* for the canton of Aargau 2019-2022:  
+
+``` {r get-benchmark, message = FALSE}
+data_benchmark <- get_population(
+  number_fso = "px-x-0102010000_101",
+  year_first = 2018,
+  year_last = 2022,
+  spatial_units = "- Aargau"
+)
+```
+
+Get the parameters for the projection:
+
+``` {r get-parameters, message = FALSE, warning=FALSE, results='hide'}
+data_parameters <- get_parameters(
+  year_first = 2019,
+  year_last = 2050,
+  spatial_units = "Aargau"
+)
+```
+
+Get the *population projection* for 2019-2022:
+
+``` {r project-canton}
+data_projected <- propop(
+  parameters = data_parameters |>
+    dplyr::filter(scen == "reference"),
+  year_first = 2019,
+  year_last = 2050,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  # population records from 2018 as starting point
+  population = data_benchmark |>
+    dplyr::filter(year == 2018),
+  subregional = FALSE
+)
+```
+
+## Evaluate 1-year age classes
+
+Let's first pit the projected population growth against the recorded population
+development (= benchmark) using one-year age classes (default option). Make sure
+to pass matching data frames, especially in terms of the year ranges. To remove
+the start population (2018) from the projection results, you could also use
+`drop_start_year = TRUE`. 
+
+As a result of `prepare_evaluation()`, you get the recorded (`n_bench`) and 
+projected (`n_proj`) population for each demographic group and year next to each
+other: 
+
+``` {r combine}
+# Combine and pre-process the data
+combined <- prepare_evaluation(
+  # only keep years from projected period
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022)
+)
+
+# Show combined data
+combined
+```
+
+Based on the difference between the observed and projected number of people, 
+`compute_measures()` then calculates the error and several performance metrics:
+
+``` {r evaluate1}
+compute_measures(combined) |>
+  # select demographic group
+  dplyr::filter(sex == "m" & nat == "ch" & age == 27) |>
+  # round to two digits
+  mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable(
+    filter = "top",
+    caption = htmltools::tags$caption(
+      style = "caption-side: top; text-align: left; font-weight: bold",
+      "Performance measures for projections with 1-year age classes for the
+      canton of Aargau 2019-2022."
+    )
+  )
+```
+
+## Evaluate larger age groups
+
+You may also conduct the evaluation for the commonly used age groups 
+0-19 year olds, 20-64 year olds, and over 64 year olds using the option 
+`age_groups = "age_groups_3"`.
+
+``` {r combine-grouped}
+# Combine and pre-process the data
+combined_grouped <- prepare_evaluation(
+  # only keep years from projected period
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  age_groups = "age_groups_3"
+)
+
+# Show combined data
+combined_grouped
+
+# Compute the performance measures
+compute_measures(combined_grouped) |>
+  # select demographic group
+  dplyr::filter(sex == "m" & nat == "ch" & age == "age_20_64") |>
+  # round to two digits
+  mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable(
+    filter = "top",
+    caption = htmltools::tags$caption(
+      style = "caption-side: top; text-align: left; font-weight: bold",
+      "Performance measures for projections with three age classes for the
+      canton of Aargau 2019-2022."
+    )
+  )
+```
+
+## Using group weights
+
+Furthermore, you can use weights. The adjusted metric `w_abs_perc_e` considers 
+that smaller groups tend to have larger forecast errors. As a result, adjusted
+absolute percentage errors weigh less heavily in smaller groups than in larger 
+groups.
+
+``` {r weighted}
+compute_measures(
+  combined_grouped,
+  weight_groups = c("age")
+) |>
+  dplyr::filter(year == 2019 & abs_perc_e > .34 & abs_perc_e < .39) |>
+  mutate(across(perc_e:w_abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable(
+    filter = "top",
+    caption = htmltools::tags$caption(
+      style = "caption-side: top; text-align: left; font-weight: bold",
+      "Performance measures for projections with three age classes for the
+      canton of Aargau 2019-2022 (incl. weighted measure)."
+    )
+  )
+```
+
+## `propop` versus FSO
+
+Instead of comparing the propop projection with population records, we can also
+use the evaluation function to check how close the `propop` projection comes to
+FSO's projection from the 2020 model.
+
+The differences are extremely small (>= 1):
+
+``` {r fso-comparison}
+fso_propop <- prepare_evaluation(
+  data_benchmark = data_parameters |>
+    dplyr::filter(scen == "reference" & year > 2018) |>
+    dplyr::mutate(n = n_projected),
+  data_projected = data_projected |>
+    dplyr::filter(year > 2018),
+  age_groups = "age_groups_3"
+) |>
+  compute_measures()
+
+fso_propop |>
+  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable(
+    filter = "top",
+    caption = htmltools::tags$caption(
+      style = "caption-side: top; text-align: left; font-weight: bold",
+      "Comparison of projetions from FSO versus `propop`."
+    )
+  )
+```
+
+```{r fig.width = 9, fig.height = 7, echo = FALSE}
+library(ggplot2)
+ggplot(fso_propop) +
+  geom_jitter(aes(x = year, y = perc_e), size = 0.7) +
+  labs(
+    title = "Differences between FSO and propop projections for each demographic group",
+    x = "Year",
+    y = "Difference in percent"
+  ) +
+  theme_minimal()
+```
+
+

@@ -1,0 +1,9 @@
+bibentry(
+  bibtype = "Manual",
+  title = "{propop}: Project Population Growth in Switzerland using the Cohort Component Method",
+  author = c(person("Norah", "Efosa"), person("Adrian", "Gadient"), person("Niklas", "Haffert"), person("Tina", "Cornioley"), person("Jan", "Wunder")),
+  year = 2024,
+  note = "R package version 0.1.0",
+  url = "https://github.com/statistik-aargau/propop",
+)
+

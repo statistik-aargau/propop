@@ -1,0 +1,54 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: simplex
+  bslib:
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "Source Code Pro"}
+    primary: "#007AB8"
+  includes:
+    in_header: pkgdown/extra.scss
+navbar:
+  components:
+    articles:
+      text: Vignettes
+      menu:
+      - text: Prepare data
+        href: articles/prepare_data.html
+      - text: Run projections
+        href: articles/run_projections.html
+      - text: Evaluate projections
+        href: articles/evaluate.html
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+reference:
+- examples: FALSE
+- lazy: TRUE
+- title: "Get and prepare data"
+  desc: >
+    Functions for downloading and preparing data
+  contents:
+  - get_parameters
+  - get_population
+- title: "Run projections"
+  desc: >
+    Functions for running population projections
+  contents:
+  - propop
+  - project_raw
+- title: "Evaluate projections"
+  desc: >
+    Functions to evaluate projection results
+  contents:
+  - prepare_evaluation
+  - compute_measures
+- title: "Sample data"
+  desc: "Sample data from the Federal Statistical Office"
+  contents:
+  - starts_with("fso_")
+
+news:
+  - text: News
+    href: news/index.html

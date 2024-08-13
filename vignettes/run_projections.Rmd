@@ -1,0 +1,153 @@
+---
+title: "Run projections"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Run projections}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# library(propop)
+devtools::load_all()
+
+# load package data
+data("fso_parameters")
+data("fso_population")
+```
+
+# Overview
+
+With `propop::propop()` you can perform population projections either for one or 
+several regions. The function applys the Cohort Component Method and is tailored 
+to the context of Switzerland. That is, the package was built to run with information 
+provided by the Federal Statistical Office (FSO). To run the function, you need
+to provide:
+
+-   a data frame with the **starting population**, that is, the most up-to-date
+number of people for each demographic group before the first projection year; to
+illustrate, the example population data in `propop` are from 31. December 2018 
+and the first projection year is 2019.
+
+-   a data frame containing model **parameters**, that is, information about how
+key demographic variables such as mortality are expected to develop in the future;
+
+-   global arguments which do not change over time or across demographic groups.
+
+Importantly, the two data frames' structure (number, names, type of columns) must
+correspond exactly to the **specifications** shown in [this vignette](prepare_data.html). 
+Among other things, it is **mandatory** to provide two levels for sex and nationality. 
+The function is more flexible with respect to age groups. Although the examples
+use 1-year age groups ranging from 0 to 100 (incl. those who are older), the model 
+should also run with aggregated groups (e.g., 0-19, 20-64, 65+ year olds) --
+provided that the information in the population and parameter data frames are
+compatible (e.g., by aggregating the parameters for the same age groups).   
+
+# Projection for a single region
+
+The package `propop` includes the population data from the canton of Aargau from 
+2018 and the FSO parameters from the [population development scenarios 2020](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html). 
+Using these resources, we can project the population for the canton as a whole 
+for 1-year age groups for the period 2019-2030. 
+
+The start and end of women's fertile period, the proportion of babies born as female, and the 
+share of babies born by mothers who are not Swiss are stable parameters that are
+passed to `propop::propop()` as arguments.
+\
+
+``` {r project-canton}
+projection_canton_2030 <- propop(
+  parameters = fso_parameters,
+  year_first = 2019,
+  year_last = 2030,
+  population = fso_population,
+  subregional = FALSE
+)
+
+projection_canton_2030 |>
+  DT::datatable(filter = "top")
+```
+
+\
+
+# Projection for multiple subregions
+
+To project the population development for subregions within a superordinate entity 
+(e.g., districts or municipalities within a canton), we need input files with 
+multiple regions. Since these are not yet available, we create them:
+
+``` {r prepare-subregions}
+# fso parameters for fictitious subregions
+fso_parameters_sub <- fso_parameters |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
+  # divide the size of parameters with numbers by the number of regions (= 5);
+  # otherwise the multiplication of lines will inflate the population size.
+  mutate(spatial_unit = as.character(spatial_unit))
+
+# fso population for fictitious subregions
+fso_population_sub <- fso_population |>
+  dplyr::rename(n_tot = n) |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_population))) |>
+  dplyr::mutate(
+    # Create fictitious n for each subregion
+    n = case_match(
+      spatial_unit,
+      1 ~ round(n_tot * 0.3),
+      2 ~ round(n_tot * 0.25),
+      3 ~ round(n_tot * 0.2),
+      4 ~ round(n_tot * 0.15),
+      5 ~ round(n_tot * 0.1),
+      .default = NA
+    ),
+    .keep = "all"
+  ) |>
+  mutate(spatial_unit = as.character(spatial_unit)) |>
+  dplyr::select(-n_tot)
+```
+
+We can then run the projection for the subregions and show the results for
+a selected group:
+
+``` {r project-subregions}
+projection_subregions_2030 <- propop(
+  parameters = fso_parameters_sub,
+  year_first = 2019,
+  year_last = 2030,
+  population = fso_population_sub,
+  subregional = FALSE
+)
+
+projection_subregions_2030 |>
+  dplyr::filter(sex == "m" & nat == "int" & age == 14) |>
+  DT::datatable(filter = "top")
+```
+   
+\
+
+When information about migration patterns within the superordinate entity are 
+available (e.g., moving between municipalities), `subregional` can be set to 
+`TRUE` to adjust the population size in each subregion accordingly. This requires 
+`imm_can` as an additional parameter in the parameter data frame.
+
+\
+
+# Interpretation of the output file
+
+The output file includes the number of people (`n`) per demographic group for 
+the base year and the projected years. 

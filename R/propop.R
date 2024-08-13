@@ -1,0 +1,402 @@
+#' Project population development (enriched results)
+#'
+#' @description
+#' Project population development using the cohort component method (see e.g.,
+#' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
+#' for more details).
+#' This \bold{wrapper function} runs the projection and returns a clean
+#' data frame with clearly labeled variables and variable levels.
+#'
+#' The parameters and start population can be obtained from the Swiss Federal
+#' Statistical Office (FSO). For instructions on how to download this
+#' information from
+#' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
+#' see \code{vignette("prepare_data", package = "propop")}.
+#'
+
+#' For more details on how to use this function to project the population
+#' development on the level of a canton, see
+#' \code{vignette("run_projections", package = "propop")}.
+#'
+#' The projection parameters need to be passed to `propop::propop()` as a
+#' \bold{single data frame} (with the parameters as columns). The column types,
+#' names, and factor levels need to match the specifications listed below under
+#' `parameters`:
+#'
+#' @param parameters data frame containing the FSO rates and numbers to run the
+#' projection for a specific spatial level (e.g., canton, municipality).
+#'    * `year` character, projection year.
+#'    * `spatial_unit`, character, ID of spatial entity (e.g., canton,
+#'    municipality) for which to run the projections.
+#'    * `scen`, character, projection scenario, is used to subset data frames
+#'    with multiple scenarios (r = reference, l = low growth, h = high growth).
+#'    * `nat`, character, nationality (ch = Swiss; int = foreign/international).
+#'    * `sex`, character (f = female, m = male).
+#'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
+#'    * `birth_rate`, numeric, number of children per year.
+#'    * `births_int_ch`, numeric, proportion of children with Swiss nationality
+#'    born to non-Swiss mothers.
+#'    * `mor`, numeric, prospective mortality rate (probability of death).
+#'    * `acq`, numeric, rate of acquisition of Swiss citizenship.
+#'    * `emi`, numeric, rate of people emigrating abroad.
+#'    * `mig_ch`, numeric, national / inter-cantonal net migration
+#'    (number of immigrants - number of emigrants).
+#'    * `imm_int`, numeric, number of people immigrating from abroad.
+#'    * `mig_sub`, numeric, within canton net migration. Useful to account
+#'    for movements between different subregions (e.g., municipalities).
+#'    This argument is \bold{optional.}
+#'
+#' @param population data frame including the starting population of each
+#' demographic group. Possible values are the same as in `parameters` (apart
+#' from year).
+#'    * `year` character, should be `year_first` - 1.
+#'    * `spatial_unit` character.
+#'    * `nat` character.
+#'    * `sex` character.
+#'    * `age` numeric.
+#'    * `n` numeric, number of people per demographic group.
+#'
+#' @param year_first numeric, first year to be projected.
+#' @param year_last numeric, last year to be projected.
+#' @param age_groups numeric, number of age classes. Creates a vector with
+#'        1-year age classes running from `0` to (`age_groups` - 1). Defaults to
+#'        `101` (FSO standard number of age groups).
+#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#'        (FSO standard value).
+#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#'        (FSO standard value).
+#' @param share_born_female numeric, fraction of female babies. Defaults to
+#'        100 / 205 (FSO standard value).
+#' @param subregional boolean, TRUE indicates that subregional migration
+#'        patterns (e.g., movement between municipalities within a canton)
+#'        are part of the projection.
+#' @param spatial_unit character, name of variable containing the names of the
+#'        region or subregions for which the projection shall be performed.
+#'
+#' @returns
+#' Returns a data frame that includes the number of people for each demographic
+#'      group per year (for the starting year and each projected year).
+#'      The number of rows is the product of all years times all demographic
+#'      groups (e.g., nationality (2) * sex (2) * age groups (101) = 404).
+#'      Variables included in the output:
+#'      \item{age}{integer.}
+#'      \item{sex}{factor, female (f) and male (m).}
+#'      \item{nat}{factor, Swiss (ch) and international / foreign (int).}
+#'      \item{year}{integer, indicating starting year / projected years.}
+#'      \item{spatial_levels}{factor, spatial levels for which the projection
+#'            was run (e.g., canton, municipalities).}
+#'      \item{n}{double, number of people per demographic group.}
+#'
+#' @export
+#'
+#' @examples
+#' # Run projection for the sample data (whole canton of Aargau)
+#' propop(
+#'   parameters = fso_parameters,
+#'   year_first = 2019,
+#'   year_last = 2022,
+#'   population = fso_population,
+#'   subregional = FALSE
+#' )
+propop <- function(
+    parameters,
+    population,
+    year_first,
+    year_last,
+    age_groups = 101,
+    fert_first = 16,
+    fert_last = 50,
+    share_born_female = 100 / 205,
+    subregional,
+    spatial_unit = "spatial_unit") {
+  # Check input ----
+  ## Only 1 value in scenario ----
+  assertthat::assert_that(
+    n_distinct(parameters$scen) == 1,
+    msg = "The 'scen' column in the 'parameters' data frame must contain the
+    identical value in all rows (either reference, high, or low)."
+  )
+  ## Mandatory parameters ----
+  assertthat::assert_that("scen" %in% names(parameters),
+    msg = "Column `scen` is missing in parameters."
+  )
+  assertthat::assert_that("nat" %in% names(parameters),
+    msg = "Column `nat` is missing in parameters."
+  )
+  assertthat::assert_that("sex" %in% names(parameters),
+    msg = "Column `sex` is missing in parameters."
+  )
+  assertthat::assert_that("age" %in% names(parameters),
+    msg = "Column `age` is missing in parameters."
+  )
+  assertthat::assert_that("year" %in% names(parameters),
+    msg = "Column `year` is missing in parameters."
+  )
+  assertthat::assert_that("birth_rate" %in% names(parameters),
+    msg = "Column `birth_rate` is missing in parameters."
+  )
+  assertthat::assert_that("births_int_ch" %in% names(parameters),
+    msg = paste0(
+      "Column `births_int_ch` is missing in",
+      " parameters."
+    )
+  )
+  assertthat::assert_that("mor" %in% names(parameters),
+    msg = "Column `mor` is missing in parameters."
+  )
+  assertthat::assert_that("emi" %in% names(parameters),
+    msg = "Column `emi` is missing in parameters."
+  )
+  assertthat::assert_that("acq" %in% names(parameters),
+    msg = "Column `acq` is missing in parameters."
+  )
+  assertthat::assert_that("imm_int" %in% names(parameters),
+    msg = "Column `imm_int` is missing in parameters."
+  )
+  assertthat::assert_that("mig_ch" %in% names(parameters),
+    msg = "Column `mig_ch` is missing in parameters."
+  )
+  assertthat::assert_that("spatial_unit" %in% names(parameters),
+    msg = paste0(
+      "Column `spatial_unit` is missing in ",
+      "parameters."
+    )
+  )
+
+  ## Optional parameter when requested ----
+  if (subregional == TRUE) {
+    assertthat::assert_that("mig_sub" %in% names(parameters),
+      msg = "Column `mig_sub` is missing in parameters."
+    )
+  }
+
+  ## Population data frame ----
+  assertthat::assert_that("year" %in% names(population),
+    msg = "Column `year` is missing in `population`."
+  )
+  assertthat::assert_that(!any(is.na(population$year)),
+    msg = "Column 'year' in `population` must not
+                          include any missing values (NA)."
+  )
+  assertthat::assert_that("spatial_unit" %in% names(population),
+    msg = paste0(
+      "Column `spatial_unit` is missing ",
+      "in population."
+    )
+  )
+  assertthat::assert_that(is.character(population$spatial_unit),
+    !any(is.na(population$spatial_unit)),
+    msg = paste0(
+      "Column 'spatial_unit' in ",
+      "`population` must be of type ",
+      "`character`. Missing values (NA) are ",
+      "not allowed."
+    )
+  )
+
+  ## Equivalence of spatial_unit in `parameters` and `population` ----
+  assertthat::assert_that(
+    setequal(
+      population$spatial_unit,
+      parameters$spatial_unit
+    ),
+    msg = paste0(
+      "The values in column 'spatial unit' ",
+      "are not identical in the data frames ",
+      "`population` and `parameters`."
+    )
+  )
+
+  assertthat::assert_that("nat" %in% names(population),
+    msg = "Column `nat` is missing in `population`"
+  )
+  assertthat::assert_that(all(population$nat %in% c("int", "ch")),
+    msg = paste0(
+      "Column `nat` in `population` can ",
+      "only include the values `ch` and ",
+      "`int`. Missing values (NA) are not ",
+      "allowed."
+    )
+  )
+  assertthat::assert_that("sex" %in% names(population),
+    msg = "Column `sex` is missing in `population`"
+  )
+  assertthat::assert_that(all(population$sex %in% c("f", "m")),
+    msg = paste0(
+      "Column `sex` in `population` can",
+      " only include the values `f` and `m`.",
+      " Missing values (NA) are not allowed."
+    )
+  )
+  assertthat::assert_that("age" %in% names(population),
+    msg = "Column `age` is missing in `population`"
+  )
+  assertthat::assert_that(!any(is.na(population$age)),
+    msg = paste0(
+      "Column 'age' in `population` must be ",
+      "numeric. Missing values (NA) are not",
+      " allowed."
+    )
+  )
+  assertthat::assert_that("n" %in% names(population),
+    msg = "Column `n` is missing in `population`"
+  )
+  assertthat::assert_that(is.numeric(population$n),
+    !any(is.na(population$n)),
+    msg = paste0(
+      "Column 'n' in `population` must be ",
+      "numeric. Missing values (NA) are not",
+      " allowed."
+    )
+  )
+
+
+  ## Remaining arguments ----
+  # Convert input in years to integer, results in error if not possible
+  year_first <- vctrs::vec_cast(year_first, integer())
+  year_last <- vctrs::vec_cast(year_last, integer())
+  fert_first <- vctrs::vec_cast(fert_first, integer())
+  fert_last <- vctrs::vec_cast(fert_last, integer())
+
+  assertthat::assert_that(is.integer(year_first),
+    dplyr::between(year_first, 2018, 2050),
+    msg = paste0(
+      "`year_first` must be an integer or a numeric ",
+      "value without decimals between 2018 and 2050"
+    )
+  )
+  assertthat::assert_that(
+    is.integer(year_last), dplyr::between(year_last, 2018, 2050),
+    msg = paste0(
+      "`year_last` must be an integer or a numeric value without decimals",
+      " between 2018 and 2050"
+    )
+  )
+  assertthat::assert_that(is.integer(year_first),
+    is.integer(year_last), year_first <= year_last,
+    msg = paste0(
+      "year_first must be smaller than or",
+      "equal to year_last"
+    )
+  )
+  assertthat::assert_that(is.vector(age_groups),
+    all(sapply(age_groups, is.numeric)),
+    all(!is.na(age_groups)),
+    msg = paste0(
+      "The argument 'age_groups' must be a vector ",
+      "containing only numeric values and no `NA` values."
+    )
+  )
+  assertthat::assert_that(is.integer(fert_first),
+    msg = paste0(
+      "The argument 'fert_first' must be an integer or ",
+      "a numeric value without decimals"
+    )
+  )
+  assertthat::assert_that(is.integer(fert_last),
+    msg = paste0(
+      "The argument 'fert_last' must be an integer or a ",
+      "numeric value without decimals"
+    )
+  )
+  assertthat::assert_that(is.integer(fert_first),
+    is.integer(fert_last), fert_first <= fert_last,
+    msg = paste0(
+      "fert_first must be smaller than or ",
+      "equal to fert_last"
+    )
+  )
+  assertthat::assert_that(is.numeric(share_born_female),
+    msg = "The argument 'share_born_female' must be numeric."
+  )
+  assertthat::assert_that(is.logical(subregional),
+    msg = paste0(
+      "The argument 'subregional' must ",
+      "either be `TRUE` or `FALSE`."
+    )
+  )
+  assertthat::assert_that(is.character(spatial_unit),
+    msg = paste0(
+      "The argument 'spatial_unit' must be ",
+      "of type `character`."
+    )
+  )
+
+  ## Feedback if non-standard values are used ----
+  ### Create vector with non-FSO conform parameters
+  non_conform <- c()
+
+  ### Check each condition and add variable name to vector if it fails
+  if (age_groups != 101) {
+    non_conform <- c(non_conform, "age_groups")
+  }
+
+  if (fert_first != 16) {
+    non_conform <- c(non_conform, "fert_first")
+  }
+
+  if (fert_last != 50) {
+    non_conform <- c(non_conform, "fert_last")
+  }
+
+  if (share_born_female != 100 / 205) {
+    non_conform <- c(non_conform, "share_born_female")
+  }
+
+  ### Feedback
+  if (!is.null(non_conform)) {
+    cli::cli_rule()
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("Some of the provided parameters do not correspond to the
+                  standard values suggested by the Federal Statistical Office:")
+    cli::cli_alert_warning(cli::col_magenta(
+      paste(non_conform, collapse = ", ")
+    ))
+    cli::cli_alert_info("This may lead to incomplete, unexpected, or wrong
+                        results.")
+    cli::cli_rule()
+  }
+
+  # Run projection (for all projection units) ----
+  projection_raw <-
+    purrr::map_df(
+      .x = parameters |>
+        dplyr::select(spatial_unit) |>
+        dplyr::distinct() |>
+        dplyr::pull(),
+      .f = ~ project_raw(
+        parameters = parameters |> filter(spatial_unit == .x),
+        year_last = year_last,
+        year_first = year_first,
+        age_groups = age_groups,
+        fert_first = fert_first,
+        fert_last = fert_last,
+        share_born_female = share_born_female,
+        n = population |>
+          dplyr::filter(!!sym(spatial_unit) == .x) |>
+          dplyr::pull(n),
+        subregional = subregional
+      )
+    )
+
+
+  # Prepare empty data frame with meta data ----
+  skeleton <- prepare_skeleton(
+    age_groups = age_groups,
+    year_first = year_first,
+    year_last = year_last,
+    spatial_unit = parameters |>
+      dplyr::select(spatial_unit) |>
+      dplyr::distinct() |>
+      dplyr::pull()
+  )
+
+
+  # Add meta data to raw results ----
+  projection_results <- complement_projection(
+    skeleton,
+    projection_raw
+  )
+
+  return(projection_results)
+}
