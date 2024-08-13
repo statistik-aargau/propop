@@ -44,6 +44,7 @@ reference:
   contents:
   - prepare_evaluation
   - compute_measures
+  - aggregate_measures
 - title: "Sample data"
   desc: "Sample data from the Federal Statistical Office"
   contents:

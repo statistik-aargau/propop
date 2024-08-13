@@ -10,8 +10,8 @@
 #' column names to obtain evaluation criteria weighted for specific groups
 #' (e.g., age groups, nationality).
 #'
-#' @returns
-#' A data frame. The data frame includes the following summary measures:
+#' @return
+#' #' A data frame. The data frame includes the following summary measures:
 #'
 #' * `m_perc_e` is the mean percentage error (MPE; or mean algebraic percentage
 #' error MALPE); it is a bias indicator as it takes the \bold{direction} of the
@@ -49,6 +49,8 @@
 #' proportion of observations that have absolute percentage errors larger than
 #' 10%.
 #'
+#' @export
+#'
 #' @autoglobal
 #'
 #' @references
@@ -63,7 +65,6 @@
 #' Wilson, T. (2016). Evaluation of alternative cohort-component models for local area population forecasts, Population Research and Policy Review, 35, 241-261, [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
 #'
 #' @importFrom stats median
-
 aggregate_measures <- function(data, weight_groups = NULL) {
   results <- data |>
     dplyr::summarise(

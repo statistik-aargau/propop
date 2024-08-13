@@ -14,7 +14,7 @@ column names to obtain evaluation criteria weighted for specific groups
 (e.g., age groups, nationality).}
 }
 \value{
-A data frame. The data frame includes the following summary measures:
+#' A data frame. The data frame includes the following summary measures:
 \itemize{
 \item \code{m_perc_e} is the mean percentage error (MPE; or mean algebraic percentage
 error MALPE); it is a bias indicator as it takes the \bold{direction} of the
