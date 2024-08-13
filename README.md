@@ -6,7 +6,7 @@
 [![R build status](https://github.com/statistik-aargau/propop/workflows/R-CMD-check/badge.svg)](https://github.com/statistik-aargau/propop/actions)
 <!-- badges: end -->
 
-# Welcome to the `propop` package
+# Welcome to the `propop` package <img src="man/figures/logo.png" align="right" width = "250" />
 
 The goal of `propop` is to create population projections using the **cohort 
 component method** (see e.g., 
@@ -28,6 +28,11 @@ Although the package was developed for use in Switzerland, it should in principl
 also work for other contexts, provided the required input data is available in 
 the 
 [specified form](https://statistik-aargau.github.io/propop/articles/prepare_data.html).
+
+## Package website
+
+For a detailed documentation, visit the 
+[package website](https://statistik-aargau.github.io/propop/)
 
 ## Installation
 
