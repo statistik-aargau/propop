@@ -5,10 +5,10 @@
 #'
 #' The input is a data frame created with `propop::prepare_evaluation()`.
 #' It includes a benchmark (typically the observed population records, i.e.,
-#' the number of people per spatial unit, demographic group, and year) and the corresponding
-#' projected number of people. The input can range from low resolution
-#' (e.g., total number of people per municipality) to high resolution
-#' (e.g., 101 age classes, nationality, sex).
+#' the number of people per spatial unit, demographic group, and year) and
+#' the corresponding projected number of people. The input can range from
+#' low resolution (e.g., total number of people per municipality) to
+#' high resolution (e.g., 101 age classes, nationality, sex).
 #'
 #' For more details on usage, see
 #' \code{vignette("evaluate", package = "propop")}.
@@ -26,8 +26,8 @@
 #' (negative values) and over-projection (positive values) relative to the
 #' benchmark `n_bench`.
 #'
-#'* `perc_e` is the percentage error and expresses the under-/over-projection in
-#' percent of the benchmark `n_bench`.
+#'* `perc_e` is the percentage error and expresses the under- / over-projection
+#'in percent of the benchmark `n_bench`.
 #'
 #'* `abs_perc_e` is the absolute percentage error; it is the absolute deviation
 #' in percent of the benchmark `n_bench`, thus only showing the extent of the
@@ -121,7 +121,7 @@ compute_measures <- function(combined, weight_groups = NULL) {
       abs_perc_e = abs(error) / n_bench * 100
     )
 
-  # Add weighted measures if weight_groups is defined
+  # Add variables related to weighted measure if weight_groups is provided
   if (!is.null(weight_groups)) {
     df <- df |>
       mutate(
