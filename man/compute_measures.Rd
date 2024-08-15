@@ -20,8 +20,8 @@ and used for descriptive comparisons:
 \item \code{error} is the forecast error; it quantifies the level of under-projection
 (negative values) and over-projection (positive values) relative to the
 benchmark \code{n_bench}.
-\item \code{perc_e} is the percentage error and expresses the under-/over-projection in
-percent of the benchmark \code{n_bench}.
+\item \code{perc_e} is the percentage error and expresses the under- / over-projection
+in percent of the benchmark \code{n_bench}.
 \item \code{abs_perc_e} is the absolute percentage error; it is the absolute deviation
 in percent of the benchmark \code{n_bench}, thus only showing the extent of the
 error but not the direction.
@@ -54,10 +54,10 @@ to compute performance measures.
 \details{
 The input is a data frame created with \code{propop::prepare_evaluation()}.
 It includes a benchmark (typically the observed population records, i.e.,
-the number of people per spatial unit, demographic group, and year) and the corresponding
-projected number of people. The input can range from low resolution
-(e.g., total number of people per municipality) to high resolution
-(e.g., 101 age classes, nationality, sex).
+the number of people per spatial unit, demographic group, and year) and
+the corresponding projected number of people. The input can range from
+low resolution (e.g., total number of people per municipality) to
+high resolution (e.g., 101 age classes, nationality, sex).
 
 For more details on usage, see
 \code{vignette("evaluate", package = "propop")}.

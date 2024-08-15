@@ -16,26 +16,36 @@ column names to obtain evaluation criteria weighted for specific groups
 \value{
 #' A data frame. The data frame includes the following summary measures:
 \itemize{
-\item \code{m_perc_e} is the mean percentage error (MPE; or mean algebraic percentage
-error MALPE); it is a bias indicator as it takes the \bold{direction} of the
-error into account. Positive values indicate overestimation and negative
-values indicate underestimation. The smaller the value, the lower the bias.
-\item \code{md_perc_e} is the median percentage error (MedPE).
-\item \code{m_abs_perc_e} is the mean \bold{absolute} percentage (or: proportional)
-error (MAPE). In contrast to \code{wm_abs_per_e} (see below), it gives equal
-weighting to each absolute percentage error of which it is the mean (1/n).
-It considers variance (or amplitude) and can be seen as a measure
-of precision. The smaller the value, the lower is the average relative error.
-\item \code{md_abs_perc_e} is the median \bold{absolute} percentage error (MedAPE).
-\item \code{wm_abs_perc_e} is the weighted mean absolute percentage error (WMAPE); it
-weights each absolute percentage error by the population size of the focal
-group (e.g., municipality, nationality, age group) and thus considers domain
+\item \code{mpe} is the mean percentage error
+(\bold{mpe}; or mean algebraic percentage error
+\bold{malpe}); it is a bias indicator as it takes the \bold{direction} of the
+error into account. Positive values indicate that the projections were,
+overall, too high. Negative values indicate that the projections were,
+overall, too low.
+The closer the value is too zero, the lower the bias.
+\item \code{medpe} is the median (or middle value) of the percentage error
+(\bold{medpe}). Particularly useful for small samples or skewed
+distributions. The closer the value is too zero, the lower the bias.
+\item \code{mape} is the mean \bold{absolute} percentage / proportional error
+(\bold{mape}). It considers variance (or amplitude) and can be seen as a
+measure of precision.
+The smaller the value, the lower is the average error.
+\item \code{medape} is the median (or middle value) of the \bold{absolute}
+percentage error (\bold{medape}). Particularly useful for small samples or
+skewed distributions. The smaller the value, the lower is the average error.
+\item \code{rmse} is the root mean square error; it is an indication of the robustness
+or quality of the projection. The smaller the value, the more robust the
+projection.
+\item \code{wmape} is the \bold{weighted} mean \bold{absolute} percentage
+error (\bold{wmape}); in contrast to \code{mape}, this measure
+weights each absolute percentage error according to the population size of
+the "focal" group (e.g., nationality, age group) and thus considers domain
 size. Put differently, errors count more in populous groups than in less
-populous groups.
-\item \code{rmse} is the root mean square error; it is an indication of robustness of
-the projection. The smaller the value, the more robust the projection.
+populous groups. This measure is particularly useful when population sizes
+vary strongly. The closer the value, the more precise is the
+projection.
 \item \code{n_measure} is the number of times a summary measure occurs (per weight
-group if requested),
+group if requested).
 \item \code{p_under_1} is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors smaller than
 1\%.
@@ -51,6 +61,12 @@ and 10\%.
 \item \code{p_over_10} is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors larger than
 10\%.
+\item \code{p_10_to_20} is a measure to gauge the error distribution; it indicates the
+proportion of observations that have absolute percentage errors between 10\%
+and 20\%.
+\item \code{p_over_20} is a measure to gauge the error distribution; it indicates the
+proportion of observations that have absolute percentage errors larger than
+20\%.
 }
 }
 \description{

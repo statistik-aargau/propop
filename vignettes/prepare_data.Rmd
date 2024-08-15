@@ -90,7 +90,7 @@ To download the data, we need the following packages:
 library(BFS) # to download FSO data
 library(dplyr) # to process data
 library(tidyr) # to wrangle data
-devtools::load_all() # to run population projection
+library(propop) # to run population projection
 ```
 
 # Convenient way to get FSO data
@@ -168,7 +168,7 @@ metadata <- BFS::bfs_get_metadata(number_bfs = "px-x-0104020000_101")
 metadata_tidy <- metadata |>
   select(-valueTexts) |>
   unnest_longer(values) |>
-  mutate(
+  dplyr::mutate(
     valueTexts = metadata |>
       select(valueTexts) |>
       unnest_longer(valueTexts) |>
@@ -222,7 +222,7 @@ dim4_103 <- metadata_tidy |>
   dplyr::filter(
     text == "Jahr"
   ) |> # get all years
-  mutate(values = as.character(0:31))
+  dplyr::mutate(values = as.character(0:31))
 
 dim5 <- metadata_tidy |>
   dplyr::filter(
@@ -298,7 +298,7 @@ fso_numbers_r <- BFS::bfs_get_data(
     "Szenarien zur Bevölkerungsentwicklung der Kantone 2020-2050,",
     " Referenzszenario AR-00-2020 - zukünftige Bevölkerungsentwicklung"
   )) |>
-  mutate(scen = "reference")
+  dplyr::mutate(scen = "reference")
 
 # high growth scenario
 fso_numbers_h <- BFS::bfs_get_data(
@@ -309,7 +309,7 @@ fso_numbers_h <- BFS::bfs_get_data(
     "Szenarien zur Bevölkerungsentwicklung der Kantone 2020-2050,",
     " 'hohes' Szenario BR-00-2020 - zukünftige Bevölkerungsentwicklung"
   )) |>
-  mutate(scen = "high")
+  dplyr::mutate(scen = "high")
 
 # low growth scenario
 fso_numbers_l <- BFS::bfs_get_data(
@@ -320,7 +320,7 @@ fso_numbers_l <- BFS::bfs_get_data(
     "Szenarien zur Bevölkerungsentwicklung der Kantone 2020-2050,",
     " 'tiefes' Szenario CR-00-2020 - zukünftige Bevölkerungsentwicklung"
   )) |>
-  mutate(scen = "low")
+  dplyr::mutate(scen = "low")
 
 # combine into a single data frame
 fso_numbers_raw <- full_join(fso_numbers_r, fso_numbers_h) |>
@@ -338,7 +338,7 @@ fso_numbers <- fso_numbers_raw |>
     fso_parameter = Beobachtungseinheit
   ) |>
   # change factor levels
-  mutate(
+  dplyr::mutate(
     fso_parameter = case_match(
       fso_parameter,
       "Auswanderungen" ~ "emi_n",
@@ -391,7 +391,7 @@ metadata <- BFS::bfs_get_metadata(number_bfs = "px-x-0104020000_109")
 metadata_tidy <- metadata |>
   select(-valueTexts) |>
   unnest_longer(values) |>
-  mutate(
+  dplyr::mutate(
     valueTexts = metadata |>
       select(valueTexts) |>
       unnest_longer(valueTexts) |>
@@ -514,7 +514,7 @@ fso_rates <- fso_rates_raw |>
       "Szenarien zur Bevölkerungsentwicklung der Kantone 2020-2050 - Ziffern"
   ) |>
   # change factor levels
-  mutate(
+  dplyr::mutate(
     scen = case_match(
       scen,
       "Referenzszenario AR-00-2020" ~ "reference",

@@ -18,8 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-# library(propop)
-devtools::load_all()
+library(propop)
 
 # load package data
 data("fso_parameters")
@@ -95,7 +94,7 @@ fso_parameters_sub <- fso_parameters |>
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
   # divide the size of parameters with numbers by the number of regions (= 5);
   # otherwise the multiplication of lines will inflate the population size.
-  mutate(spatial_unit = as.character(spatial_unit))
+  dplyr::mutate(spatial_unit = as.character(spatial_unit))
 
 # fso population for fictitious subregions
 fso_population_sub <- fso_population |>
@@ -106,7 +105,7 @@ fso_population_sub <- fso_population |>
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_population))) |>
   dplyr::mutate(
     # Create fictitious n for each subregion
-    n = case_match(
+    n = dplyr::case_match(
       spatial_unit,
       1 ~ round(n_tot * 0.3),
       2 ~ round(n_tot * 0.25),
@@ -117,7 +116,7 @@ fso_population_sub <- fso_population |>
     ),
     .keep = "all"
   ) |>
-  mutate(spatial_unit = as.character(spatial_unit)) |>
+  dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
   dplyr::select(-n_tot)
 ```
 

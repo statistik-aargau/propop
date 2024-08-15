@@ -95,26 +95,36 @@ column names to obtain evaluation criteria weighted for specific groups
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>#' A data frame. The data frame includes the following summary measures:</p><ul><li><p><code>m_perc_e</code> is the mean percentage error (MPE; or mean algebraic percentage
-error MALPE); it is a bias indicator as it takes the <b>direction</b> of the
-error into account. Positive values indicate overestimation and negative
-values indicate underestimation. The smaller the value, the lower the bias.</p></li>
-<li><p><code>md_perc_e</code> is the median percentage error (MedPE).</p></li>
-<li><p><code>m_abs_perc_e</code> is the mean <b>absolute</b> percentage (or: proportional)
-error (MAPE). In contrast to <code>wm_abs_per_e</code> (see below), it gives equal
-weighting to each absolute percentage error of which it is the mean (1/n).
-It considers variance (or amplitude) and can be seen as a measure
-of precision. The smaller the value, the lower is the average relative error.</p></li>
-<li><p><code>md_abs_perc_e</code> is the median <b>absolute</b> percentage error (MedAPE).</p></li>
-<li><p><code>wm_abs_perc_e</code> is the weighted mean absolute percentage error (WMAPE); it
-weights each absolute percentage error by the population size of the focal
-group (e.g., municipality, nationality, age group) and thus considers domain
+<p>#' A data frame. The data frame includes the following summary measures:</p><ul><li><p><code>mpe</code> is the mean percentage error
+(<b>mpe</b>; or mean algebraic percentage error
+<b>malpe</b>); it is a bias indicator as it takes the <b>direction</b> of the
+error into account. Positive values indicate that the projections were,
+overall, too high. Negative values indicate that the projections were,
+overall, too low.
+The closer the value is too zero, the lower the bias.</p></li>
+<li><p><code>medpe</code> is the median (or middle value) of the percentage error
+(<b>medpe</b>). Particularly useful for small samples or skewed
+distributions. The closer the value is too zero, the lower the bias.</p></li>
+<li><p><code>mape</code> is the mean <b>absolute</b> percentage / proportional error
+(<b>mape</b>). It considers variance (or amplitude) and can be seen as a
+measure of precision.
+The smaller the value, the lower is the average error.</p></li>
+<li><p><code>medape</code> is the median (or middle value) of the <b>absolute</b>
+percentage error (<b>medape</b>). Particularly useful for small samples or
+skewed distributions. The smaller the value, the lower is the average error.</p></li>
+<li><p><code>rmse</code> is the root mean square error; it is an indication of the robustness
+or quality of the projection. The smaller the value, the more robust the
+projection.</p></li>
+<li><p><code>wmape</code> is the <b>weighted</b> mean <b>absolute</b> percentage
+error (<b>wmape</b>); in contrast to <code>mape</code>, this measure
+weights each absolute percentage error according to the population size of
+the "focal" group (e.g., nationality, age group) and thus considers domain
 size. Put differently, errors count more in populous groups than in less
-populous groups.</p></li>
-<li><p><code>rmse</code> is the root mean square error; it is an indication of robustness of
-the projection. The smaller the value, the more robust the projection.</p></li>
+populous groups. This measure is particularly useful when population sizes
+vary strongly. The closer the value, the more precise is the
+projection.</p></li>
 <li><p><code>n_measure</code> is the number of times a summary measure occurs (per weight
-group if requested),</p></li>
+group if requested).</p></li>
 <li><p><code>p_under_1</code> is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors smaller than
 1%.</p></li>
@@ -130,6 +140,12 @@ and 10%.</p></li>
 <li><p><code>p_over_10</code> is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors larger than
 10%.</p></li>
+<li><p><code>p_10_to_20</code> is a measure to gauge the error distribution; it indicates the
+proportion of observations that have absolute percentage errors between 10%
+and 20%.</p></li>
+<li><p><code>p_over_20</code> is a measure to gauge the error distribution; it indicates the
+proportion of observations that have absolute percentage errors larger than
+20%.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

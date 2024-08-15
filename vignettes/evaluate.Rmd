@@ -18,8 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, message = FALSE}
-# library(propop)
-devtools::load_all()
+library(propop)
 ```
 # Evaluate projections
 
@@ -104,7 +103,7 @@ compute_measures(combined) |>
   # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == 27) |>
   # round to two digits
-  mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "top",
     caption = htmltools::tags$caption(
@@ -138,7 +137,7 @@ compute_measures(combined_grouped) |>
   # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == "age_20_64") |>
   # round to two digits
-  mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "top",
     caption = htmltools::tags$caption(
@@ -162,7 +161,7 @@ compute_measures(
   weight_groups = c("age")
 ) |>
   dplyr::filter(year == 2019 & abs_perc_e > .34 & abs_perc_e < .39) |>
-  mutate(across(perc_e:w_abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(perc_e:w_abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "top",
     caption = htmltools::tags$caption(
