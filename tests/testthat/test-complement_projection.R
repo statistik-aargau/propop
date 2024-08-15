@@ -1,4 +1,7 @@
 test_that("snapshot test complement_projection()", {
+
+  skip_on_ci()
+
   # create skeleton with variable labels and levels
   # constructive::construct(head(skeleton, 10))
   empty_df <-

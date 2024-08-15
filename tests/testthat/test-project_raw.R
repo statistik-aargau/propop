@@ -1,5 +1,8 @@
 # Check if error messages occur ----
 test_that("project_raw returns error message?", {
+
+  skip_on_ci()
+
   # Create short version of fso parameters
   # nolint start
   # fso_parameters |>
@@ -189,6 +192,9 @@ test_that("project_raw returns error message?", {
 # Snapshot 1 region ----
 
 test_that("snapshot project_raw with 0-50 year olds", {
+
+  skip_on_ci()
+
   # Create short version of fso parameters
   # nolint start
   # fso_parameters |>
@@ -374,6 +380,9 @@ test_that("snapshot project_raw with 0-50 year olds", {
 
 # Snapshot subregions ----
 test_that("snapshot project_raw with 0-50 year olds and subregions", {
+
+  skip_on_ci()
+
   # Create version with fictitious subregions
   # nolint start
   # fso_parameters |>

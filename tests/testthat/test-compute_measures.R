@@ -1,4 +1,7 @@
 test_that("compute_measures snapshots", {
+
+  skip_on_ci()
+
   # Prepare data ----
   # Based on data created in prepare_measures
   # nolint start

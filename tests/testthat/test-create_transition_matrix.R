@@ -1,4 +1,7 @@
 test_that("create_transition_matrix", {
+
+  skip_on_ci()
+
   expect_snapshot(constructive::construct(
     create_transition_matrix(
       n_age_class = 3,

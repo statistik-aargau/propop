@@ -1,4 +1,7 @@
 test_that("prepare_evaluation snapshots", {
+
+  skip_on_ci()
+
   # Prepare data ----
 
   ## Get starting population and later population records

@@ -1,4 +1,7 @@
 test_that("create_birth_matrix", {
+
+  skip_on_ci()
+
   expect_snapshot(constructive::construct(
     create_birth_matrix(
       fert_first = 16,

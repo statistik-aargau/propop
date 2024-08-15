@@ -1,7 +1,9 @@
 test_that("get population snapshots - 1 region 1 year", {
+
   # don't run on gitlab ci
   skip_on_ci()
-  # only run if: Sys.setenv(RUN_EXPENSIVE_TESTS = TRUE)
+
+   # only run if: Sys.setenv(RUN_EXPENSIVE_TESTS = TRUE)
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
   get_population_snapshot <- get_population(
     number_fso = "px-x-0102010000_101",
@@ -14,8 +16,10 @@ test_that("get population snapshots - 1 region 1 year", {
 })
 
 test_that("get population snapshots - 2 regions & 2 years", {
+
   # don't run on gitlab ci
   skip_on_ci()
+
   # only run if: Sys.setenv(RUN_EXPENSIVE_TESTS = TRUE)
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
   get_population_snapshot2 <- get_population(
