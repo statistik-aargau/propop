@@ -1,3 +1,5 @@
+# Welcome to the `propop` package <a href="https://statistik-aargau.github.io/propop/"><img src="man/figures/logo.png" align="right" width = "150" /></a>
+
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -5,8 +7,6 @@
 [![](https://coveralls.io/repos/github/google/benchmark/badge.svg?branch=main)](https://coveralls.io/github/statistik-aargau/propop)
 [![R build status](https://github.com/statistik-aargau/propop/workflows/R-CMD-check/badge.svg)](https://github.com/statistik-aargau/propop/actions)
 <!-- badges: end -->
-
-# Welcome to the `propop` package <img src="man/figures/logo.png" align="right" width = "250" />
 
 The goal of `propop` is to create population projections using the **cohort 
 component method** (see e.g., 

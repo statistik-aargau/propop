@@ -4,6 +4,7 @@
 # library(hexSticker)
 # library(dplyr)
 # library(showtext)
+# library(magick)
 #
 # ## Loading Google fonts (http://www.google.com/fonts)
 # font_add_google("inter")
@@ -127,6 +128,29 @@
 #   l_alpha = .8,
 #   l_width = 4,
 #   p_family = "inter",
-#   filename = "man/figures/logo.png"
+#   filename = "man/figures/logo_white.png"
 # )
+#
+# # replace white aroun hexagon with transparent background
+# propop_logo <- image_read("man/figures/logo_white.png")
+# image_info(propop_logo)
+# fuzz <- 0
+# propop_logo_transparent <- propop_logo |>
+#   image_fill(color = "transparent",
+#              refcolor = "white", fuzz = fuzz,
+#              point = "+1+1") |>
+#    image_fill(color = "transparent",
+#              refcolor = "white", fuzz = fuzz,
+#              point = "+517+1") |>
+#
+#   image_fill(color = "transparent",
+#              refcolor = "white", fuzz = fuzz,
+#              point = "+1+598") |>
+#   image_fill(color = "transparent",
+#              refcolor = "white", fuzz = fuzz,
+#              point = "+517+598")
+#
+# image_write(image = propop_logo_transparent, path = "man/figures/logo.png")
+# file.show("man/figures/logo.png")
+#
 # nolint end
