@@ -1,10 +1,8 @@
-# Welcome to the `propop` package <a href="https://statistik-aargau.github.io/propop/"><img src="man/figures/logo.png" align="right" width = "138" /></a>
+# Welcome to the `propop` package <a href="https://statistik-aargau.github.io/propop/"><img src="man/figures/logo.png" align="right" width = "134" /></a>
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![](https://codecov.io/gh/statistik-aargau/propop/branch/main/graph/badge.svg)](https://app.codecov.io/gh/statistik-aargau/propop)
-[![](https://coveralls.io/repos/github/google/benchmark/badge.svg?branch=main)](https://coveralls.io/github/statistik-aargau/propop)
 [![R build status](https://github.com/statistik-aargau/propop/workflows/R-CMD-check/badge.svg)](https://github.com/statistik-aargau/propop/actions)
 <!-- badges: end -->
 
@@ -35,7 +33,7 @@ the
 ## Package website
 
 For a detailed documentation, visit the 
-[package website](https://statistik-aargau.github.io/propop/)
+[package website](https://statistik-aargau.github.io/propop/).
 
 ## Installation
 
