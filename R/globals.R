@@ -7,7 +7,7 @@ utils::globalVariables(c(
   "n_bench", # <aggregate_measures>
   "n_proj", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
-  "wm_abs_perc_e", # <aggregate_measures>
+  "wmape", # <aggregate_measures>
   "N", # <complement_projection>
   "n_proj", # <compute_measures>
   "n_bench", # <compute_measures>
