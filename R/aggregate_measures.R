@@ -1,4 +1,4 @@
-#' Compute aggregate evaluation measures per model variant
+#' Aggregate evaluation measures
 #'
 #' Returns descriptive summary statistics of model accuracy and bias measures
 #' across demographic groups and years. The returned statistics are particularly

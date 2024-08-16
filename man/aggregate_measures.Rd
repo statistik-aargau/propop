@@ -2,7 +2,7 @@
 % Please edit documentation in R/aggregate_measures.R
 \name{aggregate_measures}
 \alias{aggregate_measures}
-\title{Compute aggregate evaluation measures per model variant}
+\title{Aggregate evaluation measures}
 \usage{
 aggregate_measures(data, weight_groups = NULL)
 }
