@@ -32,11 +32,6 @@ also work for other contexts, provided the required input data is available in
 the 
 [specified form](https://statistik-aargau.github.io/propop/articles/prepare_data.html).
 
-## Package website
-
-For a detailed documentation, visit the 
-[package website](https://statistik-aargau.github.io/propop/).
-
 ## Installation
 
 To install the current github version of the package, make sure you have devtools
