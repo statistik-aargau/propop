@@ -131,24 +131,37 @@
 #   filename = "man/figures/logo_white.png"
 # )
 #
-# # replace white aroun hexagon with transparent background
+# # replace white around hexagon with transparent background
 # propop_logo <- image_read("man/figures/logo_white.png")
 # image_info(propop_logo)
-# fuzz <- 0
+#
+# # Add white area around logo that will later be removed
+# # Otherwise the image area is too small to correctly define "start positiion"
+# # and a thin line will remain at the bottom
 # propop_logo_transparent <- propop_logo |>
+#   image_extent(paste0(518, "x", 600 + 10), gravity = "north") %>%
+#   image_background("white")
+#
+# # Check new dimensions
+# image_info(propop_logo_transparent)
+#
+# # Crop
+# propop_logo_transparent <- propop_logo_transparent |>
 #   image_fill(color = "transparent",
 #              refcolor = "white", fuzz = fuzz,
 #              point = "+1+1") |>
-#    image_fill(color = "transparent",
+#   image_fill(color = "transparent",
 #              refcolor = "white", fuzz = fuzz,
 #              point = "+517+1") |>
 #
 #   image_fill(color = "transparent",
 #              refcolor = "white", fuzz = fuzz,
-#              point = "+1+598") |>
+#              point = "+1+599") |>
 #   image_fill(color = "transparent",
 #              refcolor = "white", fuzz = fuzz,
-#              point = "+517+598")
+#              point = "+517+600") |>
+#   image_crop(paste0(518, "x", 600, "+0+0"))
+#
 #
 # image_write(image = propop_logo_transparent, path = "man/figures/logo.png")
 # file.show("man/figures/logo.png")
