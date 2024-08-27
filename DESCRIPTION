@@ -9,11 +9,6 @@ Authors@R: c(
       "Adrian", "Gadient", , "adrian.gadient@ag.ch", role = c("aut"), 
     comment = c(ORCID = "0000-0003-0026-3153")),
     person(
-      "Niklas", "Haffert", 
-      role = c("aut"),  
-      email = "niklas.haffert@sg.ch"
-    ),
-    person(
       "Tina", "Cornioley",
       role = "aut",
       email = "tina.cornioley@vd.ch"
@@ -22,6 +17,11 @@ Authors@R: c(
       "Jan", "Wunder",
       role = "aut",
       email = "jan.wunder@sg.ch"
+    ),
+    person(
+      "Niklas", "Haffert", 
+      role = c("aut"),  
+      email = "niklas.haffert@sg.ch"
     ),
     person(
       "Andrea", "Plüss",

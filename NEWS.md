@@ -5,7 +5,8 @@
 The `propop` package is a successor of `staagBevProj` (not publicly available), 
 which was last updated in December 2022. `staagBevProj` was developed by 
 Tina Cornioley, Jan Wunder, and Niklas Haffert. As head of [Official Statistics 
-Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik), Andrea Plüss supported the devlopment as well as the 
+Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik), Andrea Plüss supported 
+the devlopment as well as the 
 publication of `staagBevProj` and `propop`.
 
 `propop` was developed by Norah Efosa and Adrian Gadient 
