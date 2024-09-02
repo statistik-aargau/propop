@@ -1,10 +1,9 @@
+name: Pkgdown
+
 on:
   workflow_dispatch:
     branches:
       - main
-
-name: pkgdown
-
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
