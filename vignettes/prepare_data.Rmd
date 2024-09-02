@@ -82,16 +82,6 @@ the information from the following tables are needed:
 
 : Overview of required FSO tables (STAT-TAB)
 
-# Packages
-
-To download the data, we need the following packages:
-
-```{r load packages, , echo= T, eval=T, results='hide', message=FALSE, warning=FALSE}
-library(BFS) # to download FSO data
-library(dplyr) # to process data
-library(tidyr) # to wrangle data
-library(propop) # to run population projection
-```
 
 # Convenient way to get FSO data
 
@@ -106,7 +96,8 @@ contain special characters. The spelling may also vary between FSO tables.
 (see further down on this page).
 
 Here's an example of how to get the population for the canton of Aargau:
-```{r}
+```{r eval = FALSE}
+library(propop) 
 ag_population <- get_population(
   number_fso = "px-x-0102010000_101",
   year_first = 2022,
@@ -117,7 +108,7 @@ ag_population <- get_population(
 
 Get the parameters for a sample canton (mind using the same spelling as in the
 FSO tables; see comment above):
-```{r get ag params}
+```{r get ag params, eval = FALSE}
 ag_parameters <- get_parameters(
   year_first = 2023,
   year_last = 2026,
@@ -149,6 +140,25 @@ propop(
 As long as the FSO's API interface and the underlying data structure remain 
 stable, the functions will work. However, changes in the API are likely to break 
 the functions.
+             
+
+# Manual way to get FSO data
+
+In case the above shouldn't work or if you want to retrace the necessary steps
+manually, we also provide a step-by-step description of how to get the 
+population data and the projection parameters from the FSO.
+             
+# Packages
+
+To download the data, we need the following packages:
+
+```{r load packages, , echo= T, eval=T, results='hide', message=FALSE, warning=FALSE}
+library(BFS) # to download FSO data
+library(dplyr) # to process data
+library(tidyr) # to wrangle data
+library(propop) # to run population projection
+```
+                    
                                 
 # Prepare queries and download data
                                 
@@ -163,7 +173,7 @@ to generate a **query** dimension object for each table and to **download**
 the data (see following subsections). To illustrate, for table 
 `px-x-0104020000_101`, we can obtain the meta data as follows:
                                 
-```{r get meta data, echo= T, eval=T,  message=FALSE}
+```{r get meta data, echo= T, eval=TRUE,  message=FALSE}
 metadata <- BFS::bfs_get_metadata(number_bfs = "px-x-0104020000_101")
 metadata_tidy <- metadata |>
   select(-valueTexts) |>
@@ -191,7 +201,7 @@ emigrate to another country in 2043).
 
 To prepare the download of these parameters, we can specify the following query:
 
-```{r filter dimensions, echo = T, eval = TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r filter dimensions, echo = T, eval = FALSE, results='hide', message=FALSE, warning=FALSE}
 # Specify the elements to download
 dim1 <- metadata_tidy |>
   dplyr::filter(
@@ -288,7 +298,7 @@ names(dimensions_103) <- c(
 Using the above specifications, we can **download** the FSO "number of people"
 parameters as follows:
 
-```{r query, eval = TRUE, echo = TRUE, message=FALSE}
+```{r query, eval = FALSE, echo = TRUE, message=FALSE}
 # reference scenario
 fso_numbers_r <- BFS::bfs_get_data(
   number_bfs = "px-x-0104020000_101",
@@ -327,7 +337,7 @@ fso_numbers_raw <- full_join(fso_numbers_r, fso_numbers_h) |>
   full_join(fso_numbers_l)
 ```
 
-```{r process, eval = TRUE, echo = FALSE}
+```{r process, eval = FALSE, echo = FALSE}
 # Bring variable names and factor levels into the format required later
 fso_numbers <- fso_numbers_raw |>
   dplyr::rename(
@@ -371,12 +381,6 @@ fso_numbers |>
   )
 ```
 
-# Manual way to get FSO data
-
-In case the above shouldn't work or if you want to retrace the necessary steps
-manually, we also provide a step-by-step description of how to get the 
-population data and the projection parameters from the FSO.
-
 ## Get "rates" and "probabilities"
 
 The FSO indicates some of its expectations as "rates" or "probabilities" (row four
@@ -385,7 +389,7 @@ the likelihood of 24-year old Swiss women to have a child in the year 2034.
 
 Before we can download the data, we again need the metadata:
 
-```{r get meta data2, echo= T, eval=T,  message=FALSE, warning=FALSE}
+```{r get meta data2, echo= T, eval=TRUE,  message=FALSE, warning=FALSE}
 metadata <- BFS::bfs_get_metadata(number_bfs = "px-x-0104020000_109")
 
 metadata_tidy <- metadata |>
@@ -405,7 +409,7 @@ head(metadata_tidy)
 To **download** the "rate" and "probability" parameters (last row in the table), we
 can use the following specifications:
 
-```{r filter dimensions2, echo = T, eval = TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r filter dimensions2, echo = T, eval = FALSE, results='hide', message=FALSE, warning=FALSE}
 # Specify the elements to download
 dim1 <- metadata_tidy |>
   dplyr::filter(
@@ -489,7 +493,7 @@ names(dimensions) <- c(
 Using the above specifications, we can download the FSO "rate" parameters as
 follows:
 
-```{r query2, eval = TRUE, message=FALSE,results='hide'}
+```{r query2, eval = FALSE, message=FALSE,results='hide'}
 # Download rate parameters
 fso_rates_raw <- BFS::bfs_get_data(
   number_bfs = "px-x-0104020000_109",
@@ -500,7 +504,7 @@ fso_rates_raw <- BFS::bfs_get_data(
 We need to process the data to ensure that the structure of the rate parameters
 conforms to the expectations of the projection function:
 
-```{r process query2, eval = TRUE, message=FALSE}
+```{r process query2, eval = FALSE, message=FALSE}
 # Bring variable names and factor levels into the format required later
 fso_rates <- fso_rates_raw |>
   dplyr::rename(
@@ -542,17 +546,6 @@ fso_rates <- fso_rates_raw |>
   )
 ```
 
-```{r quick-check-rates, echo = F, eval=FALSE}
-# check quickly if figures correspond to STAAG input table for projection
-fso_rates |>
-  dplyr::filter(
-    year == 2024 &
-      scen == "reference" &
-      nat == "int" &
-      sex == "f" &
-      age == 0
-  )
-```
 
 ## Get share of newborns with Swiss nationality born to non-Swiss mothers
 
@@ -562,7 +555,7 @@ we need to download another table and compute the corresponding parameter.
 
 Before we can download the data, we again need the metadata:
 
-```{r get meta data3, echo= T, eval=T,  message=FALSE, warning=FALSE}
+```{r get meta data3, echo= T, eval=FALSE,  message=FALSE, warning=FALSE}
 # Get meta data to determine what to download
 metadata <- BFS::bfs_get_metadata(number_bfs = "px-x-0104020000_106")
 metadata_tidy <- metadata |>
@@ -580,7 +573,7 @@ metadata_tidy <- metadata |>
 To **download** the "rate" and "probability" parameters (last row in the table), 
 we can use the following specifications:
 
-```{r filter dimensions3, echo = T, eval = TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r filter dimensions3, echo = T, eval = FALSE, results='hide', message=FALSE, warning=FALSE}
 # Specify the elements to download
 dim1 <- metadata_tidy |>
   dplyr::filter(
@@ -653,7 +646,7 @@ names(dimensions) <- c(
 Using the above specifications, we can download the parameter as
 follows:
 
-```{r query3, eval = TRUE, message=FALSE,results='hide'}
+```{r query3, eval = FALSE, message=FALSE,results='hide'}
 # Download rate parameters
 fso_births_int_ch_raw <- BFS::bfs_get_data(
   number_bfs = "px-x-0104020000_106",
@@ -664,7 +657,7 @@ fso_births_int_ch_raw <- BFS::bfs_get_data(
 We need to process the data to ensure that the structure of the parameter
 conforms to the expectations of the projection function:
 
-```{r process query3, eval = TRUE, message=FALSE}
+```{r process query3, eval = FALSE, message=FALSE}
 # Bring variable names and factor levels into the format required later
 # Process data
 fso_births_int_ch <- fso_births_int_ch_raw |>
@@ -712,7 +705,7 @@ fso_births_int_ch <- fso_births_int_ch_raw |>
 Now we can merge "number of people" and "rate" parameters, make the data frame
 wider, and compute the required parameter `inter-cantonal net migration`:
 
-```{r all in one, echo = T, eval=TRUE, message=F}
+```{r all in one, echo = T, eval=FALSE, message=F}
 projection_parameters <- dplyr::full_join(fso_rates, fso_numbers) |>
   tidyr::pivot_wider(names_from = fso_parameter, values_from = value) |>
   # compute inter-cantonal net migration
@@ -725,7 +718,20 @@ projection_parameters <- dplyr::full_join(fso_rates, fso_numbers) |>
   dplyr::arrange(year)
 ```
 
-Show parameters for one demographic group:
+
+             
+``` {r save-data, message = FALSE, echo=FALSE, eval = FALSE}
+# Save data once
+save(projection_parameters, file='../vignettes/prepare_projection_parameters.rda')
+
+```             
+
+``` {r load-data, message = FALSE, echo=FALSE, eval = TRUE}
+# Load data
+load(file='prepare_projection_parameters.rda')
+```             
+
+Show parameters for one demographic group for the year 2024:
 
 ```{r all in one2, echo = T, eval=TRUE, message=F}
 projection_parameters |>
@@ -735,10 +741,11 @@ projection_parameters |>
 
 ## Population
 
-In addition to the parameters, the projection function also requires a starting
-population. To prepare the corresponding query, we again start with the meta data:
+In addition to the parameters, the projection function `propop` also requires a 
+starting population. To prepare the corresponding query, we again start with the 
+metadata:
 
-```{r get meta data population, echo= T, eval=T, results='hide', message=FALSE, warning=FALSE}
+```{r get meta data population, echo= T, eval=FALSE, results='hide', message=FALSE, warning=FALSE}
 metadata_pop <- BFS::bfs_get_metadata(number_bfs = "px-x-0102010000_101")
 
 metadata_pop_tidy <- metadata_pop |>
@@ -752,12 +759,11 @@ metadata_pop_tidy <- metadata_pop |>
   ) |>
   select(code, text, values, valueTexts, everything())
 
-metadata_pop_tidy
 ```
 
 We can now specify which levels of the variables we want:
 
-```{r filter dimensions 3, echo = T, eval = TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r filter dimensions 3, echo = T, eval = FALSE, results='hide', message=FALSE, warning=FALSE}
 # Specify the elements to download
 dim1 <- metadata_pop_tidy |>
   dplyr::filter(
@@ -818,7 +824,7 @@ names(dimensions) <- c(
 Using the above specifications, we can **download** the FSO "population" 
 as follows:
 
-```{r get pop, eval = TRUE, message=FALSE}
+```{r get pop, eval = FALSE, message=FALSE}
 # Download population
 fso_pop_raw <- BFS::bfs_get_data(
   number_bfs = "px-x-0102010000_101", # reference scenario
@@ -826,7 +832,21 @@ fso_pop_raw <- BFS::bfs_get_data(
 )
 ```
 
-We now process th data to ensure that the population data conforms to 
+
+
+            
+``` {r save-data2, message = FALSE, echo=FALSE, eval = FALSE}
+# Save data once
+save(fso_pop_raw, file='../vignettes/prepare_fso_pop_raw.rda')
+
+```             
+
+``` {r load-data2, message = FALSE, echo=FALSE, eval = TRUE}
+# Load data
+load(file='prepare_fso_pop_raw.rda')
+```             
+
+We now process the data to ensure that the population data conforms to 
 the structure expected in `propop::propop()`:
 
 ```{r prep pop, eval = TRUE, message=FALSE}
@@ -869,27 +889,6 @@ the population projections (see vignette \`run_projections\` for more details).
 The result is shown for one demographic group.
 \
 
-```{r project-raw, eval = F, message=FALSE, echo = FALSE}
-# only keep reference scenario
-projection_parameters_ref <- projection_parameters |>
-  filter(scen == "reference")
-
-# run projection raw
-results_raw <- project_raw(
-  parameters = projection_parameters_ref,
-  year_first = 2019,
-  year_last = 2019,
-  age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
-  share_born_female = 100 / 205,
-  subregional = FALSE,
-  n = starting_population |> dplyr::pull(n)
-)
-
-results_raw |>
-  DT::datatable(filter = "top")
-```
 
 ```{r project, eval = TRUE, message=FALSE}
 # only keep reference scenario
@@ -912,6 +911,7 @@ results_clean <- propop(
 results_clean |>
   # select demographic group
   dplyr::filter(sex == "f" & nat == "int" & age == 49) |>
+  dplyr::mutate(across(n, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top")
 ```
 \
