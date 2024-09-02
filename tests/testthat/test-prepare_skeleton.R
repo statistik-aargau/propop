@@ -1,8 +1,6 @@
 # Test dimensions and type of output
 test_that("skeleton simple checks", {
 
-  skip_on_ci()
-
   # create a skeleton
   output_table <- prepare_skeleton(
     age_groups = 101,
@@ -18,8 +16,6 @@ test_that("skeleton simple checks", {
 
 
 test_that("skeleton snapshots", {
-
-  skip_on_ci()
 
   # create a skeleton
   skeleton_snapshot <- prepare_skeleton(
