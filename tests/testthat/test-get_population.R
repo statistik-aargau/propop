@@ -26,7 +26,7 @@ test_that("get population snapshots - 2 regions & 2 years", {
     number_fso = "px-x-0102010000_101",
     year_first = 2022,
     year_last = 2023,
-    spatial_units = c("......4232 Geltwil", "-Aargau")
+    spatial_units = c("......4232 Geltwil", "- Aargau")
   )
 
   expect_snapshot(constructive::construct(get_population_snapshot2))
