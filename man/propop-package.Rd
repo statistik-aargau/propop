@@ -23,9 +23,9 @@ Useful links:
 Authors:
 \itemize{
   \item Adrian Gadient \email{adrian.gadient@ag.ch} (\href{https://orcid.org/0000-0003-0026-3153}{ORCID})
-  \item Niklas Haffert \email{niklas.haffert@sg.ch}
   \item Tina Cornioley \email{tina.cornioley@vd.ch}
   \item Jan Wunder \email{jan.wunder@sg.ch}
+  \item Niklas Haffert \email{niklas.haffert@sg.ch}
 }
 
 Other contributors:
