@@ -24,16 +24,19 @@ library(propop)
 
 `propop` provides a function to **compare projections against a benchmark**. 
 The benchmark can be the actual population development (i.e., official records) 
-or a base model (e.g., when testing alternative models). 
+or a base model (e.g., when testing alternative models or when comparing against
+the official FSO forecast). 
 
 ## Get the data
 
-To run the evaluation function, we need the benchmark data and the 
+To run the evaluation function, we need some benchmark data and the 
 results from the projection.  
 
-Get the *population records* for the canton of Aargau 2019-2022:  
+Here we use the *population records* from the canton of Aargau 2019-2022 as 
+benchmark (2018 will serve as starting population):  
 
-``` {r get-benchmark, message = FALSE}
+
+``` {r get-benchmark, message = FALSE, eval = FALSE}
 data_benchmark <- get_population(
   number_fso = "px-x-0102010000_101",
   year_first = 2018,
@@ -42,9 +45,10 @@ data_benchmark <- get_population(
 )
 ```
 
+
 Get the parameters for the projection:
 
-``` {r get-parameters, message = FALSE, warning=FALSE, results='hide'}
+``` {r get-parameters, message = FALSE, warning=FALSE, results='hide', eval = FALSE}
 data_parameters <- get_parameters(
   year_first = 2019,
   year_last = 2050,
@@ -54,7 +58,7 @@ data_parameters <- get_parameters(
 
 Get the *population projection* for 2019-2022:
 
-``` {r project-canton}
+``` {r project-canton, eval = FALSE}
 data_projected <- propop(
   parameters = data_parameters |>
     dplyr::filter(scen == "reference"),
@@ -71,13 +75,29 @@ data_projected <- propop(
 )
 ```
 
+
+``` {r save-data, message = FALSE, echo=FALSE, eval = FALSE}
+# Save data once
+save(data_benchmark, file='../vignettes/evaluate_data_benchmark.rda')
+save(data_parameters, file='../vignettes/evaluate_data_parameters.rda')
+save(data_projected, file='../vignettes/evaluate_data_projected.rda')
+
+```
+
+``` {r load-data, message = FALSE, echo=FALSE, eval = TRUE}
+# Get data when building vignette 
+load(file='evaluate_data_benchmark.rda')
+load(file='evaluate_data_parameters.rda')
+load(file='evaluate_data_projected.rda')
+```
+
 ## Evaluate 1-year age classes
 
 Let's first pit the projected population growth against the recorded population
 development (= benchmark) using one-year age classes (default option). Make sure
-to pass matching data frames, especially in terms of the year ranges. To remove
-the start population (2018) from the projection results, you could also use
-`drop_start_year = TRUE`. 
+to pass matching data frames, especially in terms of the year ranges and spatial 
+units. To remove the start population (2018) from the projection results, you 
+could also use `drop_start_year = TRUE`. 
 
 As a result of `prepare_evaluation()`, you get the recorded (`n_bench`) and 
 projected (`n_proj`) population for each demographic group and year next to each
@@ -151,9 +171,11 @@ compute_measures(combined_grouped) |>
 ## Using group weights
 
 Furthermore, you can use weights. The adjusted metric `w_abs_perc_e` considers 
-that smaller groups tend to have larger forecast errors. As a result, adjusted
-absolute percentage errors weigh less heavily in smaller groups than in larger 
-groups.
+that smaller groups tend to have larger forecast errors. When using the weighted
+metric, adjusted absolute percentage errors weigh less heavily in smaller groups 
+than in larger groups. This is illustrated in the following table: The 
+unweigthed percentage errors (`perc_e`) 0.39/0.36 become 0.24/0.07 when they are
+weighted (`w_abs_perc_e`).
 
 ``` {r weighted}
 compute_measures(
@@ -178,7 +200,7 @@ Instead of comparing the propop projection with population records, we can also
 use the evaluation function to check how close the `propop` projection comes to
 FSO's projection from the 2020 model.
 
-The differences are extremely small (>= 1):
+In the example data, the differences are extremely small (>= 1):
 
 ``` {r fso-comparison}
 fso_propop <- prepare_evaluation(
