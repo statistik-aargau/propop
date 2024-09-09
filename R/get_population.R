@@ -157,6 +157,18 @@ get_population <- function(number_fso = "px-x-0102010000_101",
     )
   )
 
+
+  # Check if spatial units are available
+  assertthat::assert_that(
+    all(spatial_units
+    %in%
+      metadata_pop_tidy$valueTexts[
+        metadata_pop_tidy$text ==
+          "Kanton (-) / Bezirk (>>) / Gemeinde (......)"]) ,
+    msg = paste0("At least one of the requested spatial units is not ",
+    "available. Check the spelling against those in the STATTAB cube ",
+    number_fso))
+
   # Specify the elements to download
   dim1 <- metadata_pop_tidy |>
     dplyr::filter(
