@@ -174,6 +174,20 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+
+  # Check if spatial units are available
+  assertthat::assert_that(
+    all(spatial_units
+        %in%
+          metadata_tidy$valueTexts[
+            metadata_tidy$text ==
+              "Kanton"]) ,
+    msg = paste0("At least one of the requested spatial units is not available.",
+                 " Check the spelling against those in the STATTAB cube ",
+                 number_fso_ref, " / ",
+                 number_fso_high, " / ",
+                 number_fso_low))
+
   # Specify the elements to download
   dim1 <- metadata_tidy |>
     dplyr::filter(
@@ -386,6 +400,18 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+
+  # Check if spatial units are available
+  assertthat::assert_that(
+    all(spatial_units
+        %in%
+          metadata_tidy$valueTexts[
+            metadata_tidy$text ==
+              "Kanton"]) ,
+    msg = paste0("At least one of the requested spatial units is not available.",
+                 " Check the spelling against those in the STATTAB cube ",
+                 number_fso_rates))
+
   # Specify the elements to download
   dim1 <- metadata_tidy |>
     dplyr::filter(
@@ -455,7 +481,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # Download rate parameters
   fso_rates_raw <- BFS::bfs_get_data(
-    number_bfs = "px-x-0104020000_109",
+    number_bfs = number_fso_rates, # "px-x-0104020000_109"
     query = dimensions
   )
 
@@ -525,6 +551,17 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
         dplyr::pull(valueTexts)
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
+
+  # Check if spatial units are available
+  assertthat::assert_that(
+    all(spatial_units
+        %in%
+          metadata_tidy$valueTexts[
+            metadata_tidy$text ==
+              "Kanton"]) ,
+    msg = paste0("At least one of the requested spatial units is not available.",
+                 " Check the spelling against those in the STATTAB cube ",
+                 number_fso_births))
 
   # Specify the elements to download
   dim1 <- metadata_tidy |>
