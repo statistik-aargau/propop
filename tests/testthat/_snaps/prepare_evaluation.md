@@ -161,10 +161,14 @@
         data_projected = data_projected_NA, drop_start_year = TRUE))
     Message <cliMessage>
       Warning message:
+      [36mℹ[39m Preparing download...
       The following columns have missing values:
+      [36mℹ[39m Preparing download...
       ! "n_proj".
+      [36mℹ[39m Preparing download...
       i Missing values are likely to lead to biased evaluation
       measures that cannot be properly interpreted.
+      [36mℹ[39m Preparing download...
     Output
       tibble::tibble(
         year = rep(2019:2020, each = 404L),
@@ -278,10 +282,14 @@
         data_projected = data_projected, drop_start_year = TRUE))
     Message <cliMessage>
       Warning message:
+      [36mℹ[39m Preparing download...
       The following columns have missing values:
+      [36mℹ[39m Preparing download...
       ! "n_bench".
+      [36mℹ[39m Preparing download...
       i Missing values are likely to lead to biased evaluation
       measures that cannot be properly interpreted.
+      [36mℹ[39m Preparing download...
     Output
       tibble::tibble(
         year = rep(2019:2020, each = 404L),
