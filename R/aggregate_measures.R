@@ -93,7 +93,7 @@ aggregate_measures <- function(data, weight_groups = NULL) {
       } else {
         NA
       },
-      # TODO check calculation of rmse
+      # check calculation of rmse
       rmse = sqrt(mean((n_bench - n_proj)^2)),
       n_measure = n(),
       p_under_1 = sum(abs_perc_e < 1) / n_measure,

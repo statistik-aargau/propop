@@ -27,6 +27,10 @@ The benchmark can be the actual population development (i.e., official records)
 or a base model (e.g., when testing alternative models or when comparing against
 the official FSO forecast). 
 
+Evaluations can be carried out individually per **observation unit** or like a
+summary statistics **aggregated across all observations** (i.e., all years
+and demographic groups).
+
 ## Get the data
 
 To run the evaluation function, we need some benchmark data and the 
@@ -93,6 +97,8 @@ load(file='evaluate_data_projected.rda')
 
 ## Evaluate 1-year age classes
 
+### Evaluation of observation units
+
 Let's first pit the projected population growth against the recorded population
 development (= benchmark) using one-year age classes (default option). Make sure
 to pass matching data frames, especially in terms of the year ranges and spatial 
@@ -119,13 +125,16 @@ Based on the difference between the observed and projected number of people,
 `compute_measures()` then calculates the error and several performance metrics:
 
 ``` {r evaluate1}
-compute_measures(combined) |>
-  # select demographic group
+evaluation_1 <- compute_measures(combined) 
+
+# Create table
+evaluation_1 |>
+  # Select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == 27) |>
-  # round to two digits
+  # Round to two digits
   dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    filter = "top",
+    filter = "none",
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with 1-year age classes for the
@@ -134,7 +143,30 @@ compute_measures(combined) |>
   )
 ```
 
+### Aggregated evaluation
+
+To obtain summary statistics for the whole projection, you can use the 
+`aggregate_measures()` function:
+
+
+``` {r aggregate1}
+aggregate_measures(evaluation_1) |> 
+  # Round to two digits
+  dplyr::mutate(across(mpe:p_over_20, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable()
+```
+
+
+
 ## Evaluate larger age groups
+
+One-year age classes often lead to small group sizes. This is particularly 
+problematic when the benchmark is equal to 0; then several measures cannot be
+computed because divisions by zero are not allowed. 
+
+A solution to this problem is to use larger age groups.
+
+### Evaluation of observation units
 
 You may also conduct the evaluation for the commonly used age groups 
 0-19 year olds, 20-64 year olds, and over 64 year olds using the option 
@@ -153,13 +185,14 @@ combined_grouped <- prepare_evaluation(
 combined_grouped
 
 # Compute the performance measures
-compute_measures(combined_grouped) |>
+evaluation_2 <- compute_measures(combined_grouped) 
+
+evaluation_2 |>
   # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == "age_20_64") |>
   # round to two digits
   dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    filter = "top",
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with three age classes for the
@@ -168,7 +201,21 @@ compute_measures(combined_grouped) |>
   )
 ```
 
+### Aggregated evaluation
+
+You can again use `aggregate_measures()` to obtain a summary of the evaluation
+across all observations:
+
+``` {r aggregate2}
+aggregate_measures(evaluation_2) |> 
+  # Round to two digits
+  dplyr::mutate(across(mpe:p_over_20, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable()
+```
+
 ## Using group weights
+
+### Evaluation of observation units
 
 Furthermore, you can use weights. The adjusted metric `w_abs_perc_e` considers 
 that smaller groups tend to have larger forecast errors. When using the weighted
@@ -178,21 +225,31 @@ unweigthed percentage errors (`perc_e`) 0.39/0.36 become 0.24/0.07 when they are
 weighted (`w_abs_perc_e`).
 
 ``` {r weighted}
-compute_measures(
-  combined_grouped,
-  weight_groups = c("age")
-) |>
+evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age")) 
+
+evaluation_3 |>
   dplyr::filter(year == 2019 & abs_perc_e > .34 & abs_perc_e < .39) |>
   dplyr::mutate(across(perc_e:w_abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    filter = "top",
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Performance measures for projections with three age classes for the
-      canton of Aargau 2019-2022 (incl. weighted measure)."
+      "Selected results showing the effect of using weights."
     )
   )
 ```
+
+### Aggregated evaluation
+
+You can also use `aggregate_measures()` to obtain a summary of the evaluation 
+with weighted groups:
+
+``` {r aggregate3}
+aggregate_measures(evaluation_3, weight_groups = c("age")) |> 
+  # Round to two digits
+  dplyr::mutate(across(mpe:p_over_20, \(x) sprintf(fmt = "%.2f", x))) |>
+  DT::datatable()
+```
+
 
 ## `propop` versus FSO
 
