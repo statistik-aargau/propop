@@ -46,27 +46,12 @@ vary strongly. The closer the value, the more precise is the
 projection.
 \item \code{n_measure} is the number of times a summary measure occurs (per weight
 group if requested).
-\item \code{p_under_1} is a measure to gauge the error distribution; it indicates the
+\item \code{ape_under_1} is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors smaller than
 1\%.
-\item \code{p_1_to_5} is a measure to gauge the error distribution; it indicates the
-proportion of observations that have absolute percentage errors between 1\%
-and 5\%.
-\item \code{p_under_5} is a measure to gauge the error distribution; it indicates the
+\item \code{ape_under_5} is a measure to gauge the error distribution; it indicates the
 proportion of observations that have absolute percentage errors smaller than
 5\%.
-\item \code{p_5_to_10} is a measure to gauge the error distribution; it indicates the
-proportion of observations that have absolute percentage errors between 5\%
-and 10\%.
-\item \code{p_over_10} is a measure to gauge the error distribution; it indicates the
-proportion of observations that have absolute percentage errors larger than
-10\%.
-\item \code{p_10_to_20} is a measure to gauge the error distribution; it indicates the
-proportion of observations that have absolute percentage errors between 10\%
-and 20\%.
-\item \code{p_over_20} is a measure to gauge the error distribution; it indicates the
-proportion of observations that have absolute percentage errors larger than
-20\%.
 }
 }
 \description{

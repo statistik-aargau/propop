@@ -43,27 +43,12 @@
 #' projection.
 #' * `n_measure` is the number of times a summary measure occurs (per weight
 #' group if requested).
-#' * `p_under_1` is a measure to gauge the error distribution; it indicates the
+#' * `ape_under_1` is a measure to gauge the error distribution; it indicates the
 #' proportion of observations that have absolute percentage errors smaller than
 #' 1%.
-#' * `p_1_to_5` is a measure to gauge the error distribution; it indicates the
-#' proportion of observations that have absolute percentage errors between 1%
-#' and 5%.
-#' * `p_under_5` is a measure to gauge the error distribution; it indicates the
+#' * `ape_under_5` is a measure to gauge the error distribution; it indicates the
 #' proportion of observations that have absolute percentage errors smaller than
 #' 5%.
-#' * `p_5_to_10` is a measure to gauge the error distribution; it indicates the
-#' proportion of observations that have absolute percentage errors between 5%
-#' and 10%.
-#' * `p_over_10` is a measure to gauge the error distribution; it indicates the
-#' proportion of observations that have absolute percentage errors larger than
-#' 10%.
-#' * `p_10_to_20` is a measure to gauge the error distribution; it indicates the
-#' proportion of observations that have absolute percentage errors between 10%
-#' and 20%.
-#' * `p_over_20` is a measure to gauge the error distribution; it indicates the
-#' proportion of observations that have absolute percentage errors larger than
-#' 20%.
 #'
 #' @export
 #'
@@ -96,13 +81,8 @@ aggregate_measures <- function(data, weight_groups = NULL) {
       # check calculation of rmse
       rmse = sqrt(mean((n_bench - n_proj)^2)),
       n_measure = n(),
-      p_under_1 = sum(abs_perc_e < 1) / n_measure,
-      p_1_to_5 = sum(abs_perc_e >= 1 & abs_perc_e <= 5) / n_measure,
-      p_under_5 = sum(abs_perc_e < 5) / n_measure,
-      p_5_to_10 = sum(abs_perc_e >= 5 & abs_perc_e <= 10) / n_measure,
-      p_over_10 = sum(abs_perc_e > 10) / n_measure,
-      p_10_to_20 = sum(abs_perc_e >= 10 & abs_perc_e <= 20) / n_measure,
-      p_over_20 = sum(abs_perc_e > 20) / n_measure,
+      ape_under_1 = sum(abs_perc_e < 1) / n_measure,
+      ape_under_5 = sum(abs_perc_e < 5) / n_measure,
       .by = {{ weight_groups }}
     )
   # Remove `wmape` if input doesn't include weight_groups

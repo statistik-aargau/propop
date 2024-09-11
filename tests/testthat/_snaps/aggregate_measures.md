@@ -5,8 +5,7 @@
     Output
       structure(list(mpe = -2.61092255854163, medpe = -2.57291477927063, 
           mape = 2.61026705569876, medape = 2.57160377358491, rmse = 78.1968669449103, 
-          n_measure = 4L, p_under_1 = 0.25, p_1_to_5 = 0.75, p_under_5 = 1, 
-          p_5_to_10 = 0, p_over_10 = 0, p_10_to_20 = 0, p_over_20 = 0), row.names = c(NA, 
+          n_measure = 4L, ape_under_1 = 0.25, ape_under_5 = 1), row.names = c(NA, 
       -1L), class = c("tbl_df", "tbl", "data.frame"))
 
 # Snapshot 3 age classes
@@ -26,10 +25,7 @@
       ), wmape = c(0.268456446454877, 0.303605104998735, 0.204491014238847, 
       0.174480204408879, 0.301589885787736, 0.0672894869110231), rmse = c(490.071933495482, 
       528.513481379614, 365.637115183894, 312.621176506007, 526.163947833753, 
-      131.341158819313), n_measure = c(2L, 2L, 2L, 2L, 2L, 2L), p_under_1 = c(0.5, 
-      0, 1, 1, 0.5, 0.5), p_1_to_5 = c(0.5, 1, 0, 0, 0.5, 0.5), p_under_5 = c(1, 
-      1, 1, 1, 1, 1), p_5_to_10 = c(0, 0, 0, 0, 0, 0), p_over_10 = c(0, 
-      0, 0, 0, 0, 0), p_10_to_20 = c(0, 0, 0, 0, 0, 0), p_over_20 = c(0, 
-      0, 0, 0, 0, 0)), class = c("tbl_df", "tbl", "data.frame"), row.names = c(NA, 
-      -6L))
+      131.341158819313), n_measure = c(2L, 2L, 2L, 2L, 2L, 2L), ape_under_1 = c(0.5, 
+      0, 1, 1, 0.5, 0.5), ape_under_5 = c(1, 1, 1, 1, 1, 1)), class = c("tbl_df", 
+      "tbl", "data.frame"), row.names = c(NA, -6L))
 
