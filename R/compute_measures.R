@@ -144,9 +144,10 @@ compute_measures <- function(combined, weight_groups = NULL) {
     cli::cli_alert_warning(cli::col_magenta(
       "{.val { df |> select_if(function(x) any(is.infinite(x))) |> names()}}."
     ))
-    cli::cli_alert_info(paste0("`Inf` values are probably caused by divisions ",
-                        "by zero (e.g., when `n_bench` = 0). Consider using ",
-                        "age groups that include more than 1 year."))
+    cli::cli_alert_info(paste0(
+      "`Inf` values are probably caused by divisions by zero",
+      "(e.g., when `n_bench` = 0).","\n", "Consider using age groups that",
+      "include more than 1 year."))
   }
 
   # Check for missing values in output ----
