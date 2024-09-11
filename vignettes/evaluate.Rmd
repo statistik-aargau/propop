@@ -28,7 +28,7 @@ or a base model (e.g., when testing alternative models or when comparing against
 the official FSO forecast). 
 
 Evaluations can be carried out individually **per observation unit** or like a
-summary statistics **aggregated across all observations** (i.e., all years, 
+summary statistics **aggregated across all observations** (e.g., all years, 
 demographic groups, spatial units).
 
 ## Get the data
@@ -60,7 +60,7 @@ data_parameters <- get_parameters(
 )
 ```
 
-Get the *population projection* for 2019-2022:
+Run the population projection for 2019-2022:
 
 ``` {r project-canton, eval = FALSE}
 data_projected <- propop(
@@ -99,14 +99,14 @@ load(file='evaluate_data_projected.rda')
 
 ### Evaluation of observation units
 
-Let's first pit the projected population growth against the recorded population
+Let's first compare the projected population growth against the recorded population
 development (= benchmark) using one-year age classes (default option). Make sure
-to pass matching data frames, especially in terms of the year ranges and spatial 
-units. To remove the start population (2018) from the projection results, you 
+to provide matching data frames, especially in terms of the year ranges and spatial 
+units. To remove the starting population (2018) from the projection results, you 
 could also use `drop_start_year = TRUE`. 
 
 As a result of `prepare_evaluation()`, you get the recorded (`n_bench`) and 
-projected (`n_proj`) population for each demographic group and year next to each
+projected (`n_proj`) population for each demographic group and year as data frame columns next to each
 other: 
 
 ``` {r combine}
@@ -129,9 +129,9 @@ evaluation_1 <- compute_measures(combined)
 
 # Create table
 evaluation_1 |>
-  # Select demographic group
+  # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == 27) |>
-  # Round to two digits
+  # round to two digits
   dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "none",
@@ -152,10 +152,11 @@ To obtain summary statistics for the whole projection model, you can use the
 
 ``` {r aggregate1}
 aggregate_measures(evaluation_1) |> 
-  # Round to two digits
+  # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
-  DT::datatable(options = list(dom = 't'),
-                 caption = htmltools::tags$caption(
+  DT::datatable(
+    options = list(dom = 't'),
+    caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Evaluation measures of projection with one-year age classes, aggregated 
       across all observations."
@@ -217,10 +218,11 @@ across all observations:
 
 ``` {r aggregate2}
 aggregate_measures(evaluation_2) |> 
-  # Round to two digits
+  # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
-  DT::datatable(options = list(dom = 't'),
-                 caption = htmltools::tags$caption(
+  DT::datatable(
+    options = list(dom = 't'),
+    caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Evaluation measures for projection with three age classes, aggregated 
       across all observations."
@@ -238,7 +240,7 @@ have larger forecast errors.
 
 This is illustrated in the following table: The 
 unweigthed percentage errors (`abs_perc_e`) 0.39/0.36 become 0.24/0.07 when they are
-weighted (`w_abs_perc_e`).
+weighted by the total number of people per group (`w_abs_perc_e`).
 
 ``` {r weighted}
 evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age")) 
@@ -251,7 +253,7 @@ evaluation_3 |>
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Selected results showing the effect of using weights 
-      (abs_perc_e vs. w_abs_perc_e)."
+      (abs_perc_e versus w_abs_perc_e)."
     ),
   ) |> 
   DT::formatStyle(
@@ -268,7 +270,7 @@ with weighted groups:
 
 ``` {r aggregate3}
 aggregate_measures(evaluation_3, weight_groups = c("age")) |> 
-  # Round to two digits
+  # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(options = list(dom = 't'))
 ```
