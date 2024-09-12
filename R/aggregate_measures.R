@@ -69,20 +69,20 @@
 aggregate_measures <- function(data, weight_groups = NULL) {
   results <- data |>
     dplyr::summarise(
-      mpe = mean(perc_e, na.rm = TRUE),
-      medpe = median(perc_e, na.rm = TRUE),
-      mape = mean(abs_perc_e, na.rm = TRUE),
-      medape = median(abs_perc_e, na.rm = TRUE),
-      wmape = if ("w_abs_perc_e" %in% colnames(data)) {
-        sum(w_abs_perc_e, na.rm = TRUE)
+      mpe = mean(pe, na.rm = TRUE),
+      medpe = median(pe, na.rm = TRUE),
+      mape = mean(ape, na.rm = TRUE),
+      medape = median(ape, na.rm = TRUE),
+      wmape = if ("w_ape" %in% colnames(data)) {
+        sum(w_ape, na.rm = TRUE)
       } else {
         NA
       },
       # check calculation of rmse
       rmse = sqrt(mean((n_bench - n_proj)^2)),
       n_measure = n(),
-      ape_under_1 = sum(abs_perc_e < 1) / n_measure,
-      ape_under_5 = sum(abs_perc_e < 5) / n_measure,
+      ape_under_1 = sum(ape < 1) / n_measure,
+      ape_under_5 = sum(ape < 5) / n_measure,
       .by = {{ weight_groups }}
     )
   # Remove `wmape` if input doesn't include weight_groups

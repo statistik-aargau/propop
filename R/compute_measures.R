@@ -26,14 +26,14 @@
 #' (negative values) and over-projection (positive values) relative to the
 #' benchmark `n_bench`.
 #'
-#'* `perc_e` is the percentage error and expresses the under- / over-projection
+#'* `pe` is the percentage error and expresses the under- / over-projection
 #'in percent of the benchmark `n_bench`.
 #'
-#'* `abs_perc_e` is the absolute percentage error; it is the absolute deviation
+#'* `ape` is the absolute percentage error; it is the absolute deviation
 #' in percent of the benchmark `n_bench`, thus only showing the extent of the
 #' error but not the direction.
 #'
-#' * `w_abs_per_e` is the weighted absolute percentage error; it weighs each
+#' * `w_ape` is the weighted absolute percentage error; it weighs each
 #' absolute percentage error according to the population size of the focal group
 #' (e.g., nationality, age group). The weighted version is useful as an
 #' aggregated measure when groups vary strongly in terms of population size.
@@ -116,9 +116,9 @@ compute_measures <- function(combined, weight_groups = NULL) {
       # Compute error
       error = n_proj - n_bench,
       # Compute percentage error
-      perc_e = error / n_bench * 100,
+      pe = error / n_bench * 100,
       # Compute absolute percentage error (neglecting sign)
-      abs_perc_e = abs(error) / n_bench * 100
+      ape = abs(error) / n_bench * 100
     )
 
   # Add variables related to weighted measure if weight_groups is provided
@@ -133,7 +133,7 @@ compute_measures <- function(combined, weight_groups = NULL) {
         # Compute size of focal unit relative to overall population size
         weight = group_tot / n_tot,
         # Compute weighted absolute percentage error
-        w_abs_perc_e = abs_perc_e * weight
+        w_ape = ape * weight
       )
   }
 

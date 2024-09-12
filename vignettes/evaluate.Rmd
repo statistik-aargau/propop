@@ -132,7 +132,7 @@ evaluation_1 |>
   # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == 27) |>
   # round to two digits
-  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "none",
     options = list(dom = 't'),
@@ -200,7 +200,7 @@ evaluation_2 |>
   # select demographic group
   dplyr::filter(sex == "m" & nat == "ch" & age == "age_20_64") |>
   # round to two digits
-  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     options = list(dom = 't'),
     caption = htmltools::tags$caption(
@@ -235,19 +235,19 @@ aggregate_measures(evaluation_2) |>
 
 Furthermore, you can use weights. When using the weighted metric, adjusted 
 absolute percentage errors weigh less heavily in smaller groups than in larger 
-groups. The adjusted metric `w_abs_perc_e` considers that smaller groups tend to 
+groups. The adjusted metric `w_ape` considers that smaller groups tend to 
 have larger forecast errors. 
 
 This is illustrated in the following table: The 
-unweigthed percentage errors (`abs_perc_e`) 0.39/0.36 become 0.24/0.07 when they are
-weighted by the total number of people per group (`w_abs_perc_e`).
+unweigthed percentage errors (`ape`) 0.39/0.36 become 0.24/0.07 when they are
+weighted by the total number of people per group (`w_ape`).
 
 ``` {r weighted}
 evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age")) 
 
 evaluation_3 |>
-  dplyr::filter(year == 2019 & abs_perc_e > .34 & abs_perc_e < .39) |>
-  dplyr::mutate(across(perc_e:w_abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::filter(year == 2019 & ape > .34 & ape < .39) |>
+  dplyr::mutate(across(pe:w_ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     options = list(dom = 't'),
     caption = htmltools::tags$caption(
@@ -257,8 +257,8 @@ evaluation_3 |>
     ),
   ) |> 
   DT::formatStyle(
-    columns = c('abs_perc_e', 'w_abs_perc_e'),
-    backgroundColor = 'yellow'
+    columns = c('ape', 'w_ape'),
+    backgroundColor = '#96D4FF'
     )
 
 ```
@@ -296,7 +296,7 @@ fso_propop <- prepare_evaluation(
   compute_measures()
 
 fso_propop |>
-  dplyr::mutate(across(perc_e:abs_perc_e, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "top",
     caption = htmltools::tags$caption(
@@ -309,7 +309,7 @@ fso_propop |>
 ```{r fig.width = 9, fig.height = 7, echo = FALSE}
 library(ggplot2)
 ggplot(fso_propop) +
-  geom_jitter(aes(x = year, y = perc_e), size = 0.7) +
+  geom_jitter(aes(x = year, y = pe), size = 0.7) +
   labs(
     title = "Differences between FSO and propop projections for each demographic group",
     x = "Year",
