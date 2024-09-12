@@ -20,12 +20,12 @@ and used for descriptive comparisons:
 \item \code{error} is the forecast error; it quantifies the level of under-projection
 (negative values) and over-projection (positive values) relative to the
 benchmark \code{n_bench}.
-\item \code{perc_e} is the percentage error and expresses the under- / over-projection
+\item \code{pe} is the percentage error and expresses the under- / over-projection
 in percent of the benchmark \code{n_bench}.
-\item \code{abs_perc_e} is the absolute percentage error; it is the absolute deviation
+\item \code{ape} is the absolute percentage error; it is the absolute deviation
 in percent of the benchmark \code{n_bench}, thus only showing the extent of the
 error but not the direction.
-\item \code{w_abs_per_e} is the weighted absolute percentage error; it weighs each
+\item \code{w_ape} is the weighted absolute percentage error; it weighs each
 absolute percentage error according to the population size of the focal group
 (e.g., nationality, age group). The weighted version is useful as an
 aggregated measure when groups vary strongly in terms of population size.
