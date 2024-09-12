@@ -142,7 +142,7 @@ of the Swiss citizenship as well as migration parameters are subset by
 demographic group.
 \item Create matrices: Matrices are build for the survival rate, mortality,
 fertility and for calculating the number of newborn babies.
-\item Creating vectors: Vectors are built.
+\item Creating vectors: Vectors are built for mortality and migration parameters.
 \item Projection: The transition matrix 'L' is multiplied by the starting
 population for the next year. Migrating people are added in absolute
 numbers. People that are 100 years old and older are clustered into one

@@ -54,7 +54,7 @@
 #'      demographic group.
 #'    - Create matrices: Matrices are build for the survival rate, mortality,
 #'      fertility and for calculating the number of newborn babies.
-#'    - Creating vectors: Vectors are built.
+#'    - Creating vectors: Vectors are built for mortality and migration parameters.
 #'    - Projection: The transition matrix 'L' is multiplied by the starting
 #'      population for the next year. Migrating people are added in absolute
 #'      numbers. People that are 100 years old and older are clustered into one
@@ -673,99 +673,6 @@ project_raw <-
         msg = "Mortality vector `MOR0_vec` contains NAs."
       )
 
-      #### Death ----
-      # Vector for newborns
-      D0_vec <-
-        c(
-          mor_ch_m_0 - (emi_ch_m_0 * ((2 / 3) * mor_ch_m_0)), zeros,
-          mor_ch_f_0 - (emi_ch_f_0 * ((2 / 3) * mor_ch_f_0)), zeros,
-          mor_int_m_0 - ((emi_int_m_0 + acq_int_m_0) * ((2 / 3) * mor_int_m_0)),
-          zeros,
-          mor_int_f_0 - ((emi_int_f_0 + acq_int_f_0) * ((2 / 3) * mor_int_f_0)),
-          zeros
-        )
-      assertthat::assert_that(length(D0_vec) == length_pop_vec,
-        msg = paste0(
-          "`D0_vec` vector length is not equal to the length of",
-          " the population vector."
-        )
-      )
-      assertthat::assert_that(unique(!is.na(D0_vec)),
-        msg = "Death vector `D0_vec` contains NAs."
-      )
-
-      #### Migration ----
-      # Vector for 1-100
-      EMI_vec <-
-        c(
-          emi_ch_m,
-          emi_ch_f,
-          emi_int_m,
-          emi_int_f
-        )
-      assertthat::assert_that(length(EMI_vec) == length_pop_vec,
-        msg = paste0(
-          "Migration vector `EMI_vec` length is not equal to the length of",
-          " the population vector."
-        )
-      )
-      assertthat::assert_that(
-        unique(!is.na(EMI_vec)),
-        msg = "Migration vector `EMI_vec` contains NAs."
-      )
-
-      # Vector for newborns
-      EMI0_vec <-
-        c(
-          emi_ch_m_0, zeros,
-          emi_ch_f_0, zeros,
-          emi_int_m_0, zeros,
-          emi_int_f_0, zeros
-        )
-      assertthat::assert_that(length(EMI0_vec) == length_pop_vec,
-        msg = paste0(
-          "Migration vector `EMI0_vec` length is not equal to the length of",
-          " the population vector."
-        )
-      )
-      assertthat::assert_that(unique(!is.na(EMI0_vec)),
-        msg = "Migration vector `EMI0_vec` contains NAs."
-      )
-
-      #### Acquisition of the Swiss citizenship ----
-      # Vector for 1-100
-      ACQ_vec <-
-        c(
-          rep(0, 2 * age_groups),
-          acq_int_m,
-          acq_int_f
-        )
-      assertthat::assert_that(length(ACQ_vec) == length_pop_vec,
-        msg = paste0(
-          "Emigration vector `ACQ_vec` length is not equal to the length of",
-          " the population vector."
-        )
-      )
-      assertthat::assert_that(unique(!is.na(ACQ_vec)),
-        msg = "Emigration vector `ACQ_vec` contains NAs."
-      )
-
-      # Vector for newborns
-      ACQ0_vec <-
-        c(
-          rep(0, 2 * age_groups),
-          acq_int_m_0, zeros,
-          acq_int_f_0, zeros
-        )
-      assertthat::assert_that(length(ACQ0_vec) == length_pop_vec,
-        msg = paste0(
-          "Emigration vector `ACQ0_vec` length is not equal to the length of",
-          " the population vector."
-        )
-      )
-      assertthat::assert_that(unique(!is.na(ACQ0_vec)),
-        msg = "Emigration vector `ACQ0_vec` contains NAs."
-      )
 
       #### International immigration ----
       # Vector for 1-100
