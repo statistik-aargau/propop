@@ -139,7 +139,7 @@
       tibble::tibble(
         year = rep(2019:2020, each = 12L),
         spatial_unit = rep("Aargau", 24L),
-        age = rep(rep(c("age_00_19", "age_20_64", "age_65_"), 2), each = 4L),
+        age = rep(rep(c("age_00_19", "age_20_64", "age_65_plus"), 2), each = 4L),
         sex = rep(rep(c("f", "m"), 6), each = 2L),
         nat = rep(c("ch", "int"), 12),
         n_bench = c(

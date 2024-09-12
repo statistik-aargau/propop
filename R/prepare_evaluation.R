@@ -181,7 +181,7 @@ prepare_evaluation <- function(
         age = case_when(
           age < 20 ~ "age_00_19",
           age >= 20 & age < 65 ~ "age_20_64",
-          age >= 65 ~ "age_65_"
+          age >= 65 ~ "age_65_plus"
         )
       ) |>
       group_by(year, spatial_unit, age, sex, nat) |>

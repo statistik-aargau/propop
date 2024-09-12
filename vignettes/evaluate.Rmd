@@ -253,7 +253,7 @@ evaluation_3 |>
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Selected results showing the effect of using weights 
-      (abs_perc_e versus w_abs_perc_e)."
+      (ape versus w_ape)."
     ),
   ) |> 
   DT::formatStyle(
