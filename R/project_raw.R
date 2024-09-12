@@ -5,7 +5,7 @@
 #' different spatial levels (e.g., cantons, municipalities) and for one scenario
 #' at a time.
 #'
-#' This basic function provides projections in a \bold{raw} version in which
+#' This function provides projections in a \bold{raw} version in which
 #' key information is missing (e.g., which age groups the rows represent).
 #' To conveniently obtain an enriched, more informative output,
 #' use the \bold{wrapper function} `propop::propop()` (which internally uses
@@ -21,6 +21,49 @@
 #' The projection parameters need to be passed on as a single data frame to
 #' `project_raw` with (with the parameters as columns). The column types, names,
 #' and factor levels need to match those specified below.
+#'
+#' The method used to calculate the projections is a 'cohort-component
+#' analysis' implemented with matrices due to programming performance benefit
+#' compared to data frames. In a nutshell, the starting population ('n') is
+#' multiplied by the survival rate to obtain the number of people which
+#' transition into the projected next year (year + 1). Then, the absolute
+#' number of people immigrating from outside Switzerland and the migration saldo
+#' for people from outside the respective canton is added to the surviving
+#' population. This results in the starting population for projection the next
+#' year. Newborn children are added aeparately to the new starting population
+#' of each year.
+#'
+#' The starting population is clustered in 404 groups: 101 age groups times
+#' two nationalities times 2 genders. The survival rate is calculated in the
+#' function 'create_transition_matrix()' resulting in the matrix 'L'. We use the
+#' rates for mortality, emigration towards countries outside Switzerland and the
+#' rate for the acquisition of the Swiss citizenship by the foreign population
+#' to calculate survival rates. The model from the FSO also includes the rate of
+#' emigration to other cantons in the survival rate. In contrast, we include the
+#' immi- and emigration from and to other cantons by adding the migration
+#' balance (German = 'saldo') (immigration + emigration) afterwards.
+#'
+#' Steps in this function:
+#' 1) Checks: Checking input data and parameter settings for correct formats.
+#' 2) Data preparation: Preparing vectors e.g. for the projection time frame and
+#'    creating empty vectors to be filled with data later on.
+#' 3) Loop over years for calculating the projections
+#'    - Subsetting parameters: Depending on the selected projection year and on
+#'      the demographic unit, the parameters for mortality, fertility, acquisition
+#'      of the Swiss citizenship as well as migration parameters are subset by
+#'      demographic group.
+#'    - Create matrices: Matrices are build for the survival rate, mortality,
+#'      fertility and for calculating the number of newborn babies.
+#'    - Creating vectors: Vectors are built.
+#'    - Projection: The transition matrix 'L' is multiplied by the starting
+#'      population for the next year. Migrating people are added in absolute
+#'      numbers. People that are 100 years old and older are clustered into one
+#'      age group (age = 100). The newborn babies are added to the resulting
+#'      starting population for the next projection year.
+#' 4) Aggregating the data: All projected years are aggregated into one data
+#'    frame. The function 'propop()', in which this function is contained,
+#'    automatically adds relevant meta data to the results.
+#'
 #'
 #' @param parameters data frame containing the FSO rates and numbers to run the
 #' projection for a specific spatial level (e.g., canton, municipality).
@@ -110,6 +153,7 @@ project_raw <-
            share_born_female = 100 / 205,
            n,
            subregional) {
+
     # Check input ----
     ## Only 1 value in scenario
     assertthat::assert_that(
@@ -117,6 +161,7 @@ project_raw <-
       msg = "The 'scen' column in the 'parameters' data frame must contain the
     identical value in all rows (either reference, high, or low)."
     )
+
     ## Presence of mandatory parameters ----
     assertthat::assert_that("scen" %in% names(parameters),
       msg = "column `scen` is missing in parameters"
@@ -229,10 +274,12 @@ project_raw <-
     )
 
     ## Progress feedback
-    cli::cli_text("Running projection for: {.val { parameters |> dplyr::select(spatial_unit) |> dplyr::distinct()}}")
+    cli::cli_text("Running projection for: {.val { parameters |>",
+                  "dplyr::select(spatial_unit) |> dplyr::distinct()}}")
+
 
     ## Data preparation ----
-    # Compute fertility length
+    # Compute fertility length (fertile age range for females)
     fert_length <- (fert_last - fert_first + 1)
     assertthat::assert_that(fert_length > 0,
       msg = "Fertility length must be > 0 years."
@@ -245,7 +292,7 @@ project_raw <-
     )
 
     # Length of the population vector, calculated as:
-    # age_groups * nationalities * genders
+    # 101 age_groups * 2 nationalities * 2 genders = 404 groups
     length_pop_vec <- length(n)
     assertthat::assert_that(length_pop_vec == age_groups * 2 * 2,
       msg = paste0(
@@ -254,7 +301,7 @@ project_raw <-
       )
     )
 
-    # Placeholder values for the vector to calculate children aged zero
+    # Placeholder vector for newborn children (0 years old)
     zeros <- rep(0, age_groups - 1)
     assertthat::assert_that(length(zeros) == age_groups - 1,
       msg = paste0(
@@ -263,7 +310,7 @@ project_raw <-
       )
     )
 
-    # Create empty population vector
+    # Create empty population vector for ages 1-100
     empty_vector_NA <-
       create_empty_vector(
         empty_val = NA,
@@ -274,7 +321,7 @@ project_raw <-
       msg = "Empty population vector must be > 0."
     )
 
-    # Create empty population vector for children aged zero
+    # Create empty population vector for newborns
     empty_vector_0 <-
       create_empty_vector(
         empty_val = 0,
@@ -285,7 +332,8 @@ project_raw <-
       msg = "Empty population vector for children aged zero must be > 0."
     )
 
-    # Prepare empty population vectors for projection parameters
+    # Prepare empty population vectors for each projection parameter (once for
+    # people aged 1-100 and once for newborns)
     # International immigrants
     IMM_INT <- empty_vector_NA
     IMM_INT0 <- empty_vector_NA
@@ -298,9 +346,6 @@ project_raw <-
     MIG_SUB <- empty_vector_0
     MIG_SUB0 <- empty_vector_0
 
-    # death
-    MOR <- empty_vector_NA
-
     # international emigrants
     EMI_INT <- empty_vector_NA
     EMI_INT0 <- empty_vector_NA
@@ -309,8 +354,13 @@ project_raw <-
     ACQ <- empty_vector_NA
     ACQ0 <- empty_vector_NA
 
+    # Vectors for mortality and births
+    # death
+    MOR <- empty_vector_NA
+
     # birth
     BIRTHS <- empty_vector_NA
+
 
     ## Loop over years ----
     for (i in seq_len(proj_length)) {
@@ -323,7 +373,7 @@ project_raw <-
       # Provide progress information
       cli::cli_alert_success("Year: {.val { yr }}")
 
-      # Determine positions within the vector
+      # Determine positions for the starting population within the vector
       temp_pos <- (i - 1) * length_pop_vec
       first_pos <- temp_pos + 1
       last_pos <- i * length_pop_vec
@@ -396,7 +446,7 @@ project_raw <-
 
 
       ## Vectors for mortality, emigration and acquisition of citizenship
-      # Vectors for children aged zero
+      # Vectors for newborns
       # Mortality
       mor_ch_f_0 <- vectors_parameters$mor_ch_f[1]
       mor_int_f_0 <- vectors_parameters$mor_int_f[1]
@@ -452,7 +502,7 @@ project_raw <-
 
 
       ## Vectors for migration
-      # Vectors for children aged zero
+      # Vectors for newborns
       # International immigration
       imm_int_ch_f_0 <- vectors_parameters$imm_int_ch_f[1]
       imm_int_ch_m_0 <- vectors_parameters$imm_int_ch_m[1]
@@ -504,7 +554,7 @@ project_raw <-
       ## Optional: migration on subregional level
       ## (e.g., municipalities within canton)
       if (subregional == TRUE) {
-        # Create vectors for children aged zero
+        # Create vectors for newborns
         mig_sub_ch_f_0 <- vectors_parameters$mig_sub_ch_f[1]
         mig_sub_ch_m_0 <- vectors_parameters$mig_sub_ch_m[1]
         mig_sub_int_f_0 <- vectors_parameters$mig_sub_int_f[1]
@@ -529,6 +579,10 @@ project_raw <-
 
       ### Build matrices ----
       #### Transition matrix ----
+      # The transition matrix (L = "Leslie-Matrix") contains survival rates for
+      # each demographic unit. Survival rates are calculated in the function
+      # 'create_transition_matrix()' based on mortality, emigration and
+      # citizenship-acquisition rates.
       L <-
         create_transition_matrix(
           n_age_class = age_groups,
@@ -550,29 +604,9 @@ project_raw <-
         )
       )
 
-      #### Mortality matrix ----
-      D <-
-        create_mortality_matrix(
-          n_age_class = age_groups,
-          mor_ch_f = mor_ch_f,
-          mor_ch_m = mor_ch_m,
-          mor_int_f = mor_int_f,
-          mor_int_m = mor_int_m,
-          emi_ch_f = emi_ch_f,
-          emi_ch_m = emi_ch_m,
-          emi_int_f = emi_int_f,
-          emi_int_m = emi_int_m,
-          acq_int_f = acq_int_f,
-          acq_int_m = acq_int_m
-        )
-      assertthat::assert_that(unique(dim(D)) == length_pop_vec,
-        msg = paste0(
-          "Mortality matrix dimensions are not equal to the length of",
-          " the population vector."
-        )
-      )
 
       #### Fertility matrix ----
+      # The fertility matrix 'O' is needed to calculate the number of newborns
       O <-
         create_fertility_matrix(
           fert_first = fert_first,
@@ -601,26 +635,6 @@ project_raw <-
         )
       )
 
-      #### Birth matrix ----
-      B <-
-        create_birth_matrix(
-          fert_first = fert_first,
-          fert_last = fert_last,
-          fert_length = fert_length,
-          n_age_class = age_groups,
-          share_born_female = share_born_female,
-          birth_rate_ch = birth_rate_ch,
-          birth_rate_int = birth_rate_int,
-          births_int_ch = births_int_ch
-        )
-      assertthat::assert_that(unique(dim(B)) == length_pop_vec,
-        msg = paste0(
-          "Birth matrix dimensions are not equal to the length of",
-          " the population vector."
-        )
-      )
-
-
       ### Build vectors ----
       #### Mortality ----
       # Vector for 1-100
@@ -641,7 +655,7 @@ project_raw <-
         msg = "Mortality vector `MOR_vec` contains NAs."
       )
 
-      # Vector for 0
+      # Vector for newborns
       MOR0_vec <-
         c(
           mor_ch_m_0, zeros,
@@ -660,7 +674,7 @@ project_raw <-
       )
 
       #### Death ----
-      # Vector for 0
+      # Vector for newborns
       D0_vec <-
         c(
           mor_ch_m_0 - (emi_ch_m_0 * ((2 / 3) * mor_ch_m_0)), zeros,
@@ -700,7 +714,7 @@ project_raw <-
         msg = "Migration vector `EMI_vec` contains NAs."
       )
 
-      # Vector for 0
+      # Vector for newborns
       EMI0_vec <-
         c(
           emi_ch_m_0, zeros,
@@ -736,7 +750,7 @@ project_raw <-
         msg = "Emigration vector `ACQ_vec` contains NAs."
       )
 
-      # Vector for 0
+      # Vector for newborns
       ACQ0_vec <-
         c(
           rep(0, 2 * age_groups),
@@ -769,7 +783,7 @@ project_raw <-
         )
       )
 
-      # Vector for 0
+      # Vector for newborns
       IMM_INT0[first_pos:last_pos] <-
         c(
           imm_int_ch_m_0, zeros,
@@ -801,7 +815,7 @@ project_raw <-
         )
       )
 
-      # Vector for 0
+      # Vector for newborns
       MIG_CH0[first_pos:last_pos] <-
         c(
           mig_ch_ch_m_0, zeros,
@@ -834,7 +848,7 @@ project_raw <-
           )
         )
 
-        # Vector for 0
+        # Vector for newborns
         MIG_SUB0[first_pos:last_pos] <-
           c(
             mig_sub_ch_m_0, zeros,
@@ -852,8 +866,10 @@ project_raw <-
 
 
       ### Projection ----
-      # Population vector at time step n excluding the 0-year-olds
-      # Formula 1 first equation
+      # Population vector at time step n excluding the newborns:
+      # Multiplying the survival rate ('L') with the starting population ('n')
+      # and adding people from migration ('IMM_INT', 'MIG_CH' and optionally
+      # 'MIG_SUB').
       Nn100 <-
         L %*% n[first_pos:last_pos] +
         IMM_INT[first_pos:last_pos] * (1 - (MOR_vec / 2)) +
@@ -869,7 +885,7 @@ project_raw <-
         msg = "Result matrix `Nn100` contains NAs."
       )
 
-      # Population vector at time step n-1 excluding the 0-year-olds
+      # Population vector at time step n-1 excluding the newborns
       Nminus1 <-
         c(
           0,
@@ -891,9 +907,7 @@ project_raw <-
         msg = "Result matrix `Nminus1` contains NAs."
       )
 
-      # Population vector at time step n with those 0-year-olds (p_n,i = 0, with
-      # i > 0)
-      # Formula 1 second equation
+      # Population vector at time step n for newborns (p_n,i = 0, with i > 0)
       Nn0 <-
         O %*% ((1 / 2) * (Nn100 + Nminus1)) +
         IMM_INT0[first_pos:last_pos] * (1 - ((2 / 3) * MOR0_vec)) +
@@ -909,8 +923,8 @@ project_raw <-
         msg = "Result matrix `Nn0` contains NAs."
       )
 
-      # Complete population vector at time step n from age 0 to 100
-      # Formula 1 third equation
+      # Complete population vector at time step n with newborns and people older
+      # than 1 year
       n[(last_pos + 1):((i + 1) * length_pop_vec)] <-
         Nn100 + Nn0
       assertthat::assert_that(any(!is.na(n)),
