@@ -71,9 +71,9 @@ vary between regions) you need to prepare the parameters accordingly.
 - `propop::propop()`offers the possibility to account for varying 
 subregional migration patterns and migration between subregions. However, before
 using this feature, users must adjust or calculate the required parameters. 
-- Parameters that were prepared for sub-cantonal spatial entities, adjusted to 
-reflect regional differences, or enriched by a subregional migration parameter
-can be passed through the `parameters` object to `propop::propop()`. 
+- Custom parameters (e.g., consideration of sub-cantonal spatial entities, 
+adjustments to reflect regional differences, or addition of subregional migration 
+parameter) can be passed through the `parameters` object to `propop::propop()`. 
 - There are also *possible future features* that could increase the accuracy of 
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
