@@ -168,7 +168,8 @@ get_population <- function(number_fso = "px-x-0102010000_101",
           "Kanton (-) / Bezirk (>>) / Gemeinde (......)"]) ,
     msg = paste0("At least one of the requested spatial units is not ",
     "available. Check the spelling against those in the STATTAB cube ",
-    number_fso))
+    number_fso, ". Inspecting the column 'valueTexts' in the following package",
+    " data may also help: data('stattab_pop_snap')"))
 
   # Specify the elements to download
   dim1 <- metadata_pop_tidy |>

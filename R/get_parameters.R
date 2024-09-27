@@ -184,10 +184,12 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
             metadata_tidy$text ==
               "Kanton"]) ,
     msg = paste0("At least one of the requested spatial units is not available.",
-                 " Check the spelling against those in the STATTAB cube ",
-                 number_fso_ref, " / ",
-                 number_fso_high, " / ",
-                 number_fso_low))
+                 " Check the spelling against those in the STATTAB cubes ",
+                 number_fso_ref, " / ", number_fso_high, " / ", number_fso_low,
+                 ". Inspecting column 'valueTexts' the following package data ",
+                 "may also help: data('stattab_101_snap') / ",
+                 "data('stattab_102_snap') / ",
+                 "data('stattab_103_snap')"))
 
   # Specify the elements to download
   dim1 <- metadata_tidy |>
@@ -411,7 +413,9 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
               "Kanton"]) ,
     msg = paste0("At least one of the requested spatial units is not available.",
                  " Check the spelling against those in the STATTAB cube ",
-                 number_fso_rates))
+                 number_fso_rates, ". Inspecting column 'valueTexts' the ",
+                 "following package data may also help: data('stattab_109_snap')"
+                 ))
 
   # Specify the elements to download
   dim1 <- metadata_tidy |>
@@ -562,7 +566,9 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
               "Kanton"]) ,
     msg = paste0("At least one of the requested spatial units is not available.",
                  " Check the spelling against those in the STATTAB cube ",
-                 number_fso_births))
+                 number_fso_births, ". Inspecting column 'valueTexts' the ",
+                 "following package data may also help: data('stattab_106_snap')"
+    ))
 
   # Specify the elements to download
   dim1 <- metadata_tidy |>
