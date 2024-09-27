@@ -16,6 +16,8 @@ test_that("snapshot table px-x-0104020000_101", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_101_snap.rda"))
+  stattab_101_snap <- propop::stattab_101_snap
   expect_identical(stattab_101, stattab_101_snap)
 
 })
@@ -38,6 +40,8 @@ test_that("snapshot table px-x-0104020000_102", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_102_snap.rda"))
+  stattab_102_snap <- propop::stattab_102_snap
   expect_identical(stattab_102, stattab_102_snap)
 
 })
@@ -62,6 +66,8 @@ test_that("snapshot table px-x-0104020000_103", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_103_snap.rda"))
+  stattab_103_snap <- propop::stattab_103_snap
   expect_identical(stattab_103, stattab_103_snap)
 
 })
@@ -85,6 +91,8 @@ test_that("snapshot table px-x-0104020000_106", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_106_snap.rda"))
+  stattab_106_snap <- propop::stattab_106_snap
   expect_identical(stattab_106, stattab_106_snap)
 
 })
@@ -108,6 +116,8 @@ test_that("snapshot table px-x-0104020000_109", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_109_snap.rda"))
+  stattab_109_snap <- propop::stattab_109_snap
   expect_identical(stattab_109, stattab_109_snap)
 
 })
@@ -131,6 +141,8 @@ test_that("snapshot table px-x-0102010000_101", {
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
+  # load(test_path("_snaps", "stattab_pop_snap.rda"))
+  stattab_pop_snap <- propop::stattab_pop_snap
   expect_identical(stattab_pop, stattab_pop_snap)
 
 })
