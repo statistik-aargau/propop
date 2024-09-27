@@ -50,7 +50,8 @@ demographic group.}
 }
 }
 \description{
-The function can be used to get the mandatory starting population for
+Users who do not have the required population data can use this convenience
+function to get the mandatory starting population for
 \code{propop::propop()} from the Federal Statistical Office (FSO). The function
 can also be used to obtain historical population records (e.g., for model
 performance evaluations).
