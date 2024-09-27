@@ -3,8 +3,9 @@
 #' @name get_parameters
 #'
 #' @description
-#' The function gets the mandatory projection parameters for `propop::propop()`
-#' from the Federal Statistical Office (FSO). The parameters are only available
+#' Users who do not have the mandatory projection parameters for
+#' `propop::propop()` can use this convenience function to download them from
+#' the Federal Statistical Office (FSO). The parameters are only available
 #' on the level of cantons. For smaller-scale projections, the parameters must
 #' be scaled down.
 #' In addition to the parameters, the function also returns the projected
