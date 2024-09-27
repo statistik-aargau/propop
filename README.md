@@ -45,9 +45,11 @@ devtools::install_github("statistik-aargau/propop")
 
 The package currently includes three vignettes. The first vignette demonstrates 
 [how to download and prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
-the FSO population data and parameters. The second vignette illustrates in more detail 
+the FSO population data and parameters. (Users can of course use their own data 
+and parameters). The second vignette illustrates in more detail 
 [how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
-the population development for single and multiple regions. The third vignette shows 
+the population development for single and multiple regions. The third vignette 
+shows 
 [how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html).
 
 ## Features, limitations, future plans
@@ -60,15 +62,18 @@ between the projections from the FSO and `propop`. Moreover, the FSO projections
 are only published in five-year intervals, the most recent ones being based on 
 population records from 2018. `propop` enables you to run projections with more
 recent population records.
-- This package was developed for use with *FSO parameters*. Most parameters are only 
-available for cantons and the whole of Switzerland. If you wish to run 
-projections at smaller scales, you need to prepare the parameters for each 
-spatial entity before running the projection. Similarly, you may wish to adjust 
-the parameters to account for regional differences. In both cases you must pass 
-the updated parameters through the `parameters`object to `propop::propop()`.
+- This package was developed for use with *FSO parameters*. Most parameters are 
+only available for cantons and the whole of Switzerland. If you wish to run 
+projections at smaller scales (e.g., districts), you need to prepare the 
+parameters for each spatial entity before running the projection. 
+- Similarly, if you wish to adjust parameters (e.g., mortality rates that 
+vary between regions) you need to prepare the parameters accordingly. 
 - `propop::propop()`offers the possibility to account for varying 
 subregional migration patterns and migration between subregions. However, before
 using this feature, users must adjust or calculate the required parameters. 
+- Parameters that were prepared for sub-cantonal spatial entities, adjusted to 
+reflect regional differences, or enriched by a subregional migration parameter
+can be passed through the `parameters` object to `propop::propop()`. 
 - There are also *possible future features* that could increase the accuracy of 
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
