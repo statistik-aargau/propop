@@ -70,6 +70,9 @@
 #' @param subregional boolean, TRUE indicates that subregional migration
 #'        patterns (e.g., movement between municipalities within a canton)
 #'        are part of the projection.
+#' @param binational boolean, TRUE indicates that projections discriminate
+#'        between two groups of nationalities. FALSE indicates no distinction
+#'        between groups of nationalities.
 #' @param spatial_unit character, name of variable containing the names of the
 #'        region or subregions for which the projection shall be performed.
 #'
@@ -96,7 +99,8 @@
 #'   year_first = 2019,
 #'   year_last = 2022,
 #'   population = fso_population,
-#'   subregional = FALSE
+#'   subregional = FALSE,
+#'   binational = TRUE
 #' )
 propop <- function(
     parameters,
@@ -108,8 +112,113 @@ propop <- function(
     fert_last = 50,
     share_born_female = 100 / 205,
     subregional,
+    binational,
     spatial_unit = "spatial_unit") {
   # Check input ----
+
+  # Nationality
+  # Case 1: Two groups in column `nat`
+  if (binational == TRUE) {
+    # Check if column `nat` is present in both, `parameters` and `population`
+    # Parameters
+    assertthat::assert_that("nat" %in% names(parameters),
+      msg = "Column `nat` is missing in `parameters`."
+    )
+
+    # Population
+    assertthat::assert_that("nat" %in% names(population),
+      msg = "Column `nat` is missing in `population`."
+    )
+
+    # Check factor levels for nationality
+    # Parameters
+    assertthat::assert_that(
+      length(unique(parameters$nat)) == length(c("int", "ch")) &&
+        all(parameters$nat %in% c("int", "ch")),
+      msg = paste0(
+        "Column `nat` in `parameters` can only include the factor levels",
+        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
+        " not allowed. \nIf demographic groups should not be projected for two",
+        " nationalities, \nplease remove the column 'nat' from the data."
+      )
+    )
+
+    # Population
+    assertthat::assert_that(
+      length(unique(population$nat)) == length(c("int", "ch")) &&
+        all(population$nat %in% c("int", "ch")),
+      msg = paste0(
+        "Column `nat` in `population` can only include the factor levels",
+        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
+        " not allowed. \nIf demographic groups should not be projected for two",
+        " nationalities, \nplease remove the column 'nat' from the data."
+      )
+    )
+
+    # Parameters
+    # Acquisition of Swiss citizenship in case of two nationalities
+    assertthat::assert_that("acq" %in% names(parameters),
+      msg = "Column `acq` is missing in parameters."
+    )
+    # Births by international females in case of two nationalities
+    assertthat::assert_that("births_int_ch" %in% names(parameters),
+      msg = paste0("Column `births_int_ch` is missing in parameters.")
+    )
+
+  } else if (binational == FALSE) {
+    # Case 2: No distinction between nationalities
+    # Check if column `nat` is absent in both, `parameters` and `population`
+    # Parameters
+    assertthat::assert_that(!"nat" %in% names(parameters),
+      msg = paste0(
+        "Argument `binational` is `FALSE` suggesting that the projection \ndoes",
+        " not discriminate between nationalities. \nHowever, `parameters` include",
+        " column `nat` suggesting multiple nationalities. \nPlease change argument",
+        " `binational` or remove column `nat` from `parameters`."
+      )
+    )
+
+    # Population
+    assertthat::assert_that(!"nat" %in% names(population),
+      msg = paste0(
+        "Column `nat` is present in `population` but not in `parameters`.\n",
+        " The presence of column `nat` suggests that the projection should",
+        " discriminate \nbetween nationalities. This conflicts with the argument",
+        " `binational` = `FALSE`. \nPlease change argument `binational` or remove",
+        " column `nat` from `population` data."
+      )
+    )
+
+    # Create required data structure for project_raw()
+    # Parameters
+    parameters <- parameters |>
+      # duplicate the data and add column `nat` with two levels: "ch" and "int"
+      tidyr::expand(tidyr::nesting(!!!syms(names(parameters))), rep = 1:2) |>
+      mutate(nat = ifelse(rep == 2, "int", "ch")) |>
+      # set all values for "int" at zero
+      mutate(across(birth_rate:mig_ch, ~if_else(nat == "int", 0, .x))) |>
+      # add remaining columns `acq` and `births_int_ch`
+      dplyr::mutate(acq = 0, births_int_ch = 0) |>
+      # arrange the data
+      select(
+        nat, sex, age, year, scen, birth_rate, births_int_ch, mor, emi, acq,
+        imm_int, mig_ch, spatial_unit
+      ) |>
+      arrange(nat, sex, age, year, spatial_unit)
+
+    # Population
+    population <- population |>
+      # duplicate the data and add column `nat` with two levels: "ch" and "int"
+      tidyr::expand(tidyr::nesting(!!!syms(names(population))), rep = 1:2) |>
+      mutate(nat = ifelse(rep == 2, "int", "ch")) |>
+      # set all values for "int" at zero
+      mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
+      # arrange the data
+      select(year, spatial_unit, nat, sex, age, n) |>
+      arrange(year, spatial_unit, nat, sex, age)
+  }
+
+
   ## Only 1 value in scenario ----
   assertthat::assert_that(
     n_distinct(parameters$scen) == 1,
@@ -158,68 +267,6 @@ propop <- function(
       msg = "Column `mig_sub` is missing in parameters."
     )
   }
-  # Nationality
-  # Case 1: Two nationalities
-  if ("nat" %in% names(parameters)) {
-    # Check factor levels for nationality
-    assertthat::assert_that(
-      length(unique(parameters$nat)) == length(c("int", "ch")) &&
-        all(parameters$nat %in% c("int", "ch")),
-      msg = paste0(
-        "Column `nat` in `parameters` can only include the factor levels",
-        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
-        " not allowed. \nIf demographic groups should not be projected for two",
-        " nationalities, \nplease remove the column 'nat' from the data."
-      )
-    )
-    # Acquisition of Swiss citizenship in case of two nationalities
-    assertthat::assert_that("acq" %in% names(parameters),
-      msg = "Column `acq` is missing in parameters."
-    )
-    # Births by international females in case of two nationalities
-    assertthat::assert_that("births_int_ch" %in% names(parameters),
-      msg = paste0(
-        "Column `births_int_ch` is missing in parameters."
-      )
-    )
-  }
-
-  # Case 2: Nationality not provided
-  if (!"nat" %in% names(parameters)) {
-    print(paste0(
-      "Column `nat` was not found in `parameters`.",
-      " Projections assume no distinction between nationalities."
-    ))
-    # create a helper object for `parameters`
-    helper_nat_parameters <- TRUE
-    # add columns to mimic the data structure for two nationalities
-    parameters <- parameters |>
-      # add column `nat` = "ch"
-      dplyr::mutate(nat = "ch") |>
-      full_join(
-        parameters |>
-          # add column with nationality = "int"
-          dplyr::mutate(nat = "int") |>
-          # fill columns with zero values for nationality = "int"
-          dplyr::mutate(
-            across(
-              any_of(c("birth_rate", "mor", "emi", "imm_int", "mig_ch")),
-              ~0
-            )
-          ),
-        by = join_by(
-          sex, age, year, scen, birth_rate, mor, emi, imm_int, mig_ch,
-          spatial_unit, nat
-        )
-      ) |>
-      # add remaining columns
-      dplyr::mutate(acq = 0, births_int_ch = 0) |>
-      # arrange columns
-      select(
-        nat, sex, age, year, scen, birth_rate, births_int_ch, mor, emi, acq,
-        imm_int, mig_ch, spatial_unit
-      )
-  }
 
   ## Population data frame ----
   assertthat::assert_that("year" %in% names(population),
@@ -258,59 +305,6 @@ propop <- function(
     )
   )
 
-  # Nationality
-  # Case 1: Two nationalities
-  if ("nat" %in% names(population)) {
-    # Check if column 'nat' is present in both, `parameters` and `population`
-    assertthat::assert_that(!exists("helper_nat_parameters"),
-      msg = paste0(
-        "Column `nat` must be either present or absent in both datasets,",
-        " `parameters` and `population.`"
-      )
-    )
-    # Check factor levels for nationality
-    assertthat::assert_that(all(population$nat %in% c("int", "ch")),
-      msg = paste0(
-        "Column `nat` in `population` can only include the factor levels",
-        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
-        " not allowed. \nIf demographic groups should not be projected for two",
-        " nationalities, \nplease remove the column 'nat' from the data."
-      )
-    )
-  }
-
-  # Case 2: Nationality not provided
-  if (!"nat" %in% names(population)) {
-    # Check if column 'nat' is missing in both, `parameters` and `population`
-    assertthat::assert_that(exists("helper_nat_parameters"),
-      msg = paste0(
-        "Column `nat` must be either present or absent in both datasets",
-        " `parameters` and `population`."
-      )
-    )
-    # Create a helper object for `population`
-    helper_nat_population <- TRUE
-    print(paste0(
-      "Column `nat` was not found in the `population`.",
-      " Projections assume no distinction between nationalities."
-    ))
-
-    # Mimic the population for two nationalities by entering zero values for
-    # international males and females
-    population <- population |>
-      # add column with nationality = "ch" to mimic the data structure for two
-      # nationalities
-      dplyr::mutate(nat = "ch") |>
-      full_join(
-        # add column with nationality = "int" and enter zeros for 'n'
-        population |> dplyr::mutate(nat = "int", n = 0),
-        by = join_by(year, spatial_unit, sex, age, n, nat)
-      ) |>
-      # arrange columns
-      select(year, spatial_unit, nat, sex, age, n)
-  }
-
-  # Check remaining columns
   assertthat::assert_that("sex" %in% names(population),
     msg = "Column `sex` is missing in `population`"
   )
@@ -491,16 +485,14 @@ propop <- function(
     projection_raw
   )
 
-  # Format output for case 2: Nationality not provided
-  # Check if nationality was not provided in parameters and population data
-  if (exists("helper_nat_parameters") && exists("helper_nat_population")) {
-    if (identical(helper_nat_parameters, helper_nat_population)) {
+  # Format output for case 2: No distinction between nationalities
+  # (argument `binational`= FALSE)
+  if (binational == FALSE) {
       # remove empty rows for `nat`= "int" and remove the `nat`-column
       projection_results <- projection_results |>
         dplyr::filter(nat != "int") |>
         dplyr::select(-nat)
     }
-  }
 
   return(projection_results)
 }
