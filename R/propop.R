@@ -205,10 +205,10 @@ propop <- function(
       # add remaining columns `acq` and `births_int_ch`
       dplyr::mutate(acq = 0, births_int_ch = 0) |>
       # arrange the data
-      select(
-        nat, sex, age, year, scen, birth_rate, births_int_ch, mor, emi, acq,
-        imm_int, mig_ch, spatial_unit
-      ) |>
+      select(any_of(c(
+        "nat", "sex", "age", "year", "scen", "birth_rate", "births_int_ch",
+        "mor", "emi", "acq", "imm_int", "mig_ch", "mig_sub", "spatial_unit"
+      ))) |>
       arrange(nat, desc(sex), year, spatial_unit)
 
     # Population
