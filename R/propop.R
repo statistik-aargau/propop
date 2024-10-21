@@ -165,6 +165,11 @@ propop <- function(
       msg = paste0("Column `births_int_ch` is missing in parameters.")
     )
 
+    # Arrange columns
+    parameters <- parameters |> arrange(nat, desc(sex), year, spatial_unit)
+
+    population <- population |> arrange(nat, desc(sex), year, spatial_unit)
+
   } else if (binational == FALSE) {
     # Case 2: No distinction between nationalities
     # Check if column `nat` is absent in both, `parameters` and `population`
@@ -204,7 +209,7 @@ propop <- function(
         nat, sex, age, year, scen, birth_rate, births_int_ch, mor, emi, acq,
         imm_int, mig_ch, spatial_unit
       ) |>
-      arrange(nat, sex, age, year, spatial_unit)
+      arrange(nat, desc(sex), year, spatial_unit)
 
     # Population
     population <- population |>
@@ -215,7 +220,7 @@ propop <- function(
       mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
       # arrange the data
       select(year, spatial_unit, nat, sex, age, n) |>
-      arrange(year, spatial_unit, nat, sex, age)
+      arrange(nat, desc(sex), year, spatial_unit)
   }
 
 

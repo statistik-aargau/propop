@@ -393,7 +393,7 @@ project_raw <-
         dplyr::pull()
       assertthat::assert_that(!is.na(births_int_ch),
         length(births_int_ch) == 1,
-        msg = "Value for `births_int_ch` is either < 0, NA or longer than 1."
+        msg = "Value for `births_int_ch` is either < 0, NA or not unique."
       )
 
       # Format data
