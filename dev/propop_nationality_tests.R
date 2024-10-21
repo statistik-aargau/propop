@@ -101,13 +101,13 @@ fso_population_sub <- fso_population |>
 
 
 ## Tests ----------------------------------------------------------------------
-# Original: Two nationalities + mig_sub adding exactly up to 1 across spatial units
+# Original: Two nationalities + mig_sub adding exactly up to zero across spatial units
 # subregional = TRUE
 # binational = TRUE
-# mig_sub adds up to 1 exactly
+# mig_sub adds up to zero exactly
 test_mig_sub_original <- propop(
   parameters = fso_parameters_sub |>
-    # add subregional migration (adds up to 1 exactly)
+    # add subregional migration (adds up to zero exactly)
     mutate(mig_sub = 0.2),
   year_first = 2019,
   year_last = 2022,
@@ -120,11 +120,11 @@ test_mig_sub_original <- propop(
 # Case 2: Only one nationality provided
 # subregional = TRUE
 # binational = FALSE
-# mig_sub adds up to 1 exactly
+# mig_sub adds up to zero exactly
 test_mig_sub_exact <- propop(
   # remove `nat`, `acq` and `births_int_ch` from `parameters`
   parameters = fso_parameters_sub |>
-    # add subregional migration (adds up to 1 exactly)
+    # add subregional migration (adds up to zero exactly)
     mutate(mig_sub = 0.2) |>
     dplyr::filter(nat != "int") |>
     select(-c(nat, acq, births_int_ch)),
@@ -142,11 +142,11 @@ test_mig_sub_exact <- propop(
 # Two for nationalities but values for "int" are zero in the data
 # subregional = TRUE
 # binational = TRUE
-# # mig_sub adds up to 1 exactly
+# # mig_sub adds up to zero exactly
 # test_mig_sub_binational_TRUE <- propop(
 #   # set values for nationality "int" = zero
 #   parameters = fso_parameters_sub |>
-#     # add subregional migration (adds up to 1 exactly)
+#     # add subregional migration (adds up to zero exactly)
 #     mutate(mig_sub = 0.2, .before = "spatial_unit") |>
 #   # set values for nationality "int" = zero
 #     mutate(births_int_ch = 0) |>
