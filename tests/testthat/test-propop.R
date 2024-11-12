@@ -176,6 +176,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     fert_last = 50,
     share_born_female = 100 / 205,
     population = population_short_1r,
+    binational = TRUE,
     subregional = FALSE
   )
 
@@ -509,6 +510,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     fert_last = 50,
     share_born_female = 100 / 205,
     population = population_short_5r,
+    binational = TRUE,
     subregional = TRUE
   )
 
@@ -575,3 +577,98 @@ test_that("tests propop: 1 region vs. 5 regions", {
 })
 
 options(cli.default_handler = NULL)
+
+
+
+# Unexpected input regarding nationalities ----
+
+test_that("Error when binational is FALSE but column `nat` is present", {
+  expect_error(
+    propop(
+      parameters = fso_parameters,
+      year_first = 2019,
+      year_last = 2020,
+      fert_first = 16,
+      fert_last = 50,
+      share_born_female = 100 / 205,
+      population = fso_population,
+      binational = FALSE,
+      subregional = FALSE
+    )
+  )
+})
+
+test_that("Error when binational is not provided", {
+  expect_error(
+    propop(
+      parameters = fso_parameters,
+      year_first = 2019,
+      year_last = 2020,
+      fert_first = 16,
+      fert_last = 50,
+      share_born_female = 100 / 205,
+      population = fso_population,
+      subregional = FALSE
+    )
+  )
+})
+
+test_that("Error when only 1 nationality in parameters", {
+  expect_error(
+    propop(
+      # remove non-Swiss nationals
+      parameters = fso_parameters |>
+        # remove non-Swiss nationals
+        dplyr::filter(nat != "int"),
+      year_first = 2019,
+      year_last = 2020,
+      fert_first = 16,
+      fert_last = 50,
+      share_born_female = 100 / 205,
+      population = fso_population,
+      binational = TRUE,
+      subregional = FALSE
+    )
+  )
+})
+
+test_that("Error when only 1 nationality in population", {
+  expect_error(
+    propop(
+      # remove non-Swiss nationals
+      parameters = fso_parameters,
+      year_first = 2019,
+      year_last = 2020,
+      fert_first = 16,
+      fert_last = 50,
+      share_born_female = 100 / 205,
+      population = fso_population |>
+        # remove Swiss nationals
+        dplyr::filter(nat == "int"),
+      binational = TRUE,
+      subregional = FALSE
+    )
+  )
+})
+
+test_that("Error if there are unexpected factor levels in pop `nat`", {
+  expect_error(
+    propop(
+      # remove non-Swiss nationals
+      parameters = fso_parameters,
+      year_first = 2019,
+      year_last = 2020,
+      fert_first = 16,
+      fert_last = 50,
+      share_born_female = 100 / 205,
+      population = fso_population |>
+        # replace factor level
+        dplyr::mutate(nat = case_match(
+          nat,
+          "ch" ~ "swiss",
+          .default = nat)),
+      binational = TRUE,
+      subregional = FALSE
+    )
+  )
+})
