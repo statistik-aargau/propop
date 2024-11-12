@@ -14,6 +14,7 @@ propop(
   fert_last = 50,
   share_born_female = 100/205,
   subregional,
+  binational,
   spatial_unit = "spatial_unit"
 )
 }
@@ -26,14 +27,14 @@ projection for a specific spatial level (e.g., canton, municipality).
 municipality) for which to run the projections.
 \item \code{scen}, character, projection scenario, is used to subset data frames
 with multiple scenarios (r = reference, l = low growth, h = high growth).
-\item \code{nat}, character, nationality (ch = Swiss; int = foreign/international).
+\item \code{nat}, character, OPTIONAL; nationality (ch = Swiss; int = foreign/international).
 \item \code{sex}, character (f = female, m = male).
 \item \code{age}, numeric, typically ranging from 0 to 100 (incl. >100).
 \item \code{birth_rate}, numeric, number of children per year.
-\item \code{births_int_ch}, numeric, proportion of children with Swiss nationality
+\item \code{births_int_ch}, numeric, OPTIONAL; proportion of children with Swiss nationality
 born to non-Swiss mothers.
 \item \code{mor}, numeric, prospective mortality rate (probability of death).
-\item \code{acq}, numeric, rate of acquisition of Swiss citizenship.
+\item \code{acq}, numeric, OPTIONAL; rate of acquisition of Swiss citizenship.
 \item \code{emi}, numeric, rate of people emigrating abroad.
 \item \code{mig_ch}, numeric, national / inter-cantonal net migration
 (number of immigrants - number of emigrants).
@@ -75,6 +76,10 @@ from year).
 \item{subregional}{boolean, TRUE indicates that subregional migration
 patterns (e.g., movement between municipalities within a canton)
 are part of the projection.}
+
+\item{binational}{boolean, TRUE indicates that projections discriminate
+between two groups of nationalities. FALSE indicates no distinction
+between groups of nationalities.}
 
 \item{spatial_unit}{character, name of variable containing the names of the
 region or subregions for which the projection shall be performed.}
@@ -122,6 +127,7 @@ propop(
   year_first = 2019,
   year_last = 2022,
   population = fso_population,
-  subregional = FALSE
+  subregional = FALSE,
+  binational = TRUE
 )
 }
