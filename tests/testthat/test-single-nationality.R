@@ -1,5 +1,6 @@
 # Specific argument-data configurations for projections with 1 nation
 # Separated from propop::propop tests for brevity & quicker error identification
+# Tests with two nationalities are part of test-propop
 
 options(cli.default_handler = function(...) { })
 
@@ -9,7 +10,7 @@ test_that("propop single nation projection", {
   skip_on_ci()
 
   # /////////////////////////////////////////////////////
-  # 1 region --------------------------------------------
+  # 1 region & 1 nationality ----------------------------
   # /////////////////////////////////////////////////////
 
   ## Prepare FSO parameters ----
@@ -777,63 +778,76 @@ test_that("propop single nation projection", {
 
 # °°°°°°°°°°°° hier weiter °°°°°°°°°°°°----
 
+# /////////////////////////////////////////////////////
+# 5 regions & 1 nationality ---------------------------
+# /////////////////////////////////////////////////////
 
-#
-#   # Tests for subregional -------------------------------------------------------
-#   ## Get data with subregional spatial units ------------------------------------
-#   # Sourced from propop vignette:
-#   # https://statistik-aargau.github.io/propop/articles/run_projections.html#projection-for-multiple-subregions
-#
-#   # fso parameters for fictitious subregions
-#   fso_parameters_sub <- fso_parameters |>
-#     # duplicating rows 5 times
-#     tidyr::uncount(5) |>
-#     # create 5 subregions
-#     dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
-#     # divide the size of parameters with numbers by the number of regions (= 5);
-#     # otherwise the multiplication of lines will inflate the population size.
-#     dplyr::mutate(spatial_unit = as.character(spatial_unit))
-#
-#   # fso population for fictitious subregions
-#   fso_population_sub <- fso_population |>
-#     dplyr::rename(n_tot = n) |>
-#     # duplicating rows 5 times
-#     tidyr::uncount(5) |>
-#     # create 5 subregions
-#     dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_population))) |>
-#     dplyr::mutate(
-#       # Create fictitious n for each subregion
-#       n = dplyr::case_match(
-#         spatial_unit,
-#         1 ~ round(n_tot * 0.3),
-#         2 ~ round(n_tot * 0.25),
-#         3 ~ round(n_tot * 0.2),
-#         4 ~ round(n_tot * 0.15),
-#         5 ~ round(n_tot * 0.1),
-#         .default = NA
-#       ),
-#       .keep = "all"
-#     ) |>
-#     dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
-#     dplyr::select(-n_tot)
-#
-#
-#   ## Tests ----------------------------------------------------------------------
-#   # Original: Two nationalities + mig_sub adding exactly up to zero across spatial units
-#   # subregional = TRUE
-#   # binational = TRUE
-#   # mig_sub adds up to zero exactly
-#   test_mig_sub_original <- propop(
-#     parameters = fso_parameters_sub |>
-#       # add subregional migration (adds up to zero exactly)
-#       mutate(mig_sub = 0.2),
-#     year_first = 2019,
-#     year_last = 2022,
-#     population = fso_population_sub,
-#     subregional = TRUE,
-#     binational = TRUE
-#   )
-#
+## Prepare FSO parameters ----
+
+### Population = CH ----
+# # Run next lines to generate the subsequent data frame
+# fso_parameters |>
+#   dplyr::filter(year < 2023) |>
+#   # drop non-Swiss people
+#   dplyr::filter(nat != "int") |>
+#   # remove `nat`, `acq` and `births_int_ch` from `parameters`
+#   select(-c(nat, acq, births_int_ch)) |>
+#   constructive::construct()
+
+
+
+# fso parameters for fictitious subregions
+fso_parameters_sub <- fso_parameters |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
+  # divide the size of parameters with numbers by the number of regions (= 5);
+  # otherwise the multiplication of lines will inflate the population size.
+  dplyr::mutate(spatial_unit = as.character(spatial_unit))
+
+# fso population for fictitious subregions
+fso_population_sub <- fso_population |>
+  dplyr::rename(n_tot = n) |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_population))) |>
+  dplyr::mutate(
+    # Create fictitious n for each subregion
+    n = dplyr::case_match(
+      spatial_unit,
+      1 ~ round(n_tot * 0.3),
+      2 ~ round(n_tot * 0.25),
+      3 ~ round(n_tot * 0.2),
+      4 ~ round(n_tot * 0.15),
+      5 ~ round(n_tot * 0.1),
+      .default = NA
+    ),
+    .keep = "all"
+  ) |>
+  dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
+  dplyr::select(-n_tot)
+
+
+## Tests ----------------------------------------------------------------------
+# Original: Two nationalities + mig_sub adding exactly up to zero across spatial units
+# subregional = TRUE
+# binational = TRUE
+# mig_sub adds up to zero exactly
+test_mig_sub_original <- propop(
+  parameters = fso_parameters_sub |>
+    # add subregional migration (adds up to zero exactly)
+    mutate(mig_sub = 0.2),
+  year_first = 2019,
+  year_last = 2022,
+  population = fso_population_sub,
+  subregional = TRUE,
+  binational = TRUE
+)
+
+
+
 #
 #   # Case 2: Only one nationality provided
 #   # subregional = TRUE
@@ -915,9 +929,6 @@ test_that("propop single nation projection", {
 #
 #
 #
-#   # /////////////////////////////////////////////////////
-#   # 5 regions --------------------------------------------
-#   # /////////////////////////////////////////////////////
 #
 #
 #
