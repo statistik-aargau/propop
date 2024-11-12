@@ -1,3 +1,6 @@
+# Runs tests for projections with 2 nationalities
+# Tests with only 1 nationality are part of test-single-nationality
+
 options(cli.default_handler = function(...) { })
 
 # Prepare snapshot 1 region ----
