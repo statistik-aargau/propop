@@ -159,12 +159,6 @@
     Code
       constructive::construct(prepare_evaluation(data_benchmark = data_benchmark,
         data_projected = data_projected_NA, drop_start_year = TRUE))
-    Message <cliMessage>
-      Warning message:
-      The following columns have missing values:
-      ! "n_proj".
-      i Missing values are likely to lead to biased evaluation
-      measures that cannot be properly interpreted.
     Output
       tibble::tibble(
         year = rep(2019:2020, each = 404L),
@@ -276,12 +270,6 @@
     Code
       constructive::construct(prepare_evaluation(data_benchmark = data_benchmark_NA,
         data_projected = data_projected, drop_start_year = TRUE))
-    Message <cliMessage>
-      Warning message:
-      The following columns have missing values:
-      ! "n_bench".
-      i Missing values are likely to lead to biased evaluation
-      measures that cannot be properly interpreted.
     Output
       tibble::tibble(
         year = rep(2019:2020, each = 404L),
