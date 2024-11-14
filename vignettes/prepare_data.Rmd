@@ -131,7 +131,8 @@ propop(
   fert_last = 50,
   share_born_female = 100 / 205,
   population = ag_population,
-  subregional = FALSE
+  subregional = FALSE,
+  binational = TRUE
 )
 ```
 
@@ -905,7 +906,8 @@ results_clean <- propop(
   fert_last = 50,
   share_born_female = 100 / 205,
   population = starting_population,
-  subregional = FALSE
+  subregional = FALSE,
+  binational = TRUE
 )
 
 results_clean |>

@@ -75,7 +75,8 @@ data_projected <- propop(
   # population records from 2018 as starting point
   population = data_benchmark |>
     dplyr::filter(year == 2018),
-  subregional = FALSE
+  subregional = FALSE,
+  binational = TRUE
 )
 ```
 

@@ -30,14 +30,14 @@
 #'    municipality) for which to run the projections.
 #'    * `scen`, character, projection scenario, is used to subset data frames
 #'    with multiple scenarios (r = reference, l = low growth, h = high growth).
-#'    * `nat`, character, nationality (ch = Swiss; int = foreign/international).
+#'    * `nat`, character, OPTIONAL; nationality (ch = Swiss; int = foreign/international).
 #'    * `sex`, character (f = female, m = male).
 #'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
 #'    * `birth_rate`, numeric, number of children per year.
-#'    * `births_int_ch`, numeric, proportion of children with Swiss nationality
+#'    * `births_int_ch`, numeric, OPTIONAL; proportion of children with Swiss nationality
 #'    born to non-Swiss mothers.
 #'    * `mor`, numeric, prospective mortality rate (probability of death).
-#'    * `acq`, numeric, rate of acquisition of Swiss citizenship.
+#'    * `acq`, numeric, OPTIONAL; rate of acquisition of Swiss citizenship.
 #'    * `emi`, numeric, rate of people emigrating abroad.
 #'    * `mig_ch`, numeric, national / inter-cantonal net migration
 #'    (number of immigrants - number of emigrants).
@@ -70,6 +70,9 @@
 #' @param subregional boolean, TRUE indicates that subregional migration
 #'        patterns (e.g., movement between municipalities within a canton)
 #'        are part of the projection.
+#' @param binational boolean, TRUE indicates that projections discriminate
+#'        between two groups of nationalities. FALSE indicates no distinction
+#'        between groups of nationalities.
 #' @param spatial_unit character, name of variable containing the names of the
 #'        region or subregions for which the projection shall be performed.
 #'
@@ -96,7 +99,8 @@
 #'   year_first = 2019,
 #'   year_last = 2022,
 #'   population = fso_population,
-#'   subregional = FALSE
+#'   subregional = FALSE,
+#'   binational = TRUE
 #' )
 propop <- function(
     parameters,
@@ -108,8 +112,118 @@ propop <- function(
     fert_last = 50,
     share_born_female = 100 / 205,
     subregional,
+    binational,
     spatial_unit = "spatial_unit") {
   # Check input ----
+
+  # Nationality
+  # Case 1: Two groups in column `nat`
+  if (binational == TRUE) {
+    # Check if column `nat` is present in both, `parameters` and `population`
+    # Parameters
+    assertthat::assert_that("nat" %in% names(parameters),
+      msg = "Column `nat` is missing in `parameters`."
+    )
+
+    # Population
+    assertthat::assert_that("nat" %in% names(population),
+      msg = "Column `nat` is missing in `population`."
+    )
+
+    # Check factor levels for nationality
+    # Parameters
+    assertthat::assert_that(
+      length(unique(parameters$nat)) == length(c("int", "ch")) &&
+        all(parameters$nat %in% c("int", "ch")),
+      msg = paste0(
+        "Column `nat` in `parameters` can only include the factor levels",
+        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
+        " not allowed. \nIf demographic groups should not be projected for two",
+        " nationalities, \nplease remove the column 'nat' from the data."
+      )
+    )
+
+    # Population
+    assertthat::assert_that(
+      length(unique(population$nat)) == length(c("int", "ch")) &&
+        all(population$nat %in% c("int", "ch")),
+      msg = paste0(
+        "Column `nat` in `population` can only include the factor levels",
+        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
+        " not allowed. \nIf demographic groups should not be projected for two",
+        " nationalities, \nplease remove the column 'nat' from the data."
+      )
+    )
+
+    # Parameters
+    # Acquisition of Swiss citizenship in case of two nationalities
+    assertthat::assert_that("acq" %in% names(parameters),
+      msg = "Column `acq` is missing in parameters."
+    )
+    # Births by international females in case of two nationalities
+    assertthat::assert_that("births_int_ch" %in% names(parameters),
+      msg = paste0("Column `births_int_ch` is missing in parameters.")
+    )
+
+    # Arrange columns
+    parameters <- parameters |> arrange(nat, desc(sex), year, spatial_unit)
+
+    population <- population |> arrange(nat, desc(sex), year, spatial_unit)
+
+  } else if (binational == FALSE) {
+    # Case 2: No distinction between nationalities
+    # Check if column `nat` is absent in both, `parameters` and `population`
+    # Parameters
+    assertthat::assert_that(!"nat" %in% names(parameters),
+      msg = paste0(
+        "Argument `binational` is `FALSE` suggesting that the projection \ndoes",
+        " not discriminate between nationalities. \nHowever, `parameters` include",
+        " column `nat` suggesting multiple nationalities. \nPlease change argument",
+        " `binational` or remove column `nat` from `parameters`."
+      )
+    )
+
+    # Population
+    assertthat::assert_that(!"nat" %in% names(population),
+      msg = paste0(
+        "Column `nat` is present in `population` but not in `parameters`.\n",
+        " The presence of column `nat` suggests that the projection should",
+        " discriminate \nbetween nationalities. This conflicts with the argument",
+        " `binational` = `FALSE`. \nPlease change argument `binational` or remove",
+        " column `nat` from `population` data."
+      )
+    )
+
+    # Create required data structure for project_raw()
+    # Parameters
+    parameters <- parameters |>
+      # duplicate the data and add column `nat` with two levels: "ch" and "int"
+      tidyr::expand(tidyr::nesting(!!!syms(names(parameters))), rep = 1:2) |>
+      mutate(nat = ifelse(rep == 2, "int", "ch")) |>
+      # set all values for "int" at zero
+      mutate(across(birth_rate:mig_ch, ~if_else(nat == "int", 0, .x))) |>
+      # add remaining columns `acq` and `births_int_ch`
+      dplyr::mutate(acq = 0, births_int_ch = 0) |>
+      # arrange the data
+      select(any_of(c(
+        "nat", "sex", "age", "year", "scen", "birth_rate", "births_int_ch",
+        "mor", "emi", "acq", "imm_int", "mig_ch", "mig_sub", "spatial_unit"
+      ))) |>
+      arrange(nat, desc(sex), year, spatial_unit)
+
+    # Population
+    population <- population |>
+      # duplicate the data and add column `nat` with two levels: "ch" and "int"
+      tidyr::expand(tidyr::nesting(!!!syms(names(population))), rep = 1:2) |>
+      mutate(nat = ifelse(rep == 2, "int", "ch")) |>
+      # set all values for "int" at zero
+      mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
+      # arrange the data
+      select(year, spatial_unit, nat, sex, age, n) |>
+      arrange(nat, desc(sex), year, spatial_unit)
+  }
+
+
   ## Only 1 value in scenario ----
   assertthat::assert_that(
     n_distinct(parameters$scen) == 1,
@@ -119,9 +233,6 @@ propop <- function(
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
     msg = "Column `scen` is missing in parameters."
-  )
-  assertthat::assert_that("nat" %in% names(parameters),
-    msg = "Column `nat` is missing in parameters."
   )
   assertthat::assert_that("sex" %in% names(parameters),
     msg = "Column `sex` is missing in parameters."
@@ -135,20 +246,11 @@ propop <- function(
   assertthat::assert_that("birth_rate" %in% names(parameters),
     msg = "Column `birth_rate` is missing in parameters."
   )
-  assertthat::assert_that("births_int_ch" %in% names(parameters),
-    msg = paste0(
-      "Column `births_int_ch` is missing in",
-      " parameters."
-    )
-  )
   assertthat::assert_that("mor" %in% names(parameters),
     msg = "Column `mor` is missing in parameters."
   )
   assertthat::assert_that("emi" %in% names(parameters),
     msg = "Column `emi` is missing in parameters."
-  )
-  assertthat::assert_that("acq" %in% names(parameters),
-    msg = "Column `acq` is missing in parameters."
   )
   assertthat::assert_that("imm_int" %in% names(parameters),
     msg = "Column `imm_int` is missing in parameters."
@@ -164,6 +266,7 @@ propop <- function(
   )
 
   ## Optional parameter when requested ----
+  # Subregional migration
   if (subregional == TRUE) {
     assertthat::assert_that("mig_sub" %in% names(parameters),
       msg = "Column `mig_sub` is missing in parameters."
@@ -207,17 +310,6 @@ propop <- function(
     )
   )
 
-  assertthat::assert_that("nat" %in% names(population),
-    msg = "Column `nat` is missing in `population`"
-  )
-  assertthat::assert_that(all(population$nat %in% c("int", "ch")),
-    msg = paste0(
-      "Column `nat` in `population` can ",
-      "only include the values `ch` and ",
-      "`int`. Missing values (NA) are not ",
-      "allowed."
-    )
-  )
   assertthat::assert_that("sex" %in% names(population),
     msg = "Column `sex` is missing in `population`"
   )
@@ -397,6 +489,15 @@ propop <- function(
     skeleton,
     projection_raw
   )
+
+  # Format output for case 2: No distinction between nationalities
+  # (argument `binational`= FALSE)
+  if (binational == FALSE) {
+      # remove empty rows for `nat`= "int" and remove the `nat`-column
+      projection_results <- projection_results |>
+        dplyr::filter(nat != "int") |>
+        dplyr::select(-nat)
+    }
 
   return(projection_results)
 }

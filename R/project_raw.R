@@ -380,6 +380,7 @@ project_raw <-
 
 
       ### Subset input data -----
+      # Case 1: Two nationalities:
       # Annual proportion of Swiss children born to foreign women by year
       births_int_ch <- parameters |>
         dplyr::filter(
@@ -390,11 +391,10 @@ project_raw <-
         dplyr::select(births_int_ch) |>
         dplyr::distinct() |>
         dplyr::pull()
-      assertthat::assert_that(births_int_ch > 0, !is.na(births_int_ch),
+      assertthat::assert_that(!is.na(births_int_ch),
         length(births_int_ch) == 1,
-        msg = "Value for `births_int_ch` is either < 0, NA or longer than 1."
+        msg = "Value for `births_int_ch` is either < 0, NA or not unique."
       )
-
 
       # Format data
       parameters_subset <- parameters |>
