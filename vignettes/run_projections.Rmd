@@ -148,6 +148,48 @@ available (e.g., moving between municipalities), `subregional` can be set to
 
 \
 
+# No distinction between nationalities
+
+It's possible to run projections without distinguishing between Swiss and 
+non-Swiss nationals. The simplest way to achieve this is to provide population 
+data and parameters without the nationality-specific columns (remove `nat`,
+`acq`, `births_int_ch`).
+
+Let's adapt the input files accordingly. To keep things simple, we run the 
+projection for only one of the two nationalities. 
+
+
+``` {r prepare-single-nationality}
+fso_parameters_int <- fso_parameters |>
+  # drop Swiss people
+    dplyr::filter(nat == "int") |>
+  #   remove `nat`, `acq` and `births_int_ch` from `parameters`
+    dplyr::select(-c(nat, acq, births_int_ch))
+
+fso_population_int <- fso_population |> 
+# drop Swiss people
+    dplyr::filter(nat == "int") |>
+    # remove `nat` from `population`
+     dplyr::select(-nat)
+```
+
+When calling `propop::propop()`, you need to set `binational = FALSE`.
+
+``` {r project-int}
+projection_int <- propop(
+  parameters = fso_parameters_int,
+  year_first = 2019,
+  year_last = 2030,
+  population = fso_population_int,
+  subregional = FALSE,
+  binational = FALSE
+)
+
+projection_int |>
+  DT::datatable(filter = "top")
+```
+\ 
+
 # Interpretation of the output file
 
 The output file includes the number of people (`n`) per demographic group for 
