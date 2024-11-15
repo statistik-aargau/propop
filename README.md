@@ -56,6 +56,8 @@ shows
 
 - Currently, `propop::propop()` only works with *1-year age classes* starting 
 at age zero and including all fertile years of females.  
+- `propop::propop()` works with either two nationalities (usually Swiss vs. 
+non-Swiss nationals) or without distinction between nationalities.  
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
 involving different cantons add up, which leads to some differences
 between the projections from the FSO and `propop`. Moreover, the FSO projections
