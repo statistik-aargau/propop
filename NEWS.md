@@ -1,5 +1,10 @@
 # propop 0.2.0
 
+## Projection without distinction of nationalities
+
+It is no longer required to provide two nationalities. Projections can now 
+be run without distinguishing between two nationalities.
+
 # propop 0.1.0
 
 ## Development history and earlier versions
