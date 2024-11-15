@@ -1,3 +1,5 @@
+# propop 0.2.0
+
 # propop 0.1.0
 
 ## Development history and earlier versions
