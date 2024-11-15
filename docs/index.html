@@ -50,7 +50,7 @@
     
     <a class="navbar-brand me-2" href="index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,6 +124,9 @@
 </h2>
 <ul>
 <li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> starting at age zero and including all fertile years of females.<br>
+</li>
+<li>
+<code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinction between nationalities.<br>
 </li>
 <li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>. Moreover, the FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2018. <code>propop</code> enables you to run projections with more recent population records.</li>
 <li>This package was developed for use with <em>FSO parameters</em>. Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection.</li>
