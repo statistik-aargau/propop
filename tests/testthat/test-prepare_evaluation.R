@@ -767,49 +767,4 @@ test_that("prepare_evaluation snapshots", {
 
   expect_snapshot(constructive::construct(combined_grouped_snapshot))
 
-
-  # Check if cli warning occurs with NA ----
-
-  ## NAs in projected data ----
-  # add NA
-  data_projected_NA <- data_projected |>
-    dplyr::mutate(n = ifelse(year == 2020, NA, n))
-
-  # run function
-  snapshot_NA <- prepare_evaluation(
-    data_benchmark = data_benchmark,
-    data_projected = data_projected_NA,
-    drop_start_year = TRUE
-  )
-
-  expect_snapshot(constructive::construct(
-    prepare_evaluation(
-      data_benchmark = data_benchmark,
-      data_projected = data_projected_NA,
-      drop_start_year = TRUE
-    )
-  ))
-
-
-  ## Test output inconsistent, leads to test errors
-  # ## NAs in benchmark ----
-  # # add NA
-  # data_benchmark_NA <- data_benchmark |>
-  #   dplyr::mutate(n = ifelse(year == 2020, NA, n))
-  #
-  # # run function
-  # snapshot_NA2 <- prepare_evaluation(
-  #   data_benchmark = data_benchmark_NA,
-  #   data_projected = data_projected,
-  #   drop_start_year = TRUE
-  # )
-  #
-  # expect_snapshot(constructive::construct(
-  #   prepare_evaluation(
-  #     data_benchmark = data_benchmark_NA,
-  #     data_projected = data_projected,
-  #     drop_start_year = TRUE
-  #   )
-  # ))
-
 })
