@@ -324,7 +324,7 @@ test_that("propop single nation projection", {
   # # Run next lines to generate the subsequent data frame
   # fso_parameters |>
   #   dplyr::filter(year < 2023) |>
-  #   # drop non-Swiss people
+  #   # drop Swiss people
   #   dplyr::filter(nat == "int") |>
   #   # remove `nat`, `acq` and `births_int_ch` from `parameters`
   #   select(-c(nat, acq, births_int_ch)) |>
