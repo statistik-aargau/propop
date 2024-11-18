@@ -2,8 +2,10 @@
 
 ## Projection without distinction of nationalities
 
-It is no longer required to provide two nationalities. Projections can now 
-be run without distinguishing between two nationalities.
+- If desired, projections can be run for only one nationality (no longer
+required to provide two nationalities).   
+- `propop::propop()` returns a plain text feedback in the console summarizing 
+the settings used to run the projection.  
 
 # propop 0.1.0
 
