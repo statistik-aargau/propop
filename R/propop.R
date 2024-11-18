@@ -505,10 +505,20 @@ propop <- function(
     "Year of starting population: ",
     "{.val {min(as.numeric(as.character(population$year)))}}")
   cli::cli_text(
+    "Size of starting population: ",
+    "{.val {population |> dplyr:: summarise(sum(n, na.rm = TRUE)) |>
+    dplyr::pull()}}")
+  cli::cli_text(
     "Projeciton period: ",
     "{.val {year_first}}",
     "-",
     "{.val {year_last}}")
+  cli::cli_text(
+    "Size of population in last {.emph projected} year: ",
+    "{.emph {.val {projection_results |>
+    dplyr::filter(year == year_last) |>
+    dplyr:: summarise(sum(n, na.rm = TRUE)) |>
+    dplyr::pull() |> round(digits = 0)}}}")
   cli::cli_text(
     "Nationality-specific projection: ",
     "{.val {if (binational) 'yes' else 'no'}}")
@@ -517,6 +527,8 @@ propop <- function(
     "{.val {if (subregional) 'yes' else 'no'}}")
   cli::cli_rule()
 
+
+  population |> dplyr::summarize(n, .by = year)
 
   return(projection_results)
 }
