@@ -156,7 +156,7 @@ data and parameters without the nationality-specific columns (remove `nat`,
 `acq`, `births_int_ch`).
 
 Let's adapt the input files accordingly. To keep things simple, we run the 
-projection for only one of the two nationalities. 
+projection for only one of the two nationalities. It goes without saying that using `propop::propop()` like this in real settings requires more preparation (e.g., determining a single value when parameters differ between Swiss and non-Swiss people).
 
 
 ``` {r prepare-single-nationality}
