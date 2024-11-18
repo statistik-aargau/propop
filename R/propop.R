@@ -509,7 +509,7 @@ propop <- function(
     "{.val {population |> dplyr:: summarise(sum(n, na.rm = TRUE)) |>
     dplyr::pull()}}")
   cli::cli_text(
-    "Projeciton period: ",
+    "Projection period: ",
     "{.val {year_first}}",
     "-",
     "{.val {year_last}}")
