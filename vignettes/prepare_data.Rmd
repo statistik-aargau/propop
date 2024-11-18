@@ -22,11 +22,14 @@ knitr::opts_chunk$set(
 
 # Overview
 
-This vignette shows how to obtain and prepare the relevant information to run
-population projections with the package `propop` at the level of a Canton.
+To run projections with `{propop}`, you need a starting population and 
+projection parameters. If you already have this information, you need to ensure that the input files have the required structure. If you don't have the relevant
+data, you can download them from the Federal Statistical Office (FSO). This vignette explains how to get the data. You'll also learn how to prepare the relevant information to run population projections `{propop}`.
 
-Most of the information and data required to run `propop::propop()` (or
-`propop::project_raw()`) can be downloaded from
+# Required data
+
+If you don't have the information and data required to run `propop::propop()` 
+(or `propop::project_raw()`), you can download most of the data from
 [STAT-TAB](https://www.pxweb.bfs.admin.ch/pxweb). More specifically, 
 the information from the following tables are needed:
 
