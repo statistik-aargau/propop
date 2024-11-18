@@ -499,5 +499,24 @@ propop <- function(
         dplyr::select(-nat)
     }
 
+  # Feedback about arguments used
+  cli::cli_h1("Settings used for the projection")
+  cli::cli_text(
+    "Year of starting population: ",
+    "{.val {min(as.numeric(as.character(population$year)))}}")
+  cli::cli_text(
+    "Projeciton period: ",
+    "{.val {year_first}}",
+    "-",
+    "{.val {year_last}}")
+  cli::cli_text(
+    "Nationality-specific projection: ",
+    "{.val {if (binational) 'yes' else 'no'}}")
+  cli::cli_text(
+    "Subregional migration: ",
+    "{.val {if (subregional) 'yes' else 'no'}}")
+  cli::cli_rule()
+
+
   return(projection_results)
 }
