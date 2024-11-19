@@ -601,20 +601,6 @@ test_that("Error when binational is FALSE but column `nat` is present", {
   )
 })
 
-test_that("Error when binational is not provided", {
-  expect_error(
-    propop(
-      parameters = fso_parameters,
-      year_first = 2019,
-      year_last = 2020,
-      fert_first = 16,
-      fert_last = 50,
-      share_born_female = 100 / 205,
-      population = fso_population,
-      subregional = FALSE
-    )
-  )
-})
 
 test_that("Error when only 1 nationality in parameters", {
   expect_error(

@@ -112,8 +112,8 @@ propop <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional,
-    binational,
+    subregional = FALSE,
+    binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
   # Only 1 year in population
