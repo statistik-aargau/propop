@@ -115,8 +115,8 @@ names, and factor levels need to match the specifications listed below under
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  share_born_female <span class="op">=</span> <span class="fl">100</span><span class="op">/</span><span class="fl">205</span>,</span>
-<span>  <span class="va">subregional</span>,</span>
-<span>  <span class="va">binational</span>,</span>
+<span>  subregional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  spatial_unit <span class="op">=</span> <span class="st">"spatial_unit"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -153,7 +153,8 @@ This argument is <b>optional.</b></p></li>
 <dt id="arg-population">population<a class="anchor" aria-label="anchor" href="#arg-population"></a></dt>
 <dd><p>data frame including the starting population of each
 demographic group. Possible values are the same as in <code>parameters</code> (apart
-from year).</p><ul><li><p><code>year</code> character, should be <code>year_first</code> - 1.</p></li>
+from year). The data frame only includes one year, usually the one preceding
+the first projected year.</p><ul><li><p><code>year</code> character, should be <code>year_first</code> - 1.</p></li>
 <li><p><code>spatial_unit</code> character.</p></li>
 <li><p><code>nat</code> character.</p></li>
 <li><p><code>sex</code> character.</p></li>
@@ -257,7 +258,7 @@ was run (e.g., canton, municipalities).</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Year of starting population: <span style="color: #0000BB;">2018</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Size of starting population: <span style="color: #0000BB;">678207</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Projection period: <span style="color: #0000BB;">2019</span>-<span style="color: #0000BB;">2022</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Size of population in last <span style="font-style: italic;">projected</span> year: <span style="color: #0000BB; font-style: italic;">712600</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">Projected</span> population size (<span style="color: #0000BB;">2022</span>): <span style="color: #0000BB; font-style: italic;">712600</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Nationality-specific projection: <span style="color: #0000BB;">"yes"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Subregional migration: <span style="color: #0000BB;">"no"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
