@@ -116,6 +116,18 @@ propop <- function(
     binational,
     spatial_unit = "spatial_unit") {
   # Check input ----
+  # Only 1 year in population
+  assertthat::assert_that(
+    length(unique(population$year)) == 1,
+    msg = paste0("The column `year` in `population` must only contain ",
+                 "one value (i.e., one year).")
+  )
+  # All requested years available in parameters
+  assertthat::assert_that(
+    all(year_first:year_last %in% parameters$year),
+    msg = paste0("Not all requested years (", year_first, "-", year_last,
+                 ") are available in `parameters`.")
+  )
 
   # Nationality
   # Case 1: Two groups in column `nat`
@@ -129,13 +141,6 @@ propop <- function(
     # Population
     assertthat::assert_that("nat" %in% names(population),
       msg = "Column `nat` is missing in `population`."
-    )
-
-    assertthat::assert_that(
-      length(unique(population$year)) == 1,
-      msg = paste0("The column `year` in `population` must only contain ",
-                   "one value (i.e., one year)."
-                   )
     )
 
 
