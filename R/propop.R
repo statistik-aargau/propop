@@ -48,7 +48,8 @@
 #'
 #' @param population data frame including the starting population of each
 #' demographic group. Possible values are the same as in `parameters` (apart
-#' from year).
+#' from year). The data frame only includes one year, usually the one preceding
+#' the first projected year.
 #'    * `year` character, should be `year_first` - 1.
 #'    * `spatial_unit` character.
 #'    * `nat` character.
@@ -129,6 +130,14 @@ propop <- function(
     assertthat::assert_that("nat" %in% names(population),
       msg = "Column `nat` is missing in `population`."
     )
+
+    assertthat::assert_that(
+      length(unique(population$year)) == 1,
+      msg = paste0("The column `year` in `population` must only contain ",
+                   "one value (i.e., one year)."
+                   )
+    )
+
 
     # Check factor levels for nationality
     # Parameters
@@ -514,7 +523,8 @@ propop <- function(
     "-",
     "{.val {year_last}}")
   cli::cli_text(
-    "Size of population in last {.emph projected} year: ",
+    "{.emph Projected} population size (",
+    "{.val {year_last}}): ",
     "{.emph {.val {projection_results |>
     dplyr::filter(year == year_last) |>
     dplyr:: summarise(sum(n, na.rm = TRUE)) |>

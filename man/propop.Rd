@@ -46,7 +46,8 @@ This argument is \bold{optional.}
 
 \item{population}{data frame including the starting population of each
 demographic group. Possible values are the same as in \code{parameters} (apart
-from year).
+from year). The data frame only includes one year, usually the one preceding
+the first projected year.
 \itemize{
 \item \code{year} character, should be \code{year_first} - 1.
 \item \code{spatial_unit} character.
