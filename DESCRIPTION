@@ -48,6 +48,7 @@ Depends:
     R (>= 2.10)
 Imports: 
     assertthat,
+    BFS,
     cli,
     dplyr,
     Matrix,
@@ -55,7 +56,6 @@ Imports:
     tibble,
     tidyr
 Suggests: 
-    BFS,
     constructive (>= 1.0.1),
     devtools,
     DT,
