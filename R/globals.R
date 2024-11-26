@@ -34,13 +34,18 @@ utils::globalVariables(c(
   "Altersklasse", # <get_parameters>
   "Kanton", # <get_parameters>
   "year", # <get_parameters>
-  "births_int_ch", # <get_parameters>
+  "int_mothers", # <get_parameters>
   "value", # <get_parameters>
-  "interc_imm", # <get_parameters>
-  "interc_emi", # <get_parameters>
+  "imm_nat_n", # <get_parameters>
+  "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
-  "birth_rate", # <get_parameters>
-  "intercant", # <get_parameters>
+  "birthrate", # <get_parameters>
+  "mor", # <get_parameters>
+  "emi_int", # <get_parameters>
+  "emi_nat", # <get_parameters>
+  "acq", # <get_parameters>
+  "imm_int_n", # <get_parameters>
+  "mig_nat_n", # <get_parameters>
   "emi_n", # <get_parameters>
   "valueTexts", # <get_population>
   "values", # <get_population>
@@ -63,7 +68,7 @@ utils::globalVariables(c(
   "age", # <project_raw>
   "spatial_unit", # <project_raw>
   "scen", # <project_raw>
-  "birth_rate", # <project_raw>
+  "birthrate", # <project_raw>
   "parameter", # <project_raw>
   "sex", # <project_raw>
   "nat", # <project_raw>

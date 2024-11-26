@@ -30,15 +30,15 @@ with multiple scenarios (r = reference, l = low growth, h = high growth).
 \item \code{nat}, character, OPTIONAL; nationality (ch = Swiss; int = foreign/international).
 \item \code{sex}, character (f = female, m = male).
 \item \code{age}, numeric, typically ranging from 0 to 100 (incl. >100).
-\item \code{birth_rate}, numeric, number of children per year.
-\item \code{births_int_ch}, numeric, OPTIONAL; proportion of children with Swiss nationality
+\item \code{birthrate}, numeric, number of children per year.
+\item \code{int_mothers}, numeric, OPTIONAL; proportion of children with Swiss nationality
 born to non-Swiss mothers.
 \item \code{mor}, numeric, prospective mortality rate (probability of death).
 \item \code{acq}, numeric, OPTIONAL; rate of acquisition of Swiss citizenship.
-\item \code{emi}, numeric, rate of people emigrating abroad.
-\item \code{mig_ch}, numeric, national / inter-cantonal net migration
+\item \code{emi_int}, numeric, rate of people emigrating abroad.
+\item \code{mig_nat_n}, numeric, national / inter-cantonal net migration
 (number of immigrants - number of emigrants).
-\item \code{imm_int}, numeric, number of people immigrating from abroad.
+\item \code{imm_int_n}, numeric, number of people immigrating from abroad.
 \item \code{mig_sub}, numeric, within canton net migration. Useful to account
 for movements between different subregions (e.g., municipalities).
 This argument is \bold{optional.}

@@ -3,7 +3,8 @@
 #' @description Data frame containing the population projections from the
 #' Federal Statistical Office (FSO) for four demographic groups for the canton
 #' of Aargau. The projections are from the model published in 2020. The sample
-#' data only include the reference scenario and the years 2019-2030.
+#' data only include the reference scenario and the years 2019-2030. Projections
+#' may be obtained for other spatial units using the function `get_parameters`.
 #'
 #' @name fso_projections
 #'

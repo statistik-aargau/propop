@@ -9,11 +9,11 @@
 #' on the level of cantons. For smaller-scale projections, the parameters must
 #' be scaled down.
 #' In addition to the parameters, the function also returns the projected
-#' population (i.e., number of expected people).
+#' population (i.e., number of people estimated in the FSO model released in 2020).
 #' All parameters and projections are from the
 #' [FSO model published in 2020](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
-#' The variables `births_int_ch` and `mig_ch` are not directly available from
-#' the FSO. They are calculated by the function.
+#' The variables `int_mothers` and `mig_nat_n` are not directly available from
+#' the FSO. They are calculated within this function.
 #'
 #' To get projection parameters, you must use the spelling defined in the
 #' corresponding FSO table. See
@@ -42,15 +42,27 @@
 #' The following parameters are included in the returned data frame:
 #'    * `year`: character, year of projection.
 #'    * `scen`: character, projection scenario.
-#'    * `birth_rate`: numeric, number of children per year.
-#'    * `births_int_ch`: numeric, proportion of children with Swiss nationality
-#'       born to non-Swiss mothers.
+#'    * `birthrate`: numeric, total number of live human births per 1,000
+#'      inhabitants.
+#'      (formerly `birth_rate`).
+#'    * `int_mothers`: numeric, proportion of children with Swiss nationality
+#'       born to non-Swiss mothers
+#'       (formerly `births_int_ch`).
 #'    * `mor`: numeric, prospective mortality (probability of death).
-#'    * `emi`: numeric, rate of people emigrating abroad.
+#'    * `emi_int`: numeric, rate of people emigrating to other countries
+#'      (formerly `emi`).
+#'    * `emi_nat`: numeric, rate of people emigrating to other cantons
+#'      (new parameter).
 #'    * `acq`: numeric, rate of acquisition of Swiss citizenship.
-#'    * `imm_int`: numeric, number of people immigrating from abroad.
-#'    * `mig_ch`: numeric, national / inter-cantonal net migration
+#'    * `imm_int_n`: numeric, number of people immigrating from abroad
+#'      (formelry `imm_int`).
+#'    * `imm_nat_n`: numeric, number of people immgrating from other cantons
+#'      (new parameter).
+#'    * `emi_nat_n`: numeric, number of people emigrating to other cantons
+#'      (parameter previously used to compute `mig_nat_n`).
+#'    * `mig_nat_n`: numeric, national / inter-cantonal net migration
 #'      (number of immigrants minus number of emigrants).
+#'      (formerly `mig_ch`, will soon be obsolete and removed).
 #'    * `spatial_unit`: character, indicating the user requested spatial
 #'      unit(s).
 #'
@@ -706,7 +718,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   # Merge data frames containing numbers and rates ----
   projection_parameters <- dplyr::full_join(fso_rates, fso_numbers) |>
     tidyr::pivot_wider(names_from = fso_parameter, values_from = value) |>
-    dplyr::mutate(mig_nat_net = imm_nat_n - emi_nat_n) |>
+    dplyr::mutate(mig_nat_n = imm_nat_n - emi_nat_n) |>
     dplyr::left_join(fso_int_mothers, by = c("Kanton", "year", "scen")) |>
     dplyr::arrange(year)
 
@@ -718,7 +730,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::select(
       nat, sex, age, year, scen, birthrate, int_mothers,
       mor, emi_int, emi_nat, acq,
-      imm_int_n, imm_nat_n, emi_nat_n, mig_nat_net,
+      imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n,
       -c(Kanton, emi_n)
     )
 

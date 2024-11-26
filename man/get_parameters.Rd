@@ -66,11 +66,11 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of expected people).
+population (i.e., number of people estimated in the FSO model released in 2020).
 All parameters and projections are from the
 \href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2020}.
-The variables \code{births_int_ch} and \code{mig_ch} are not directly available from
-the FSO. They are calculated by the function.
+The variables \code{int_mothers} and \code{mig_nat_n} are not directly available from
+the FSO. They are calculated within this function.
 
 To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
@@ -98,15 +98,27 @@ The following parameters are included in the returned data frame:
 \itemize{
 \item \code{year}: character, year of projection.
 \item \code{scen}: character, projection scenario.
-\item \code{birth_rate}: numeric, number of children per year.
-\item \code{births_int_ch}: numeric, proportion of children with Swiss nationality
-born to non-Swiss mothers.
+\item \code{birthrate}: numeric, total number of live human births per 1,000
+inhabitants.
+(formerly \code{birth_rate}).
+\item \code{int_mothers}: numeric, proportion of children with Swiss nationality
+born to non-Swiss mothers
+(formerly \code{births_int_ch}).
 \item \code{mor}: numeric, prospective mortality (probability of death).
-\item \code{emi}: numeric, rate of people emigrating abroad.
+\item \code{emi_int}: numeric, rate of people emigrating to other countries
+(formerly \code{emi}).
+\item \code{emi_nat}: numeric, rate of people emigrating to other cantons
+(new parameter).
 \item \code{acq}: numeric, rate of acquisition of Swiss citizenship.
-\item \code{imm_int}: numeric, number of people immigrating from abroad.
-\item \code{mig_ch}: numeric, national / inter-cantonal net migration
+\item \code{imm_int_n}: numeric, number of people immigrating from abroad
+(formelry \code{imm_int}).
+\item \code{imm_nat_n}: numeric, number of people immgrating from other cantons
+(new parameter).
+\item \code{emi_nat_n}: numeric, number of people emigrating to other cantons
+(parameter previously used to compute \code{mig_nat_n}).
+\item \code{mig_nat_n}: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
+(formerly \code{mig_ch}, will soon be obsolete and removed).
 \item \code{spatial_unit}: character, indicating the user requested spatial
 unit(s).
 }
