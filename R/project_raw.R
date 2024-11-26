@@ -661,6 +661,50 @@ project_raw <-
         )
       )
 
+      #### Mortality matrix ----
+      D <-
+        create_mortality_matrix(
+          n_age_class = age_groups,
+          mor_ch_f = mor_ch_f,
+          mor_ch_m = mor_ch_m,
+          mor_int_f = mor_int_f,
+          mor_int_m = mor_int_m,
+          emi_ch_f = emi_ch_f,
+          emi_ch_m = emi_ch_m,
+          emi_int_f = emi_int_f,
+          emi_int_m = emi_int_m,
+          acq_int_f = acq_int_f,
+          acq_int_m = acq_int_m
+        )
+      assertthat::assert_that(unique(dim(D)) == length_pop_vec,
+                              msg = paste0(
+                                "Mortality matrix dimensions are not equal to the length of",
+                                " the population vector."
+                              )
+      )
+
+
+      #### Birth matrix ----
+      B <-
+        create_birth_matrix(
+          fert_first = fert_first,
+          fert_last = fert_last,
+          fert_length = fert_length,
+          n_age_class = age_groups,
+          share_born_female = share_born_female,
+          birth_rate_ch = birth_rate_ch,
+          birth_rate_int = birth_rate_int,
+          births_int_ch = births_int_ch
+        )
+      assertthat::assert_that(unique(dim(B)) == length_pop_vec,
+                              msg = paste0(
+                                "Birth matrix dimensions are not equal to the length of",
+                                " the population vector."
+                              )
+      )
+
+
+
       ### Build vectors ----
       #### Mortality ----
       # Vector for 1-100
@@ -698,6 +742,7 @@ project_raw <-
       assertthat::assert_that(unique(!is.na(MOR0_vec)),
         msg = "Mortality vector `MOR0_vec` contains NAs."
       )
+
 
 
       #### International immigration ----
@@ -796,6 +841,102 @@ project_raw <-
         )
       }
 
+      #### Aux ----
+
+      #### Death ----
+      # Vector for newborns
+      D0_vec <-
+        c(
+          mor_ch_m_0 - (emi_ch_m_0 * ((2 / 3) * mor_ch_m_0)), zeros,
+          mor_ch_f_0 - (emi_ch_f_0 * ((2 / 3) * mor_ch_f_0)), zeros,
+          mor_int_m_0 - ((emi_int_m_0 + acq_int_m_0) * ((2 / 3) * mor_int_m_0)),
+          zeros,
+          mor_int_f_0 - ((emi_int_f_0 + acq_int_f_0) * ((2 / 3) * mor_int_f_0)),
+          zeros
+        )
+      assertthat::assert_that(length(D0_vec) == length_pop_vec,
+                              msg = paste0(
+                                "`D0_vec` vector length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(unique(!is.na(D0_vec)),
+                              msg = "Death vector `D0_vec` contains NAs."
+      )
+
+      #### Migration ----
+      # Vector for 1-100
+      EMI_vec <-
+        c(
+          emi_ch_m,
+          emi_ch_f,
+          emi_int_m,
+          emi_int_f
+        )
+      assertthat::assert_that(length(EMI_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Migration vector `EMI_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(
+        unique(!is.na(EMI_vec)),
+        msg = "Migration vector `EMI_vec` contains NAs."
+      )
+
+      # Vector for newborns
+      EMI0_vec <-
+        c(
+          emi_ch_m_0, zeros,
+          emi_ch_f_0, zeros,
+          emi_int_m_0, zeros,
+          emi_int_f_0, zeros
+        )
+      assertthat::assert_that(length(EMI0_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Migration vector `EMI0_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(unique(!is.na(EMI0_vec)),
+                              msg = "Migration vector `EMI0_vec` contains NAs."
+      )
+
+      #### Acquisition of the Swiss citizenship ----
+      # Vector for 1-100
+      ACQ_vec <-
+        c(
+          rep(0, 2 * age_groups),
+          acq_int_m,
+          acq_int_f
+        )
+      assertthat::assert_that(length(ACQ_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Emigration vector `ACQ_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(unique(!is.na(ACQ_vec)),
+                              msg = "Emigration vector `ACQ_vec` contains NAs."
+      )
+
+      # Vector for newborns
+      ACQ0_vec <-
+        c(
+          rep(0, 2 * age_groups),
+          acq_int_m_0, zeros,
+          acq_int_f_0, zeros
+        )
+      assertthat::assert_that(length(ACQ0_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Emigration vector `ACQ0_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(unique(!is.na(ACQ0_vec)),
+                              msg = "Emigration vector `ACQ0_vec` contains NAs."
+      )
+
 
       ### Projection ----
       # Population vector at time step n excluding the newborns:
@@ -862,6 +1003,142 @@ project_raw <-
       assertthat::assert_that(any(!is.na(n)),
         msg = "Result matrix `n` contains NAs."
       )
+
+
+      ### Auxiliary parameters ----
+      # These auxiliary parameters are calculated to generate explanatory
+      # data columns, in addition to the projected number of people,
+      # in the projection output table
+
+      #### Projected number of births ----
+      BIRTHS[first_pos:last_pos] <-
+        B %*% ((1 / 2) * (Nn100 + Nminus1))
+      assertthat::assert_that(length(BIRTHS) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `BIRTHS` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(BIRTHS)),
+                              msg = "Auxiliary vector `BIRTHS` contains NAs."
+      )
+
+      #### Projected number of deaths ----
+      # People older than 0 years
+      MOR100 <-
+        D %*% n[first_pos:last_pos] +
+        IMM_INT[first_pos:last_pos] * MOR_vec / 2 +
+        MIG_CH[first_pos:last_pos] * MOR_vec / 2
+      assertthat::assert_that(length(MOR100) == length_pop_vec,
+                              msg = paste0(
+                                "Auxiliary vector `MOR100` length for people aged 1-100 is not equal",
+                                " to the length of the population vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(MOR100)),
+                              msg = "Auxiliary vector `MOR100` contains NAs."
+      )
+
+      # Children aged zero years
+      MOR0 <-
+        D0_vec * BIRTHS[first_pos:last_pos] +
+        IMM_INT0[first_pos:last_pos] * ((2 / 3) * MOR0_vec) +
+        MIG_CH0[first_pos:last_pos] * ((2 / 3) * MOR0_vec)
+      assertthat::assert_that(length(MOR0) == length_pop_vec,
+                              msg = paste0(
+                                "Auxiliary vector `MOR0` length for children aged zero is not equal",
+                                " to the length of the population vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(MOR0)),
+                              msg = "Auxiliary vector `MOR0` contains NAs."
+      )
+
+      # People older than 0 years + children aged zero years
+      MOR[first_pos:last_pos] <-
+        MOR100 + MOR0
+      assertthat::assert_that(length(MOR) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `MOR` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+
+      #### Projected international migration ----
+      # People older than 0 years + children aged zero years
+      EMI_INT[first_pos:last_pos] <-
+        c(
+          0,
+          EMI_vec[(1):(age_groups - 1)],
+          0,
+          EMI_vec[(age_groups + 1):(age_groups * 2 - 1)],
+          0,
+          EMI_vec[(age_groups * 2 + 1):(age_groups * 3 - 1)],
+          0,
+          EMI_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
+        ) *
+        Nminus1
+      assertthat::assert_that(length(EMI_INT) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `EMI_INT` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(EMI_INT)),
+                              msg = "Auxiliary vector `EMI_INT` contains NAs."
+      )
+
+      # Children aged zero years
+      EMI_INT0[first_pos:last_pos] <-
+        EMI0_vec * BIRTHS[first_pos:last_pos]
+      assertthat::assert_that(length(EMI_INT0) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `EMI_INT0` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(EMI_INT0)),
+                              msg = "Auxiliary vector `EMI_INT0` contains NAs."
+      )
+
+
+      #### Projected acquisition of the Swiss citizenship ----
+      # People older than 0 years + children aged zero years
+      ACQ[first_pos:last_pos] <-
+        c(
+          0,
+          ACQ_vec[(1):(age_groups - 1)],
+          0,
+          ACQ_vec[(age_groups + 1):(age_groups * 2 - 1)],
+          0,
+          ACQ_vec[(age_groups * 2 + 1):(age_groups * 3 - 1)],
+          0,
+          ACQ_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
+        ) *
+        Nminus1
+      assertthat::assert_that(length(ACQ) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `ACQ` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(ACQ)),
+                              msg = "Auxiliary vector `ACQ` contains NAs."
+      )
+
+      # Children aged zero years
+      ACQ0[first_pos:last_pos] <-
+        ACQ0_vec * BIRTHS[first_pos:last_pos]
+      assertthat::assert_that(length(ACQ0) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `ACQ0` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(ACQ0)),
+                              msg = "Auxiliary vector `ACQ0` contains NAs."
+      )
+
     }
 
     # Feedback if non-standard values are used
