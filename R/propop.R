@@ -39,9 +39,10 @@
 #'    * `mor`, numeric, prospective mortality rate (probability of death).
 #'    * `acq`, numeric, OPTIONAL; rate of acquisition of Swiss citizenship.
 #'    * `emi_int`, numeric, rate of people emigrating abroad.
-#'    * `mig_nat_n`, numeric, national / inter-cantonal net migration
 #'    (number of immigrants - number of emigrants).
+#'    * `emi_nat`: rate of people emigrating to other cantons.
 #'    * `imm_int_n`, numeric, number of people immigrating from abroad.
+#'    * `imm_nat_n`: number of people immigrating from other cantons.
 #'    * `mig_sub`, numeric, within canton net migration. Useful to account
 #'    for movements between different subregions (e.g., municipalities).
 #'    This argument is \bold{optional.}
@@ -215,13 +216,18 @@ propop <- function(
       tidyr::expand(tidyr::nesting(!!!syms(names(parameters))), rep = 1:2) |>
       mutate(nat = ifelse(rep == 2, "int", "ch")) |>
       # set all values for "int" at zero
-      mutate(across(birthrate:mig_nat_n, ~if_else(nat == "int", 0, .x))) |>
+      mutate(across(any_of(
+        c("birthrate", "int_mothers", "mor", "emi_int", "emi_nat", "acq",
+          "imm_int_n", "imm_nat_n", "mig_sub"
+        )), ~if_else(nat == "int", 0, .x))
+      ) |>
       # add remaining columns `acq` and `int_mothers`
       dplyr::mutate(acq = 0, int_mothers = 0) |>
       # arrange the data
       select(any_of(c(
         "nat", "sex", "age", "year", "scen", "birthrate", "int_mothers",
-        "mor", "emi_int", "acq", "imm_int_n", "mig_nat_n", "mig_sub", "spatial_unit"
+        "mor", "emi_int", "emi_nat", "acq", "imm_int_n", "imm_nat_n",
+        "mig_sub", "spatial_unit"
       ))) |>
       arrange(nat, desc(sex), year, spatial_unit)
 
@@ -266,11 +272,14 @@ propop <- function(
   assertthat::assert_that("emi_int" %in% names(parameters),
     msg = "Column `emi_int` is missing in parameters."
   )
+  assertthat::assert_that("emi_nat" %in% names(parameters),
+    msg = "Column `emi_nat` is missing in parameters."
+  )
   assertthat::assert_that("imm_int_n" %in% names(parameters),
     msg = "Column `imm_int_n` is missing in parameters."
   )
-  assertthat::assert_that("mig_nat_n" %in% names(parameters),
-    msg = "Column `mig_nat_n` is missing in parameters."
+  assertthat::assert_that("imm_nat_n" %in% names(parameters),
+    msg = "Column `imm_nat_n` is missing in parameters."
   )
   assertthat::assert_that("spatial_unit" %in% names(parameters),
     msg = paste0(
