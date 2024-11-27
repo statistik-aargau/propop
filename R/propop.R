@@ -552,7 +552,7 @@ propop <- function(
   cli::cli_rule()
 
 
-  population |> dplyr::summarize(n, .by = year)
+  population |> dplyr::reframe(n, .by = year)
 
   return(projection_results)
 }
