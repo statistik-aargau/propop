@@ -85,13 +85,13 @@ create_transition_matrix <-
     )
     # Create vectors ----------------------------------------------------------
     # Swiss male to Swiss male
-    ch_m_ch_m <- (1 - mor_ch_m) - (emi_int_ch_m + emi_nat_ch_m) * (1 - mor_ch_m / 2)
+    ch_m_ch_m <- (1 - mor_ch_m) - ((emi_int_ch_m + emi_nat_ch_m) * (1 - mor_ch_m / 2))
 
     # Foreign male to Swiss male
     int_m_ch_m <- acq_int_m * (1 - mor_ch_m / 2)
 
     # Swiss female to Swiss female
-    ch_f_ch_f <- (1 - mor_ch_f) - (emi_int_ch_f + emi_nat_ch_f) * (1 - mor_ch_f / 2)
+    ch_f_ch_f <- (1 - mor_ch_f) - ((emi_int_ch_f + emi_nat_ch_f) * (1 - mor_ch_f / 2))
 
     # Foreign female to Swiss female
     int_f_ch_f <- acq_int_f * (1 - mor_ch_f / 2)
