@@ -520,7 +520,14 @@ propop <- function(
       projection_results <- projection_results |>
         dplyr::filter(nat != "int") |>
         dplyr::select(-nat)
-    }
+  }
+
+  # Format output if subregional == FALSE
+  if (subregional == FALSE) {
+    # remove the `mig_sub`column (otherwise is filled with zeros if present)
+    projection_results <- projection_results |>
+      dplyr::select(-any_of(c("mig_sub", "acq")))
+  }
 
   # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
