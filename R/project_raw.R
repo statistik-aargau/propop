@@ -84,7 +84,7 @@
 #'    * `emi_int`: rate of people emigrating abroad.
 #'    * `emi_nat`: rate of people emigrating to other cantons.
 #'    * `imm_int_n`: number of people immigrating from abroad.
-#'    * `imm_int_n`: number of people immigrating from other cantons.
+#'    * `imm_nat_n`: number of people immigrating from other cantons.
 #'    * `mig_sub`: within canton net migration. Useful to account for movements
 #'       between different subregions (e.g., municipalities). This argument is
 #'       \bold{optional.}
@@ -351,11 +351,15 @@ project_raw <-
     MIG_SUB <- empty_vector_0
     MIG_SUB0 <- empty_vector_0
 
-    # international emigrants
+    # International emigrants
     EMI_INT <- empty_vector_NA
     EMI_INT0 <- empty_vector_NA
 
-    # naturalization
+    # Emigrants to other cantons
+    EMI_NAT <- empty_vector_NA
+    EMI_NAT0 <- empty_vector_NA
+
+    # Naturalization
     ACQ <- empty_vector_NA
     ACQ0 <- empty_vector_NA
 
@@ -363,7 +367,7 @@ project_raw <-
     # death
     MOR <- empty_vector_NA
 
-    # birth
+    # Birth
     BIRTHS <- empty_vector_NA
 
 
@@ -669,10 +673,14 @@ project_raw <-
           mor_ch_m = mor_ch_m,
           mor_int_f = mor_int_f,
           mor_int_m = mor_int_m,
-          emi_ch_f = emi_ch_f,
-          emi_ch_m = emi_ch_m,
-          emi_int_f = emi_int_f,
-          emi_int_m = emi_int_m,
+          emi_int_ch_f = emi_int_ch_f,
+          emi_int_ch_m = emi_int_ch_m,
+          emi_int_int_f = emi_int_int_f,
+          emi_int_int_m = emi_int_int_m,
+          emi_nat_ch_f = emi_nat_ch_f,
+          emi_nat_ch_m = emi_nat_ch_m,
+          emi_nat_int_f = emi_nat_int_f,
+          emi_nat_int_m = emi_nat_int_m,
           acq_int_f = acq_int_f,
           acq_int_m = acq_int_m
         )
@@ -692,9 +700,9 @@ project_raw <-
           fert_length = fert_length,
           n_age_class = age_groups,
           share_born_female = share_born_female,
-          birth_rate_ch = birth_rate_ch,
-          birth_rate_int = birth_rate_int,
-          births_int_ch = births_int_ch
+          birthrate_ch = birthrate_ch,
+          birthrate_int = birthrate_int,
+          int_mothers = int_mothers
         )
       assertthat::assert_that(unique(dim(B)) == length_pop_vec,
         msg = paste0(
@@ -847,11 +855,11 @@ project_raw <-
       # Vector for newborns
       D0_vec <-
         c(
-          mor_ch_m_0 - (emi_ch_m_0 * ((2 / 3) * mor_ch_m_0)), zeros,
-          mor_ch_f_0 - (emi_ch_f_0 * ((2 / 3) * mor_ch_f_0)), zeros,
-          mor_int_m_0 - ((emi_int_m_0 + acq_int_m_0) * ((2 / 3) * mor_int_m_0)),
+          mor_ch_m_0 - ((emi_int_ch_m_0 + emi_nat_ch_m_0) * ((2 / 3) * mor_ch_m_0)), zeros,
+          mor_ch_f_0 - ((emi_int_ch_f_0 + emi_nat_ch_f_0) * ((2 / 3) * mor_ch_f_0)), zeros,
+          mor_int_m_0 - ((emi_int_int_m_0 + acq_int_m_0 + emi_nat_int_m_0) * ((2 / 3) * mor_int_m_0)),
           zeros,
-          mor_int_f_0 - ((emi_int_f_0 + acq_int_f_0) * ((2 / 3) * mor_int_f_0)),
+          mor_int_f_0 - ((emi_int_int_f_0 + acq_int_f_0 + emi_nat_int_f_0) * ((2 / 3) * mor_int_f_0)),
           zeros
         )
       assertthat::assert_that(length(D0_vec) == length_pop_vec,
@@ -864,42 +872,80 @@ project_raw <-
         msg = "Death vector `D0_vec` contains NAs."
       )
 
-      #### Migration ----
+      #### International emigration ----
       # Vector for 1-100
-      EMI_vec <-
+      EMI_INT_vec <-
         c(
-          emi_ch_m,
-          emi_ch_f,
-          emi_int_m,
-          emi_int_f
+          emi_int_ch_f,
+          emi_int_ch_m,
+          emi_int_int_f,
+          emi_int_int_m
         )
-      assertthat::assert_that(length(EMI_vec) == length_pop_vec,
+      assertthat::assert_that(length(EMI_INT_vec) == length_pop_vec,
         msg = paste0(
-          "Migration vector `EMI_vec` length is not equal to the length of",
+          "Migration vector `EMI_INT_vec` length is not equal to the length of",
           " the population vector."
         )
       )
       assertthat::assert_that(
-        unique(!is.na(EMI_vec)),
-        msg = "Migration vector `EMI_vec` contains NAs."
+        unique(!is.na(EMI_INT_vec)),
+        msg = "Migration vector `EMI_INT_vec` contains NAs."
       )
 
       # Vector for newborns
-      EMI0_vec <-
+      EMI_INT0_vec <-
         c(
-          emi_ch_m_0, zeros,
-          emi_ch_f_0, zeros,
-          emi_int_m_0, zeros,
-          emi_int_f_0, zeros
+          emi_int_ch_f_0, zeros,
+          emi_int_ch_m_0, zeros,
+          emi_int_int_f_0, zeros,
+          emi_int_int_m_0, zeros
         )
-      assertthat::assert_that(length(EMI0_vec) == length_pop_vec,
+      assertthat::assert_that(length(EMI_INT0_vec) == length_pop_vec,
         msg = paste0(
-          "Migration vector `EMI0_vec` length is not equal to the length of",
+          "Migration vector `EMI_INT0_vec` length is not equal to the length of",
           " the population vector."
         )
       )
-      assertthat::assert_that(unique(!is.na(EMI0_vec)),
-        msg = "Migration vector `EMI0_vec` contains NAs."
+      assertthat::assert_that(unique(!is.na(EMI_INT0_vec)),
+        msg = "Migration vector `EMI_INT0_vec` contains NAs."
+      )
+
+      #### Emigration to other cantons ----
+      # Vector for 1-100
+      EMI_NAT_vec <-
+        c(
+          emi_nat_ch_f,
+          emi_nat_ch_m,
+          emi_nat_int_f,
+          emi_nat_int_m
+        )
+      assertthat::assert_that(length(EMI_NAT_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Migration vector `EMI_NAT_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(
+        unique(!is.na(EMI_INT_vec)),
+        msg = "Migration vector `EMI_NAT_vec` contains NAs."
+      )
+
+      # Vector for newborns
+      EMI_NAT0_vec <-
+        c(
+          emi_nat_ch_f_0, zeros,
+          emi_nat_ch_m_0, zeros,
+          emi_nat_int_f_0, zeros,
+          emi_nat_int_m_0, zeros
+        )
+      assertthat::assert_that(length(EMI_NAT0_vec) == length_pop_vec,
+                              msg = paste0(
+                                "Migration vector `EMI_NAT0_vec` length is not equal to the length of",
+                                " the population vector."
+                              )
+      )
+      assertthat::assert_that(unique(!is.na(EMI_NAT0_vec)),
+                              msg = "Migration vector `EMI_NAT0_vec` contains NAs."
       )
 
       #### Acquisition of the Swiss citizenship ----
@@ -1028,7 +1074,7 @@ project_raw <-
       MOR100 <-
         D %*% n[first_pos:last_pos] +
         IMM_INT[first_pos:last_pos] * MOR_vec / 2 +
-        MIG_CH[first_pos:last_pos] * MOR_vec / 2
+        IMM_NAT[first_pos:last_pos] * MOR_vec / 2
       assertthat::assert_that(length(MOR100) == length_pop_vec,
         msg = paste0(
           "Auxiliary vector `MOR100` length for people aged 1-100 is not equal",
@@ -1043,7 +1089,7 @@ project_raw <-
       MOR0 <-
         D0_vec * BIRTHS[first_pos:last_pos] +
         IMM_INT0[first_pos:last_pos] * ((2 / 3) * MOR0_vec) +
-        MIG_CH0[first_pos:last_pos] * ((2 / 3) * MOR0_vec)
+        IMM_NAT0[first_pos:last_pos] * ((2 / 3) * MOR0_vec)
       assertthat::assert_that(length(MOR0) == length_pop_vec,
         msg = paste0(
           "Auxiliary vector `MOR0` length for children aged zero is not equal",
@@ -1064,18 +1110,18 @@ project_raw <-
         )
       )
 
-      #### Projected international migration ----
+      #### Projected international emigration ----
       # People older than 0 years + children aged zero years
       EMI_INT[first_pos:last_pos] <-
         c(
           0,
-          EMI_vec[(1):(age_groups - 1)],
+          EMI_INT_vec[(1):(age_groups - 1)],
           0,
-          EMI_vec[(age_groups + 1):(age_groups * 2 - 1)],
+          EMI_INT_vec[(age_groups + 1):(age_groups * 2 - 1)],
           0,
-          EMI_vec[(age_groups * 2 + 1):(age_groups * 3 - 1)],
+          EMI_INT_vec[(age_groups * 2 + 1):(age_groups * 3 - 1)],
           0,
-          EMI_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
+          EMI_INT_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
         ) *
           Nminus1
       assertthat::assert_that(length(EMI_INT) == length(empty_vector_NA),
@@ -1090,7 +1136,7 @@ project_raw <-
 
       # Children aged zero years
       EMI_INT0[first_pos:last_pos] <-
-        EMI0_vec * BIRTHS[first_pos:last_pos]
+        EMI_INT0_vec * BIRTHS[first_pos:last_pos]
       assertthat::assert_that(length(EMI_INT0) == length(empty_vector_NA),
         msg = paste0(
           "Auxiliary vector `EMI_INT0` is not equal to the length of",
@@ -1099,6 +1145,44 @@ project_raw <-
       )
       assertthat::assert_that(any(!is.na(EMI_INT0)),
         msg = "Auxiliary vector `EMI_INT0` contains NAs."
+      )
+
+
+      #### Projected emigration to other cantons ----
+      # People older than 0 years + children aged zero years
+      EMI_NAT[first_pos:last_pos] <-
+        c(
+          0,
+          EMI_NAT_vec[(1):(age_groups - 1)],
+          0,
+          EMI_NAT_vec[(age_groups + 1):(age_groups * 2 - 1)],
+          0,
+          EMI_NAT_vec[(age_groups * 2 + 1):(age_groups * 3 - 1)],
+          0,
+          EMI_NAT_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
+        ) *
+        Nminus1
+      assertthat::assert_that(length(EMI_NAT) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `EMI_NAT` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(EMI_NAT)),
+                              msg = "Auxiliary vector `EMI_NAT` contains NAs."
+      )
+
+      # Children aged zero years
+      EMI_NAT0[first_pos:last_pos] <-
+        EMI_NAT0_vec * BIRTHS[first_pos:last_pos]
+      assertthat::assert_that(length(EMI_NAT0) == length(empty_vector_NA),
+                              msg = paste0(
+                                "Auxiliary vector `EMI_NAT0` is not equal to the length of",
+                                " the pre-defined empty vector."
+                              )
+      )
+      assertthat::assert_that(any(!is.na(EMI_NAT0)),
+                              msg = "Auxiliary vector `EMI_NAT0` contains NAs."
       )
 
 
@@ -1178,19 +1262,21 @@ project_raw <-
     data.frame(
       # pop size
       N = n,
-      # nbr international immigrants
-      IMM_INT = IMM_INT + IMM_INT0,
-      # cantonal migration saldo
-      IMM_NAT = IMM_NAT + IMM_NAT0,
-      # intracantonal migration saldo
-      MIG_SUB = MIG_SUB + MIG_SUB0,
-      # nbr of death older than 0
+      # number of births
+      BIRTHS = BIRTHS,
+      # number of deaths of people older than 0
       MOR = MOR,
-      # international emmigrants
+      # number of international emigrants
       EMI_INT = EMI_INT + EMI_INT0,
-      # nbr of naturalisation
+      # number of emigrants to other countries
+      EMI_NAT = EMI_NAT + EMI_NAT0,
+      # number of international immigrants
+      IMM_INT = IMM_INT + IMM_INT0,
+      # number of immigrants from other cantons
+      IMM_NAT = IMM_NAT + IMM_NAT0,
+      # number of citizens by naturalization
       ACQ = ACQ + ACQ0,
-      # BIRTHS
-      BIRTHS = BIRTHS
+      # intracantonal migration saldo
+      MIG_SUB = MIG_SUB + MIG_SUB0
     )
   }

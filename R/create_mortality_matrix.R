@@ -9,10 +9,14 @@
 #' @param mor_ch_m numeric, mortality of Swiss males.
 #' @param mor_int_f numeric, mortality of foreign females.
 #' @param mor_int_m numeric, mortality of foreign males.
-#' @param emi_ch_f numeric, emigration of Swiss females.
-#' @param emi_ch_m numeric, emigration of Swiss males.
-#' @param emi_int_f numeric, emigration of foreign females.
-#' @param emi_int_m numeric, emigration of foreign males.
+#' @param emi_int_ch_f numeric, international emigration of Swiss females.
+#' @param emi_int_ch_m numeric, international emigration of Swiss males.
+#' @param emi_int_int_f numeric, international emigration of foreign females.
+#' @param emi_int_int_m numeric, international emigration of foreign males.
+#' @param emi_nat_ch_f numeric, emigration to other cantons of Swiss females.
+#' @param emi_nat_ch_m numeric, emigration to other cantons of Swiss males.
+#' @param emi_nat_int_f numeric, emigration to other cantons of foreign females.
+#' @param emi_nat_int_m numeric, emigration to other cantons of foreign males.
 #' @param acq_int_f numeric, acquisition of Swiss citizenship by foreign females.
 #' @param acq_int_m numeric, acquisition of Swiss citizenship of foreign males.
 #'
@@ -24,10 +28,14 @@ create_mortality_matrix <-
            mor_ch_m,
            mor_int_f,
            mor_int_m,
-           emi_ch_f,
-           emi_ch_m,
-           emi_int_f,
-           emi_int_m,
+           emi_int_ch_f,
+           emi_int_ch_m,
+           emi_int_int_f,
+           emi_int_int_m,
+           emi_nat_ch_f,
+           emi_nat_int_f,
+           emi_nat_ch_m,
+           emi_nat_int_m,
            acq_int_f,
            acq_int_m) {
     # Set indices -------------------------------------------------------------
@@ -77,24 +85,24 @@ create_mortality_matrix <-
 
     # Create vectors ----------------------------------------------------------
     # Swiss male to Swiss male
-    ch_m_ch_m <- (mor_ch_m) - (emi_ch_m * ((mor_ch_m / 2)))
+    ch_m_ch_m <- (mor_ch_m) - ((emi_int_ch_m + emi_nat_ch_m) * ((mor_ch_m / 2)))
 
     # Foreign male to Swiss male
     int_m_ch_m <- acq_int_m * ((mor_ch_m / 2))
 
     # Swiss female to Swiss female
-    ch_f_ch_f <- (mor_ch_f) - (emi_ch_f * ((mor_ch_f / 2)))
+    ch_f_ch_f <- (mor_ch_f) - ((emi_int_ch_f + emi_nat_ch_f) * ((mor_ch_f / 2)))
 
     # Foreign female to Swiss female
     int_f_ch_f <- acq_int_f * ((mor_ch_f / 2))
 
     # Foreign male to foreign male
     int_m_int_m <-
-      (mor_int_m) - ((emi_int_m + acq_int_m) * ((mor_int_m / 2)))
+      (mor_int_m) - ((emi_int_int_m + acq_int_m + emi_nat_int_m) * ((mor_int_m / 2)))
 
     # Foreign female to foreign female
     int_f_int_f <-
-      (mor_int_f) - ((emi_int_f + acq_int_f) * ((mor_int_f / 2)))
+      (mor_int_f) - ((emi_int_int_f + acq_int_f + emi_nat_int_f) * ((mor_int_f / 2)))
 
     assertthat::assert_that(
       !any(

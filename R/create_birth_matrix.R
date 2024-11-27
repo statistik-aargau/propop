@@ -10,9 +10,9 @@
 #' @param n_age_class numeric, number of age groups (e.g., 101).
 #' @param share_born_female numeric, share of female newborns
 #' relative to all newborns.
-#' @param birth_rate_ch numeric, birth rate among Swiss women.
-#' @param birth_rate_int numeric, birth rate among foreign women.
-#' @param births_int_ch numeric, proportion of children with Swiss nationality
+#' @param birthrate_ch numeric,birth rate among Swiss women.
+#' @param birthrate_int numeric,birth rate among foreign women.
+#' @param int_mothers numeric, proportion of children with Swiss nationality
 #' born to non-Swiss mothers.
 #'
 #' @noRd
@@ -23,9 +23,9 @@ create_birth_matrix <-
            fert_length,
            n_age_class,
            share_born_female,
-           birth_rate_ch,
-           birth_rate_int,
-           births_int_ch) {
+           birthrate_ch,
+           birthrate_int,
+           int_mothers) {
     # Set indices -------------------------------------------------------------
     index_row <-
       c(
@@ -52,7 +52,7 @@ create_birth_matrix <-
     # share males
     share_born_male <- 1 - share_born_female
     # share of international mothers' newborns with foreign citizenship
-    births_int_int <- 1 - births_int_ch
+    births_int_int <- 1 - int_mothers
 
     assertthat::assert_that(
       !any(
@@ -70,7 +70,7 @@ create_birth_matrix <-
     assertthat::assert_that(
       !any(
         sapply(
-          list(n_age_class, share_born_male, births_int_ch),
+          list(n_age_class, share_born_male, int_mothers),
           function(x) is.null(x) || length(x) == 0
         )
       ),
@@ -82,22 +82,22 @@ create_birth_matrix <-
 
     # Create vectors ----------------------------------------------------------
     # Swiss females giving birth to Swiss males
-    ch_f_ch_m <- share_born_male * birth_rate_ch
+    ch_f_ch_m <- share_born_male * birthrate_ch
 
     # Foreign females giving birth to Swiss males
-    int_f_ch_m <- share_born_male * birth_rate_int * births_int_ch
+    int_f_ch_m <- share_born_male * birthrate_int * int_mothers
 
     # Swiss females giving birth to Swiss females
-    ch_f_ch_f <- share_born_female * birth_rate_ch
+    ch_f_ch_f <- share_born_female * birthrate_ch
 
     # Foreign females giving birth to Swiss females
-    int_f_ch_f <- share_born_female * birth_rate_int * births_int_ch
+    int_f_ch_f <- share_born_female * birthrate_int * int_mothers
 
     # Foreign females giving birth to foreign males
-    int_f_int_m <- share_born_male * birth_rate_int * births_int_int
+    int_f_int_m <- share_born_male * birthrate_int * births_int_int
 
     # Foreign females giving birth to foreign females
-    int_f_int_f <- share_born_female * birth_rate_int * births_int_int
+    int_f_int_f <- share_born_female * birthrate_int * births_int_int
 
     assertthat::assert_that(
       !any(
