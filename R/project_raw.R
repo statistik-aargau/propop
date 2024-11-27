@@ -82,9 +82,9 @@
 #'    * `mor`: prospective mortality rate (probability of death).
 #'    * `acq`: rate of acquisition of Swiss citizenship.
 #'    * `emi_int`: rate of people emigrating abroad.
-#'    * `mig_nat_n`: national / inter-cantonal net migration
-#'       (number of immigrants - number of emigrants).
+#'    * `emi_nat`: rate of people emigrating to other cantons.
 #'    * `imm_int_n`: number of people immigrating from abroad.
+#'    * `imm_int_n`: number of people immigrating from other cantons.
 #'    * `mig_sub`: within canton net migration. Useful to account for movements
 #'       between different subregions (e.g., municipalities). This argument is
 #'       \bold{optional.}
@@ -154,7 +154,6 @@ project_raw <-
            share_born_female = 100 / 205,
            n,
            subregional) {
-
     # Check input ----
     ## Only 1 value in scenario
     assertthat::assert_that(
@@ -191,14 +190,17 @@ project_raw <-
     assertthat::assert_that("emi_int" %in% names(parameters),
       msg = "column `emi_int` is missing in parameters"
     )
+    assertthat::assert_that("emi_nat" %in% names(parameters),
+      msg = "column `emi_nat` is missing in parameters"
+    )
     assertthat::assert_that("acq" %in% names(parameters),
       msg = "column `acq` is missing in parameters"
     )
     assertthat::assert_that("imm_int_n" %in% names(parameters),
       msg = "column `imm_int_n` is missing in parameters"
     )
-    assertthat::assert_that("mig_nat_n" %in% names(parameters),
-      msg = "column `mig_nat_n` is missing in parameters"
+    assertthat::assert_that("imm_nat_n" %in% names(parameters),
+      msg = "column `imm_nat_n` is missing in parameters"
     )
     assertthat::assert_that("spatial_unit" %in% names(parameters),
       msg = "column `spatial_unit` is missing in parameters"
@@ -275,8 +277,10 @@ project_raw <-
     )
 
     ## Progress feedback
-    cli::cli_text("Running projection for: {.val { parameters |>",
-                  "dplyr::select(spatial_unit) |> dplyr::distinct()}}")
+    cli::cli_text(
+      "Running projection for: {.val { parameters |>",
+      "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
+    )
 
 
     ## Data preparation ----
@@ -339,9 +343,9 @@ project_raw <-
     IMM_INT <- empty_vector_NA
     IMM_INT0 <- empty_vector_NA
 
-    # Cantonal net migration
-    MIG_NAT <- empty_vector_NA
-    MIG_NAT0 <- empty_vector_NA
+    # Immigrants from other cantons
+    IMM_NAT <- empty_vector_NA
+    IMM_NAT0 <- empty_vector_NA
 
     # Internal net migration
     MIG_SUB <- empty_vector_0
@@ -453,11 +457,16 @@ project_raw <-
       mor_int_f_0 <- vectors_parameters$mor_int_f[1]
       mor_ch_m_0 <- vectors_parameters$mor_ch_m[1]
       mor_int_m_0 <- vectors_parameters$mor_int_m[1]
-      # Emigration
+      # International emigration
       emi_int_ch_f_0 <- vectors_parameters$emi_int_ch_f[1]
       emi_int_int_f_0 <- vectors_parameters$emi_int_int_f[1]
       emi_int_ch_m_0 <- vectors_parameters$emi_int_ch_m[1]
       emi_int_int_m_0 <- vectors_parameters$emi_int_int_m[1]
+      # Emigration to other cantons
+      emi_nat_ch_f_0 <- vectors_parameters$emi_nat_ch_f[1]
+      emi_nat_int_f_0 <- vectors_parameters$emi_nat_int_f[1]
+      emi_nat_ch_m_0 <- vectors_parameters$emi_nat_ch_m[1]
+      emi_nat_int_m_0 <- vectors_parameters$emi_nat_int_m[1]
       # Acquisition of the Swiss citizenship
       acq_int_f_0 <- vectors_parameters$acq_int_f[1]
       acq_int_m_0 <- vectors_parameters$acq_int_m[1]
@@ -465,7 +474,9 @@ project_raw <-
         !any(
           sapply(list(
             mor_ch_f_0, mor_int_f_0, mor_ch_m_0, mor_int_m_0, emi_int_ch_f_0,
-            emi_int_int_f_0, emi_int_ch_m_0, emi_int_int_m_0, acq_int_f_0, acq_int_m_0
+            emi_int_int_f_0, emi_int_ch_m_0, emi_int_int_m_0, emi_nat_ch_f_0,
+            emi_nat_int_f_0, emi_nat_ch_m_0, emi_nat_int_m_0, acq_int_f_0,
+            acq_int_m_0
           ), function(x) is.null(x) || length(x) == 0)
         ),
         msg = paste0(
@@ -480,11 +491,16 @@ project_raw <-
       mor_int_f <- vectors_parameters$mor_int_f[c(2:age_groups, age_groups)]
       mor_ch_m <- vectors_parameters$mor_ch_m[c(2:age_groups, age_groups)]
       mor_int_m <- vectors_parameters$mor_int_m[c(2:age_groups, age_groups)]
-      # Emigration
+      # International emigration
       emi_int_ch_f <- vectors_parameters$emi_int_ch_f[c(2:age_groups, age_groups)]
       emi_int_int_f <- vectors_parameters$emi_int_int_f[c(2:age_groups, age_groups)]
       emi_int_ch_m <- vectors_parameters$emi_int_ch_m[c(2:age_groups, age_groups)]
       emi_int_int_m <- vectors_parameters$emi_int_int_m[c(2:age_groups, age_groups)]
+      # Emigration to other cantons
+      emi_nat_ch_f <- vectors_parameters$emi_nat_ch_f[c(2:age_groups, age_groups)]
+      emi_nat_int_f <- vectors_parameters$emi_nat_int_f[c(2:age_groups, age_groups)]
+      emi_nat_ch_m <- vectors_parameters$emi_nat_ch_m[c(2:age_groups, age_groups)]
+      emi_nat_int_m <- vectors_parameters$emi_nat_int_m[c(2:age_groups, age_groups)]
       # Acquisition of the Swiss citizenship
       acq_int_f <- vectors_parameters$acq_int_f[c(2:age_groups, age_groups)]
       acq_int_m <- vectors_parameters$acq_int_m[c(2:age_groups, age_groups)]
@@ -492,7 +508,9 @@ project_raw <-
         !any(
           sapply(list(
             mor_ch_f, mor_int_f, mor_ch_m, mor_int_m, emi_int_ch_f,
-            emi_int_int_f, emi_int_ch_m, emi_int_int_m, acq_int_f, acq_int_m
+            emi_int_int_f, emi_int_ch_m, emi_int_int_m, emi_nat_ch_f,
+            emi_nat_int_f, emi_nat_ch_m, emi_nat_int_m, acq_int_f,
+            acq_int_m
           ), function(x) is.null(x) || length(x) == 0)
         ),
         msg = paste0(
@@ -509,16 +527,16 @@ project_raw <-
       imm_int_ch_m_0 <- vectors_parameters$imm_int_n_ch_m[1]
       imm_int_int_f_0 <- vectors_parameters$imm_int_n_int_f[1]
       imm_int_int_m_0 <- vectors_parameters$imm_int_n_int_m[1]
-      # Intercantonal net-migration
-      mig_nat_ch_f_0 <- vectors_parameters$mig_nat_n_ch_f[1]
-      mig_nat_ch_m_0 <- vectors_parameters$mig_nat_n_ch_m[1]
-      mig_nat_int_f_0 <- vectors_parameters$mig_nat_n_int_f[1]
-      mig_nat_int_m_0 <- vectors_parameters$mig_nat_n_int_m[1]
+      # Immigration from other cantons
+      imm_nat_ch_f_0 <- vectors_parameters$imm_nat_n_ch_f[1]
+      imm_nat_ch_m_0 <- vectors_parameters$imm_nat_n_ch_m[1]
+      imm_nat_int_f_0 <- vectors_parameters$imm_nat_n_int_f[1]
+      imm_nat_int_m_0 <- vectors_parameters$imm_nat_n_int_m[1]
       assertthat::assert_that(
         !any(
           sapply(list(
             imm_int_ch_f_0, imm_int_ch_m_0, imm_int_int_f_0, imm_int_int_m_0,
-            mig_nat_ch_f_0, mig_nat_ch_m_0, mig_nat_int_f_0, mig_nat_int_m_0
+            imm_nat_ch_f_0, imm_nat_ch_m_0, imm_nat_int_f_0, imm_nat_int_m_0
           ), function(x) is.null(x) || length(x) == 0)
         ),
         msg = paste0(
@@ -533,17 +551,16 @@ project_raw <-
       imm_int_ch_m <- vectors_parameters$imm_int_n_ch_m[2:age_groups]
       imm_int_int_f <- vectors_parameters$imm_int_n_int_f[2:age_groups]
       imm_int_int_m <- vectors_parameters$imm_int_n_int_m[2:age_groups]
-
-      # Intercantonal net-migration
-      mig_nat_ch_f <- vectors_parameters$mig_nat_n_ch_f[2:age_groups]
-      mig_nat_ch_m <- vectors_parameters$mig_nat_n_ch_m[2:age_groups]
-      mig_nat_int_f <- vectors_parameters$mig_nat_n_int_f[2:age_groups]
-      mig_nat_int_m <- vectors_parameters$mig_nat_n_int_m[2:age_groups]
+      # Immigration from other cantons
+      imm_nat_ch_f <- vectors_parameters$imm_nat_n_ch_f[2:age_groups]
+      imm_nat_ch_m <- vectors_parameters$imm_nat_n_ch_m[2:age_groups]
+      imm_nat_int_f <- vectors_parameters$imm_nat_n_int_f[2:age_groups]
+      imm_nat_int_m <- vectors_parameters$imm_nat_n_int_m[2:age_groups]
       assertthat::assert_that(
         !any(
           sapply(list(
             imm_int_ch_f, imm_int_ch_m, imm_int_int_f, imm_int_int_m,
-            mig_nat_ch_f, mig_nat_ch_m, mig_nat_int_f, mig_nat_int_m
+            imm_nat_ch_f, imm_nat_ch_m, imm_nat_int_f, imm_nat_int_m
           ), function(x) is.null(x) || length(x) == 0)
         ),
         msg = paste0(
@@ -595,6 +612,10 @@ project_raw <-
           emi_int_ch_m = emi_int_ch_m,
           emi_int_int_f = emi_int_int_f,
           emi_int_int_m = emi_int_int_m,
+          emi_nat_ch_f = emi_nat_ch_f,
+          emi_nat_ch_m = emi_nat_ch_m,
+          emi_nat_int_f = emi_nat_int_f,
+          emi_nat_int_m = emi_nat_int_m,
           acq_int_f = acq_int_f,
           acq_int_m = acq_int_m
         )
@@ -626,6 +647,10 @@ project_raw <-
           emi_int_ch_m_0 = emi_int_ch_m_0,
           emi_int_int_f_0 = emi_int_int_f_0,
           emi_int_int_m_0 = emi_int_int_m_0,
+          emi_nat_ch_f_0 = emi_nat_ch_f_0,
+          emi_nat_ch_m_0 = emi_nat_ch_m_0,
+          emi_nat_int_f_0 = emi_nat_int_f_0,
+          emi_nat_int_m_0 = emi_nat_int_m_0,
           acq_int_f_0 = acq_int_f_0,
           acq_int_m_0 = acq_int_m_0
         )
@@ -706,34 +731,33 @@ project_raw <-
         )
       )
 
-      #### Cantonal net migration ----
-      # (persons migrating from and to other cantons)
+      #### Immigration from other cantons ----
       # Vector for 1-100
-      MIG_NAT[first_pos:last_pos] <-
+      IMM_NAT[first_pos:last_pos] <-
         c(
-          0, mig_nat_ch_m,
-          0, mig_nat_ch_f,
-          0, mig_nat_int_m,
-          0, mig_nat_int_f
+          0, imm_nat_ch_m,
+          0, imm_nat_ch_f,
+          0, imm_nat_int_m,
+          0, imm_nat_int_f
         )
-      assertthat::assert_that(length(MIG_NAT) == length(empty_vector_NA),
+      assertthat::assert_that(length(IMM_NAT) == length(empty_vector_NA),
         msg = paste0(
-          "Vector `MIG_NAT` lentgh is not equal to the length of",
+          "Vector `IMM_NAT` length is not equal to the length of",
           " the pre-defined empty vector."
         )
       )
 
       # Vector for newborns
-      MIG_NAT0[first_pos:last_pos] <-
+      IMM_NAT0[first_pos:last_pos] <-
         c(
-          mig_nat_ch_m_0, zeros,
-          mig_nat_ch_f_0, zeros,
-          mig_nat_int_m_0, zeros,
-          mig_nat_int_f_0, zeros
+          imm_nat_ch_m_0, zeros,
+          imm_nat_ch_f_0, zeros,
+          imm_nat_int_m_0, zeros,
+          imm_nat_int_f_0, zeros
         )
-      assertthat::assert_that(length(MIG_NAT0) == length(empty_vector_0),
+      assertthat::assert_that(length(IMM_NAT0) == length(empty_vector_0),
         msg = paste0(
-          "Vector `MIG_NAT0` length is not equal to the length of",
+          "Vector `IMM_NAT0` length is not equal to the length of",
           " the pre-defined empty vector."
         )
       )
@@ -781,7 +805,7 @@ project_raw <-
       Nn100 <-
         L %*% n[first_pos:last_pos] +
         IMM_INT[first_pos:last_pos] * (1 - (MOR_vec / 2)) +
-        MIG_NAT[first_pos:last_pos] * (1 - (MOR_vec / 2)) +
+        IMM_NAT[first_pos:last_pos] * (1 - (MOR_vec / 2)) +
         MIG_SUB[first_pos:last_pos]
       assertthat::assert_that(length(Nn100) == length_pop_vec,
         msg = paste0(
@@ -819,7 +843,7 @@ project_raw <-
       Nn0 <-
         O %*% ((1 / 2) * (Nn100 + Nminus1)) +
         IMM_INT0[first_pos:last_pos] * (1 - ((2 / 3) * MOR0_vec)) +
-        MIG_NAT0[first_pos:last_pos] * (1 - ((2 / 3) * MOR0_vec)) +
+        IMM_NAT0[first_pos:last_pos] * (1 - ((2 / 3) * MOR0_vec)) +
         MIG_SUB0[first_pos:last_pos]
       assertthat::assert_that(length(Nn0) == length_pop_vec,
         msg = paste0(
@@ -881,7 +905,7 @@ project_raw <-
       # nbr international immigrants
       IMM_INT = IMM_INT + IMM_INT0,
       # cantonal migration saldo
-      MIG_NAT = MIG_NAT + MIG_NAT0,
+      IMM_NAT = IMM_NAT + IMM_NAT0,
       # intracantonal migration saldo
       MIG_SUB = MIG_SUB + MIG_SUB0,
       # nbr of death older than 0
