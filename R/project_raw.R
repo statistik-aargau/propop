@@ -413,7 +413,8 @@ project_raw <-
         dplyr::select(-c(year, spatial_unit, scen, int_mothers)) |>
         # pivot parameters into long format
         tidyr::pivot_longer(
-          cols = c(birthrate:last_col()),
+          cols = c("nat", "sex", "age", "birthrate", "mor", "emi_int", "emi_nat",
+                   "acq", "imm_int_n", "imm_nat_n", "mig_sub"),
           names_to = "parameter",
           values_to = "value"
         ) |>
