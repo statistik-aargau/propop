@@ -728,9 +728,8 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   projection_parameters_clean <- projection_parameters |>
     dplyr::mutate(spatial_unit = Kanton) |>
     dplyr::select(
-      nat, sex, age, year, scen, birthrate, int_mothers,
-      mor, emi_int, emi_nat, acq,
-      imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n,
+      nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
+      emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n,
       -c(Kanton, emi_n)
     )
 
