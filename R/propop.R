@@ -117,6 +117,15 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
+  # Select relevant columns
+  parameters <- parameters |>
+    select(any_of(c(
+      "nat", "sex", "age", "year", "scen", "spatial_unit", "birthrate",
+      "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
+      "acq"
+    )))
+  population <- population |>
+    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n")))
   # Only 1 year in population
   assertthat::assert_that(
     length(unique(population$year)) == 1,
