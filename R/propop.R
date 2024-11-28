@@ -516,17 +516,18 @@ propop <- function(
   # Format output for case 2: No distinction between nationalities
   # (argument `binational`= FALSE)
   if (binational == FALSE) {
-      # remove empty rows for `nat`= "int" and remove the `nat`-column
+      # remove empty rows for `nat` = "int"
+      # remove the `nat` and `acq`-columns
       projection_results <- projection_results |>
         dplyr::filter(nat != "int") |>
-        dplyr::select(-nat)
+        dplyr::select(-any_of(c("nat" , "acq")))
   }
 
   # Format output if subregional == FALSE
   if (subregional == FALSE) {
     # remove the `mig_sub`column (otherwise is filled with zeros if present)
     projection_results <- projection_results |>
-      dplyr::select(-any_of(c("mig_sub", "acq")))
+      dplyr::select(-any_of(c("mig_sub")))
   }
 
   # Feedback about arguments used
