@@ -428,14 +428,12 @@ project_raw <-
         ) |>
         # pivot parameters into wide format
         tidyr::pivot_wider(
-          names_from = age,
+          id_cols = c(age),
+          names_from = c(parameter, nat, sex),
           values_from = value
         ) |>
         # clean data
-        mutate(id_col = paste(parameter, nat, sex, sep = "_")) |>
-        tibble::column_to_rownames(var = "id_col") |>
-        dplyr::select(-c(nat, sex, parameter)) |>
-        t() |>
+        tibble::column_to_rownames(var = "age") |>
         as.data.frame()
       assertthat::assert_that(nrow(parameters_subset) == (length_pop_vec / 4),
         msg = paste0(
@@ -443,7 +441,6 @@ project_raw <-
           " `length_pop_vec` / 4 (demographic groups)"
         )
       )
-
 
       # Create list of vectors
       vectors_parameters <- as.list(parameters_subset)
