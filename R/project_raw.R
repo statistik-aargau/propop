@@ -876,10 +876,10 @@ project_raw <-
       # Vector for 1-100
       EMI_INT_vec <-
         c(
-          emi_int_ch_f,
           emi_int_ch_m,
-          emi_int_int_f,
-          emi_int_int_m
+          emi_int_ch_f,
+          emi_int_int_m,
+          emi_int_int_f
         )
       assertthat::assert_that(length(EMI_INT_vec) == length_pop_vec,
         msg = paste0(
@@ -895,10 +895,10 @@ project_raw <-
       # Vector for newborns
       EMI_INT0_vec <-
         c(
-          emi_int_ch_f_0, zeros,
           emi_int_ch_m_0, zeros,
-          emi_int_int_f_0, zeros,
-          emi_int_int_m_0, zeros
+          emi_int_ch_f_0, zeros,
+          emi_int_int_m_0, zeros,
+          emi_int_int_f_0, zeros
         )
       assertthat::assert_that(length(EMI_INT0_vec) == length_pop_vec,
         msg = paste0(
@@ -914,10 +914,10 @@ project_raw <-
       # Vector for 1-100
       EMI_NAT_vec <-
         c(
-          emi_nat_ch_f,
           emi_nat_ch_m,
-          emi_nat_int_f,
-          emi_nat_int_m
+          emi_nat_ch_f,
+          emi_nat_int_m,
+          emi_nat_int_f
         )
       assertthat::assert_that(length(EMI_NAT_vec) == length_pop_vec,
                               msg = paste0(
@@ -933,10 +933,10 @@ project_raw <-
       # Vector for newborns
       EMI_NAT0_vec <-
         c(
-          emi_nat_ch_f_0, zeros,
           emi_nat_ch_m_0, zeros,
-          emi_nat_int_f_0, zeros,
-          emi_nat_int_m_0, zeros
+          emi_nat_ch_f_0, zeros,
+          emi_nat_int_m_0, zeros,
+          emi_nat_int_f_0, zeros
         )
       assertthat::assert_that(length(EMI_NAT0_vec) == length_pop_vec,
                               msg = paste0(
@@ -1112,6 +1112,7 @@ project_raw <-
 
       #### Projected international emigration ----
       # People older than 0 years + children aged zero years
+
       EMI_INT[first_pos:last_pos] <-
         c(
           0,
