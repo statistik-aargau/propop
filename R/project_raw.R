@@ -1040,7 +1040,7 @@ project_raw <-
         )
       )
 
-      #### Projected international migration ----
+      #### Projected international emigration ----
       # People older than 0 years + children aged zero years
       EMI_INT[first_pos:last_pos] <-
         c(
