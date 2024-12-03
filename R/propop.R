@@ -518,8 +518,9 @@ propop <- function(
 
   # Add meta data to raw results ----
   projection_results <- complement_projection(
-    skeleton,
-    projection_raw
+    skeleton = skeleton,
+    projection_raw = projection_raw,
+    subregional = subregional
   )
 
   # Format output for case 2: No distinction between nationalities
