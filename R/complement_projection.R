@@ -100,7 +100,8 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     ) |>
     dplyr::mutate(
       # calculate population balance
-      balance_n = n + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
+      balance_n = n + births - mor - emi_int + imm_int + mig_ch + acq,
+      balance_n = if ("mig_sub" %in% names(projection_result)) balance_n + mig_sub else balance_n,
       # calculate the annual change per demographic group
       ## total number of people
       pop_change_n = round(balance_n - n, 0),
@@ -111,8 +112,8 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     ) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "age", "sex", "nat", "n", "births", "mor", "emi_int", "emi_nat",
-      "imm_int", "imm_nat", "acq", "mig_sub", "balance_n", "pop_change_n",
+      "year", "age", "sex", "nat", "n", "births", "mor", "emi_int", "imm_int",
+      "mig_ch", "acq", "mig_sub", "balance_n", "pop_change_n",
       "pop_change_perc"
     )))
 }
