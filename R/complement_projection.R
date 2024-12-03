@@ -59,12 +59,6 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     msg = "`year` must only inlcude numeric values between 2018 and 2061."
   )
 
-
-  ## Include again to show problem in upcoming developer meeting
-  # # Only keep n (post-hoc components are imprecise)
-  # projection_raw <- projection_raw|>
-  #   dplyr::select(N)
-
   # apply skeleton
   projection_result <- skeleton |>
     dplyr::bind_cols(projection_raw) |>
