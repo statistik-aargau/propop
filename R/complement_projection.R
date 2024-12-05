@@ -20,14 +20,14 @@
 #'      results in the rows refer to.
 #'    * absolute population per demographic group and year (n).
 #'    * projection components that form the population of the next year.
-#'    * population balance (balance_n) of the next projected year. The formula
+#'    * population balance (n_1) of the next projected year. The formula
 #'      sums up the components like so:
-#'      balance_n = n + births - deaths - international emigrants -
+#'      n_1 = n + births - deaths - international emigrants -
 #'      intercantonal emigrants + international immigrants +
 #'      intercantonal immigrants + naturalized citizens
 #'      (+ optionally: subregional migrants).
 #'    * annual population change per demographic group in absolute numbers
-#'      (pop_change_n) and as percentages (pop_change_perc).
+#'      (delta_n) and as percentages (delta_perc).
 #'
 #' @autoglobal
 #' @noRd
@@ -94,21 +94,20 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     ) |>
     dplyr::mutate(
       # calculate population balance
-      balance_n = n + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
-      balance_n = if ("mig_sub" %in% names(projection_result))
-        balance_n + mig_sub else balance_n,
+      n_1 = n + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
+      n_1 = if ("mig_sub" %in% names(projection_result))
+        n_1 + mig_sub else n_1,
       # calculate the annual change per demographic group
       ## total number of people
-      pop_change_n = round(balance_n - n, 0),
+      delta_n = round(n_1 - n, 0),
       ## percentage
-      pop_change_perc = round((100 / n) * pop_change_n, 1),
+      delta_perc = round((delta_n / n) * 100, 3),
       # percentages for newborns are NAs
-      pop_change_perc = ifelse(age == 0, NA, pop_change_perc)
+      delta_perc = ifelse(age == 0, NA, delta_perc)
     ) |>
     # clean the data
     dplyr::select(any_of(c(
       "year", "age", "sex", "nat", "n", "births", "mor", "emi_int", "emi_nat",
-      "imm_int", "imm_nat", "acq", "mig_sub", "balance_n", "pop_change_n",
-      "pop_change_perc"
+      "imm_int", "imm_nat", "acq", "mig_sub", "n_1", "delta_n", "delta_perc"
     )))
 }
