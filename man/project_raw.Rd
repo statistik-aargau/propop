@@ -35,9 +35,9 @@ non-Swiss mothers.
 \item \code{mor}: prospective mortality rate (probability of death).
 \item \code{acq}: rate of acquisition of Swiss citizenship.
 \item \code{emi_int}: rate of people emigrating abroad.
-\item \code{mig_nat_n}: national / inter-cantonal net migration
-(number of immigrants - number of emigrants).
+\item \code{emi_nat}: rate of people emigrating to other cantons.
 \item \code{imm_int_n}: number of people immigrating from abroad.
+\item \code{imm_nat_n}: number of people immigrating from other cantons.
 \item \code{mig_sub}: within canton net migration. Useful to account for movements
 between different subregions (e.g., municipalities). This argument is
 \bold{optional.}
@@ -98,7 +98,7 @@ To conveniently obtain an enriched, more informative output,
 use the \bold{wrapper function} \code{propop::propop()} (which internally uses
 \code{propop::project_raw()}).
 
-The parameters and start populations for different spatial levels
+The parameters and starting populations for different spatial levels
 can be obtained from the Swiss Federal Statistical Office (FSO).
 For instructions on how to download this information from
 \href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},
