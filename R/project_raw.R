@@ -11,7 +11,7 @@
 #' use the \bold{wrapper function} `propop::propop()` (which internally uses
 #' `propop::project_raw()`).
 #'
-#' The parameters and start populations for different spatial levels
+#' The parameters and starting populations for different spatial levels
 #' can be obtained from the Swiss Federal Statistical Office (FSO).
 #' For instructions on how to download this information from
 #' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
