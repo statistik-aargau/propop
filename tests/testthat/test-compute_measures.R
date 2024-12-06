@@ -1,5 +1,7 @@
 test_that("compute_measures snapshots", {
 
+  options(cli.default_handler = function(...) { })
+
   skip_on_ci()
 
   # Prepare data ----
