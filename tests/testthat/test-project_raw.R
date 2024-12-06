@@ -243,11 +243,12 @@ test_that("project_raw returns error message?", {
 
 
 
-# Snapshot 1 region ----
 
-test_that("snapshot project_raw with 0-50 year olds", {
+test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
 
   skip_on_ci()
+
+  # Snapshot 1 region ----
 
   # Create short version of fso parameters
   # nolint start
@@ -478,17 +479,13 @@ test_that("snapshot project_raw with 0-50 year olds", {
     subregional = FALSE
   )
 
-  # Run tests
+  ## Run test for 1 region ----
 
   ## Compare results against those from previous run (saved in snapshot)
   expect_snapshot(constructive::construct(output_table))
-})
 
 
-# Snapshot subregions ----
-test_that("snapshot project_raw with 0-50 year olds and subregions", {
-
-  skip_on_ci()
+  # Snapshot subregions ----
 
   # Create version with fictitious subregions
   # nolint start
@@ -509,7 +506,7 @@ test_that("snapshot project_raw with 0-50 year olds and subregions", {
   #   dplyr::mutate(spatial_unit = stringr::str_extract(subregion, "(?<=mig_sub_).*")) |>
   #   # divide the size of parameters with numbers by the number of regions (=5),
   #   # otherwise the multiplication of lines inflates the size of the population
-  #   dplyr::mutate_at(vars(imm_int_n, imm_nat_n), ~ ./5) |>
+  #   dplyr::mutate_at(vars(imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n), ~ ./5) |>
   #   dplyr::select(-subregion) |>
   #   constructive::construct()
   # nolint end
@@ -696,16 +693,18 @@ test_that("snapshot project_raw with 0-50 year olds and subregions", {
     ),
     emi_nat_n = rep(
       c(
-        21, 73, 61, 49, 42, 36, 30, 26, 23, 21, 18, 16, 17, 19, 27, 37, 53, 76, 103,
-        120, 143, 165, 178, 176, 173, 164, 149, 134, 126, 109, 104, 90, 82, 74, 67,
-        59, 53, 50, 44, 43, 45, 42, 43, 44, 45, 25, 66, 59, 53, 45, 38, 32, 29, 24,
-        22, 17, 15, 12, 11, 9, 10, 11, 17, 27, 45, 70, 98, 135, 168, 194, 214, 216,
-        234, 215, 203, 178, 161, 141, 121, 103, 90, 80, 73, 64, 54, 49, 43, 41, 37,
-        36, 35, 36, 38, 39, 10, 28, 26, 25, 20, 17, 15, 14, 11, 9, 8, 7, 6, 5, 6, 8,
-        13, 20, 30, 38, 48, 54, 63, 77, 83, 88, 99, 98, 99, 95, 96, 91, 92, 87, 81,
-        72, 70, 66, 61, 55, 50, 47, 42, 39, 38, 10, 20, 19, 17, 16, 15, 14, 12, 13,
-        11, 10, 9, 8, 7, 8, 11, 18, 25, 35, 42, 49, 55, 56, 63, 68, 71, 70, 68, 66,
-        63, 62, 59, 53, 50, 47, 44, 38, 35, 30, 28, 26, 23, 21, 24, 23
+        4.2, 14.6, 12.2, 9.8, 8.4, 7.2, 6, 5.2, 4.6, 4.2, 3.6, 3.2, 3.4, 3.8, 5.4,
+        7.4, 10.6, 15.2, 20.6, 24, 28.6, 33, 35.6, 35.2, 34.6, 32.8, 29.8, 26.8, 25.2,
+        21.8, 20.8, 18, 16.4, 14.8, 13.4, 11.8, 10.6, 10, 8.8, 8.6, 9, 8.4, 8.6, 8.8,
+        9, 5, 13.2, 11.8, 10.6, 9, 7.6, 6.4, 5.8, 4.8, 4.4, 3.4, 3, 2.4, 2.2, 1.8, 2,
+        2.2, 3.4, 5.4, 9, 14, 19.6, 27, 33.6, 38.8, 42.8, 43.2, 46.8, 43, 40.6, 35.6,
+        32.2, 28.2, 24.2, 20.6, 18, 16, 14.6, 12.8, 10.8, 9.8, 8.6, 8.2, 7.4, 7.2, 7,
+        7.2, 7.6, 7.8, 2, 5.6, 5.2, 5, 4, 3.4, 3, 2.8, 2.2, 1.8, 1.6, 1.4, 1.2, 1,
+        1.2, 1.6, 2.6, 4, 6, 7.6, 9.6, 10.8, 12.6, 15.4, 16.6, 17.6, 19.8, 19.6, 19.8,
+        19, 19.2, 18.2, 18.4, 17.4, 16.2, 14.4, 14, 13.2, 12.2, 11, 10, 9.4, 8.4, 7.8,
+        7.6, 2, 4, 3.8, 3.4, 3.2, 3, 2.8, 2.4, 2.6, 2.2, 2, 1.8, 1.6, 1.4, 1.6, 2.2,
+        3.6, 5, 7, 8.4, 9.8, 11, 11.2, 12.6, 13.6, 14.2, 14, 13.6, 13.2, 12.6, 12.4,
+        11.8, 10.6, 10, 9.4, 8.8, 7.6, 7, 6, 5.6, 5.2, 4.6, 4.2, 4.8, 4.6
       ),
       rep(
         c(
@@ -720,14 +719,17 @@ test_that("snapshot project_raw with 0-50 year olds and subregions", {
     ),
     mig_nat_n = rep(
       c(
-        17, 34, 26, 23, 16, 10, 7, 6, 2, 1, 2, 0, 1, 0, 1, 2, 4, 6, 5, 6, 7, 5, 1, 0,
-        -7, -18, -19, -13, -10, -5, 8, 11, 12, 17, 16, 19, 18, 17, 16, 14, 15, 12, 9,
-        10, 8, 7, 6, 5, 27, 22, 23, 19, 16, 13, 11, 7, 5, 7, 9, 10, 11, 10, 8, 4, 0,
-        -3, 0, -4, -5, -13, -19, -10, -21, -8, -6, 2, 6, 14, 16, 15, 12, 13, 18, 16,
-        14, 12, 9, 8, 6, 7, 2, 7, 10, 7, 8, 7, 5, 4, 5, 4, 3, 2, 1, 0, 1, 3, 6, 5, 10,
-        11, 9, 13, 15, 12, 13, 18, 16, 20, 15, 11, 10, 13, 12, 10, 9, 10, 12, 9, 8,
-        10, 9, -1, 11, 8, 6, 5, 4, 3, 4, 2, 3, 2, 3, 2, 3, -1, 0, 1, 3, 4, 8, 7, 9,
-        10, 13, 16, 17, 12, 11, 10, 9, 8, 10, 9, 8, 10, 5, 3
+        3.4, 6.8, 5.2, 4.6, 3.2, 2, 1.4, 1.2, 0.4, 0.2, 0.4, 0, 0.2, 0, 0.2, 0.4, 0.8,
+        1.2, 1, 1.2, 1.4, 1, 0.2, 0, -1.4, -3.6, -3.8, -2.6, -2, -1, 1.6, 2.2, 2.4,
+        3.4, 3.2, 3.8, 3.6, 3.4, 3.2, 2.8, 3, 2.4, 1.8, 2, 1.6, 1.4, 1.2, 1, 5.4, 4.4,
+        4.6, 3.8, 3.2, 2.6, 2.2, 1.4, 1, 1.4, 1.8, 2, 2.2, 2, 1.6, 0.8, 0, -0.6, 0,
+        -0.8, -1, -2.6, -3.8, -2, -4.2, -1.6, -1.2, 0.4, 1.2, 2.8, 3.2, 3, 2.4, 2.6,
+        3.6, 3.2, 2.8, 2.4, 1.8, 1.6, 1.2, 1.4, 0.4, 1.4, 2, 1.4, 1.6, 1.4, 1, 0.8, 1,
+        0.8, 0.6, 0.4, 0.2, 0, 0.2, 0.6, 1.2, 1, 2, 2.2, 1.8, 2.6, 3, 2.4, 2.6, 3.6,
+        3.2, 4, 3, 2.2, 2, 2.6, 2.4, 2, 1.8, 2, 2.4, 1.8, 1.6, 2, 1.8, -0.2, 2.2, 1.6,
+        1.2, 1, 0.8, 0.6, 0.8, 0.4, 0.6, 0.4, 0.6, 0.4, 0.6, -0.2, 0, 0.2, 0.6, 0.8,
+        1.6, 1.4, 1.8, 2, 2.6, 3.2, 3.4, 2.4, 2.2, 2, 1.8, 1.6, 2, 1.8, 1.6, 2, 1,
+        0.6
       ),
       rep(
         c(
@@ -890,6 +892,55 @@ test_that("snapshot project_raw with 0-50 year olds and subregions", {
     )
   )
 
-  # Run tests
+  ## Run test for subregion ----
   expect_snapshot(constructive::construct(output_table_subregions))
+
+
+  # prepare comparison 1 vs 5 regions ----
+
+  ## prepare data for comparison ----
+  ### n in starting populations should be identical in both versions
+  ### simplify to make comparable
+  compare_pop1r <- population_short |>
+    select(-spatial_unit) |>
+    arrange(year, nat, sex, age)
+  ### simplify to make comparable
+  compare_pop5r <- population_short_subregions |>
+    summarise(n = sum(n), .by = c(year, nat, sex, age)) |>
+    arrange(year, nat, sex, age)
+
+
+  # run equal starting populations ----
+  expect_equal(compare_pop1r, compare_pop5r)
+
+  ### parameters should be identical in both versions
+  compare_params_1r <- parameters_short |>
+    dplyr::select(-spatial_unit) |>
+    arrange(year, nat, sex, age)
+
+  compare_params_5r <- parameters_short_subregions |>
+    # remove column that includes redundancy
+    dplyr::select(-mig_sub, -spatial_unit) |>
+    # remove redundant columns
+    dplyr::distinct(year, nat, sex, age, .keep_all = TRUE) |>
+    # multiply columns with number-of-people parameters
+    # by number of regions to get the n right again
+    dplyr::mutate_at(vars(imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n), ~ . * 5) |>
+    arrange(year, nat, sex, age)
+
+  # run equal parameters ----
+  expect_equal(compare_params_1r, compare_params_5r)
+
+  # equal results for projections with 1 vs 5 regions
+
+  # Prepare comparison
+  # Identifiers are lacking, compare total N
+  output_super <- output_table |>
+    summarise(sum_N = sum(N, na.rm = TRUE))
+
+  output_subregions <- output_table_subregions |>
+    summarise(sum_N = sum(N, na.rm = TRUE))
+
+  # run equal output ----
+  expect_equal(output_super, output_subregions, ignore_attr = TRUE)
 })
