@@ -14,20 +14,43 @@
 #'     patterns (e.g., movement between municipalities within a canton)
 #'     are part of the projection.
 #'
-#' @return data frame containing:
-#'    * five identifiers (age, sex, optionally: nationality, year,
-#'      spatial levels). These indicate to which demographic group and year the
-#'      results in the rows refer to.
-#'    * absolute population per demographic group and year (n).
-#'    * projection components that form the population of the next year.
-#'    * population balance (n_1) of the next projected year. The formula
-#'      sums up the components like so:
-#'      n_1 = n + births - deaths - international emigrants -
-#'      intercantonal emigrants + international immigrants +
-#'      intercantonal immigrants + naturalized citizens
-#'      (+ optionally: subregional migrants).
-#'    * annual population change per demographic group in absolute numbers
-#'      (delta_n) and as percentages (delta_perc).
+#' @returns
+#' Returns a data frame that includes the number of people for each demographic
+#'      group per year (for the starting year and each projected year). The
+#'      number of rows is the product of all years times all demographic groups.
+#'      The output includes several \bold{identifiers} that indicate to which
+#'      demographic group and year the results in the rows refer to.
+#'      \item{year}{integer, indicating starting year / projected years.}
+#'      \item{spatial_unit}{factor, spatial units for which the projection
+#'            was run (e.g., canton, municipalities, districts).}
+#'      \item{age}{integer.}
+#'      \item{sex}{factor, female (f) and male (m).}
+#'      \item{nat}{factor, indicates if the nationality is Swiss (ch) or
+#'      international / foreign (int). This variable is only returned if
+#'      `binational = TRUE`.}
+#'      The output also includes columns related to the \bold{size and change
+#'      of the population:}
+#'       \item{n}{numric, end-of-year population per demographic group.}
+#'      \item{n_1}{numeric, number of people of the particular demographic group
+#'      by the end of the following year.}
+#'      \item{delta_n}{numeric, population change per demographic group from
+#'      current to next year in absolute numbers.}
+#'      \item{delta_perc}{numeric, population change per demographic group from
+#'      current to next year in percentages.}
+#'      The \bold{components} that are used to project the development of the population
+#'      are also included in the output:
+#'      \item{births}{numeric, number of births (values only available for
+#'      age = 0).}
+#'      \item{mor}{numeric, number of deaths.}
+#'      \item{emi_int}{numeric, number of people who emigrate
+#'      to other countries.}
+#'      \item{emin_nat}{numeric, number of people who emigrate
+#'      to other cantons.}
+#'      \item{imm_int}{numeric, number of people who immigrate
+#'      from other countries.}
+#'      \item{imm_nat}{numeric, number of people who immigrate
+#'      from other cantons.}
+#'      \item{acq}{numeric, number of people who acquire Swiss citizenship.}
 #'
 #' @autoglobal
 #' @noRd
@@ -78,7 +101,7 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
       new_age_group_100 = ifelse(age == 100, 100, NA),
       age = dplyr::case_when(age < 100 ~ age + 1, TRUE ~ age)
     ) |>
-    dplyr::mutate(n = sum(n), .by = c(year, nat, sex, age)) |>
+    dplyr::mutate(n = sum(n), .by = c(year, nat, sex, age, spatial_unit)) |>
     dplyr::mutate(
       # adapt age range to 0-100 years
       age = age - 1,
@@ -107,7 +130,7 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     ) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "age", "sex", "nat", "n", "births", "mor", "emi_int", "emi_nat",
+      "year", "spatial_unit", "age", "sex", "nat", "n", "births", "mor", "emi_int", "emi_nat",
       "imm_int", "imm_nat", "acq", "mig_sub", "n_1", "delta_n", "delta_perc"
     )))
 }
