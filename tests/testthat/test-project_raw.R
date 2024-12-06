@@ -1530,6 +1530,11 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
   # run equal parameters ----
   expect_equal(compare_params_1r, compare_params_5r)
 
+
+  # Ensure that outputs are different (before data wrangling)
+  expect_failure(expect_equal(output_table, output_table_subregions))
+
+
   # equal results for projections with 1 vs 5 regions
 
   # Prepare comparison
