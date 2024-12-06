@@ -7,9 +7,9 @@ test_that("create_birth_matrix", {
       fert_length = 50 - 16 + 1,
       n_age_class = 101,
       share_born_female = 0.49,
-      birth_rate_ch = rep(0.02, (50 - 16 + 1)),
-      birth_rate_int = rep(0.025, (50 - 16 + 1)),
-      births_int_ch = 0.7
+      birthrate_ch = rep(0.02, (50 - 16 + 1)),
+      birthrate_int = rep(0.025, (50 - 16 + 1)),
+      int_mothers = 0.7
     )
   ))
 
@@ -20,9 +20,9 @@ test_that("create_birth_matrix", {
       fert_length = 50 - 16 + 1,
       n_age_class = 101,
       share_born_female = 0.49,
-      birth_rate_ch = rep(0.02, (50 - 16 + 1)),
-      birth_rate_int = rep(0.025, (50 - 16 + 1)),
-      births_int_ch = 0.7
+      birthrate_ch = rep(0.02, (50 - 16 + 1)),
+      birthrate_int = rep(0.025, (50 - 16 + 1)),
+      int_mothers = 0.7
     )
 
   # Test matrix dimensions
