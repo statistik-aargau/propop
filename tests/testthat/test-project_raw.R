@@ -4,6 +4,9 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
 
   skip_on_ci()
 
+
+  options(cli.default_handler = function(...) { })
+
   # Snapshot 1 region ----
 
   # Create short version of fso parameters
