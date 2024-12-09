@@ -289,7 +289,7 @@ In the example data, the differences are extremely small (>= 1):
 fso_propop <- prepare_evaluation(
   data_benchmark = data_parameters |>
     dplyr::filter(scen == "reference" & year > 2018) |>
-    dplyr::mutate(n = n_projected),
+    dplyr::mutate(n = fso_projection_n),
   data_projected = data_projected |>
     dplyr::filter(year > 2018),
   age_groups = "age_groups_3"
