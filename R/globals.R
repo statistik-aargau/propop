@@ -8,7 +8,23 @@ utils::globalVariables(c(
   "n_proj", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
-  "N", # <complement_projection>
+  "mig_sub", # <complement_projection>
+  "age", # <complement_projection>
+  "year", # <complement_projection>
+  "nat", # <complement_projection>
+  "sex", # <complement_projection>
+  "spatial_unit", # <complement_projection>
+  "new_age_group_100", # <complement_projection>
+  "acq", # <complement_projection>
+  "births", # <complement_projection>
+  "mor", # <complement_projection>
+  "emi_int", # <complement_projection>
+  "emi_nat", # <complement_projection>
+  "imm_int", # <complement_projection>
+  "imm_nat", # <complement_projection>
+  "n_1", # <complement_projection>
+  "delta_n", # <complement_projection>
+  "delta_perc", # <complement_projection>
   "n_proj", # <compute_measures>
   "n_bench", # <compute_measures>
   "error", # <compute_measures>
@@ -39,12 +55,13 @@ utils::globalVariables(c(
   "imm_nat_n", # <get_parameters>
   "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
+  "spatial_unit", # <get_parameters>
   "birthrate", # <get_parameters>
   "mor", # <get_parameters>
   "emi_int", # <get_parameters>
   "emi_nat", # <get_parameters>
-  "acq", # <get_parameters>
   "imm_int_n", # <get_parameters>
+  "acq", # <get_parameters>
   "mig_nat_n", # <get_parameters>
   "emi_n", # <get_parameters>
   "valueTexts", # <get_population>
@@ -66,9 +83,6 @@ utils::globalVariables(c(
   "n_bench", # <prepare_evaluation>
   "year", # <project_raw>
   "age", # <project_raw>
-  "spatial_unit", # <project_raw>
-  "scen", # <project_raw>
-  "birthrate", # <project_raw>
   "parameter", # <project_raw>
   "sex", # <project_raw>
   "nat", # <project_raw>
