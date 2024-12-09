@@ -28,10 +28,10 @@ data("fso_population")
 # Overview
 
 With `propop::propop()` you can perform population projections either for one or 
-several regions. The function applys the Cohort Component Method and is tailored 
+several regions. The function applys the cohort component method and is tailored 
 to the context of Switzerland. That is, the package was built to run with information 
 provided by the Federal Statistical Office (FSO). To run the function, you need
-to provide:
+the following input:
 
 -   a data frame with the **starting population**, that is, the most up-to-date
 number of people for each demographic group before the first projection year; to
@@ -41,7 +41,8 @@ and the first projection year is 2019.
 -   a data frame containing model **parameters**, that is, information about how
 key demographic variables such as mortality are expected to develop in the future;
 
--   global arguments which do not change over time or across demographic groups.
+-   some global arguments which do not change over time or across demographic 
+groups (e.g., proportion of female to male newborns).
 
 Importantly, the two data frames' structure (number, names, type of columns) must
 correspond exactly to the **specifications** shown in [this vignette](prepare_data.html). 
@@ -59,9 +60,9 @@ The package `propop` includes the population data from the canton of Aargau from
 Using these resources, we can project the population for the canton as a whole 
 for 1-year age groups for the period 2019-2030. 
 
-The start and end of women's fertile period, the proportion of babies born as female, and the 
-share of babies born by mothers who are not Swiss are stable parameters that are
-passed to `propop::propop()` as arguments.
+The start and end of women's fertile period, the proportion of babies born as 
+female, and the share of babies born by mothers who are not Swiss are stable 
+parameters that are passed to `propop::propop()` as arguments.
 \
 
 ``` {r project-canton}
@@ -75,10 +76,35 @@ projection_canton_2030 <- propop(
 )
 
 projection_canton_2030 |>
-  DT::datatable(filter = "top")
+  # round to 2 digits
+  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
+  DT::datatable(filter = "top") |> 
+  DT::formatStyle(
+  'n',
+  backgroundColor = '#007AB8'
+) |> 
+  DT::formatStyle(
+  c("births", "mor", "emi_int", "emi_nat", "imm_int", "imm_nat", "acq"),
+  backgroundColor = '#96D4FF'
+) |> 
+  DT::formatStyle(
+  'n_1',
+  backgroundColor = '#ffcc8f'
+)  
 ```
 
 \
+
+The **output** file includes the end-of year
+<span style="color:#007AB8;">number of people</span> (`n`)
+per demographic group for the base year (= starting population) and the 
+projected years (= projection). 
+The <span style="color:#96D4FF;">components</span> that are used to project the 
+<span style="color:#ffcc8f;">population at the end of the next year</span> (`n_1`), 
+when the same group is one year older, are also included in the output. Thus, 
+all elements of the cohort component equation are directly available from the
+output.
+
 
 # Projection for multiple subregions
 
@@ -136,6 +162,8 @@ projection_subregions_2030 <- propop(
 
 projection_subregions_2030 |>
   dplyr::filter(sex == "m" & nat == "int" & age == 14) |>
+  # round to two digits
+  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top")
 ```
    
@@ -150,7 +178,7 @@ available (e.g., moving between municipalities), `subregional` can be set to
 
 # No distinction between nationalities
 
-It's possible to run projections without distinguishing between Swiss and 
+As of version 0.2.0 it is possible to run projections without distinguishing between Swiss and 
 non-Swiss nationals. The simplest way to achieve this is to provide population 
 data and parameters without the nationality-specific columns (remove `nat`,
 `acq`, `births_int_ch`).
@@ -164,7 +192,7 @@ fso_parameters_int <- fso_parameters |>
   # drop Swiss people
     dplyr::filter(nat == "int") |>
   #   remove `nat`, `acq` and `births_int_ch` from `parameters`
-    dplyr::select(-c(nat, acq, births_int_ch))
+    dplyr::select(-c(nat, acq, int_mothers))
 
 fso_population_int <- fso_population |> 
 # drop Swiss people
@@ -186,11 +214,8 @@ projection_int <- propop(
 )
 
 projection_int |>
+  # round to two digits
+  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top")
 ```
 \ 
-
-# Interpretation of the output file
-
-The output file includes the number of people (`n`) per demographic group for 
-the base year and the projected years. 
