@@ -41,8 +41,8 @@ Swiss nationality born to non-Swiss mothers.
 \item \code{emi_nat}: rate of people emigrating to other cantons.
 \item \code{imm_int_n}, numeric, number of people immigrating from abroad.
 \item \code{imm_nat_n}: number of people immigrating from other cantons.
-\item \code{mig_sub} \bold{(optional)}, numeric, within canton net migration. Useful to account
-for movements between different subregions (e.g., municipalities).
+\item \code{mig_sub} \bold{(optional)}, numeric, within canton net migration. Useful
+to account for movements between different subregions (e.g., municipalities).
 }}
 
 \item{population}{data frame including the starting population of each
@@ -104,8 +104,8 @@ international / foreign (int). This variable is only returned if
 The output also includes columns related to the \bold{size and change
 of the population:}
 \item{n}{numric, end-of-year population per demographic group.}
-\item{n_1}{numeric, number of people of the particular demographic group
-by the end of the following year.}
+\item{n_1}{numeric, number of people of the particular
+demographic group by the end of the following year.}
 \item{delta_n}{numeric, population change per demographic group from
 current to next year in absolute numbers.}
 \item{delta_perc}{numeric, population change per demographic group from
