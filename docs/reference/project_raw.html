@@ -8,7 +8,7 @@ key information is missing (e.g., which age groups the rows represent).
 To conveniently obtain an enriched, more informative output,
 use the wrapper function propop::propop() (which internally uses
 propop::project_raw()).
-The parameters and start populations for different spatial levels
+The parameters and starting populations for different spatial levels
 can be obtained from the Swiss Federal Statistical Office (FSO).
 For instructions on how to download this information from
 STAT-TAB,
@@ -67,7 +67,7 @@ key information is missing (e.g., which age groups the rows represent).
 To conveniently obtain an enriched, more informative output,
 use the wrapper function propop::propop() (which internally uses
 propop::project_raw()).
-The parameters and start populations for different spatial levels
+The parameters and starting populations for different spatial levels
 can be obtained from the Swiss Federal Statistical Office (FSO).
 For instructions on how to download this information from
 STAT-TAB,
@@ -136,7 +136,7 @@ automatically adds relevant meta data to the results.
     
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -189,7 +189,7 @@ key information is missing (e.g., which age groups the rows represent).
 To conveniently obtain an enriched, more informative output,
 use the <b>wrapper function</b> <code><a href="propop.html">propop::propop()</a></code> (which internally uses
 <code>propop::project_raw()</code>).</p>
-<p>The parameters and start populations for different spatial levels
+<p>The parameters and starting populations for different spatial levels
 can be obtained from the Swiss Federal Statistical Office (FSO).
 For instructions on how to download this information from
 <a href="https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html" class="external-link">STAT-TAB</a>,
@@ -265,15 +265,16 @@ scenarios (r = reference, l = low growth, h = high growth scenario).</p></li>
 <li><p><code>nat</code>: nationality (ch = Swiss; int = foreign / international).</p></li>
 <li><p><code>sex</code>: sex (f = female, m = male).</p></li>
 <li><p><code>age</code>: age classes; typically ranging from 0 to 100 (incl. &gt;100).</p></li>
-<li><p><code>birth_rate</code>: number of children per year.</p></li>
-<li><p><code>births_int_ch</code> proportion of children with Swiss nationality born to
+<li><p><code>birthrate</code>: numeric, total number of live human births per 1,000
+inhabitants.</p></li>
+<li><p><code>int_mothers</code> proportion of children with Swiss nationality born to
 non-Swiss mothers.</p></li>
 <li><p><code>mor</code>: prospective mortality rate (probability of death).</p></li>
 <li><p><code>acq</code>: rate of acquisition of Swiss citizenship.</p></li>
-<li><p><code>emi</code>: rate of people emigrating abroad.</p></li>
-<li><p><code>mig_ch</code>: national / inter-cantonal net migration
-(number of immigrants - number of emigrants).</p></li>
-<li><p><code>imm_int</code>: number of people immigrating from abroad.</p></li>
+<li><p><code>emi_int</code>: rate of people emigrating abroad.</p></li>
+<li><p><code>emi_nat</code>: rate of people emigrating to other cantons.</p></li>
+<li><p><code>imm_int_n</code>: number of people immigrating from abroad.</p></li>
+<li><p><code>imm_nat_n</code>: number of people immigrating from other cantons.</p></li>
 <li><p><code>mig_sub</code>: within canton net migration. Useful to account for movements
 between different subregions (e.g., municipalities). This argument is
 <b>optional.</b></p></li>
@@ -336,7 +337,7 @@ Variables included in the output:</p>
 <dt>IMM_INT</dt>
 <dd><p>number of immigrants from other countries.</p></dd>
 
-<dt>MIG_CH</dt>
+<dt>MIG_NAT</dt>
 <dd><p>number of people migrating from / to other superordinate
 spatial units (typically cantons).</p></dd>
 
@@ -380,17 +381,17 @@ spatial units (typically cantons).</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2019</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       N IMM_INT MIG_CH MIG_SUB MOR EMI_INT ACQ BIRTHS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2506       2     17       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2589      15     34       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2568      15     26       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2635      14     23       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2710      13     16       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2608      11     10       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2569      10      7       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2611       9      6       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2634       8      2       0  NA      NA  NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2512       7      1       0  NA      NA  NA     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       N   BIRTHS        MOR   EMI_INT  EMI_NAT IMM_INT IMM_NAT ACQ MIG_SUB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2506 2482.096 10.9244840  5.999226 21.00101       2      38   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2589    0.000  1.9759463 15.000916 72.99978      15     107   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  2568    0.000  0.9999748 13.998723 60.99943      15      87   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  2635    0.000  0.9827561 12.999216 49.00001      14      72   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2710    0.000  0.0000000 11.001125 41.99926      13      58   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2608    0.000  0.0000000 10.999890 35.99964      11      46   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2569    0.000  0.0000000  9.999072 29.99982      10      37   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2611    0.000  0.0000000  7.999866 26.00085       9      32   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2634    0.000  0.0000000  7.000091 23.00030       8      25   0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2512    0.000  0.0000000  6.000252 21.00088       7      22   0       0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
