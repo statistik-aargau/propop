@@ -5,8 +5,11 @@
 - `propop::propop()` now uses *separate* input parameters for emigration to / 
 immigration from other cantons. Previously `propop::propop()` used the net 
 difference between emigration to / immigration from other cantons. 
-- The new version now directly matches the projection formula provided by the
-FSO.
+- With this change, the new version now directly corresponds to the projection 
+equations provided by the FSO.
+- The change has also facilated the inclusion of all components of the cohort
+component method in the output. This makes it easy to track the transition from 
+one year to the next.
 
 ## New variable names
 
