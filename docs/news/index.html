@@ -18,7 +18,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +60,21 @@
       <small>Source: <a href="https://github.com/statistik-aargau/propop/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="propop-100">propop 1.0.0<a class="anchor" aria-label="anchor" href="#propop-100"></a></h2>
+<div class="section level3">
+<h3 id="projection-using-separate-parameters-for-migration-between-cantons-1-0-0">Projection using separate parameters for migration between cantons<a class="anchor" aria-label="anchor" href="#projection-using-separate-parameters-for-migration-between-cantons-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/propop.html">propop::propop()</a></code> now uses <em>separate</em> input parameters for emigration to / immigration from other cantons. Previously <code><a href="../reference/propop.html">propop::propop()</a></code> used the net difference between emigration to / immigration from other cantons.</li>
+<li>With this change, the new version now directly corresponds to the projection equations provided by the FSO.</li>
+<li>The change has also facilated the inclusion of all components of the cohort component method in the output. This makes it easy to track the transition from one year to the next.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-variable-names-1-0-0">New variable names<a class="anchor" aria-label="anchor" href="#new-variable-names-1-0-0"></a></h3>
+<ul><li>This change required a comprehensive renaming of several variables, which makes the new version incompatible with previous code.</li>
+<li>If you want to continue using old code, we suggest using version 0.2.0. Note that the components of the projection equation are not included in the output in version 0.2.0.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="propop-020">propop 0.2.0<a class="anchor" aria-label="anchor" href="#propop-020"></a></h2>
 <div class="section level3">
