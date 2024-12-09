@@ -32,6 +32,8 @@ Other contributors:
 \itemize{
   \item Andrea Plüss \email{andrea.pluess@ag.ch} [contributor]
   \item Nadine Herrmann [contributor]
+  \item Lutz Benson [contributor]
+  \item Eric Meyer [contributor]
   \item Statistik Aargau [funder, copyright holder]
 }
 
