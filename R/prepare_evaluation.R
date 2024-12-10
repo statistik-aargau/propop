@@ -95,7 +95,7 @@ prepare_evaluation <- function(
   assertthat::assert_that(
     identical(
       range(as.integer(data_benchmark$year)),
-      range(data_projected$year)
+      range(as.integer(data_projected$year))
     ),
     msg = "The ranges of years in `data_benchmark` and `data_projected` are not
     identical"
@@ -150,15 +150,15 @@ prepare_evaluation <- function(
     msg = "column `spatial_unit` is missing in data_projected"
   )
   assertthat::assert_that(
-    "n" %in% names(data_projected),
-    msg = "column `n` is missing in data_projected"
+    "n_dec" %in% names(data_projected),
+    msg = "column `n_dec` is missing in data_projected"
   )
 
   # Combine benchmark data and projected population ----
 
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
-    dplyr::mutate(n_proj = round(n, digits = 0)) |>
+    dplyr::mutate(n_proj = round(n_dec, digits = 0)) |>
     dplyr::select(year, spatial_unit, age, sex, nat, n_proj)
 
   ## Prepare benchmark data
