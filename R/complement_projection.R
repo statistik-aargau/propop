@@ -132,6 +132,7 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
       delta_perc = ifelse(age == 0, NA, delta_perc),
       year = year + 1
     ) |>
+    dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
       "year", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
