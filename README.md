@@ -53,7 +53,8 @@ and parameters).
 [how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
 the population development for single and multiple regions.
 - The third vignette shows 
-[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html).
+[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
+for example against benchmarks.
 
 ## Features, limitations, future plans
 
