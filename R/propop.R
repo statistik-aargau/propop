@@ -583,7 +583,7 @@ propop <- function(
     "{.val {year_last}}): ",
     "{.emph {.val {projection_results |>
     dplyr::filter(year == year_last) |>
-    dplyr:: summarise(sum(n, na.rm = TRUE)) |>
+    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
     dplyr::pull() |> round(digits = 0)}}}")
   cli::cli_text(
     "Nationality-specific projection: ",
