@@ -23,9 +23,9 @@ library(propop)
 # Evaluate projections
 
 `propop` provides a function to **compare projections against a benchmark**. 
-The benchmark can be the actual population development (i.e., official records) 
-or a base model (e.g., when testing alternative models or when comparing against
-the official FSO forecast). 
+The benchmark can be the actual (recorded) population development (i.e., official 
+records in population registry) or a base model (e.g., when testing alternative 
+models or when comparing against the official FSO forecast). 
 
 Evaluations can be carried out individually **per observation unit** or like a
 summary statistics **aggregated across all observations** (e.g., all years, 
@@ -36,8 +36,8 @@ demographic groups, spatial units).
 To run the evaluation function, we need some benchmark data and the 
 results from the projection.  
 
-Here we use the **population records** from the canton of Aargau 2019-2022 as 
-benchmark (2018 will serve as starting population):  
+Here we use the observed **population records** from the canton of Aargau 
+2019-2022 as benchmark (2018 will serve as starting population):  
 
 
 ``` {r get-benchmark, message = FALSE, eval = FALSE}
@@ -86,7 +86,6 @@ data_projected <- propop(
 save(data_benchmark, file='../vignettes/evaluate_data_benchmark.rda')
 save(data_parameters, file='../vignettes/evaluate_data_parameters.rda')
 save(data_projected, file='../vignettes/evaluate_data_projected.rda')
-
 ```
 
 ``` {r load-data, message = FALSE, echo=FALSE, eval = TRUE}
@@ -297,7 +296,7 @@ fso_propop <- prepare_evaluation(
   compute_measures()
 
 fso_propop |>
-  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
+  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.3f", x))) |>
   DT::datatable(
     filter = "top",
     caption = htmltools::tags$caption(
@@ -309,13 +308,19 @@ fso_propop |>
 
 ```{r fig.width = 9, fig.height = 7, echo = FALSE}
 library(ggplot2)
+
+add_percent <- function(x) {
+  paste0(x, "%")
+}
+
 ggplot(fso_propop) +
   geom_jitter(aes(x = year, y = pe), size = 0.7) +
   labs(
-    title = "Differences between FSO and propop projections for each demographic group",
+    title = "Differences between FSO and propop projections for each demographic group (2019-2050)",
     x = "Year",
     y = "Difference in percent"
   ) +
+  scale_y_continuous(labels = add_percent) +
   theme_minimal()
 ```
 
