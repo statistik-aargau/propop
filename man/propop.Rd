@@ -2,7 +2,7 @@
 % Please edit documentation in R/propop.R
 \name{propop}
 \alias{propop}
-\title{Project population development (enriched results)}
+\title{Project population development}
 \usage{
 propop(
   parameters,
@@ -40,15 +40,18 @@ Swiss nationality born to non-Swiss mothers.
 (number of immigrants - number of emigrants).
 \item \code{emi_nat}: rate of people emigrating to other cantons.
 \item \code{imm_int_n}, numeric, number of people immigrating from abroad.
-\item \code{imm_nat_n}: number of people immigrating from other cantons.
-\item \code{mig_sub} \bold{(optional)}, numeric, within canton net migration. Useful
-to account for movements between different subregions (e.g., municipalities).
+\item \code{imm_nat_n}: numeric, number of people immigrating from other cantons.
+\item \code{mig_sub} \bold{(optional)}, numeric, net migration per subregion; this
+is the migration from / to other subregions (e.g., municipalities,
+districts) within the main superordinate projection unit (e.g., a canton).
+Accounts for movements between different subregions. Needs to be provided
+by the user.
 }}
 
 \item{population}{data frame including the starting population of each
-demographic group. Possible values are the same as in \code{parameters} (apart
-from year). The data frame only includes one year, usually the one preceding
-the first projected year.
+demographic group and each spatial unit. Possible values are the same as in
+\code{parameters} (apart from year). The data frame only includes one year, usually
+the one preceding the first projected year.
 \itemize{
 \item \code{year} character, should be \code{year_first} - 1.
 \item \code{spatial_unit} character.
@@ -63,8 +66,8 @@ the first projected year.
 \item{year_last}{numeric, last year to be projected.}
 
 \item{age_groups}{numeric, number of age classes. Creates a vector with
-1-year age classes running from \code{0} to (\code{age_groups} - 1). Defaults to
-\code{101} (FSO standard number of age groups).}
+1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
+currently be set to \verb{= 101} (FSO standard number of age groups).}
 
 \item{fert_first}{numeric, first year of female fertility. Defaults to 16
 (FSO standard value).}
@@ -89,14 +92,17 @@ region or subregions for which the projection shall be performed.}
 }
 \value{
 Returns a data frame that includes the number of people for each demographic
-group per year (for the starting year and each projected year). The
-number of rows is the product of all years times all demographic groups.
+group per year (for projected years) and spatial unit. The number of
+rows is the product of all years times all demographic groups times
+all spatial units.
 The output includes several \bold{identifiers} that indicate to which
-demographic group and year the results in the rows refer to.
-\item{year}{integer, indicating starting year / projected years.}
+demographic group, year, and spatial unit the results in the rows refer
+to:
+\item{year}{integer, indicating the projected years.}
 \item{spatial_unit}{factor, spatial units for which the projection
-was run (e.g., canton, municipalities, districts).}
-\item{age}{integer.}
+was run (e.g., canton, districts, municipalities).}
+\item{age}{integer, ranging from \code{0}n to \code{100} (including those older
+than 100).}
 \item{sex}{factor, female (f) and male (m).}
 \item{nat}{factor, indicates if the nationality is Swiss (ch) or
 international / foreign (int). This variable is only returned if
@@ -106,13 +112,13 @@ of the population:}
 \item{n_jan}{numric, start-of-year population per demographic group.}
 \item{n_dec}{numeric, end-of-year population per demographic group.}
 \item{delta_n}{numeric, population change per demographic group from
-current to next year in absolute numbers.}
+the start to the end of the year in \emph{absolute numbers}.}
 \item{delta_perc}{numeric, population change per demographic group from
-current to next year in percentages.}
-The \bold{components} that are used to project the development of the population
-are also included in the output:
-\item{births}{numeric, number of births (values only available for
-age = 0).}
+the start to the end of the year in \emph{percentages}.}
+The \bold{components} that are used to project the development of the
+population are also included in the output:
+\item{births}{numeric, number of births (non-zero values are only
+available for age = 0).}
 \item{mor}{numeric, number of deaths.}
 \item{emi_int}{numeric, number of people who emigrate
 to other countries.}
@@ -129,9 +135,9 @@ Wrapper function to project population development using the cohort
 component method (see e.g., \href{https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf}{here}
 for more details).
 
-You can either use your own parameters and starting population or download these
-data from the Swiss Federal Statistical Office (FSO). For instructions on how
-to download this information from
+You can either use your own parameters and starting population or download
+these data from the Swiss Federal Statistical Office (FSO). For instructions
+on how to download this information from
 \href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},
 see \code{vignette("prepare_data", package = "propop")}.
 
