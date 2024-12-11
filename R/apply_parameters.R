@@ -18,6 +18,12 @@
 #'    * `n_dec` numeric, number of people per demographic group in December.
 #' @param parameters list, data frames containing the FSO rates and numbers to
 #' run the projection for a specific spatial level (e.g., canton, municipality).
+#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#'        (FSO standard value).
+#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#'        (FSO standard value).
+#' @param share_born_female numeric, fraction of female babies. Defaults to
+#'        100 / 205 (FSO standard value).
 #'
 #' @return
 #' Returns a data frame that includes the number of people for each demographic
@@ -56,68 +62,87 @@
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship.}
 #'
 #' @export
-apply_parameters <- function(population, parameters) {
-  # remove later:
-  # browser()
-
+apply_parameters <- function(
+    population,
+    parameters,
+    fert_first = 16,
+    fert_last = 50,
+    share_born_female = 100 / 205) {
   # `pop_year` helps to identify the progress of the iteration. For the first
   # iteration, pop_year returns a single year. For all following iterations,
   # `pop_year` contains two years.
   pop_year <- unique(population$year)
 
-  # The calculation of the number of annual newborn children is still in
-  # development. Thus, a proxy is used here where the number of newborns is
-  # identical across demographic groups and years.
-  proxy_newborn <- parameters |>
-    filter(age == 0) |>
-    select(year, nat, sex, age, spatial_unit) |>
-    # for now, 2482 babies are born each year across demographic groups. This
-    # number reflects the result from the example-run from propop() for newborn
-    # Swiss males in the year 2019. The value has been chosen to compare results
-    # from this demographic unit during the development process.
-    mutate(
-      n_dec = 0,
-      births = 2482,
-      year = as.double(year),
-      year = max(pop_year)
-    )
-
   # If the length of `pop_year` is 1, the initial population is used here.
   # Otherwise, if the length of `pop_year` is larger than one, the population
   # is retrieved from the previous iterations' result.
   if (isTRUE(length(pop_year) != 1)) {
-    population_prev1 <- population |>
+    population_prev <- population |>
       # filter for year from parameters
-      filter(year == parameters$year - 1) |>
-      # advance the population by one year: increase the age by one year,
-      # aggregate people aged 100 and older, and add newborns.
-      advance_population(proxy_newborn = proxy_newborn)
+      filter(year == parameters$year - 1)
   } else {
-    population_prev1 <- population |>
-      # advance the population by one year: increase the age by one year,
-      # aggregate people aged 100 and older, and add newborns.
-      advance_population(proxy_newborn = proxy_newborn)
+    population_prev <- population
   }
+
+  population_aged <- population_prev |>
+    # advance the population by one year: increase the age by one year,
+    # aggregate people aged 100 and older.
+    advance_population() |>
+    # adapt year to parameters
+    mutate(year = unique(parameters$year))
+
+  # remove later:
+  # browser()
+
+  # calculate newborns
+  newborns <- calc_newborns(
+    population = population_aged,
+    parameters = parameters,
+    fert_first = fert_first,
+    fert_last = fert_last,
+    share_born_female = share_born_female
+  )
+
 
   # Prepare the population from the previous iteration to calculate the
   # projection of the next year
-  population_prev2 <- population_prev1 |>
+  population_aged_prep <- population_aged |>
+    # add newborns
+    bind_rows(newborns) |>
+    # set the variable `births` to zero for the population except newborns
+    mutate(births = case_when(age > 0 ~ 0, TRUE ~ births)) |>
+    # determine factor levels
+    mutate(sex = factor(sex, levels = c("m", "f"))) |>
+    # arrange data
+    arrange(year, nat, sex, age) |>
+    # the population in december of year t becomes the population in January
+    # of year t+1
+    rename(n_jan = n_dec) |>
     # select identifier columns and population
     select(any_of(c(
       "year", "nat", "sex", "age", "spatial_unit", "n_jan", "births"
-    ))) |>
-    # adapt year to parameters
-    mutate(year = parameters$year)
+    )))
 
   # Calculate the projection
   population_new <- parameters |>
     # join population and parameters
-    left_join(population_prev2) |>
+    left_join(population_aged_prep) |>
     # calculate the projection
     calc_proj_tables()
 
-  # Bind reults of year t and year t+1
-  population_out <- bind_rows(population, population_new)
+  # Bind results of year t and year t+1
+  population_out <- bind_rows(population, population_new) |>
+    # clean the data
+    select(any_of(c(
+      "year", "spatial_unit", "scen", "nat", "sex", "age", "n_jan", "births",
+      "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n",
+      "mig_sub", "n_dec"
+    ))) |>
+    mutate(
+      sex = factor(sex, levels = c("m", "f")),
+      nat = factor(nat, levels = c("ch", "int"))
+    ) |>
+    arrange(nat, desc(sex), year, spatial_unit)
 
   return(population_out)
 }

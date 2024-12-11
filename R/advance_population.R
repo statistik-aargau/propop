@@ -19,7 +19,7 @@
 #' @return returns an identically structured data frame with the aged population.
 #' @export
 #'
-advance_population <- function(.data, proxy_newborn) {
+advance_population <- function(.data) {
   .data |>
     mutate(
       # advance the populations' age by one year
@@ -30,16 +30,5 @@ advance_population <- function(.data, proxy_newborn) {
       year = as.numeric(year)
     ) |>
     # aggregate people aged 100 and older
-    summarize(n_dec = sum(n_dec), .by = c(year, nat, sex, age, spatial_unit)) |>
-    # add newborns; currently using a proxy (work-in-progress)
-    bind_rows(proxy_newborn) |>
-    # set the variable `births` to zero for the population except newborns
-    mutate(births = case_when(age > 0 ~ 0, TRUE ~ births)) |>
-    # determine factor levels
-    mutate(sex = factor(sex, levels = c("m", "f"))) |>
-    # arrange data
-    arrange(year, nat, sex, age) |>
-    # the population in december of year t becomes the population in january
-    # of year t+1
-    rename(n_jan = n_dec)
+    summarize(n_dec = sum(n_dec), .by = c(year, nat, sex, age, spatial_unit))
 }
