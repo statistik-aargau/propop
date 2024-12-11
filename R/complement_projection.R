@@ -14,43 +14,7 @@
 #'     patterns (e.g., movement between municipalities within a canton)
 #'     are part of the projection.
 #'
-#' @returns
-#' Returns a data frame that includes the number of people for each demographic
-#'      group per year (for the starting year and each projected year). The
-#'      number of rows is the product of all years times all demographic groups.
-#'      The output includes several \bold{identifiers} that indicate to which
-#'      demographic group and year the results in the rows refer to.
-#'      \item{year}{integer, indicating starting year / projected years.}
-#'      \item{spatial_unit}{factor, spatial units for which the projection
-#'            was run (e.g., canton, municipalities, districts).}
-#'      \item{age}{integer.}
-#'      \item{sex}{factor, female (f) and male (m).}
-#'      \item{nat}{factor, indicates if the nationality is Swiss (ch) or
-#'      international / foreign (int). This variable is only returned if
-#'      `binational = TRUE`.}
-#'      The output also includes columns related to the \bold{size and change
-#'      of the population:}
-#'       \item{n}{numric, end-of-year population per demographic group.}
-#'      \item{n_dec}{numeric, number of people of the particular demographic group
-#'      by the end of the following year.}
-#'      \item{delta_n}{numeric, population change per demographic group from
-#'      current to next year in absolute numbers.}
-#'      \item{delta_perc}{numeric, population change per demographic group from
-#'      current to next year in percentages.}
-#'      The \bold{components} that are used to project the development of the population
-#'      are also included in the output:
-#'      \item{births}{numeric, number of births (values only available for
-#'      age = 0).}
-#'      \item{mor}{numeric, number of deaths.}
-#'      \item{emi_int}{numeric, number of people who emigrate
-#'      to other countries.}
-#'      \item{emin_nat}{numeric, number of people who emigrate
-#'      to other cantons.}
-#'      \item{imm_int}{numeric, number of people who immigrate
-#'      from other countries.}
-#'      \item{imm_nat}{numeric, number of people who immigrate
-#'      from other cantons.}
-#'      \item{acq}{numeric, number of people who acquire Swiss citizenship.}
+#' @returns See output described in propop::propop()
 #'
 #' @autoglobal
 #' @noRd
