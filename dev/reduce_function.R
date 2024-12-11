@@ -26,9 +26,9 @@
     mutate(year = as.numeric(year)) |>
     select(
       # select and rename variables from parameters
-      year, nat, sex, age, scen, spatial_unit, mor_rate = mor,
-      emi_int_rate = emi_int, emi_nat_rate = emi_nat, acq_rate = acq,
-      imm_int_n, imm_nat_n
+      year, nat, sex, age, scen, spatial_unit, birthrate, int_mothers,
+      mor_rate = mor, emi_int_rate = emi_int, emi_nat_rate = emi_nat,
+      acq_rate = acq, imm_int_n, imm_nat_n
     )
 
   # Split parameters into a list to iterate across
@@ -52,4 +52,38 @@
     # clean the data
     filter(year != unique(init_population$year))
 }
+
+# Compare with propop() (using matrices)
+## Run propop
+propop_original <-
+  propop(
+    parameters = fso_parameters,
+    year_first = 2019,
+    year_last = 2030,
+    population = fso_population,
+    subregional = FALSE,
+    binational = TRUE
+  ) |>
+  mutate(year = year + 1)
+
+
+# Compare results
+comp_models = propop_original |>
+  left_join(
+    df_result |>
+      rename_with(~ paste("new_", ., sep = ""), .cols = n_jan:n_dec)
+  ) |>
+  mutate(
+    diff_n_jan = round(n - new_n_jan, 3),
+    diff_n_dec = round(balance_n - new_n_dec, 3)
+  )
+
+# Mean error per age group
+comp_models_error <- comp_models |>
+  summarize(
+    mean_error = mean(abs(diff_n_dec), na.rm = TRUE), .by = c(age)
+  ) |>
+  mutate(
+    mean_error = round(mean_error, 1)
+  )
 
