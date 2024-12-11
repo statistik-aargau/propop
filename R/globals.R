@@ -10,6 +10,7 @@ utils::globalVariables(c(
   "wmape", # <aggregate_measures>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
+  "n_jan", # <complement_projection>
   "year", # <complement_projection>
   "nat", # <complement_projection>
   "sex", # <complement_projection>
@@ -22,7 +23,7 @@ utils::globalVariables(c(
   "emi_nat", # <complement_projection>
   "imm_int", # <complement_projection>
   "imm_nat", # <complement_projection>
-  "n_1", # <complement_projection>
+  "n_dec", # <complement_projection>
   "delta_n", # <complement_projection>
   "delta_perc", # <complement_projection>
   "n_proj", # <compute_measures>
@@ -56,6 +57,7 @@ utils::globalVariables(c(
   "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
   "spatial_unit", # <get_parameters>
+  "fso_projection_n", # <get_parameters>
   "birthrate", # <get_parameters>
   "mor", # <get_parameters>
   "emi_int", # <get_parameters>
@@ -75,6 +77,7 @@ utils::globalVariables(c(
   "nat", # <get_population>
   "age", # <get_population>
   "year", # <prepare_evaluation>
+  "n_dec", # <prepare_evaluation>
   "spatial_unit", # <prepare_evaluation>
   "age", # <prepare_evaluation>
   "sex", # <prepare_evaluation>
