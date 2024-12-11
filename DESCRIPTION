@@ -62,7 +62,8 @@ Imports:
     Matrix,
     stringi,
     tibble,
-    tidyr
+    tidyr,
+    purrr
 Suggests: 
     constructive (>= 1.0.1),
     devtools,
