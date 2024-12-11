@@ -8,7 +8,7 @@
 #'
 calc_proj_tables <- function(.data) {
   .data |>
-    # apply FSO formula for projections
+    # apply FSO method for projections
     mutate(
       # rates (resulting people are subtracted from the population) -----
       ## mortality -----
