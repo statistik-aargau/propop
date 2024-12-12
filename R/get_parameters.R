@@ -325,8 +325,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     "Downloading download number parameters (high growth scenario)"
   )
 
-
-
   fso_numbers_h <- BFS::bfs_get_data(
     number_bfs = number_fso_high, # "px-x-0104020000_102",
     query = dimensions
@@ -356,8 +354,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       )
     )) |>
     dplyr::mutate(scen = "low")
-
-  cli::cli_progress_step("Downloading birth parameter")
 
   # combine into single data frame
   fso_numbers_raw <- dplyr::full_join(fso_numbers_r, fso_numbers_h) |>
@@ -432,7 +428,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
                  "following package data may also help: data('stattab_109_snap')"
     ))
 
-
   # Specify the elements to download
   dim1 <- metadata_tidy |>
     dplyr::filter(
@@ -498,7 +493,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     unique(dim7$code)
   )
 
-  cli::cli_progress_step("Downloading birth parameter")
+  cli::cli_progress_step("Downloading rate parameters")
 
   # Download rate parameters
   fso_rates_raw <- BFS::bfs_get_data(
@@ -719,8 +714,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(mig_nat_n = imm_nat_n - emi_nat_n) |>
     dplyr::left_join(fso_int_mothers, by = c("Kanton", "year", "scen")) |>
     dplyr::arrange(year)
-
-
 
   # Clean data ----
   projection_parameters_clean <- projection_parameters |>
