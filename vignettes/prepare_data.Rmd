@@ -81,7 +81,7 @@ the information from the following tables are needed:
 | parameters        |                                |     of the fertile age of  |
 | **not** directly  |                                |     women                  |
 | available from    |                                |                            |
-| STAT-TAB must be  |                                | -   Proportion of newborns |
+| STAT-TAB are      |                                | -   Proportion of newborns |
 | provided as       |                                |     with female sex        |
 | arguments         |                                |     (100/205)              |
 +-------------------+--------------------------------+----------------------------+
