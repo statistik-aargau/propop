@@ -51,7 +51,7 @@ by the user.
 \item{population}{data frame including the starting population of each
 demographic group and each spatial unit. Possible values are the same as in
 \code{parameters} (apart from year). The data frame only includes one year, usually
-the one preceding the first projected year.
+the one preceding the first year of the projection.
 \itemize{
 \item \code{year} character, should be \code{year_first} - 1.
 \item \code{spatial_unit} character.
