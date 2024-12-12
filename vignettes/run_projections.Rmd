@@ -81,7 +81,7 @@ projection_canton_2030 |>
   DT::datatable(filter = "top") |> 
   DT::formatStyle(
   'n_jan',
-  backgroundColor = '#007AB8'
+  backgroundColor = '#ffcc8f'
 ) |> 
   DT::formatStyle(
   c("births", "mor", "emi_int", "emi_nat", "imm_int", "imm_nat", "acq"),
@@ -89,20 +89,23 @@ projection_canton_2030 |>
 ) |> 
   DT::formatStyle(
   'n_dec',
-  backgroundColor = '#ffcc8f'
+  backgroundColor = '#007AB8'
 )  
 ```
 
 \
 The **output** file includes the 
-<span style="color:#007AB8;">number of people in January</span> (`n_jan`) 
+<span style="color:#ffcc8f;">number of people in January</span> (`n_jan`) 
 and the
-<span style="color:#ffcc8f;">number of people in December </span> (`n_dec`) 
+<span style="color:#007AB8;">number of people in December </span> (`n_dec`) 
 per demographic group and year. The 
 <span style="color:#96D4FF;">components</span> 
 that are used to project the population growth from the start to the end of the 
 year are also included in the output. Thus, all elements of the cohort component 
-equation are directly available from the output.
+equation are directly available from the output. Note that the number of people 
+who acquire the Swiss citizenship (`acq`) need to be added if the demographic 
+group is Swiss and subtracted if the demographic group has a different 
+nationality.
 \
 
 # Projection for multiple subregions
@@ -177,14 +180,16 @@ available (e.g., moving between municipalities), `subregional` can be set to
 
 # No distinction between nationalities
 
-As of version 0.2.0 it is possible to run projections without distinguishing between Swiss and 
-non-Swiss nationals. The simplest way to achieve this is to provide population 
-data and parameters without the nationality-specific columns (remove `nat`,
-`acq`, `births_int_ch`).
+As of version 0.2.0 it is possible to run projections without distinguishing 
+between Swiss and non-Swiss nationals. The simplest way to achieve this is to 
+provide population data and parameters without the nationality-specific columns 
+(remove `nat`, `acq`, `births_int_ch`).
 
 Let's adapt the input files accordingly. To keep things simple, we run the 
-projection for only one of the two nationalities. It goes without saying that using `propop::propop()` like this in real settings requires more preparation (e.g., determining a single value when parameters differ between Swiss and non-Swiss people).
-
+projection for only one of the two nationalities. It goes without saying that 
+using `propop::propop()` like this in real settings requires more preparation 
+(e.g., determining a single value when parameters differ between Swiss and 
+non-Swiss people).
 
 ``` {r prepare-single-nationality}
 fso_parameters_int <- fso_parameters |>
