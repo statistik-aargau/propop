@@ -92,7 +92,7 @@ the information from the following tables are needed:
 # Convenient way to get FSO data
 
 The `propop` package provides two convenience functions to download data from 
-the FSO. 
+the FSO. These are strongly based on the `BFS` package and its documentation.
 
 To get the starting population for a spatial unit, you must use the spelling
 defined in the corresponding FSO table. The entries in the FSO tables may 
