@@ -100,5 +100,6 @@ projection_canton_2030 <- propop(
   year_first = 2019,
   year_last = 2030,
   population = fso_population,
-  subregional = FALSE)
+  subregional = FALSE,
+  binational = TRUE)
 ```
