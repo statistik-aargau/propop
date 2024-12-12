@@ -45,7 +45,7 @@ older than 100).
 
 The following parameters are included in the returned data frame:
 \itemize{
-\item \code{year}: character, year of projection.
+\item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
 \item \code{birthrate}: numeric, total number of live human births per 1,000
 inhabitants.

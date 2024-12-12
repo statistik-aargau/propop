@@ -22,7 +22,7 @@ Swiss / foreign nationals), there are 101 age classes, resulting in a total
 of 404 rows per requested year and spatial unit. Columns included in the
 returned data frame:
 \describe{
-\item{year}{character, year in which the population was recorded.}
+\item{year}{numeric, year in which the population was recorded.}
 \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 cantons, districts, municipalities).}
 \item{nat}{character, ch = Swiss, int = foreign / international.}
