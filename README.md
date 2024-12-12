@@ -20,7 +20,8 @@ The package was developed for use with
 [population data](https://www.pxweb.bfs.admin.ch/pxweb) 
 and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
 from the Swiss Federal Statistical Office (FSO). `propop` uses the same matrix 
-calculation method as the FSO (2020) 
+calculation method as the FSO 
+([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf); only available in French) 
 and therefore reveals almost identical results (see vignette 
 [Evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html)). 
 The package can be used to project the development of different 
