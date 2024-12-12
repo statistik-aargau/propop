@@ -122,7 +122,7 @@ available for age = 0).}
 \item{mor}{numeric, number of deaths.}
 \item{emi_int}{numeric, number of people who emigrate
 to other countries.}
-\item{emin_nat}{numeric, number of people who emigrate
+\item{emi_nat}{numeric, number of people who emigrate
 to other cantons.}
 \item{imm_int}{numeric, number of people who immigrate
 from other countries.}

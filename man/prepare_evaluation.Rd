@@ -4,12 +4,7 @@
 \alias{prepare_evaluation}
 \title{Prepare data for evaluation}
 \usage{
-prepare_evaluation(
-  data_benchmark,
-  data_projected,
-  drop_start_year = FALSE,
-  age_groups = NULL
-)
+prepare_evaluation(data_benchmark, data_projected, age_groups = NULL)
 }
 \arguments{
 \item{data_benchmark}{data frame containing benchmark data (e.g., actual /
@@ -17,9 +12,6 @@ official population records obtained with \code{propop::get_population()}).}
 
 \item{data_projected}{data frame containing population projections; can be
 created with \code{propop::propop()}.}
-
-\item{drop_start_year}{logical, indicating if starting population shall be
-removed from \code{data_projected}.}
 
 \item{age_groups}{character, optional argument (\code{"age_groups_3"}) indicating
 if the data shall be aggregated into the predefined three age groups
@@ -30,7 +22,7 @@ classes.}
 }
 \value{
 Returns a data frame with the number of people from the benchmark and
-from the projection. Each row contains a unique combination of year,  spatial
+from the projection. Each row contains a unique combination of year, spatial
 unit, and demographic group.
 }
 \description{
@@ -61,13 +53,11 @@ demographic group.}
 \dontrun{
 combined <- prepare_evaluation(
   data_benchmark = output_get_population,
-  data_projected = output_propop,
-  drop_start_year = TRUE
+  data_projected = output_propop
 )
 combined_grouped <- prepare_evaluation(
   data_benchmark = output_get_population,
   data_projected = output_propop,
-  drop_start_year = TRUE,
   age_groups = "age_groups_3"
 )
 }
