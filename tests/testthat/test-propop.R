@@ -1514,18 +1514,19 @@ test_that("tests propop: 1 region vs. 5 regions", {
   ## equal projection results
   # simplify data for comparison
   output_super <- output_propop_1r |>
-    select(year, age, sex, nat, n) |>
+    select(year, age, sex, nat, n_dec) |>
     arrange(year, nat, sex, age)
 
   output_subregions <- output_propop_5r |>
-    dplyr::mutate(n_check = sum(n, na.rm = TRUE), .by = c(year, nat, sex, age)) |>
+    dplyr::mutate(n_check = sum(n_dec, na.rm = TRUE),
+                  .by = c(year, nat, sex, age)) |>
     # remove column that includes redundancy
-    dplyr::select(-n, -spatial_unit) |>
+    dplyr::select(-n_dec, -spatial_unit) |>
     # rename n_check
-    rename(n = n_check) |>
+    rename(n_dec = n_check) |>
     # remove redundant columns
     dplyr::distinct(year, nat, sex, age, .keep_all = TRUE) |>
-    select(year, age, sex, nat, n) |>
+    select(year, age, sex, nat, n_dec) |>
     arrange(year, nat, sex, age)
 
   # run equal output ----
