@@ -46,12 +46,9 @@ groups (e.g., proportion of female to male newborns).
 
 Importantly, the two data frames' structure (number, names, type of columns) must
 correspond exactly to the **specifications** shown in [this vignette](prepare_data.html). 
-Among other things, it is **mandatory** to provide two levels for sex and nationality. 
-The function is more flexible with respect to age groups. Although the examples
-use 1-year age groups ranging from 0 to 100 (incl. those who are older), the model 
-should also run with aggregated groups (e.g., 0-19, 20-64, 65+ year olds) --
-provided that the information in the population and parameter data frames are
-compatible (e.g., by aggregating the parameters for the same age groups).   
+Among other things, it is **mandatory** to provide two levels for sex. Nationality
+can have either one or two levels. The function requires 1-year age groups 
+ranging from 0 to 100 (incl. those who are older).   
 
 # Projection for a single region
 
@@ -62,7 +59,8 @@ for 1-year age groups for the period 2019-2030.
 
 The start and end of women's fertile period, the proportion of babies born as 
 female, and the share of babies born by mothers who are not Swiss are stable 
-parameters that are passed to `propop::propop()` as arguments.
+parameters that are defined in `propop::project_raw()` and passed to 
+`propop::propop()`.
 \
 
 ``` {r project-canton}
@@ -95,7 +93,7 @@ projection_canton_2030 |>
 
 \
 The **output** file includes the 
-<span style="color:#ffcc8f;">number of people in January</span> (`n_jan`) 
+<span style="color:#ffcc8f;">number of people in January </span> (`n_jan`) 
 and the
 <span style="color:#007AB8;">number of people in December </span> (`n_dec`) 
 per demographic group and year. The 
@@ -103,7 +101,7 @@ per demographic group and year. The
 that are used to project the population growth from the start to the end of the 
 year are also included in the output. Thus, all elements of the cohort component 
 equation are directly available from the output. Note that the number of people 
-who acquire the Swiss citizenship (`acq`) need to be added if the demographic 
+who acquire the Swiss citizenship (`acq`) are added if the demographic 
 group is Swiss and subtracted if the demographic group has a different 
 nationality.
 \
