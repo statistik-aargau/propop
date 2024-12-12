@@ -75,6 +75,7 @@ utils::globalVariables(c(
   "Alter", # <get_population>
   "Kanton", # <get_population>
   "nat", # <get_population>
+  "year", # <get_population>
   "age", # <get_population>
   "year", # <prepare_evaluation>
   "n_dec", # <prepare_evaluation>
