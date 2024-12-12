@@ -4,7 +4,7 @@
       constructive::construct(get_population_snapshot)
     Output
       tibble::tibble(
-        year = rep("2022", 404L),
+        year = rep(2022, 404L),
         spatial_unit = rep("......4232 Geltwil", 404L),
         nat = rep(c("ch", "int"), each = 202L),
         sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -37,7 +37,7 @@
       constructive::construct(get_population_snapshot2)
     Output
       tibble::tibble(
-        year = rep("2022", 808L),
+        year = rep(2022, 808L),
         spatial_unit = rep(c("Aargau", "......4232 Geltwil"), each = 404L),
         nat = rep(rep(c("ch", "int"), 2), each = 202L),
         sex = rep(rep(c("m", "f"), 4), each = 101L),
