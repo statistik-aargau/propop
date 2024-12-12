@@ -28,15 +28,16 @@ scenarios (r = reference, l = low growth, h = high growth scenario).
 \item \code{nat}: nationality (ch = Swiss; int = foreign / international).
 \item \code{sex}: sex (f = female, m = male).
 \item \code{age}: age classes; typically ranging from 0 to 100 (incl. >100).
-\item \code{birth_rate}: number of children per year.
-\item \code{births_int_ch} proportion of children with Swiss nationality born to
+\item \code{birthrate}: numeric, total number of live human births per 1,000
+inhabitants.
+\item \code{int_mothers} proportion of children with Swiss nationality born to
 non-Swiss mothers.
 \item \code{mor}: prospective mortality rate (probability of death).
 \item \code{acq}: rate of acquisition of Swiss citizenship.
-\item \code{emi}: rate of people emigrating abroad.
-\item \code{mig_ch}: national / inter-cantonal net migration
-(number of immigrants - number of emigrants).
-\item \code{imm_int}: number of people immigrating from abroad.
+\item \code{emi_int}: rate of people emigrating abroad.
+\item \code{emi_nat}: rate of people emigrating to other cantons.
+\item \code{imm_int_n}: number of people immigrating from abroad.
+\item \code{imm_nat_n}: number of people immigrating from other cantons.
 \item \code{mig_sub}: within canton net migration. Useful to account for movements
 between different subregions (e.g., municipalities). This argument is
 \bold{optional.}
@@ -75,7 +76,7 @@ and demographic groups (e.g., nationality (2) X sex (2) X age groups (101) = 404
 Variables included in the output:
 \item{n}{number of people per demographic group.}
 \item{IMM_INT}{number of immigrants from other countries.}
-\item{MIG_CH}{number of people migrating from / to other superordinate
+\item{MIG_NAT}{number of people migrating from / to other superordinate
 spatial units (typically cantons).}
 \item{MIG_SUB}{number of migrants within the superordinate spatial unit
 (typically a canton).}
@@ -97,7 +98,7 @@ To conveniently obtain an enriched, more informative output,
 use the \bold{wrapper function} \code{propop::propop()} (which internally uses
 \code{propop::project_raw()}).
 
-The parameters and start populations for different spatial levels
+The parameters and starting populations for different spatial levels
 can be obtained from the Swiss Federal Statistical Office (FSO).
 For instructions on how to download this information from
 \href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},

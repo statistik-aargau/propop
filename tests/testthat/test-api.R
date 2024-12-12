@@ -1,8 +1,5 @@
 test_that("snapshot table px-x-0104020000_101", {
 
-  # run on gitlab ci
-  # skip_on_ci()
-
   stattab_101 <-  BFS::bfs_get_metadata(
     number_bfs = "px-x-0104020000_101")
   stattab_101 <- stattab_101 |>
@@ -75,9 +72,6 @@ test_that("snapshot table px-x-0104020000_103", {
 
 test_that("snapshot table px-x-0104020000_106", {
 
-  # run on gitlab ci
-  # skip_on_ci()
-
   stattab_106 <-  BFS::bfs_get_metadata(
     number_bfs = "px-x-0104020000_106")
   stattab_106 <- stattab_106 |>
@@ -100,9 +94,6 @@ test_that("snapshot table px-x-0104020000_106", {
 
 test_that("snapshot table px-x-0104020000_109", {
 
-  # run on gitlab ci
-  # skip_on_ci()
-
   stattab_109 <-  BFS::bfs_get_metadata(
     number_bfs = "px-x-0104020000_109")
   stattab_109 <- stattab_109 |>
@@ -124,9 +115,6 @@ test_that("snapshot table px-x-0104020000_109", {
 
 
 test_that("snapshot table px-x-0102010000_101", {
-
-  # run on gitlab ci
-  # skip_on_ci()
 
   stattab_pop <-  BFS::bfs_get_metadata(
     number_bfs = "px-x-0102010000_101")

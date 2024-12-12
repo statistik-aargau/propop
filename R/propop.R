@@ -1,19 +1,16 @@
-#' Project population development (enriched results)
+#' Project population development
 #'
 #' @description
-#' Project population development using the cohort component method (see e.g.,
-#' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
+#' Wrapper function to project population development using the cohort
+#' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
 #' for more details).
-#' This \bold{wrapper function} runs the projection and returns a clean
-#' data frame with clearly labeled variables and variable levels.
 #'
-#' The parameters and start population can be obtained from the Swiss Federal
-#' Statistical Office (FSO). For instructions on how to download this
-#' information from
+#' You can either use your own parameters and starting population or download
+#' these data from the Swiss Federal Statistical Office (FSO). For instructions
+#' on how to download this information from
 #' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
 #' see \code{vignette("prepare_data", package = "propop")}.
 #'
-
 #' For more details on how to use this function to project the population
 #' development on the level of a canton, see
 #' \code{vignette("run_projections", package = "propop")}.
@@ -25,31 +22,35 @@
 #'
 #' @param parameters data frame containing the FSO rates and numbers to run the
 #' projection for a specific spatial level (e.g., canton, municipality).
-#'    * `year` character, projection year.
+#'    * `year`, character, projection year.
 #'    * `spatial_unit`, character, ID of spatial entity (e.g., canton,
 #'    municipality) for which to run the projections.
 #'    * `scen`, character, projection scenario, is used to subset data frames
 #'    with multiple scenarios (r = reference, l = low growth, h = high growth).
-#'    * `nat`, character, OPTIONAL; nationality (ch = Swiss; int = foreign/international).
+#'    * `nat` \bold{(optional)}, character, nationality (ch = Swiss; int =
+#'    foreign / international).
 #'    * `sex`, character (f = female, m = male).
 #'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
-#'    * `birth_rate`, numeric, number of children per year.
-#'    * `births_int_ch`, numeric, OPTIONAL; proportion of children with Swiss nationality
-#'    born to non-Swiss mothers.
+#'    * `birthrate`, numeric, number of children per year.
+#'    * `int_mothers` \bold{(optional)}, numeric, proportion of children with
+#'    Swiss nationality born to non-Swiss mothers.
 #'    * `mor`, numeric, prospective mortality rate (probability of death).
-#'    * `acq`, numeric, OPTIONAL; rate of acquisition of Swiss citizenship.
-#'    * `emi`, numeric, rate of people emigrating abroad.
-#'    * `mig_ch`, numeric, national / inter-cantonal net migration
+#'    * `acq` \bold{(optional)}, numeric, rate of acquisition of Swiss citizenship.
+#'    * `emi_int`, numeric, rate of people emigrating abroad.
 #'    (number of immigrants - number of emigrants).
-#'    * `imm_int`, numeric, number of people immigrating from abroad.
-#'    * `mig_sub`, numeric, within canton net migration. Useful to account
-#'    for movements between different subregions (e.g., municipalities).
-#'    This argument is \bold{optional.}
+#'    * `emi_nat`: rate of people emigrating to other cantons.
+#'    * `imm_int_n`, numeric, number of people immigrating from abroad.
+#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons.
+#'    * `mig_sub` \bold{(optional)}, numeric, net migration per subregion; this
+#'    is the migration from / to other subregions (e.g., municipalities,
+#'    districts) within the main superordinate projection unit (e.g., a canton).
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
 #'
 #' @param population data frame including the starting population of each
-#' demographic group. Possible values are the same as in `parameters` (apart
-#' from year). The data frame only includes one year, usually the one preceding
-#' the first projected year.
+#' demographic group and each spatial unit. Possible values are the same as in
+#' `parameters` (apart from year). The data frame only includes one year, usually
+#' the one preceding the first year of the projection.
 #'    * `year` character, should be `year_first` - 1.
 #'    * `spatial_unit` character.
 #'    * `nat` character.
@@ -60,36 +61,63 @@
 #' @param year_first numeric, first year to be projected.
 #' @param year_last numeric, last year to be projected.
 #' @param age_groups numeric, number of age classes. Creates a vector with
-#'        1-year age classes running from `0` to (`age_groups` - 1). Defaults to
-#'        `101` (FSO standard number of age groups).
+#'        1-year age classes running from `0` to (`age_groups` - 1). Must
+#'        currently be set to `= 101` (FSO standard number of age groups).
 #' @param fert_first numeric, first year of female fertility. Defaults to 16
 #'        (FSO standard value).
 #' @param fert_last numeric, last year of female fertility. Defaults to 50
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
-#' @param subregional boolean, TRUE indicates that subregional migration
+#' @param subregional boolean, `TRUE` indicates that subregional migration
 #'        patterns (e.g., movement between municipalities within a canton)
-#'        are part of the projection.
-#' @param binational boolean, TRUE indicates that projections discriminate
-#'        between two groups of nationalities. FALSE indicates no distinction
-#'        between groups of nationalities.
+#'        are part of the projection. Requires input (parameters and population)
+#'        on the level of subregions.
+#' @param binational boolean, `TRUE` indicates that projections discriminate
+#'        between two groups of nationalities. `FALSE` indicates that only one
+#'        projection is run without distinguishing between nationalities.
 #' @param spatial_unit character, name of variable containing the names of the
 #'        region or subregions for which the projection shall be performed.
 #'
 #' @returns
 #' Returns a data frame that includes the number of people for each demographic
-#'      group per year (for the starting year and each projected year).
-#'      The number of rows is the product of all years times all demographic
-#'      groups (e.g., nationality (2) * sex (2) * age groups (101) = 404).
-#'      Variables included in the output:
-#'      \item{age}{integer.}
+#'      group per year (for projected years) and spatial unit. The number of
+#'      rows is the product of all years times all demographic groups times
+#'      all spatial units.
+#'      The output includes several \bold{identifiers} that indicate to which
+#'      demographic group, year, and spatial unit the results in the rows refer
+#'      to:
+#'      \item{year}{integer, indicating the projected years.}
+#'      \item{spatial_unit}{factor, spatial units for which the projection
+#'            was run (e.g., canton, districts, municipalities).}
+#'      \item{age}{integer, ranging from `0`n to `100` (including those older
+#'      than 100).}
 #'      \item{sex}{factor, female (f) and male (m).}
-#'      \item{nat}{factor, Swiss (ch) and international / foreign (int).}
-#'      \item{year}{integer, indicating starting year / projected years.}
-#'      \item{spatial_levels}{factor, spatial levels for which the projection
-#'            was run (e.g., canton, municipalities).}
-#'      \item{n}{double, number of people per demographic group.}
+#'      \item{nat}{factor, indicates if the nationality is Swiss (ch) or
+#'      international / foreign (int). This variable is only returned if
+#'      `binational = TRUE`.}
+#'      The output also includes columns related to the \bold{size and change
+#'      of the population:}
+#'      \item{n_jan}{numric, start-of-year population per demographic group.}
+#'      \item{n_dec}{numeric, end-of-year population per demographic group.}
+#'      \item{delta_n}{numeric, population change per demographic group from
+#'      the start to the end of the year in \emph{absolute numbers}.}
+#'      \item{delta_perc}{numeric, population change per demographic group from
+#'      the start to the end of the year in \emph{percentages}.}
+#'      The \bold{components} that are used to project the development of the
+#'      population are also included in the output:
+#'      \item{births}{numeric, number of births (non-zero values are only
+#'      available for age = 0).}
+#'      \item{mor}{numeric, number of deaths.}
+#'      \item{emi_int}{numeric, number of people who emigrate
+#'      to other countries.}
+#'      \item{emi_nat}{numeric, number of people who emigrate
+#'      to other cantons.}
+#'      \item{imm_int}{numeric, number of people who immigrate
+#'      from other countries.}
+#'      \item{imm_nat}{numeric, number of people who immigrate
+#'      from other cantons.}
+#'      \item{acq}{numeric, number of people who acquire Swiss citizenship.}
 #'
 #' @export
 #'
@@ -116,6 +144,15 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
+  # Select relevant columns
+  parameters <- parameters |>
+    select(any_of(c(
+      "nat", "sex", "age", "year", "scen", "spatial_unit", "birthrate",
+      "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
+      "acq", "mig_sub"
+    )))
+  population <- population |>
+    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n")))
   # Only 1 year in population
   assertthat::assert_that(
     length(unique(population$year)) == 1,
@@ -150,9 +187,10 @@ propop <- function(
       length(unique(parameters$nat)) == length(c("int", "ch")) &&
         all(parameters$nat %in% c("int", "ch")),
       msg = paste0(
-        "Column `nat` in `parameters` can only include the factor levels",
-        " `ch` and `int`. \nMissing values (NA) or only one factor level are",
-        " not allowed. \nIf demographic groups should not be projected for two",
+        "Column `nat` in `parameters` must include the factor levels",
+        " `ch` and `int`. \nMissing values (NA), other values, or only one ",
+        "factor level are not allowed. ",
+        "\nIf demographic groups should not be projected for two",
         " nationalities, \nplease remove the column 'nat' from the data."
       )
     )
@@ -175,8 +213,8 @@ propop <- function(
       msg = "Column `acq` is missing in parameters."
     )
     # Births by international females in case of two nationalities
-    assertthat::assert_that("births_int_ch" %in% names(parameters),
-      msg = paste0("Column `births_int_ch` is missing in parameters.")
+    assertthat::assert_that("int_mothers" %in% names(parameters),
+      msg = paste0("Column `int_mothers` is missing in parameters.")
     )
 
     # Arrange columns
@@ -215,13 +253,18 @@ propop <- function(
       tidyr::expand(tidyr::nesting(!!!syms(names(parameters))), rep = 1:2) |>
       mutate(nat = ifelse(rep == 2, "int", "ch")) |>
       # set all values for "int" at zero
-      mutate(across(birth_rate:mig_ch, ~if_else(nat == "int", 0, .x))) |>
-      # add remaining columns `acq` and `births_int_ch`
-      dplyr::mutate(acq = 0, births_int_ch = 0) |>
+      mutate(across(any_of(
+        c("birthrate", "int_mothers", "mor", "emi_int", "emi_nat", "acq",
+          "imm_int_n", "imm_nat_n", "mig_sub"
+        )), ~if_else(nat == "int", 0, .x))
+      ) |>
+      # add remaining columns `acq` and `int_mothers`
+      dplyr::mutate(acq = 0, int_mothers = 0) |>
       # arrange the data
       select(any_of(c(
-        "nat", "sex", "age", "year", "scen", "birth_rate", "births_int_ch",
-        "mor", "emi", "acq", "imm_int", "mig_ch", "mig_sub", "spatial_unit"
+        "nat", "sex", "age", "year", "scen", "birthrate", "int_mothers",
+        "mor", "emi_int", "emi_nat", "acq", "imm_int_n", "imm_nat_n",
+        "mig_sub", "spatial_unit"
       ))) |>
       arrange(nat, desc(sex), year, spatial_unit)
 
@@ -257,20 +300,23 @@ propop <- function(
   assertthat::assert_that("year" %in% names(parameters),
     msg = "Column `year` is missing in parameters."
   )
-  assertthat::assert_that("birth_rate" %in% names(parameters),
-    msg = "Column `birth_rate` is missing in parameters."
+  assertthat::assert_that("birthrate" %in% names(parameters),
+    msg = "Column `birthrate` is missing in parameters."
   )
   assertthat::assert_that("mor" %in% names(parameters),
     msg = "Column `mor` is missing in parameters."
   )
-  assertthat::assert_that("emi" %in% names(parameters),
-    msg = "Column `emi` is missing in parameters."
+  assertthat::assert_that("emi_int" %in% names(parameters),
+    msg = "Column `emi_int` is missing in parameters."
   )
-  assertthat::assert_that("imm_int" %in% names(parameters),
-    msg = "Column `imm_int` is missing in parameters."
+  assertthat::assert_that("emi_nat" %in% names(parameters),
+    msg = "Column `emi_nat` is missing in parameters."
   )
-  assertthat::assert_that("mig_ch" %in% names(parameters),
-    msg = "Column `mig_ch` is missing in parameters."
+  assertthat::assert_that("imm_int_n" %in% names(parameters),
+    msg = "Column `imm_int_n` is missing in parameters."
+  )
+  assertthat::assert_that("imm_nat_n" %in% names(parameters),
+    msg = "Column `imm_nat_n` is missing in parameters."
   )
   assertthat::assert_that("spatial_unit" %in% names(parameters),
     msg = paste0(
@@ -500,18 +546,27 @@ propop <- function(
 
   # Add meta data to raw results ----
   projection_results <- complement_projection(
-    skeleton,
-    projection_raw
+    skeleton = skeleton,
+    projection_raw = projection_raw,
+    subregional = subregional
   )
 
   # Format output for case 2: No distinction between nationalities
   # (argument `binational`= FALSE)
   if (binational == FALSE) {
-      # remove empty rows for `nat`= "int" and remove the `nat`-column
+      # remove empty rows for `nat` = "int"
+      # remove the `nat` and `acq`-columns
       projection_results <- projection_results |>
         dplyr::filter(nat != "int") |>
-        dplyr::select(-nat)
-    }
+        dplyr::select(-any_of(c("nat" , "acq")))
+  }
+
+  # Format output if subregional == FALSE
+  if (subregional == FALSE) {
+    # remove the `mig_sub`column (otherwise is filled with zeros if present)
+    projection_results <- projection_results |>
+      dplyr::select(-any_of(c("mig_sub")))
+  }
 
   # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
@@ -532,7 +587,7 @@ propop <- function(
     "{.val {year_last}}): ",
     "{.emph {.val {projection_results |>
     dplyr::filter(year == year_last) |>
-    dplyr:: summarise(sum(n, na.rm = TRUE)) |>
+    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
     dplyr::pull() |> round(digits = 0)}}}")
   cli::cli_text(
     "Nationality-specific projection: ",
@@ -543,7 +598,11 @@ propop <- function(
   cli::cli_rule()
 
 
-  population |> dplyr::summarize(n, .by = year)
+  if (subregional == FALSE) {
+    population |> dplyr::reframe(n, .by = year)
+  } #else if (subregional == TRUE) {
+  #   population |> dplyr::reframe(n, .by = c("year", "spatial_unit"))
+  # }
 
   return(projection_results)
 }

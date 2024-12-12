@@ -26,8 +26,6 @@
 #' official population records obtained with `propop::get_population()`).
 #' @param data_projected data frame containing population projections; can be
 #' created with `propop::propop()`.
-#' @param drop_start_year logical, indicating if starting population shall be
-#' removed from `data_projected`.
 #' @param age_groups character, optional argument (`"age_groups_3"`) indicating
 #' if the data shall be aggregated into the predefined three age groups
 #' (0-19, 20-64, over 65 years). Using aggregated groups will lead to smaller
@@ -36,7 +34,7 @@
 #' classes.
 #'
 #' @return Returns a data frame with the number of people from the benchmark and
-#' from the projection. Each row contains a unique combination of year,  spatial
+#' from the projection. Each row contains a unique combination of year, spatial
 #' unit, and demographic group.
 #'
 #' @export
@@ -47,20 +45,17 @@
 #' \dontrun{
 #' combined <- prepare_evaluation(
 #'   data_benchmark = output_get_population,
-#'   data_projected = output_propop,
-#'   drop_start_year = TRUE
+#'   data_projected = output_propop
 #' )
 #' combined_grouped <- prepare_evaluation(
 #'   data_benchmark = output_get_population,
 #'   data_projected = output_propop,
-#'   drop_start_year = TRUE,
 #'   age_groups = "age_groups_3"
 #' )
 #' }
 prepare_evaluation <- function(
     data_benchmark,
     data_projected,
-    drop_start_year = FALSE,
     age_groups = NULL) {
   # Get earliest year in data_projected
   base_year <- data_projected |>
@@ -68,12 +63,6 @@ prepare_evaluation <- function(
     pull() |>
     min() |>
     as.numeric()
-
-  # Drop start year if applicable
-  if (drop_start_year == TRUE) {
-    data_projected <- data_projected |>
-      dplyr::filter(year > base_year)
-  }
 
   # Convert `year` in benchmark to integer
   data_benchmark_processed <- data_benchmark |>
@@ -95,7 +84,7 @@ prepare_evaluation <- function(
   assertthat::assert_that(
     identical(
       range(as.integer(data_benchmark$year)),
-      range(data_projected$year)
+      range(as.integer(data_projected$year))
     ),
     msg = "The ranges of years in `data_benchmark` and `data_projected` are not
     identical"
@@ -150,15 +139,15 @@ prepare_evaluation <- function(
     msg = "column `spatial_unit` is missing in data_projected"
   )
   assertthat::assert_that(
-    "n" %in% names(data_projected),
-    msg = "column `n` is missing in data_projected"
+    "n_dec" %in% names(data_projected),
+    msg = "column `n_dec` is missing in data_projected"
   )
 
   # Combine benchmark data and projected population ----
 
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
-    dplyr::mutate(n_proj = round(n, digits = 0)) |>
+    dplyr::mutate(n_proj = round(n_dec, digits = 0)) |>
     dplyr::select(year, spatial_unit, age, sex, nat, n_proj)
 
   ## Prepare benchmark data

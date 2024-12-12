@@ -8,7 +8,24 @@ utils::globalVariables(c(
   "n_proj", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
-  "N", # <complement_projection>
+  "mig_sub", # <complement_projection>
+  "age", # <complement_projection>
+  "n_jan", # <complement_projection>
+  "year", # <complement_projection>
+  "nat", # <complement_projection>
+  "sex", # <complement_projection>
+  "spatial_unit", # <complement_projection>
+  "new_age_group_100", # <complement_projection>
+  "acq", # <complement_projection>
+  "births", # <complement_projection>
+  "mor", # <complement_projection>
+  "emi_int", # <complement_projection>
+  "emi_nat", # <complement_projection>
+  "imm_int", # <complement_projection>
+  "imm_nat", # <complement_projection>
+  "n_dec", # <complement_projection>
+  "delta_n", # <complement_projection>
+  "delta_perc", # <complement_projection>
   "n_proj", # <compute_measures>
   "n_bench", # <compute_measures>
   "error", # <compute_measures>
@@ -34,13 +51,20 @@ utils::globalVariables(c(
   "Altersklasse", # <get_parameters>
   "Kanton", # <get_parameters>
   "year", # <get_parameters>
-  "births_int_ch", # <get_parameters>
+  "int_mothers", # <get_parameters>
   "value", # <get_parameters>
-  "interc_imm", # <get_parameters>
-  "interc_emi", # <get_parameters>
+  "imm_nat_n", # <get_parameters>
+  "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
-  "birth_rate", # <get_parameters>
-  "intercant", # <get_parameters>
+  "spatial_unit", # <get_parameters>
+  "fso_projection_n", # <get_parameters>
+  "birthrate", # <get_parameters>
+  "mor", # <get_parameters>
+  "emi_int", # <get_parameters>
+  "emi_nat", # <get_parameters>
+  "imm_int_n", # <get_parameters>
+  "acq", # <get_parameters>
+  "mig_nat_n", # <get_parameters>
   "emi_n", # <get_parameters>
   "valueTexts", # <get_population>
   "values", # <get_population>
@@ -51,8 +75,10 @@ utils::globalVariables(c(
   "Alter", # <get_population>
   "Kanton", # <get_population>
   "nat", # <get_population>
+  "year", # <get_population>
   "age", # <get_population>
   "year", # <prepare_evaluation>
+  "n_dec", # <prepare_evaluation>
   "spatial_unit", # <prepare_evaluation>
   "age", # <prepare_evaluation>
   "sex", # <prepare_evaluation>
@@ -61,9 +87,6 @@ utils::globalVariables(c(
   "n_bench", # <prepare_evaluation>
   "year", # <project_raw>
   "age", # <project_raw>
-  "spatial_unit", # <project_raw>
-  "scen", # <project_raw>
-  "birth_rate", # <project_raw>
   "parameter", # <project_raw>
   "sex", # <project_raw>
   "nat", # <project_raw>

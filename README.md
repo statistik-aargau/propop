@@ -20,8 +20,9 @@ The package was developed for use with
 [population data](https://www.pxweb.bfs.admin.ch/pxweb) 
 and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
 from the Swiss Federal Statistical Office (FSO). `propop` uses the same matrix 
-calculation method as the FSO and therefore reveals almost identical results 
-(see vignette 
+calculation method as the FSO 
+([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf); only available in French) 
+and therefore reveals almost identical results (see vignette 
 [Evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html)). 
 The package can be used to project the development of different 
 **demographic groups** for different **scenarios** and at different 
@@ -53,12 +54,12 @@ and parameters).
 [how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
 the population development for single and multiple regions.
 - The third vignette shows 
-[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html).
+[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
+for example against benchmarks.
 
 ## Features, limitations, future plans
 
-- Currently, `propop::propop()` only works with *1-year age classes* starting 
-at age zero and including all fertile years of females.  
+- Currently, `propop::propop()` only works with *1-year age classes* (0-100+).  
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
@@ -83,10 +84,6 @@ parameter) can be passed through the `parameters` object to `propop::propop()`.
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
 growth varies between municipalities.  
-- A limitation of `propop::propop()` is that only the final number of projected 
-people per demographic group (`n`) is returned. It is currently not possible to 
-obtain the individual components (e.g., births, deaths, immigration, emigration)
-of the population equation. 
 
 **If you are interested in contributing to these or other developments, please
 get in touch with the package maintainer.**

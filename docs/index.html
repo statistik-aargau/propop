@@ -50,7 +50,7 @@
     
     <a class="navbar-brand me-2" href="index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,7 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The goal of <code>propop</code> is to create population projections using the <strong>cohort component method</strong> (see e.g., <a href="https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512" class="external-link">Preston, Guillot, and Heuveline, 2000</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf" class="external-link">Statistik Aargau, 2020a</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-hauptbericht-v2.pdf" class="external-link">Statistik Aargau, 2020b</a>).</p>
-<p>The package was developed for use with <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">population data</a> and <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">projection scenarios</a> from the Swiss Federal Statistical Office (FSO). <code>propop</code> uses the same matrix calculation method as the FSO and therefore reveals almost identical results (see vignette <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">Evaluate projections</a>). The package can be used to project the development of different <strong>demographic groups</strong> for different <strong>scenarios</strong> and at different <strong>spatial levels</strong> (e.g., single canton or municipalities within a canton).</p>
+<p>The package was developed for use with <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">population data</a> and <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">projection scenarios</a> from the Swiss Federal Statistical Office (FSO). <code>propop</code> uses the same matrix calculation method as the FSO (<a href="https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf" class="external-link">2020</a>; only available in French) and therefore reveals almost identical results (see vignette <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">Evaluate projections</a>). The package can be used to project the development of different <strong>demographic groups</strong> for different <strong>scenarios</strong> and at different <strong>spatial levels</strong> (e.g., single canton or municipalities within a canton).</p>
 <p>Although the package was developed for use in Switzerland, it should in principle also work for other contexts, provided the required input data is available in the <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">specified form</a>.</p>
 </div>
 <div class="section level2">
@@ -117,16 +117,21 @@
 <div class="section level2">
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
-<p>The package currently includes three vignettes. The first vignette demonstrates <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">how to download and prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters). The second vignette illustrates in more detail <a href="https://statistik-aargau.github.io/propop/articles/run_projections.html">how to project</a> the population development for single and multiple regions. The third vignette shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a>.</p>
+<p>The package currently includes three vignettes.</p>
+<ul>
+<li>The first vignette demonstrates <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters).</li>
+<li>The second vignette illustrates in more detail <a href="https://statistik-aargau.github.io/propop/articles/run_projections.html">how to project</a> the population development for single and multiple regions.</li>
+<li>The third vignette shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a>, for example against benchmarks.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="features-limitations-future-plans">Features, limitations, future plans<a class="anchor" aria-label="anchor" href="#features-limitations-future-plans"></a>
 </h2>
 <ul>
-<li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> starting at age zero and including all fertile years of females.<br>
+<li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> (0-100+).<br>
 </li>
 <li>
-<code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinction between nationalities.<br>
+<code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinguishing between nationalities.<br>
 </li>
 <li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>. Moreover, the FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2018. <code>propop</code> enables you to run projections with more recent population records.</li>
 <li>This package was developed for use with <em>FSO parameters</em>. Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection.</li>
@@ -134,9 +139,7 @@
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code>offers the possibility to account for varying subregional migration patterns and migration between subregions. However, before using this feature, users must adjust or calculate the required parameters.</li>
 <li>Custom parameters (e.g., consideration of sub-cantonal spatial entities, adjustments to reflect regional differences, or addition of subregional migration parameter) can be passed through the <code>parameters</code> object to <code><a href="reference/propop.html">propop::propop()</a></code>.</li>
-<li>There are also <em>possible future features</em> that could increase the accuracy of the projections. For example, considering the attractiveness of municipalities or planned housing developments could help to better explain why population growth varies between municipalities.<br>
-</li>
-<li>A limitation of <code><a href="reference/propop.html">propop::propop()</a></code> is that only the final number of projected people per demographic group (<code>n</code>) is returned. It is currently not possible to obtain the individual components (e.g., births, deaths, immigration, emigration) of the population equation.</li>
+<li>There are also <em>possible future features</em> that could increase the accuracy of the projections. For example, considering the attractiveness of municipalities or planned housing developments could help to better explain why population growth varies between municipalities.</li>
 </ul>
 <p><strong>If you are interested in contributing to these or other developments, please get in touch with the package maintainer.</strong></p>
 </div>

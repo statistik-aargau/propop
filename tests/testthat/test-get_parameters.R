@@ -3,6 +3,8 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
   # don't run on gitlab ci
   skip_on_ci()
 
+  options(cli.default_handler = function(...) { })
+
   # only run if: Sys.setenv(RUN_EXPENSIVE_TESTS = TRUE)
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
 
@@ -18,6 +20,8 @@ test_that("get_parameters snapshots - 2 regions 2027-2028", {
 
   # don't run on gitlab ci
   skip_on_ci()
+
+  options(cli.default_handler = function(...) { })
 
   # only run if: Sys.setenv(RUN_EXPENSIVE_TESTS = TRUE)
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))

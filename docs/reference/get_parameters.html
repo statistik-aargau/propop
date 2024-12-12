@@ -5,11 +5,11 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of expected people).
+population (i.e., number of people estimated in the FSO model released in 2020).
 All parameters and projections are from the
 FSO model published in 2020.
-The variables births_int_ch and mig_ch are not directly available from
-the FSO. They are calculated by the function.
+The variables int_mothers and mig_nat_n are not directly available from
+the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
 vignette("prepare_data", package = "propop").
@@ -21,11 +21,11 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of expected people).
+population (i.e., number of people estimated in the FSO model released in 2020).
 All parameters and projections are from the
 FSO model published in 2020.
-The variables births_int_ch and mig_ch are not directly available from
-the FSO. They are calculated by the function.
+The variables int_mothers and mig_nat_n are not directly available from
+the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
 vignette("prepare_data", package = "propop").
@@ -50,7 +50,7 @@ vignette("prepare_data", package = "propop").'><meta property="og:image" content
     
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,11 +100,11 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of expected people).
+population (i.e., number of people estimated in the FSO model released in 2020).
 All parameters and projections are from the
 <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">FSO model published in 2020</a>.
-The variables <code>births_int_ch</code> and <code>mig_ch</code> are not directly available from
-the FSO. They are calculated by the function.</p>
+The variables <code>int_mothers</code> and <code>mig_nat_n</code> are not directly available from
+the FSO. They are calculated within this function.</p>
 <p>To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
 <code><a href="../articles/prepare_data.html">vignette("prepare_data", package = "propop")</a></code>.</p>
@@ -205,17 +205,29 @@ older than 100).</p></li>
     <h2 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a></h2>
     
 
-<p>The following parameters are included in the returned data frame:</p><ul><li><p><code>year</code>: character, year of projection.</p></li>
+<p>The following parameters are included in the returned data frame:</p><ul><li><p><code>year</code>: numeric, year of projection.</p></li>
 <li><p><code>scen</code>: character, projection scenario.</p></li>
-<li><p><code>birth_rate</code>: numeric, number of children per year.</p></li>
-<li><p><code>births_int_ch</code>: numeric, proportion of children with Swiss nationality
-born to non-Swiss mothers.</p></li>
+<li><p><code>birthrate</code>: numeric, total number of live human births per 1,000
+inhabitants.
+(formerly <code>birth_rate</code>).</p></li>
+<li><p><code>int_mothers</code>: numeric, proportion of children with Swiss nationality
+born to non-Swiss mothers
+(formerly <code>births_int_ch</code>).</p></li>
 <li><p><code>mor</code>: numeric, prospective mortality (probability of death).</p></li>
-<li><p><code>emi</code>: numeric, rate of people emigrating abroad.</p></li>
+<li><p><code>emi_int</code>: numeric, rate of people emigrating to other countries
+(formerly <code>emi</code>).</p></li>
+<li><p><code>emi_nat</code>: numeric, rate of people emigrating to other cantons
+(new parameter).</p></li>
 <li><p><code>acq</code>: numeric, rate of acquisition of Swiss citizenship.</p></li>
-<li><p><code>imm_int</code>: numeric, number of people immigrating from abroad.</p></li>
-<li><p><code>mig_ch</code>: numeric, national / inter-cantonal net migration
-(number of immigrants minus number of emigrants).</p></li>
+<li><p><code>imm_int_n</code>: numeric, number of people immigrating from abroad
+(formelry <code>imm_int</code>).</p></li>
+<li><p><code>imm_nat_n</code>: numeric, number of people immgrating from other cantons
+(new parameter).</p></li>
+<li><p><code>emi_nat_n</code>: numeric, number of people emigrating to other cantons
+(parameter previously used to compute <code>mig_nat_n</code>).</p></li>
+<li><p><code>mig_nat_n</code>: numeric, national / inter-cantonal net migration
+(number of immigrants minus number of emigrants).
+(formerly <code>mig_ch</code>, will soon be obsolete and removed).</p></li>
 <li><p><code>spatial_unit</code>: character, indicating the user requested spatial
 unit(s).</p></li>
 </ul></div>

@@ -1,3 +1,24 @@
+# propop 1.0.0
+
+## Projection using separate parameters for migration between cantons
+
+- `propop::propop()` now uses *separate* input parameters for emigration to / 
+immigration from other cantons. Previously `propop::propop()` used the net 
+difference between emigration to / immigration from other cantons. 
+- With this change, the new version now directly corresponds to the projection 
+equations provided by the FSO.
+- The change has also facilated the inclusion of all components of the cohort
+component method in the output. This makes it easy to track the transition from 
+one year to the next.
+
+## New variable names
+
+- This change required a comprehensive renaming of several variables, which makes
+the new version incompatible with previous code. 
+- If you want to continue using 
+old code, we suggest using version 0.2.0. Note that the components of the 
+projection equation are not included in the output in version 0.2.0.
+
 # propop 0.2.0
 
 ## Projection without distinction of nationalities
