@@ -77,10 +77,10 @@ projection_canton_2030 <- propop(
 
 projection_canton_2030 |>
   # round to 2 digits
-  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
+  dplyr::mutate(across(n_jan:n_dec, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top") |> 
   DT::formatStyle(
-  'n',
+  'n_jan',
   backgroundColor = '#007AB8'
 ) |> 
   DT::formatStyle(
@@ -88,23 +88,22 @@ projection_canton_2030 |>
   backgroundColor = '#96D4FF'
 ) |> 
   DT::formatStyle(
-  'n_1',
+  'n_dec',
   backgroundColor = '#ffcc8f'
 )  
 ```
 
 \
-
-The **output** file includes the end-of year
-<span style="color:#007AB8;">number of people</span> (`n`)
-per demographic group for the base year (= starting population) and the 
-projected years (= projection). 
-The <span style="color:#96D4FF;">components</span> that are used to project the 
-<span style="color:#ffcc8f;">population at the end of the next year</span> (`n_1`), 
-when the same group is one year older, are also included in the output. Thus, 
-all elements of the cohort component equation are directly available from the
-output.
-
+The **output** file includes the 
+<span style="color:#007AB8;">number of people in January</span> (`n_jan`) 
+and the
+<span style="color:#ffcc8f;">number of people in December </span> (`n_dec`) 
+per demographic group and year. The 
+<span style="color:#96D4FF;">components</span> 
+that are used to project the population growth from the start to the end of the 
+year are also included in the output. Thus, all elements of the cohort component 
+equation are directly available from the output.
+\
 
 # Projection for multiple subregions
 
@@ -163,7 +162,7 @@ projection_subregions_2030 <- propop(
 projection_subregions_2030 |>
   dplyr::filter(sex == "m" & nat == "int" & age == 14) |>
   # round to two digits
-  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
+  dplyr::mutate(across(n_jan:n_dec, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top")
 ```
    
@@ -215,7 +214,7 @@ projection_int <- propop(
 
 projection_int |>
   # round to two digits
-  dplyr::mutate(across(n:n_1, \(x) sprintf(fmt = "%.0f", x))) |>
+  dplyr::mutate(across(n_jan:n_dec, \(x) sprintf(fmt = "%.0f", x))) |>
   DT::datatable(filter = "top")
 ```
 \ 
