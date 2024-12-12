@@ -32,7 +32,7 @@
 #' of 404 rows per requested year and spatial unit. Columns included in the
 #' returned data frame:
 #' \describe{
-#'   \item{year}{character, year in which the population was recorded.}
+#'   \item{year}{numeric, year in which the population was recorded.}
 #'   \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 #'   cantons, districts, municipalities).}
 #'   \item{nat}{character, ch = Swiss, int = foreign / international.}
@@ -274,8 +274,8 @@ get_population <- function(number_fso = "px-x-0102010000_101",
       ),
       sex = dplyr::case_when(
         sex == "Mann" ~ "m",
-        sex == "Frau" ~ "f"
-      ),
+        sex == "Frau" ~ "f"),
+      year = as.numeric(year),
       age = as.numeric(stringr::str_extract(age, "\\d+"))
     ) |>
     dplyr::rename(spatial_unit = Kanton)

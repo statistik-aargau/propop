@@ -40,7 +40,7 @@
 #'
 #' @section Parameters:
 #' The following parameters are included in the returned data frame:
-#'    * `year`: character, year of projection.
+#'    * `year`: numeric, year of projection.
 #'    * `scen`: character, projection scenario.
 #'    * `birthrate`: numeric, total number of live human births per 1,000
 #'      inhabitants.
@@ -241,9 +241,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::filter(text == "Jahr") |>
     dplyr::mutate(values = as.character(0:number_of_years)) |>
     # filter requested years
-    dplyr::filter(text == "Jahr" & valueTexts %in% year_first:year_last) # |>
-  # # values in this version are saved as numeric values
-  # dplyr::mutate(values = as.character(0:proj_length))
+    dplyr::filter(text == "Jahr" & valueTexts %in% year_first:year_last)
 
   dim5 <- metadata_tidy |>
     dplyr::filter(
@@ -727,6 +725,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   # Clean data ----
   projection_parameters_clean <- projection_parameters |>
     dplyr::mutate(spatial_unit = Kanton) |>
+    dplyr::mutate(year = as.numeric(year)) |>
     dplyr::select(
       nat, sex, age, year, scen, spatial_unit, fso_projection_n,
       birthrate, int_mothers, mor, emi_int, emi_nat,
