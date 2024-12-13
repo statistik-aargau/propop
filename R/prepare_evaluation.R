@@ -24,8 +24,12 @@
 #'
 #' @param data_benchmark data frame containing benchmark data (e.g., actual /
 #' official population records obtained with `propop::get_population()`).
+#' @param n_benchmark numeric column containing the benchmark population of each
+#' demographic group.
 #' @param data_projected data frame containing population projections; can be
 #' created with `propop::propop()`.
+#' @param n_projected numeric column containing the projected size of each
+#' demographic group.
 #' @param age_groups character, optional argument (`"age_groups_3"`) indicating
 #' if the data shall be aggregated into the predefined three age groups
 #' (0-19, 20-64, over 65 years). Using aggregated groups will lead to smaller
@@ -55,8 +59,13 @@
 #' }
 prepare_evaluation <- function(
     data_benchmark,
+    n_benchmark,
     data_projected,
+    n_projected,
     age_groups = NULL) {
+
+  # browser()
+
   # Get earliest year in data_projected
   base_year <- data_projected |>
     distinct(year) |>
@@ -65,14 +74,19 @@ prepare_evaluation <- function(
     as.numeric()
 
   # Convert `year` in benchmark to integer
-  data_benchmark_processed <- data_benchmark |>
-    dplyr::mutate(year = as.integer(year))
+  data_benchmark <- data_benchmark |>
+    dplyr::mutate(year = as.integer(year)) |>
+  # Rename columns containing population
+    dplyr::rename(n_benchmark = !!sym(n_benchmark))
+
+  data_projected <- data_projected |>
+    dplyr::rename(n_projected = !!sym(n_projected))
 
   # Test input ----
   assertthat::assert_that(
-    all(data_benchmark_processed$year >= 2018),
-    all(data_benchmark_processed$year <= 2050),
-    all(as.integer(data_benchmark_processed$year) == data_benchmark_processed$year),
+    all(data_benchmark$year >= 2018),
+    all(data_benchmark$year <= 2050),
+    all(as.integer(data_benchmark$year) == data_benchmark$year),
     msg = "All years in `data_benchmark` must be integers between 2018 and 2050"
   )
   assertthat::assert_that(
@@ -115,8 +129,8 @@ prepare_evaluation <- function(
     msg = "column `spatial_unit` is missing in data_benchmark"
   )
   assertthat::assert_that(
-    "n" %in% names(data_benchmark),
-    msg = "column `n` is missing in data_benchmark"
+    "n_benchmark" %in% names(data_benchmark),
+    msg = "column `n_benchmark` is missing in data_benchmark"
   )
   assertthat::assert_that(
     "nat" %in% names(data_projected),
@@ -139,24 +153,19 @@ prepare_evaluation <- function(
     msg = "column `spatial_unit` is missing in data_projected"
   )
   assertthat::assert_that(
-    "n_dec" %in% names(data_projected),
-    msg = "column `n_dec` is missing in data_projected"
+    "n_projected" %in% names(data_projected),
+    msg = "column `n_projected` is missing in data_projected"
   )
 
   # Combine benchmark data and projected population ----
 
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
-    dplyr::mutate(n_proj = round(n_dec, digits = 0)) |>
-    dplyr::select(year, spatial_unit, age, sex, nat, n_proj)
-
-  ## Prepare benchmark data
-  data_benchmark_clean <- data_benchmark_processed |>
-    # remove base year with observed data
-    dplyr::rename(n_bench = n)
+    dplyr::mutate(n_projected = round(n_projected, digits = 0)) |>
+    dplyr::select(year, spatial_unit, age, sex, nat, n_projected)
 
   ## Combine data ----
-  .data <- data_benchmark_clean |>
+  .data <- data_benchmark |>
     dplyr::full_join(
       data_projected_clean,
       by = c("year", "spatial_unit", "age", "sex", "nat")
@@ -175,8 +184,8 @@ prepare_evaluation <- function(
       ) |>
       group_by(year, spatial_unit, age, sex, nat) |>
       summarise(
-        n_bench = sum(n_bench),
-        n_proj = sum(n_proj),
+        n_benchmark = sum(n_benchmark),
+        n_projected = sum(n_projected),
         .groups = "drop"
       )
   } else {
