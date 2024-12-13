@@ -1,0 +1,34 @@
+---
+title: "Distribute subregional migration"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Distribute subregional migration}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 84
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(propop)
+```
+
+# Overview
+
+Procedure to distribute subregional net migration among municipalities/spatial projection units
+
+
+
+
+
