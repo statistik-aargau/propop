@@ -1,0 +1,42 @@
+---
+title: "Distribute migration"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Distribute migration}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 84
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(propop)
+```
+
+# Overview
+
+The FSO (Federal Statistical Office) provides estimates for how many people of different demographic groups (age x sex x nationality) will immigrate to cantons from
+
+- other countries (international immigration),
+
+- other cantons (intercantonal immigration).
+
+A crucial task for the cantonal projection is to allocate the immigration to the spatial entities in the canton (e.g. municipalities, districts).
+
+To distribute the immigration, we multiply the absolute numbers of people with each spatial unit’s average historical share. The historical shares are expected to capture temporarily stable immigration patterns and are used as reference point to determine how much of the future immigration should be allocated to which spatial unit. The computed share is constant for each demographic group and spatial unit (identical for projection scenarios, and projection years). 
+
+
+
+
+
