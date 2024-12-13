@@ -24,13 +24,13 @@
 #'
 #'* `error` is the forecast error; it quantifies the level of under-projection
 #' (negative values) and over-projection (positive values) relative to the
-#' benchmark `n_bench`.
+#' benchmark `n_benchmark`.
 #'
 #'* `pe` is the percentage error and expresses the under- / over-projection
-#'in percent of the benchmark `n_bench`.
+#'in percent of the benchmark `n_benchmark`.
 #'
 #'* `ape` is the absolute percentage error; it is the absolute deviation
-#' in percent of the benchmark `n_bench`, thus only showing the extent of the
+#' in percent of the benchmark `n_benchmark`, thus only showing the extent of the
 #' error but not the direction.
 #'
 #' * `w_ape` is the weighted absolute percentage error; it weighs each
@@ -93,11 +93,11 @@ compute_measures <- function(combined, weight_groups = NULL) {
   assertthat::assert_that("age" %in% names(combined),
     msg = "column `age` is missing in combined"
   )
-  assertthat::assert_that("n_bench" %in% names(combined),
-    msg = "column `n_bench` is missing in combined"
+  assertthat::assert_that("n_benchmark" %in% names(combined),
+    msg = "column `n_benchmark` is missing in combined"
   )
-  assertthat::assert_that("n_proj" %in% names(combined),
-    msg = "column `n_proj` is missing in combined"
+  assertthat::assert_that("n_projected" %in% names(combined),
+    msg = "column `n_projected` is missing in combined"
   )
   # Input of weight groups
   if (!is.null(weight_groups)) {
@@ -114,11 +114,11 @@ compute_measures <- function(combined, weight_groups = NULL) {
   df <- combined |>
     mutate(
       # Compute error
-      error = n_proj - n_bench,
+      error = n_projected - n_benchmark,
       # Compute percentage error
-      pe = error / n_bench * 100,
+      pe = error / n_benchmark * 100,
       # Compute absolute percentage error (neglecting sign)
-      ape = abs(error) / n_bench * 100
+      ape = abs(error) / n_benchmark * 100
     )
 
   # Add variables related to weighted measure if weight_groups is provided
@@ -126,9 +126,9 @@ compute_measures <- function(combined, weight_groups = NULL) {
     df <- df |>
       mutate(
         # Compute total number of people
-        n_tot = sum(n_bench, na.rm = TRUE)
+        n_tot = sum(n_benchmark, na.rm = TRUE)
       ) |>
-      mutate(group_tot = sum(n_bench, na.rm = TRUE), .by = any_of(weight_groups)) |>
+      mutate(group_tot = sum(n_benchmark, na.rm = TRUE), .by = any_of(weight_groups)) |>
       mutate(
         # Compute size of focal unit relative to overall population size
         weight = group_tot / n_tot,
@@ -146,7 +146,7 @@ compute_measures <- function(combined, weight_groups = NULL) {
     ))
     cli::cli_alert_info(paste0(
       "`Inf` values are probably caused by divisions by zero",
-      "(e.g., when `n_bench` = 0).","\n", "Consider using age groups that",
+      "(e.g., when `n_benchmark` = 0).","\n", "Consider using age groups that",
       "include more than 1 year."))
   }
 
