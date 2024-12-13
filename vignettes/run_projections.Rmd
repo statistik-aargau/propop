@@ -171,8 +171,9 @@ projection_subregions_2030 |>
 
 When information about migration patterns within the superordinate entity are 
 available (e.g., moving between municipalities), `subregional` can be set to 
-`TRUE` to adjust the population size in each subregion accordingly. This requires 
-`imm_can` as an additional parameter in the parameter data frame.
+`TRUE` to adjust the population size in each subregion accordingly. This 
+requires `mig_sub` (= migration in subregions) as an additional parameter in the 
+parameter data frame.
 
 \
 
