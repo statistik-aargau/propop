@@ -1,3 +1,5 @@
+# propop 1.1.0
+
 # propop 1.0.0
 
 ## Projection using separate parameters for migration between cantons
