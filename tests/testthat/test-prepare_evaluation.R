@@ -1227,7 +1227,9 @@ test_that("prepare_evaluation snapshots", {
 
   combined_snapshot <- prepare_evaluation(
     data_benchmark = data_benchmark_2019,
-    data_projected = data_projected
+    n_benchmark = "n",
+    data_projected = data_projected,
+    n_projected = "n_dec"
   )
 
   expect_snapshot(constructive::construct(combined_snapshot))
@@ -1235,8 +1237,10 @@ test_that("prepare_evaluation snapshots", {
 
   combined_grouped_snapshot <- prepare_evaluation(
     data_benchmark = data_benchmark_2019,
+    n_benchmark = "n",
     data_projected = data_projected,
-    age_groups = "age_groups_3"
+    age_groups = "age_groups_3",
+    n_projected = "n_dec"
   )
 
   expect_snapshot(constructive::construct(combined_grouped_snapshot))
