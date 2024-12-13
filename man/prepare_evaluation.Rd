@@ -4,14 +4,26 @@
 \alias{prepare_evaluation}
 \title{Prepare data for evaluation}
 \usage{
-prepare_evaluation(data_benchmark, data_projected, age_groups = NULL)
+prepare_evaluation(
+  data_benchmark,
+  n_benchmark,
+  data_projected,
+  n_projected,
+  age_groups = NULL
+)
 }
 \arguments{
 \item{data_benchmark}{data frame containing benchmark data (e.g., actual /
 official population records obtained with \code{propop::get_population()}).}
 
+\item{n_benchmark}{numeric column containing the benchmark population of each
+demographic group.}
+
 \item{data_projected}{data frame containing population projections; can be
 created with \code{propop::propop()}.}
+
+\item{n_projected}{numeric column containing the projected size of each
+demographic group.}
 
 \item{age_groups}{character, optional argument (\code{"age_groups_3"}) indicating
 if the data shall be aggregated into the predefined three age groups
