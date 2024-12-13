@@ -114,7 +114,9 @@ other:
 combined <- prepare_evaluation(
   # only keep years from projected period
   data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
-  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022)
+  n_benchmark = "n",
+  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  n_projected = "n_dec"
 )
 
 # Show combined data
@@ -186,8 +188,10 @@ using the option `age_groups = "age_groups_3"`.
 combined_grouped <- prepare_evaluation(
   # only keep years from projected period
   data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  n_benchmark = "n",
   data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
-  age_groups = "age_groups_3"
+  age_groups = "age_groups_3",
+  n_projected = "n_dec"
 )
 
 # Show combined data
@@ -289,9 +293,11 @@ fso_propop <- prepare_evaluation(
   data_benchmark = data_parameters |>
     dplyr::filter(scen == "reference" & year > 2018) |>
     dplyr::mutate(n = fso_projection_n),
+  n_benchmark = "n",
   data_projected = data_projected |>
     dplyr::filter(year > 2018),
-  age_groups = "age_groups_3"
+  age_groups = "age_groups_3",
+  n_projected = "n_dec"
 ) |>
   compute_measures()
 
