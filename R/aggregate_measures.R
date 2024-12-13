@@ -79,7 +79,7 @@ aggregate_measures <- function(data, weight_groups = NULL) {
         NA
       },
       # check calculation of rmse
-      rmse = sqrt(mean((n_bench - n_proj)^2)),
+      rmse = sqrt(mean((n_benchmark - n_projected)^2)),
       n_measure = n(),
       ape_under_1 = sum(ape < 1) / n_measure,
       ape_under_5 = sum(ape < 5) / n_measure,
@@ -110,7 +110,7 @@ aggregate_measures <- function(data, weight_groups = NULL) {
     ))
     cli::cli_alert_info(paste0
                         ("`Inf` values are probably caused by divisions ",
-                          "by zero (e.g., when `n_bench` = 0). Consider using ",
+                          "by zero (e.g., when `n_benchmark` = 0). Consider using ",
                           "larger age groups that include more than 1 year."))
   }
 
