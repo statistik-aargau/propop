@@ -110,7 +110,8 @@ nationality.
 
 To project the population development for subregions within a superordinate entity 
 (e.g., districts or municipalities within a canton), we need input files with 
-multiple regions. Since these are not yet available, we create them:
+multiple regions. Since these are not yet available, we create artificial 
+subregions:
 
 ``` {r prepare-subregions}
 # fso parameters for fictitious subregions
@@ -119,8 +120,12 @@ fso_parameters_sub <- fso_parameters |>
   tidyr::uncount(5) |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
-  # divide the size of parameters with numbers by the number of regions (= 5);
-  # otherwise the multiplication of lines will inflate the population size.
+  # now it is necessary to adjust the `n` (which refers to the whole canton) 
+  # in the subregions; otherwise the multiplication of lines will inflate the 
+  # population size.
+  # A simple (but not very sophisticated approach) is to divide `n` 
+  # by the number of regions (= 5). 
+  dplyr::mutate_at(dplyr::vars(imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n), ~ ./5) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 
 # fso population for fictitious subregions
