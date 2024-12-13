@@ -4,8 +4,8 @@ utils::globalVariables(c(
   "pe", # <aggregate_measures>
   "ape", # <aggregate_measures>
   "w_ape", # <aggregate_measures>
-  "n_bench", # <aggregate_measures>
-  "n_proj", # <aggregate_measures>
+  "n_benchmark", # <aggregate_measures>
+  "n_projected", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
   "mig_sub", # <complement_projection>
@@ -26,8 +26,8 @@ utils::globalVariables(c(
   "n_dec", # <complement_projection>
   "delta_n", # <complement_projection>
   "delta_perc", # <complement_projection>
-  "n_proj", # <compute_measures>
-  "n_bench", # <compute_measures>
+  "n_projected", # <compute_measures>
+  "n_benchmark", # <compute_measures>
   "error", # <compute_measures>
   "group_tot", # <compute_measures>
   "n_tot", # <compute_measures>
@@ -78,13 +78,10 @@ utils::globalVariables(c(
   "year", # <get_population>
   "age", # <get_population>
   "year", # <prepare_evaluation>
-  "n_dec", # <prepare_evaluation>
   "spatial_unit", # <prepare_evaluation>
   "age", # <prepare_evaluation>
   "sex", # <prepare_evaluation>
   "nat", # <prepare_evaluation>
-  "n_proj", # <prepare_evaluation>
-  "n_bench", # <prepare_evaluation>
   "year", # <project_raw>
   "age", # <project_raw>
   "parameter", # <project_raw>
