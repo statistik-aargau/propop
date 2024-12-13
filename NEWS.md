@@ -1,5 +1,10 @@
 # propop 1.1.0
 
+- Added unit test that fails if projection outcomes differ from FSO projections
+- Increased flexibility of `prepare_evaluation()` by offering possibility to 
+indicate which column contains the population (rather than assuming it's 
+called `n`). 
+
 # propop 1.0.0
 
 ## Projection using separate parameters for migration between cantons
