@@ -79,7 +79,13 @@ For more details on usage, see
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_evaluation</span><span class="op">(</span><span class="va">data_benchmark</span>, <span class="va">data_projected</span>, age_groups <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepare_evaluation</span><span class="op">(</span></span>
+<span>  <span class="va">data_benchmark</span>,</span>
+<span>  <span class="va">n_benchmark</span>,</span>
+<span>  <span class="va">data_projected</span>,</span>
+<span>  <span class="va">n_projected</span>,</span>
+<span>  age_groups <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -89,9 +95,19 @@ For more details on usage, see
 official population records obtained with <code><a href="get_population.html">propop::get_population()</a></code>).</p></dd>
 
 
+<dt>n_benchmark</dt>
+<dd><p>numeric column containing the benchmark population of each
+demographic group.</p></dd>
+
+
 <dt>data_projected</dt>
 <dd><p>data frame containing population projections; can be
 created with <code><a href="propop.html">propop::propop()</a></code>.</p></dd>
+
+
+<dt>n_projected</dt>
+<dd><p>numeric column containing the projected size of each
+demographic group.</p></dd>
 
 
 <dt>age_groups</dt>
