@@ -11,6 +11,7 @@ vignette: >
 editor_options: 
   markdown: 
     wrap: 84
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -36,7 +37,47 @@ A crucial task for the cantonal projection is to allocate the immigration to the
 
 To distribute the immigration, we multiply the absolute numbers of people with each spatial unit’s average historical share. The historical shares are expected to capture temporarily stable immigration patterns and are used as reference point to determine how much of the future immigration should be allocated to which spatial unit. The computed share is constant for each demographic group and spatial unit (identical for projection scenarios, and projection years). 
 
+# Example: Distributing the international immigration
 
+We create a fictious dataset which contains the historical number of observed mutations for international immigration for each demographic group and five exemplary spatial units. With real data, the same can be achieved by summarizing the historical mutation data accordingly. Real mutation occurences normally vary from year to year. Therefore, we advise to calculate an average across several years (e.g. 5-year or 10-year average). The fictious data assumes that we already performed this step. 
 
+```{r data}
 
+set.seed(145)
 
+# Historical observations for international immigration
+hist_immigration <- tibble::tibble(
+  # five fictious spatial units
+  spatial_unit = rep(c("1", "2", "3", "4", "5"), 808),
+  # two nationalities
+  nat = rep(rep(c("ch", "int"), 2), each = 1010L),
+  # two levels for sex
+  sex = rep(rep(c("m", "f"), 4), each = 505L),
+  # 101 age groups
+  age = rep(rep(seq(0, 100, by = 1), 8), each = 5L)
+) |>
+  dplyr::mutate(
+    # random numbers between zero and 50 are created to mimic observed 
+    # historical occurences for international immigration
+    hist_imm_int = sample(0:50, n(), replace = TRUE),
+    # for one spatial unit, we artificially assign zeros to all children 
+    # between 0-4 years
+    hist_imm_int = ifelse(spatial_unit == 1 & age %in% c(0:4), 0, hist_imm_int)
+  )
+```
+
+For this example, we artificially assign zeros to all children in the age range of 0-4 years for one spatial unit. This does not reflect realistic conditions but helps to illustrate the procedure in cases where zero observations exist for demographic groups. The data looks like this:
+
+```{r datatable}
+hist_immigration |> 
+  DT::datatable()
+```
+
+# Calculating historical shares
+
+To calculate the shares, we apply the function `propop::calculate_shares()` 
+
+```{ result}
+```
+
+# Distribution based on historical shares
