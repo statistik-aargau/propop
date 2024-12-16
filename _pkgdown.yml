@@ -20,6 +20,8 @@ navbar:
         href: articles/run_projections.html
       - text: Evaluate projections
         href: articles/evaluate.html
+      - text: Distribute migration
+        href: articles/distribute_migration.html
   structure:
     left:  [intro, reference, articles, news]
     right: [search, github]
@@ -45,6 +47,11 @@ reference:
   - prepare_evaluation
   - compute_measures
   - aggregate_measures
+- title: "Distribute migration"
+  desc: >
+    Example for distributing international immigration
+  contents:
+  - calculate_shares
 - title: "Sample data"
   desc: "Sample data from the Federal Statistical Office"
   contents:
