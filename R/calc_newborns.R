@@ -25,7 +25,12 @@ calc_newborns <- function(
   # Prepare population data
   population_prep <- population |>
     # add parameters
-    left_join(parameters) |>
+    left_join(
+      parameters |>
+        select(any_of(c(
+          "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
+          "int_mothers"
+      )))) |>
     # filter for females in the fertile age
     filter(age %in% c(fert_first:fert_last), sex != "m") |>
     # calculate shares and rates
