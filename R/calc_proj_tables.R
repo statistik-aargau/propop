@@ -45,7 +45,7 @@ calc_proj_tables <- function(.data) {
         # ages 1-100
         age > 0 ~ n_jan * (acq_rate * (1 - (mor_rate / 2))),
         # newborns
-        age == 0 ~ (1 / 2) * birth_balance * (acq_rate * (1 - (mor_rate / 2))),
+        age == 0 ~ birth_balance * (acq_rate * (1 - (mor_rate / 2))),
         TRUE ~ NA
       ),
       acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2 * 101), -acq_n),
