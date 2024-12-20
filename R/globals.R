@@ -9,12 +9,12 @@ utils::globalVariables(c(
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
   "age", # <calculate_shares>
+  "sum_10", # <calculate_shares>
+  "prop_10", # <calculate_shares>
+  "use_share", # <calculate_shares>
   "nat", # <calculate_shares>
   "sex", # <calculate_shares>
-  "spatial_unit", # <calculate_shares>
-  "age_group_10", # <calculate_shares>
-  "sum_mig_n_10", # <calculate_shares>
-  "mig_n_10_TRUE", # <calculate_shares>
+  "use_share_sum", # <calculate_shares>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>
