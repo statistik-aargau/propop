@@ -2,17 +2,34 @@
 % Please edit documentation in R/calculate_shares.R
 \name{calculate_shares}
 \alias{calculate_shares}
-\title{Calculate shares for distributing migration parameters to spatial units}
+\title{Calculate shares for distributing migration parameters among spatial units}
 \usage{
 calculate_shares(data_migration, column_migration)
 }
 \arguments{
-\item{data_migration}{data frame, mutation data e.g. for international immigration or
-intercantonal immigration aggregated across demographic groups.}
+\item{data_migration}{data frame, historical records (e.g., for immigration
+from other cantons or countries) aggregated across demographic groups.}
 
-\item{column_migration}{string, name of the data column which contains the
+\item{column_migration}{character, name of the column which contains the
 data for historical migration occurrences.}
 }
+\value{
+Returns the input data frame with the following new columns:
+\itemize{
+\item \code{age_group_10}: character, name of the 10-year age group to which the 1-year
+age class is assigned to.
+\item \code{sum_10}: numeric, total number of people in the 10-year age group.
+\item \code{prop_10}: numeric, proportion of the the 10-year age group total that
+is allocated to each 1-year age group.
+\item \code{use_group}: character, preference for 1-year or 10-year age group. Defaults
+to \code{age_group_1} if at least one observation was recorded.
+\item \code{use_share}: numeric, share to be used according to \code{use_group}.
+\item \code{use_share_sum}: numeric, total per demographic group and across all
+spatial units.
+\item \code{share}: numeric, the spatial unit's share relative to the total (across all
+spatial units) of people within the same demographic group.
+}
+}
 \description{
-Calculate shares for distributing migration parameters to spatial units
+Calculate shares for distributing migration parameters among spatial units
 }
