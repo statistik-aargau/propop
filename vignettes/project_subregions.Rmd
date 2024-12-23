@@ -72,7 +72,7 @@ Let us look at a concrete, numeric example. For the sake of simplicity, we use
 the data included in the package to create small, fictitious input data with 
 five regions:
 
-Projection parameters: 
+Projection parameters (with canton-wide numbers in `_n` columns): 
 
 ```{r data-parameters} 
 # fso parameters for fictitious subregions
@@ -87,11 +87,12 @@ fso_parameters_sub <- fso_parameters |>
 Population data: 
 
 ```{r data-population}
-# Generate 5 random shares, avoiding very uneven distributions
-share_1 <- {set.seed(1); round(runif(1, min = 0, max = 0.7), digits = 2)}
-share_2 <- {set.seed(2); round(runif(1, min = 0, max = 0.7), digits = 2)}
-share_3 <- {set.seed(3); round(runif(1, min = 0, max = 0.7), digits = 2)}
-share_4 <- {set.seed(4); round(runif(1, min = 0, max = 0.7), digits = 2)}
+# Generate 5 random shares without extreme sizes
+share_1 <- {set.seed(1); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+share_2 <- {set.seed(2); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+share_3 <- {set.seed(3); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+share_4 <- {set.seed(4); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+# Make sure everything adds up to 100%
 share_5 <- 1-share_1-share_2-share_3-share_4
 
 # Generate population data for five subregions
@@ -101,7 +102,7 @@ df_population <- fso_population |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = as.character(rep(1:5, times = nrow(fso_population)))) |>
   dplyr::mutate(
-    # Create fictitious n
+    # Distribute original population according to shares
     n = dplyr::case_match(
       spatial_unit,
       "1" ~ round(n * share_1),
@@ -115,7 +116,7 @@ df_population <- fso_population |>
   )
 ```
 
-To calculate the shares, we count the     number of people in each demographic group 
+To calculate the shares, we count the number of people in each demographic group 
 across all spatial units (`sum_n`). Next, the share (`share`) is obtained by 
 dividing the spatial unit's `n` by the sum (`sum_n`). Note that the sum of all
 five region's  shares is 1.
@@ -134,15 +135,16 @@ df_population_shares |>
 Now all required data are available and we can distribute projection parameters
 expressed as "number of people" between subregions. 
 
-Let's do this with migration from other countries (`imm_int_n`). To achieve this, 
-we first join the dataset containing the projection parameters (`fso_parameters_sub`) 
-and the dataset containing the shares (`df_population_shares`). Identifiers for 
-demographic groups must be present in both datasets. The actual distribution 
-involves only a single line in which the canton-wide number of immigrants 
-(`imm_int_n`) is multiplied by the share (`share`).
+Let's do this with migration from other countries (`imm_int_n`) and migration 
+from other cantons (`imm_nat_n`). To achieve this, we first join the data frame 
+containing the projection parameters (`fso_parameters_sub`) and the data frame 
+containing the shares (`df_population_shares`). Identifiers for demographic 
+groups must be present in both data frames. The actual distribution involves 
+only a single line per parameter in which the canton-wide number of immigrants 
+(`imm_int_n` and `imm_nat_n`) is multiplied by the share (`share`).
 
 ```{r distribute-pop-size}
-data_distr_pop_size <- fso_parameters_sub |> 
+parameters_sub_size <- fso_parameters_sub |> 
   dplyr::left_join(
     df_population_shares[c(
       "spatial_unit", "nat", "sex", "age", "share"
@@ -150,15 +152,20 @@ data_distr_pop_size <- fso_parameters_sub |>
     by = c("spatial_unit", "nat", "sex", "age"),
     relationship = "many-to-one"
   ) |> 
-  dplyr::mutate(imm_int_n_distr = imm_int_n * share) 
+  dplyr::mutate(
+    # Calculate number of people per demographic group and spatial unit
+    imm_int_n_distr = imm_int_n * share,
+    imm_nat_n_distr = imm_nat_n * share) 
 ```
 
-In the table below, the blue columns `check` and `difference` show that the sum 
-of the distributed parameter (`imm_int_n_distr`) adds up to the total number of 
-people (`imm_int_n`; the figures provided by the FSO for the whole canton). 
+Let's take a closer look at what we just did, focusing on immigration from other
+countries. In the table below, the blue columns `check` and `difference` show 
+that the sum of the distributed parameter (`imm_int_n_distr`) adds up to the 
+total number of people (`imm_int_n`; the figures provided by the FSO for the 
+whole canton). 
 
 ```{r distr-pop-size-check}
-data_distr_pop_size |> 
+parameters_sub_size |> 
   dplyr::mutate(check = round(sum(imm_int_n_distr), 0), .by = c(year, nat, sex, age)) |> 
   dplyr::filter(sex == "m" & nat == "int") |>
   dplyr::mutate(across(c("share", "imm_int_n_distr"), \(x) round(x, 3))) |> 
@@ -174,10 +181,35 @@ data_distr_pop_size |>
   ) 
 ```
 
-To proceed with the projection, the column with the distributed international 
-immigration (`imm_int_n_distr`) needs to become the new `imm_int`. Otherwise the
-parameter won't be recognized by `propop()`. 
+To proceed with the projection, the columns with the distributed immigration 
+(`imm_int_n_distr` and `imm_nat_n_distr`) need to become the new 
+`imm_int_n` and `imm_nat_n`. Otherwise `propop()` won't recognize the parameter.  
 
+``` {r cleaning}
+parameters_sub_size_clean <- parameters_sub_size |> 
+  dplyr::mutate(
+    imm_int_n = imm_int_n_distr,
+    imm_nat_n = imm_nat_n_distr) |> 
+  dplyr::select(-share, -imm_int_n_distr)
+```
+
+Now you can run the projection:
+
+```{r project-1, eval = FALSE}
+propop(
+  parameters = parameters_sub_size_clean,
+  year_first = 2019,
+  year_last = 2020,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = FALSE
+)
+
+```
 
 
 ## Distribution of people according to past migration
@@ -191,7 +223,7 @@ immigration patterns differ depending on whether people come from other cantons
 or other countries.
 
 We again use international immigration as an example and create a fictitious 
-dataset with five regions. For pedagogical reasons, we modify the data a little 
+data frame with five regions. For pedagogical reasons, we modify the data a little 
 bit. Spatial unit 1 won't have any international immigration among children aged 
 0-4 years. Consequently, the value in the column `hist_imm_int` contains zeros 
 for these entries. This does not reflect realistic conditions but helps to 
@@ -218,8 +250,8 @@ df_hist_imm_int <- tibble::tibble(
   age = rep(0:100, times = 5 * 4)
 ) |>
   dplyr::mutate(
-    # random numbers between zero and 50 are created to mimic observed
-    # historical occurrences for international immigration
+    # random numbers between zero and 50 are created to mimic historical 
+    # occurrences observed in Aargau for international immigration
     hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
     # for one spatial unit, we artificially assign zeros to all children
     # between 0-4 years
@@ -248,7 +280,7 @@ of each demographic group's past migration.
 shares based on 1-year age groups, it is possible to resort to 10-year age
 groups in which uneven patterns are (further) smoothed out. 
 
-To use this function, you need to provide a dataset containing a column with
+To use this function, you need to provide a data frame containing a column with
 the number of immigrants per demographic group. The function assigns each 1-year
 age group to a 10-year age group (e.g., 2-year olds become part of the 0-9-year
 age group), sums up all observations (below: `hist_imm_int`) within the 
@@ -315,6 +347,22 @@ fso_parameters_sub_distr_hist |>
 
 ```
 
+```{r project-2, eval = FALSE}
+propop(
+  parameters = data_distr_pop_size,
+  year_first = 2019,
+  year_last = 2020,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = TRUE
+)
+
+```
+
 <!-- # Migration between subregions -->
 
 <!-- `propop` offers the possibility to account for migration between subregions. To  -->
@@ -323,50 +371,50 @@ fso_parameters_sub_distr_hist |>
 
 <!-- Let's add this fictitious parameter to the parameter input file: -->
 
-<!-- ```{r} -->
-<!-- parameters_sub_mig <- fso_parameters_sub_distr_hist |> -->
-<!--   # Create fictitious migration parameters  -->
-<!--   dplyr::rowwise() |> -->
-<!--   dplyr::mutate( -->
-<!--     # rename -->
-<!--     imm_int_n = imm_int_n_distr, -->
-<!--     # TODO prepare imm_nat_n -->
-<!--     imm_nat_n = imm_int_n_distr, -->
-<!--     # Four regions with emigration, 1 region with immigration -->
-<!--     mig_sub_1 = {set.seed(1); round(rnorm(1, mean = 0, sd = 0.2), digits = 4)}, -->
-<!--     mig_sub_2 = {set.seed(2);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)}, -->
-<!--     mig_sub_3 = {set.seed(25);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)}, -->
-<!--     mig_sub_4 = {set.seed(12);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)}, -->
-<!--     mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4) -->
-<!--     # check = sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4,mig_sub_5) -->
-<!--   ) |> -->
-<!--   tidyr::pivot_longer(mig_sub_1:mig_sub_5, -->
-<!--                       names_to = "subregion", -->
-<!--                       values_to = "mig_sub") |> -->
-<!--   dplyr::mutate(spatial_unit = as.character(stringr::str_extract(subregion, "(?<=mig_sub_).*"))) |> -->
-<!--   dplyr::select(nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, -->
-<!--                 mor, emi_int,emi_nat,imm_int_n, imm_nat_n, acq, emi_nat_n,  -->
-<!--                 mig_nat_n, mig_sub)  -->
-<!-- ``` -->
+```{r}
+parameters_sub_mig <- fso_parameters_sub_distr_hist |>
+  # Create fictitious migration parameters
+  dplyr::rowwise() |>
+  dplyr::mutate(
+    # rename
+    imm_int_n = imm_int_n_distr,
+    # TODO prepare imm_nat_n
+    imm_nat_n = imm_int_n_distr,
+    # Four regions with emigration, 1 region with immigration
+    mig_sub_1 = {set.seed(1); round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
+    mig_sub_2 = {set.seed(2);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
+    mig_sub_3 = {set.seed(25);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
+    mig_sub_4 = {set.seed(12);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
+    mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4)
+    # check = sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4,mig_sub_5)
+  ) |>
+  tidyr::pivot_longer(mig_sub_1:mig_sub_5,
+                      names_to = "subregion",
+                      values_to = "mig_sub") |>
+  dplyr::mutate(spatial_unit = as.character(stringr::str_extract(subregion, "(?<=mig_sub_).*"))) |>
+  dplyr::select(nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers,
+                mor, emi_int,emi_nat,imm_int_n, imm_nat_n, acq, emi_nat_n,
+                mig_nat_n, mig_sub)
+```
 
-<!-- Now that all required input files are available, we can set `subregional` to  -->
-<!-- `TRUE` and use `propop::propop()`: -->
+Now that all required input files are available, we can set `subregional` to
+`TRUE` and use `propop::propop()`:
 
-<!-- ```{r} -->
-<!-- propop( -->
-<!--   parameters = parameters_sub_mig, -->
-<!--   year_first = 2019, -->
-<!--   year_last = 2030, -->
-<!--   age_groups = 101, -->
-<!--   fert_first = 16, -->
-<!--   fert_last = 50, -->
-<!--   share_born_female = 100 / 205, -->
-<!--   population = df_population, -->
-<!--   binational = TRUE, -->
-<!--   subregional = TRUE -->
-<!-- ) -->
+```{r project-3, eval = FALSE}
+propop(
+  parameters = data_distr_pop_size,
+  year_first = 2019,
+  year_last = 2020,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = TRUE
+)
 
-<!-- ``` -->
+```
 
 
 # Outlook
