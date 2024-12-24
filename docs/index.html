@@ -66,7 +66,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
     <a class="dropdown-item" href="articles/prepare_data.html">Prepare data</a>
-    <a class="dropdown-item" href="articles/run_projections.html">Run projections</a>
+    <a class="dropdown-item" href="articles/project_single_region.html">Projections for a single region</a>
+    <a class="dropdown-item" href="articles/project_subregions.html">Projections for subregions</a>
     <a class="dropdown-item" href="articles/evaluate.html">Evaluate projections</a>
   </div>
 </li>
@@ -117,18 +118,19 @@
 <div class="section level2">
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
-<p>The package currently includes three vignettes.</p>
+<p>The package includes four vignettes.</p>
 <ul>
 <li>The first vignette demonstrates <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters).</li>
-<li>The second vignette illustrates in more detail <a href="https://statistik-aargau.github.io/propop/articles/run_projections.html">how to project</a> the population development for single and multiple regions.</li>
-<li>The third vignette shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a>, for example against benchmarks.</li>
+<li>The second vignette illustrates how to run <a href="https://statistik-aargau.github.io/propop/articles/project_single_region.html">population projections for a single region</a>.</li>
+<li>The third vignette illustrates <strong>how to pepare and run</strong> <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">population projections for subregions</a>.</li>
+<li>The fourth vignette shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a>, for example against benchmarks.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="features-limitations-future-plans">Features, limitations, future plans<a class="anchor" aria-label="anchor" href="#features-limitations-future-plans"></a>
 </h2>
 <ul>
-<li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> (0-100+).<br>
+<li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> (0-100+) and two genders.<br>
 </li>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinguishing between nationalities.<br>
@@ -144,7 +146,7 @@
 <p><strong>If you are interested in contributing to these or other developments, please get in touch with the package maintainer.</strong></p>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="quick-example">Quick example<a class="anchor" aria-label="anchor" href="#quick-example"></a>
 </h2>
 <p>To run <code><a href="reference/propop.html">propop::propop()</a></code> with the example data included in the package (canton of Aargau) for the period 2019-2030, use the following code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
