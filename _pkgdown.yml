@@ -16,12 +16,12 @@ navbar:
       menu:
       - text: Prepare data
         href: articles/prepare_data.html
-      - text: Run projections
-        href: articles/run_projections.html
+      - text: Projections for a single region
+        href: articles/project_single_region.html
+      - text: Projections for subregions
+        href: articles/project_subregions.html
       - text: Evaluate projections
         href: articles/evaluate.html
-      - text: Distribute migration
-        href: articles/distribute_migration.html
   structure:
     left:  [intro, reference, articles, news]
     right: [search, github]
