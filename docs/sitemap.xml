@@ -4,9 +4,6 @@
     <loc>https://statistik-aargau.github.io/propop/404.html</loc>
   </url>
   <url>
-    <loc>https://statistik-aargau.github.io/propop/LICENSE-text.html</loc>
-  </url>
-  <url>
     <loc>https://statistik-aargau.github.io/propop/LICENSE.html</loc>
   </url>
   <url>
@@ -19,7 +16,10 @@
     <loc>https://statistik-aargau.github.io/propop/articles/prepare_data.html</loc>
   </url>
   <url>
-    <loc>https://statistik-aargau.github.io/propop/articles/run_projections.html</loc>
+    <loc>https://statistik-aargau.github.io/propop/articles/project_single_region.html</loc>
+  </url>
+  <url>
+    <loc>https://statistik-aargau.github.io/propop/articles/project_subregions.html</loc>
   </url>
   <url>
     <loc>https://statistik-aargau.github.io/propop/authors.html</loc>
@@ -34,6 +34,9 @@
     <loc>https://statistik-aargau.github.io/propop/reference/aggregate_measures.html</loc>
   </url>
   <url>
+    <loc>https://statistik-aargau.github.io/propop/reference/calculate_shares.html</loc>
+  </url>
+  <url>
     <loc>https://statistik-aargau.github.io/propop/reference/compute_measures.html</loc>
   </url>
   <url>
@@ -41,9 +44,6 @@
   </url>
   <url>
     <loc>https://statistik-aargau.github.io/propop/reference/fso_population.html</loc>
-  </url>
-  <url>
-    <loc>https://statistik-aargau.github.io/propop/reference/fso_projections.html</loc>
   </url>
   <url>
     <loc>https://statistik-aargau.github.io/propop/reference/get_parameters.html</loc>
