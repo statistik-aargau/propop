@@ -44,22 +44,24 @@ devtools::install_github("statistik-aargau/propop")
 
 ## Vignettes
 
-The package currently includes three vignettes.  
+The package includes four vignettes.  
 
 - The first vignette demonstrates 
 [prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
 the FSO population data and parameters. (Users can of course use their own data 
 and parameters).
-- The second vignette illustrates in more detail 
-[how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
-the population development for single and multiple regions.
-- The third vignette shows 
+- The second vignette illustrates how to run 
+[population projections for a single region](https://statistik-aargau.github.io/propop/articles/project_single_region.html).
+- The third vignette illustrates **how to pepare and run** 
+[population projections for subregions](https://statistik-aargau.github.io/propop/articles/project_subregions.html).
+- The fourth vignette shows 
 [how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
 for example against benchmarks.
 
 ## Features, limitations, future plans
 
-- Currently, `propop::propop()` only works with *1-year age classes* (0-100+).  
+- Currently, `propop::propop()` only works with *1-year age classes* (0-100+) 
+and two genders.     
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
@@ -88,7 +90,7 @@ growth varies between municipalities.
 **If you are interested in contributing to these or other developments, please
 get in touch with the package maintainer.**
 
-## Example
+## Quick example
 
 To run `propop::propop()` with the example data included in the package 
 (canton of Aargau) for the period 2019-2030, use the following code:
