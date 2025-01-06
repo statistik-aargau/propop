@@ -486,7 +486,7 @@ Now that all required input files are available, we can set `subregional` to
 
 ```{r project-3, eval = FALSE}
 propop(
-  parameters = data_distr_pop_size,
+  parameters = parameters_sub_mig,
   year_first = 2019,
   year_last = 2020,
   age_groups = 101,
