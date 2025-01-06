@@ -85,10 +85,22 @@ Population data:
 ```{r data-population}
 # Generate 5 random cuts to distribute original population; avoid extreme
 # values
-cut_1 <- {set.seed(1); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_2 <- {set.seed(2); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_3 <- {set.seed(3); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_4 <- {set.seed(4); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+cut_1 <- {
+  set.seed(1)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_2 <- {
+  set.seed(2)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_3 <- {
+  set.seed(3)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_4 <- {
+  set.seed(4)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
 # make sure everything adds up to 100%
 cut_5 <- 1 - cut_1 - cut_2 - cut_3 - cut_4
 
@@ -152,11 +164,9 @@ the identical for both types of immigration.
 ```{r distribute-pop-size}
 parameters_sub_size <- fso_parameters_sub |>
   dplyr::left_join(
-    df_population_shares[c(
-      "spatial_unit", "nat", "sex", "age", "share"
-    )],
-    by = c("spatial_unit", "nat", "sex", "age"),
-    relationship = "many-to-one"
+    df_population_shares |>
+      select("spatial_unit", "nat", "sex", "age", "share"),
+    by = c("spatial_unit", "nat", "sex", "age")
   ) |>
   dplyr::mutate(
     # Calculate number of incoming people per demographic group and spatial unit
@@ -385,10 +395,10 @@ data_distr_hist <- data_distr_hist_int |>
 # Add shares to the data frame that holds the projection parameters
 fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   dplyr::left_join(
-    data_distr_hist[c(
-      "spatial_unit", "nat", "sex", "age",
-      "share_imm_int", "share_imm_nat"
-    )],
+    data_distr_hist |>
+      select(
+        "spatial_unit", "nat", "sex", "age", "share_imm_int", "share_imm_nat"
+      ),
     by = c("spatial_unit", "nat", "sex", "age"),
     relationship = "many-to-one"
   ) |>
@@ -406,10 +416,7 @@ fso_parameters_sub_distr_hist |>
   dplyr::select(-fso_projection_n, -scen) |>
   head(100) |>
   dplyr::mutate(across(
-    c(
-      "int_mothers":"imm_nat_n"
-    ),
-    \(x) sprintf(fmt = "%.3f", x)
+    c("int_mothers":"imm_nat_n"), \(x) sprintf(fmt = "%.3f", x)
   )) |>
   DT::datatable()
 ```
@@ -447,37 +454,36 @@ Let's add this fictitious parameter to the parameter input file:
 ```{r, eval = FALSE}
 parameters_sub_mig <- fso_parameters_sub_distr_hist |>
   # Create fictitious migration parameters
-  dplyr::rowwise() |>
   dplyr::mutate(
-    # Four regions with emigration, 1 region with immigration
-    mig_sub_1 = {
-      set.seed(1)
-      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-    },
-    mig_sub_2 = {
-      set.seed(2)
-      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-    },
-    mig_sub_3 = {
-      set.seed(25)
-      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-    },
-    mig_sub_4 = {
-      set.seed(12)
-      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-    },
-    mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2, mig_sub_3, mig_sub_4)
-    # check = sum(mig_sub_1, mig_sub_2, mig_sub_3, mig_sub_4, mig_sub_5)
+    mig_sub = case_when(
+      # Four regions with emigration, 1 region with immigration
+      spatial_unit == 1 ~ {
+        set.seed(1)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 2 ~ {
+        set.seed(2)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 3 ~ {
+        set.seed(25)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 4 ~ {
+        set.seed(12)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      TRUE ~ NA
+    )
   ) |>
-  tidyr::pivot_longer(mig_sub_1:mig_sub_5,
-    names_to = "subregion",
-    values_to = "mig_sub"
+  mutate(
+    mig_sub = case_when(spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub),
+    # check = sum(mig_sub, na.rm = TRUE),
+    .by = c("nat", "sex", "age", "year", "scen")
   ) |>
-  dplyr::mutate(spatial_unit = as.character(stringr::str_extract(subregion, "(?<=mig_sub_).*"))) |>
   dplyr::select(
-    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers,
-    mor, emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n,
-    mig_nat_n, mig_sub
+    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
+    emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n, mig_sub
   )
 ```
 
