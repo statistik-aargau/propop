@@ -22,7 +22,7 @@
     rename(n_dec = n)
 
   # Prepare parameters
-  parameters <- fso_parameters |>
+  parameters_test <- fso_parameters |>
     mutate(year = as.numeric(year)) |>
     select(
       # select and rename variables from parameters
@@ -34,7 +34,7 @@
   # Split parameters into a list to iterate across
   list_parameters <-
     # split parameters by year
-    split(parameters, parameters$year) |>
+    split(parameters_test, parameters_test$year) |>
     set_names(~ paste0("parameters_", .))
 
   # Run projection with tables
