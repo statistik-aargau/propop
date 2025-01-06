@@ -85,22 +85,10 @@ Population data:
 ```{r data-population}
 # Generate 5 random cuts to distribute original population; avoid extreme
 # values
-cut_1 <- {
-  set.seed(1)
-  round(runif(1, min = 0.1, max = 0.5), digits = 2)
-}
-cut_2 <- {
-  set.seed(2)
-  round(runif(1, min = 0.1, max = 0.5), digits = 2)
-}
-cut_3 <- {
-  set.seed(3)
-  round(runif(1, min = 0.1, max = 0.5), digits = 2)
-}
-cut_4 <- {
-  set.seed(4)
-  round(runif(1, min = 0.1, max = 0.5), digits = 2)
-}
+cut_1 <- {set.seed(1); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+cut_2 <- {set.seed(2); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+cut_3 <- {set.seed(3); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+cut_4 <- {set.seed(4); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
 # make sure everything adds up to 100%
 cut_5 <- 1 - cut_1 - cut_2 - cut_3 - cut_4
 
@@ -255,10 +243,10 @@ for these entries. This does not reflect realistic conditions but helps to
 illustrate the suggested procedure in cases where zero observations exist for 
 demographic groups.
 
-(With real data, the same can be achieved by summarizing the 
+With real data, the same can be achieved by summarizing the 
 historical migration data. Since real migration usually varies from 
 year to year, we advise calculating an average across several years. 
-The fictitious data assumes that we already performed this step.) 
+The fictitious data assumes that we already performed this step. 
 
 ```{r data}
 set.seed(145)
@@ -453,7 +441,7 @@ is equal to the previous approach (projected population size (2020) = 686,746).
 
 `propop` offers the possibility to account for migration between subregions. To
 adjust the population size in each subregion according to past migration,
-`mig_sub` (= migration in subregions) is required in the parameter data frame.
+the column `mig_sub` (= migration in subregions) is required in the parameter data frame.
 
 Let's add this fictitious parameter to the parameter input file:
 
@@ -480,7 +468,7 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
       round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
     },
     mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2, mig_sub_3, mig_sub_4)
-    # check = sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4,mig_sub_5)
+    # check = sum(mig_sub_1, mig_sub_2, mig_sub_3, mig_sub_4, mig_sub_5)
   ) |>
   tidyr::pivot_longer(mig_sub_1:mig_sub_5,
     names_to = "subregion",
@@ -515,7 +503,7 @@ propop(
 
 # Outlook
 
-*The procedure works likewise for the intercantonal immigration. For subregional migration saldos (e.g. movements between municipalities/districts) the function `calculate_share()` is applied twice: to calculate subregional immigration shares and secondly, emigration shares.*
+*The procedure works likewise for the intercantonal immigration. For subregional migration saldos (e.g. movements between municipalities/districts) the function `calculate_shares()` is applied twice: to calculate subregional immigration shares and secondly, emigration shares.*
 
 # Draft: Next steps
 -   **Historical shares:** refinement for groups with zero historical observations; e.g. using not only 1-year and 10-year groups but also 5-year groups or even more elaborate age groups such as life stages.
