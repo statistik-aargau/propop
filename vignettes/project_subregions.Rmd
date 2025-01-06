@@ -48,8 +48,8 @@ deaths are an essential prerequisite for population projections. However, in
 Switzerland this information is typically only available for cantons but not 
 for spatial entities at smaller scales. 
 
-Supplying input data for spatial units at the sub-cantonal level (e.g., 
-municipalities) is straightforward for data expressed as rates (e.g., mortality).
+Supplying input data for spatial units at the sub-cantonal level (e.g. 
+municipalities) is straightforward for data expressed as rates (e.g. mortality rate).
 Users can simply use the same figures (unless they are implausible for some
 theoretical or empirical reason). The task is more demanding, though, if 
 you want to alter rates for subregions or when you need to downscale input data 
@@ -67,11 +67,11 @@ Let us look at a concrete, numeric example. For the sake of simplicity, we use
 the data included in the package to create small, fictitious input data with 
 five regions:
 
-Create data frame with input parameters (the rates and numbers for the 
+Input parameters (the rates and numbers for the 
 subregions are so far identical to those for the whole canton): 
 
 ```{r data-parameters} 
-# fso parameters for fictitious subregions
+# FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
   # duplicating rows 5 times
   tidyr::uncount(5) |>
@@ -83,13 +83,13 @@ fso_parameters_sub <- fso_parameters |>
 Population data: 
 
 ```{r data-population}
-# Generate 5 random cuts to distribute original population, avoid extreme
+# Generate 5 random cuts to distribute original population; avoid extreme
 # values
 cut_1 <- {set.seed(1); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
 cut_2 <- {set.seed(2); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
 cut_3 <- {set.seed(3); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
 cut_4 <- {set.seed(4); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-# Make sure everything adds up to 100%
+# make sure everything adds up to 100%
 cut_5 <- 1-cut_1-cut_2-cut_3-cut_4
 
 # Generate population data for five subregions
@@ -97,7 +97,9 @@ df_population <- fso_population |>
   # duplicating rows 5 times
   tidyr::uncount(5) |>
   # create 5 subregions
-  dplyr::mutate(spatial_unit = as.character(rep(1:5, times = nrow(fso_population)))) |>
+  dplyr::mutate(
+    spatial_unit = as.character(rep(1:5, times = nrow(fso_population)))
+  ) |>
   dplyr::mutate(
     # Distribute original population according to shares
     n = dplyr::case_match(
@@ -115,21 +117,22 @@ df_population <- fso_population |>
 
 To calculate the shares, we count the number of people in each demographic group 
 across all spatial units (`sum_n`). Next, the `share` is obtained by 
-dividing the spatial unit's `n` by the sum of all people in the canton in this
-demographic group (`sum_n`). Note that the sum of all five region's  shares is 1
+dividing the spatial unit's `n` by the sum of all people across all spatial units in this
+demographic group (`sum_n`). Note that the sum of all five region's shares is 1
 (e.g., 0.21 + 0.17 + 0.17 + 0.33 + 0.12 = `r 0.21 + 0.17 + 0.17 + 0.33 + 0.12`).
 
 ```{r shares-pop-size}
+# Calculate shares
 df_population_shares <- df_population |> 
   dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |> 
   dplyr::mutate(share = n / sum_n)
 
+# Display table
 df_population_shares |> 
   dplyr::mutate(share = round(share, 3)) |> 
   DT::datatable() |>  
   DT::formatStyle(c("share"),
-                  backgroundColor = DT::styleRow(c(1:5), 
-                                                 "#96D4FF", default = "") 
+    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "") 
 )
 ```
 \ 
@@ -158,7 +161,8 @@ parameters_sub_size <- fso_parameters_sub |>
   dplyr::mutate(
     # Calculate number of incoming people per demographic group and spatial unit
     imm_int_n_distr = imm_int_n * share,
-    imm_nat_n_distr = imm_nat_n * share) 
+    imm_nat_n_distr = imm_nat_n * share
+  ) 
 ```
 
 Let's take a closer look at the result of this, focusing on immigration from 
@@ -169,10 +173,14 @@ the FSO for the whole canton).
 
 ```{r distr-pop-size-check}
 parameters_sub_size |> 
-  dplyr::mutate(check = round(sum(imm_int_n_distr), 0), .by = c(year, nat, sex, age)) |> 
+  dplyr::mutate(
+    check = round(sum(imm_int_n_distr), 0), 
+    .by = c(year, nat, sex, age)
+  ) |> 
   dplyr::filter(sex == "m" & nat == "int") |>
-  dplyr::mutate(across(c("int_mothers":"emi_nat", "acq", 
-                         "share":"imm_nat_n_distr"), \(x) round(x, 3))) |> 
+  dplyr::mutate(across(c(
+    "int_mothers":"emi_nat", "acq", "share":"imm_nat_n_distr"), \(x) round(x, 3))
+  ) |> 
   dplyr::mutate(difference = imm_int_n - check) |> 
   dplyr::select(-scen) |> 
   DT::datatable() |> 
@@ -188,13 +196,14 @@ parameters_sub_size |>
 \
 To proceed with the projection, the columns with the distributed immigration 
 (`imm_int_n_distr` and `imm_nat_n_distr`) need to become the new 
-`imm_int_n` and `imm_nat_n`. Otherwise `propop()` won't recognize the parameters.  
+`imm_int_n` and `imm_nat_n`. Otherwise, `propop()` won't recognize the parameters.  
 
 ``` {r cleaning}
 parameters_sub_size_clean <- parameters_sub_size |> 
   dplyr::mutate(
     imm_int_n = imm_int_n_distr,
-    imm_nat_n = imm_nat_n_distr) |> 
+    imm_nat_n = imm_nat_n_distr
+  ) |> 
   dplyr::select(-share, -imm_int_n_distr)
 ```
 
@@ -213,7 +222,6 @@ propop(
   binational = TRUE,
   subregional = FALSE
 )
-
 ```
 
 
