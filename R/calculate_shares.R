@@ -25,7 +25,6 @@
 #'
 #' @autoglobal
 calculate_shares <- function(data_migration, column_migration) {
-
   # Test input ----
   ## Presence of mandatory columns ----
   assertthat::assert_that("spatial_unit" %in% names(data_migration),
@@ -51,10 +50,24 @@ calculate_shares <- function(data_migration, column_migration) {
   )
 
 
-  # Prepare age groups and summarize observations ....
+  # Prepare age groups and summarize observations
   df1 <- data_migration |>
-    # create coarser age groups (steps of 10 years)
+    # create coarser age groups
+    ## steps of 5 years
     mutate(
+      age_group_5 = cut(
+        as.numeric(age),
+        breaks = c(-Inf, seq(4, 99, by = 5), Inf),
+        labels = c(paste0(seq(0, 95, by = 5), "_", seq(4, 99, by = 5)), "_100"),
+        include.lowest = TRUE
+      ),
+      # expand the group of the people from 95 years on to include 100 year olds
+      age_group_5 = case_when(
+        age_group_5 == "95_99" ~ "95_100",
+        age_group_5 == "_100" ~ "95_100",
+        TRUE ~ age_group_5
+      ),
+      ## steps of 10 years
       age_group_10 = cut(
         as.numeric(age),
         breaks = c(-Inf, seq(10, 100, by = 10), Inf),
@@ -71,6 +84,13 @@ calculate_shares <- function(data_migration, column_migration) {
     ) |>
     # get the total and proportional total by coarser age groups
     mutate(
+      # total number of people in 5-year age groups
+      sum_5 = sum(!!sym(column_migration)),
+      # proportional total
+      prop_5 = sum_5 / 5,
+      .by = any_of(c("nat", "sex", "spatial_unit", "age_group_5"))
+    ) |>
+    mutate(
       # total number of people in 10-year age groups
       sum_10 = sum(!!sym(column_migration)),
       # proportional total
@@ -81,33 +101,49 @@ calculate_shares <- function(data_migration, column_migration) {
 
   # Create dummy variables to indicate which age group should be used ----
   df2 <- df1 |>
+    # firstly, grouped by 5-year age groups
     mutate(
-      use_group =
-      # if there are observations in the single age group, use those
-        ifelse(!!sym(column_migration) != 0, "age_group_1",
-          # if there are no observations in the single age group, use the
-          # proportional total of 10-year age groups
-          ifelse(!!sym(column_migration) == 0 & prop_10 > 0, "age_group_10",
-            # if neither, single or 10-year age group have more than zero
-            # observations, still use the 10-year age group (this happens rather
-            # rarely; the share will be zero in those cases)
-            "age_group_10"
-          )
-        )
+      use_group = case_when(
+        # if all observations in 5-year age groups are zero, use 10-year age groups
+        sum(sum_5) == 0 ~ "age_group_10",
+        # if there are no observations in the single age group, use the
+        # proportional total of 5-year age groups
+        0 %in% !!sym(column_migration) ~ "age_group_5",
+        # else use single year groups
+        TRUE ~ "age_group_1"
+      ),
+      .by = any_of(c("nat", "sex", "spatial_unit", "age_group_5"))
+    ) |>
+    # secondly, grouped by 10-year age groups
+    mutate(
+      use_group = case_when(
+        # if the dummy variable includes "age_group_10" for any age group, use
+        # the 10-year groups for all ages within those 10-year age groups.
+        "age_group_10" %in% use_group ~ "age_group_10",
+        # if neither, single, 5-year or 10-year age groups have more than zero
+        # observations, still use the 10-year age group (this happens rather
+        # rarely; the share will be zero in those cases)
+        sum(sum_10) == 0 ~ "age_group_10",
+        TRUE ~ use_group
+      ),
+      .by = any_of(c("nat", "sex", "spatial_unit", "age_group_10"))
     )
 
   # Check data for NAs in group choices ----
   assertthat::assert_that(isFALSE(NA %in% unique(df2$use_group)),
-    msg = paste0("One or more observations could not be assigned to either",
-      "'age_group_1' or 'age_group_10'.")
+    msg = paste0(
+      "One or more observations could not be assigned to either",
+      "'age_group_1', 'age_group_5' or 'age_group_10'."
+    )
   )
 
-# Calculate estimates for the number of migrations -----
+  # Calculate estimates for the number of migrations -----
   df3 <- df2 |>
     mutate(
       # get estimates depending on group choices
       use_share = case_when(
         use_group == "age_group_1" ~ !!sym(column_migration),
+        use_group == "age_group_5" ~ prop_5,
         use_group == "age_group_10" ~ prop_10,
         TRUE ~ NA
       )
