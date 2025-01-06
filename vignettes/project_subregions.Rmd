@@ -77,7 +77,7 @@ fso_parameters_sub <- fso_parameters |>
   tidyr::uncount(5) |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
-  dplyr::mutate(spatial_unit = as.character(spatial_unit)) 
+  dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
 Population data: 
@@ -85,12 +85,24 @@ Population data:
 ```{r data-population}
 # Generate 5 random cuts to distribute original population; avoid extreme
 # values
-cut_1 <- {set.seed(1); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_2 <- {set.seed(2); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_3 <- {set.seed(3); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
-cut_4 <- {set.seed(4); round(runif(1, min = 0.1, max = 0.5), digits = 2)}
+cut_1 <- {
+  set.seed(1)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_2 <- {
+  set.seed(2)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_3 <- {
+  set.seed(3)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_4 <- {
+  set.seed(4)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
 # make sure everything adds up to 100%
-cut_5 <- 1-cut_1-cut_2-cut_3-cut_4
+cut_5 <- 1 - cut_1 - cut_2 - cut_3 - cut_4
 
 # Generate population data for five subregions
 df_population <- fso_population |>
@@ -123,17 +135,17 @@ demographic group (`sum_n`). Note that the sum of all five region's shares is 1
 
 ```{r shares-pop-size}
 # Calculate shares
-df_population_shares <- df_population |> 
-  dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |> 
+df_population_shares <- df_population |>
+  dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
   dplyr::mutate(share = n / sum_n)
 
 # Display table
-df_population_shares |> 
-  dplyr::mutate(share = round(share, 3)) |> 
-  DT::datatable() |>  
+df_population_shares |>
+  dplyr::mutate(share = round(share, 3)) |>
+  DT::datatable() |>
   DT::formatStyle(c("share"),
-    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "") 
-)
+    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+  )
 ```
 \ 
 
@@ -150,19 +162,19 @@ per parameter in which the canton-wide number of immigrants (`imm_int_n` and
 the identical for both types of immigration.
 
 ```{r distribute-pop-size}
-parameters_sub_size <- fso_parameters_sub |> 
+parameters_sub_size <- fso_parameters_sub |>
   dplyr::left_join(
     df_population_shares[c(
       "spatial_unit", "nat", "sex", "age", "share"
     )],
     by = c("spatial_unit", "nat", "sex", "age"),
     relationship = "many-to-one"
-  ) |> 
+  ) |>
   dplyr::mutate(
     # Calculate number of incoming people per demographic group and spatial unit
     imm_int_n_distr = imm_int_n * share,
     imm_nat_n_distr = imm_nat_n * share
-  ) 
+  )
 ```
 
 Let's take a closer look at the result of this, focusing on immigration from 
@@ -172,26 +184,26 @@ total number of people (`imm_int_n`; i.e., the original figures provided by
 the FSO for the whole canton). 
 
 ```{r distr-pop-size-check}
-parameters_sub_size |> 
+parameters_sub_size |>
   dplyr::mutate(
-    check = round(sum(imm_int_n_distr), 0), 
+    check = round(sum(imm_int_n_distr), 0),
     .by = c(year, nat, sex, age)
-  ) |> 
+  ) |>
   dplyr::filter(sex == "m" & nat == "int") |>
   dplyr::mutate(across(c(
-    "int_mothers":"emi_nat", "acq", "share":"imm_nat_n_distr"), \(x) round(x, 3))
-  ) |> 
-  dplyr::mutate(difference = imm_int_n - check) |> 
-  dplyr::select(-scen) |> 
-  DT::datatable() |> 
+    "int_mothers":"emi_nat", "acq", "share":"imm_nat_n_distr"
+  ), \(x) round(x, 3))) |>
+  dplyr::mutate(difference = imm_int_n - check) |>
+  dplyr::select(-scen) |>
+  DT::datatable() |>
   DT::formatStyle(
     "imm_int_n",
     backgroundColor = "#ffcc8f"
-  ) |> 
+  ) |>
   DT::formatStyle(
     c("check", "difference"),
     backgroundColor = "#96D4FF"
-  ) 
+  )
 ```
 \
 To proceed with the projection, the columns with the distributed immigration 
@@ -199,11 +211,11 @@ To proceed with the projection, the columns with the distributed immigration
 `imm_int_n` and `imm_nat_n`. Otherwise, `propop()` won't recognize the parameters.  
 
 ``` {r cleaning}
-parameters_sub_size_clean <- parameters_sub_size |> 
+parameters_sub_size_clean <- parameters_sub_size |>
   dplyr::mutate(
     imm_int_n = imm_int_n_distr,
     imm_nat_n = imm_nat_n_distr
-  ) |> 
+  ) |>
   dplyr::select(-share, -imm_int_n_distr)
 ```
 
@@ -246,7 +258,7 @@ demographic groups.
 (With real data, the same can be achieved by summarizing the 
 historical migration data. Since real migration usually varies from 
 year to year, we advise calculating an average across several years. 
-The fictitious data assume that we already performed this step.) 
+The fictitious data assumes that we already performed this step.) 
 
 ```{r data}
 set.seed(145)
@@ -263,14 +275,14 @@ df_hist_imm <- tibble::tibble(
   age = rep(0:100, times = 5 * 4)
 ) |>
   dplyr::mutate(
-    # random numbers between zero and 50 are created to mimic historical 
-    # immigration records observed in Aargau 
+    # random numbers between zero and 50 are created to mimic historical
+    # immigration records observed in Aargau
     hist_imm_nat = sample(0:50, dplyr::n(), replace = TRUE),
     hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
     # for one spatial unit, we artificially assign zeros to all children
     # between 0-4 years
-    hist_imm_int = ifelse(spatial_unit == 1 & age %in% 
-                            c(0:4), 0, hist_imm_int) 
+    hist_imm_int = ifelse(spatial_unit == 1 & age %in%
+      c(0:4), 0, hist_imm_int)
   )
 ```
 
@@ -327,13 +339,16 @@ data_distr_hist_int |>
   DT::datatable() |>
   DT::formatStyle(
     "use_share",
-    backgroundColor = "#96D4FF") |> 
+    backgroundColor = "#96D4FF"
+  ) |>
   DT::formatStyle(
     "use_share_sum",
-    backgroundColor = "#96D4FF") |> 
+    backgroundColor = "#96D4FF"
+  ) |>
   DT::formatStyle(
     "share",
-    backgroundColor = "#007AB8")
+    backgroundColor = "#007AB8"
+  )
 ```
 
 \ 
@@ -344,8 +359,8 @@ always adds up to 1:
 
 ```{r share-check}
 data_distr_hist_int |>
-  dplyr::summarise(sum_share = sum(share, na.rm = TRUE), .by = c(nat, sex, age)) |> 
-  DT::datatable() 
+  dplyr::summarise(sum_share = sum(share, na.rm = TRUE), .by = c(nat, sex, age)) |>
+  DT::datatable()
 ```
 
 \
@@ -358,29 +373,33 @@ that the FSO estimated for the whole canton.
 # we also need the shares and numbers for national immigration
 
 data_distr_hist_nat <- df_hist_imm |>
-  calculate_shares(column_migration = "hist_imm_nat") |> 
+  calculate_shares(column_migration = "hist_imm_nat") |>
   # Use unambiguous name
-  dplyr::rename(share_imm_nat = share) |> 
+  dplyr::rename(share_imm_nat = share) |>
   # Drop unnecessary variables
-  dplyr::select(-c("hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
-                   "prop_10", "use_group", "use_share", "use_share_sum")) 
+  dplyr::select(-c(
+    "hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
+    "prop_10", "use_group", "use_share", "use_share_sum"
+  ))
 
 # Join all data frames holding shares
-data_distr_hist <- data_distr_hist_int |> 
+data_distr_hist <- data_distr_hist_int |>
   # Use unambiguous name
-  dplyr::rename(share_imm_int = share) |> 
+  dplyr::rename(share_imm_int = share) |>
   # Drop unnecessary variables
-  dplyr::select(-c("hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
-                   "prop_10", "use_group", "use_share", "use_share_sum")) |> 
+  dplyr::select(-c(
+    "hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
+    "prop_10", "use_group", "use_share", "use_share_sum"
+  )) |>
   dplyr::left_join(data_distr_hist_nat,
-                   by = c("spatial_unit", "nat", "sex", "age")
+    by = c("spatial_unit", "nat", "sex", "age")
   )
 
 # Add shares to the data frame that holds the projection parameters
 fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   dplyr::left_join(
     data_distr_hist[c(
-      "spatial_unit", "nat", "sex", "age", 
+      "spatial_unit", "nat", "sex", "age",
       "share_imm_int", "share_imm_nat"
     )],
     by = c("spatial_unit", "nat", "sex", "age"),
@@ -389,20 +408,23 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   # Compute `n` for subregions, assign values directly to imm_int_n and imm_nat_n
   dplyr::mutate(
     imm_int_n = imm_int_n * share_imm_int,
-    imm_nat_n = imm_nat_n * share_imm_nat) |> 
+    imm_nat_n = imm_nat_n * share_imm_nat
+  ) |>
   # Remove unnecessary variables
   dplyr::select(-c("share_imm_int", "share_imm_nat"))
 
 # Show result
-fso_parameters_sub_distr_hist |> 
+fso_parameters_sub_distr_hist |>
   # Remove variables for better overview
-  dplyr::select(-fso_projection_n, -scen) |> 
-  head(100) |> 
-  dplyr::mutate(across(c(
-    "int_mothers":"imm_nat_n"),
-    \(x) sprintf(fmt = "%.3f", x))) |>
+  dplyr::select(-fso_projection_n, -scen) |>
+  head(100) |>
+  dplyr::mutate(across(
+    c(
+      "int_mothers":"imm_nat_n"
+    ),
+    \(x) sprintf(fmt = "%.3f", x)
+  )) |>
   DT::datatable()
-
 ```
 Now everything is ready to run the projection: 
 
@@ -419,7 +441,6 @@ propop(
   binational = TRUE,
   subregional = FALSE
 )
-
 ```
 
 \ 
@@ -442,20 +463,35 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
   dplyr::rowwise() |>
   dplyr::mutate(
     # Four regions with emigration, 1 region with immigration
-    mig_sub_1 = {set.seed(1); round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
-    mig_sub_2 = {set.seed(2);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
-    mig_sub_3 = {set.seed(25);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
-    mig_sub_4 = {set.seed(12);round(rnorm(1, mean = 0, sd = 0.2), digits = 4)},
-    mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4)
+    mig_sub_1 = {
+      set.seed(1)
+      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+    },
+    mig_sub_2 = {
+      set.seed(2)
+      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+    },
+    mig_sub_3 = {
+      set.seed(25)
+      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+    },
+    mig_sub_4 = {
+      set.seed(12)
+      round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+    },
+    mig_sub_5 = 0 - sum(mig_sub_1, mig_sub_2, mig_sub_3, mig_sub_4)
     # check = sum(mig_sub_1, mig_sub_2,mig_sub_3,mig_sub_4,mig_sub_5)
   ) |>
   tidyr::pivot_longer(mig_sub_1:mig_sub_5,
-                      names_to = "subregion",
-                      values_to = "mig_sub") |>
+    names_to = "subregion",
+    values_to = "mig_sub"
+  ) |>
   dplyr::mutate(spatial_unit = as.character(stringr::str_extract(subregion, "(?<=mig_sub_).*"))) |>
-  dplyr::select(nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers,
-                mor, emi_int,emi_nat,imm_int_n, imm_nat_n, acq, emi_nat_n,
-                mig_nat_n, mig_sub)
+  dplyr::select(
+    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers,
+    mor, emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n,
+    mig_nat_n, mig_sub
+  )
 ```
 
 Now that all required input files are available, we can set `subregional` to
@@ -474,7 +510,6 @@ propop(
   binational = TRUE,
   subregional = TRUE
 )
-
 ```
 
 
@@ -486,5 +521,3 @@ propop(
 -   **Historical shares:** refinement for groups with zero historical observations; e.g. using not only 1-year and 10-year groups but also 5-year groups or even more elaborate age groups such as life stages.
 
 -   **Arrange vignettes**: Separate vignettes into a) projection for a single region (`subregional = FALSE`) and b) projection for several subregions (`subregional = TRUE`).
-
-
