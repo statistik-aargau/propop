@@ -300,18 +300,17 @@ groups, which further smooths out irregular patterns.
 To use this function, you need to provide a data frame containing a column with
 the number of immigrants per demographic group (e.g., `hist_imm_nat` or 
 `hist_imm_int` as calculated above). The function assigns each 1-year
-age group to a 10-year age group (e.g., 2-year olds become part of the 0-9-year
-age group), sums up all historical observations within the respective 10-year 
-age group (e.g., 0-9 year old Swiss males). This sum (`sum_10`) is then divided 
-by ten and proportionally assigned to each member of the 10-year age group 
-(`prop_10`). 
+age group to a 5-year and a 10-year age group (e.g., 2-year olds become part of the age_groups 0-4 and 0-9), sums up all historical observations within the respective 5-year and 10-year 
+age group (e.g., 0-4 and 0-9 year old Swiss males). These sums (`sum_5`and `sum_10`) are then divided 
+by five or ten, respectively, and proportionally assigned to each member of the age group 
+(`prop_5` and `prop_10`). 
 
 To **distribute the canton-wide numbers** among subregions, 
 `propop::calculate_shares()` uses the 1-year age group if its mean share is 
 larger than zero. If no immigration was recorded for a particular 1-year age 
-group (e.g., the 0-year olds Swiss males in spatial unit 1), the mean share of 
-the corresponding 10-year age group is used (i.e., 0-9-year olds in the case of 
-0-year olds). The variable `use_group` indicates which share is to be used. 
+group (e.g., the 76-year olds Swiss males in spatial unit 1), the mean share of 
+the corresponding 5-year age group is used (i.e., 70-79-year olds in the case of 
+76-year olds). If the share across 5-year age groups is also zero (e.g. 0-4 year old Swiss males in spatial unit 1), the 10-year age group is used (i.e. 0-9-year olds). In this case. the 10-year age_group is used for both 5-year age groups within the 10-year age group (i.e. 0-4 and 5-9 year olds) The variable `use_group` indicates which share is to be used. 
 
 The final outcome `share` indicates the proportion of the historical total per
 demographic group (`use_share_sum`) that is to be allocated to the respective
@@ -366,7 +365,7 @@ data_distr_hist_nat <- df_hist_imm |>
   dplyr::rename(share_imm_nat = share) |>
   # Drop unnecessary variables
   dplyr::select(-c(
-    "hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
+    "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
     "prop_10", "use_group", "use_share", "use_share_sum"
   ))
 
@@ -376,7 +375,7 @@ data_distr_hist <- data_distr_hist_int |>
   dplyr::rename(share_imm_int = share) |>
   # Drop unnecessary variables
   dplyr::select(-c(
-    "hist_imm_nat", "hist_imm_int", "age_group_10", "sum_10",
+    "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
     "prop_10", "use_group", "use_share", "use_share_sum"
   )) |>
   dplyr::left_join(data_distr_hist_nat,
@@ -503,9 +502,9 @@ propop(
 
 # Outlook
 
-*The procedure works likewise for the intercantonal immigration. For subregional migration saldos (e.g. movements between municipalities/districts) the function `calculate_shares()` is applied twice: to calculate subregional immigration shares and secondly, emigration shares.*
+*The procedure works likewise for the intercantonal immigration. For subregional migration saldos (e.g. movements between municipalities/districts) the function `calculate_shares()` is applied twice: to calculate subregional immigration shares and secondly, emigration shares. The column of interest is selected by the function argument `column_migration =` of `calculate_shares()`*
 
 # Draft: Next steps
--   **Historical shares:** refinement for groups with zero historical observations; e.g. using not only 1-year and 10-year groups but also 5-year groups or even more elaborate age groups such as life stages.
+-   **Done: Historical shares:** refinement for groups with zero historical observations; e.g. using not only 1-year and 10-year groups but also 5-year groups or even more elaborate age groups such as life stages.
 
 -   **Arrange vignettes**: Separate vignettes into a) projection for a single region (`subregional = FALSE`) and b) projection for several subregions (`subregional = TRUE`).
