@@ -1,69 +1,76 @@
-#' Calculate shares for distributing migration parameters among spatial units
+#' Calculate shares for distributing people among subregions
 #'
-#' @param data_migration data frame, historical records (e.g., for immigration
-#' from other cantons or countries) aggregated across demographic groups.
-#' @param column_migration character, name of the column which contains the
-#' data for historical migration occurrences.
-#' @param age_group character, optional argument: age group used for
-#' calculating shares. If the argument is not specified, the default selects
-#' shares based on xyz. To use the same age clustering for all demographic units,
-#' the argument can be specified with "age_group_5" or "age_group_10".
+#' @param data data frame, historical records (e.g., immigration from
+#' other cantons or countries) aggregated across demographic groups.
+#' @param col character, name of the column which contains the
+#' data for historical occurrences.
+#' @param age_group character \bold{(optional)}, either 1-year, 5-year, or
+#' 10-year age group used as basis for calculating shares. If the argument is not
+#' specified, the default attempts to avoid age groups without any observations.
+#' It prioritizes age groups based on their resolution (1-year age groups =
+#' most informative and highest priority, 10-year age groups = least informative
+#' and lowest priority).
+#' Users can override the default and enforce the use of a specific age group
+#' for all demographic groups by setting the argument to "age_group_5" or
+#' "age_group_10".
 #' @returns
 #' Returns the input data frame with the following new columns:
 #'
-#'* `age_group_5`: character, name of the 5-year age group to which the 1-year
-#'  age class is assigned to.
+#'* `age_group_5`: character, indicates the 5-year age group to which the 1-year
+#'  age group is assigned to.
+#'* `age_group_10`: character, indicates the 10-year age group to which the
+#'  1-year age group is assigned to.
 #'* `sum_5`: numeric, total number of people in the 5-year age group.
 #'* `prop_5`: numeric, proportion of the the 5-year age group total that
 #'  is allocated to each 1-year age group.
-#'* `age_group_10`: character, name of the 10-year age group to which the 1-year
-#'  age class is assigned to.
 #'* `sum_10`: numeric, total number of people in the 10-year age group.
 #'* `prop_10`: numeric, proportion of the the 10-year age group total that
 #'  is allocated to each 1-year age group.
-#'* `use_age_group`: character, preference for 1-year, 5-year or 10-year age
-#'  group. Defaults to `age_group_1` if at least one observation was recorded.
-#'* `use_share`: numeric, share to be used according to `use_age_group`.
-#'* `use_share_sum`: numeric, total per demographic group and across all
-#'  spatial units.
-#'* `share`: numeric, the spatial unit's share relative to the total (across all
-#'  spatial units) of people within the same demographic group.
+#'* `use_age_group`: character, preference for 1-year, 5-year, or 10-year age
+#'  group. Defaults to `age_group_1` if at least one observation was recorded in
+#'  all 5 years belonging to the respective 5-year age groups.
+#'* `n`: numeric, number of people to be used according to `use_age_group` to
+#'  compute the share.
+#'* `n_sum`: numeric, total per demographic group and across all spatial units.
+#'* `share`: numeric, the spatial unit's share relative to the total of people
+#'  within the same demographic group (across all spatial units; i.e.,
+#'  `n` / `n_sum`).
 #'
 #' @export
 #'
 #' @autoglobal
 calculate_shares <- function(
-    data_migration,
-    column_migration,
+    data,
+    col,
     age_group = "default"
   ) {
   # Test input ----
   ## Presence of mandatory columns ----
-  assertthat::assert_that("spatial_unit" %in% names(data_migration),
-    msg = "column `spatial_unit` is missing in data_migration."
+  assertthat::assert_that("spatial_unit" %in% names(data),
+    msg = "column `spatial_unit` is missing in data."
   )
-  assertthat::assert_that("sex" %in% names(data_migration),
-    msg = "column `sex` is missing in data_migration."
+  assertthat::assert_that("sex" %in% names(data),
+    msg = "column `sex` is missing in data."
   )
-  assertthat::assert_that("age" %in% names(data_migration),
-    msg = "column `age` is missing in data_migration."
+  assertthat::assert_that("age" %in% names(data),
+    msg = "column `age` is missing in data."
   )
   assertthat::assert_that(
-    column_migration %in% names(data_migration),
-    msg = paste0("column `", column_migration, "` is missing in data_migration.")
+    col %in% names(data),
+    msg = paste0("column `", col, "` is missing in data.")
   )
   ## Data types and content ----
   assertthat::assert_that(
-    is.numeric(data_migration[[column_migration]]),
-    msg = paste0("Values in column `", column_migration, "` must be numeric.")
+    is.numeric(data[[col]]),
+    msg = paste0("Values in column `", col, "` must be numeric.")
   )
-  assertthat::assert_that(length(unique(data_migration$spatial_unit)) > 1,
-    msg = "Only one level for spatial_unit is present in data_migration."
+  assertthat::assert_that(length(unique(data$spatial_unit)) > 1,
+    msg = "Only one level for spatial_unit is present in data."
   )
 
 
   # Prepare age groups and summarize observations
-  df1 <- data_migration |>
+  df1 <- data |>
     # create coarser age groups
     ## steps of 5 years
     mutate(
@@ -97,14 +104,14 @@ calculate_shares <- function(
     # get the total and proportional total by coarser age groups
     mutate(
       # total number of people in 5-year age groups
-      sum_5 = sum(!!sym(column_migration)),
+      sum_5 = sum(!!sym(col)),
       # proportional total
       prop_5 = sum_5 / 5,
       .by = any_of(c("nat", "sex", "spatial_unit", "age_group_5"))
     ) |>
     mutate(
       # total number of people in 10-year age groups
-      sum_10 = sum(!!sym(column_migration)),
+      sum_10 = sum(!!sym(col)),
       # proportional total
       prop_10 = sum_10 / 10,
       .by = any_of(c("nat", "sex", "spatial_unit", "age_group_10"))
@@ -120,7 +127,7 @@ calculate_shares <- function(
         sum(sum_5) == 0 ~ "age_group_10",
         # if there are no observations in the single age group, use the
         # proportional total of 5-year age groups
-        0 %in% !!sym(column_migration) ~ "age_group_5",
+        0 %in% !!sym(col) ~ "age_group_5",
         # else use single year groups
         TRUE ~ "age_group_1"
       ),
@@ -149,13 +156,13 @@ calculate_shares <- function(
     )
   )
 
-  # Calculate estimates for the number of migrations -----
+  # Calculate estimates for the number of people -----
   if (age_group == "default") {
   df3 <- df2 |>
     mutate(
       # get estimates depending on group choices
       n = case_when(
-        use_age_group == "age_group_1" ~ !!sym(column_migration),
+        use_age_group == "age_group_1" ~ !!sym(col),
         use_age_group == "age_group_5" ~ prop_5,
         use_age_group == "age_group_10" ~ prop_10,
         TRUE ~ NA
