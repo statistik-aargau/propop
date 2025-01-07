@@ -1,3 +1,5 @@
+# propop 1.2.0
+
 # propop 1.1.0
 
 - Added unit test that fails if projection outcomes differ from FSO projections
