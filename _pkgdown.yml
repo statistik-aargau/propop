@@ -16,8 +16,10 @@ navbar:
       menu:
       - text: Prepare data
         href: articles/prepare_data.html
-      - text: Run projections
-        href: articles/run_projections.html
+      - text: Projections for a single region
+        href: articles/project_single_region.html
+      - text: Projections for subregions
+        href: articles/project_subregions.html
       - text: Evaluate projections
         href: articles/evaluate.html
   structure:
@@ -45,6 +47,11 @@ reference:
   - prepare_evaluation
   - compute_measures
   - aggregate_measures
+- title: "Distribute migration"
+  desc: >
+    Example for distributing international immigration
+  contents:
+  - calculate_shares
 - title: "Sample data"
   desc: "Sample data from the Federal Statistical Office"
   contents:

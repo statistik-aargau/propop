@@ -19,8 +19,10 @@ component method** (see e.g.,
 The package was developed for use with 
 [population data](https://www.pxweb.bfs.admin.ch/pxweb) 
 and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
-from the Swiss Federal Statistical Office (FSO). `propop` uses the same matrix 
-calculation method as the FSO 
+from the Swiss Federal Statistical Office (FSO). But you can also use your own
+input data. 
+
+`propop` uses the same matrix calculation method as the FSO 
 ([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf); only available in French) 
 and therefore reveals almost identical results (see vignette 
 [Evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html)). 
@@ -44,22 +46,24 @@ devtools::install_github("statistik-aargau/propop")
 
 ## Vignettes
 
-The package currently includes three vignettes.  
+The package includes four vignettes.  
 
-- The first vignette demonstrates 
+- Vignette 1 demonstrates 
 [prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
 the FSO population data and parameters. (Users can of course use their own data 
 and parameters).
-- The second vignette illustrates in more detail 
-[how to project](https://statistik-aargau.github.io/propop/articles/run_projections.html) 
-the population development for single and multiple regions.
-- The third vignette shows 
+- Vignette 2 illustrates how to run 
+[population projections for a single region](https://statistik-aargau.github.io/propop/articles/project_single_region.html). 
+- Vignette 3 illustrates how to pepare and run 
+[population projections for subregions](https://statistik-aargau.github.io/propop/articles/project_subregions.html).
+- Vignette 4 shows 
 [how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
 for example against benchmarks.
 
 ## Features, limitations, future plans
 
-- Currently, `propop::propop()` only works with *1-year age classes* (0-100+).  
+- Currently, `propop::propop()` only works with *1-year age classes* (0-100+) 
+and two genders.     
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
@@ -71,12 +75,13 @@ recent population records.
 - This package was developed for use with *FSO parameters*. Most parameters are 
 only available for cantons and the whole of Switzerland. If you wish to run 
 projections at smaller scales (e.g., districts), you need to prepare the 
-parameters for each spatial entity before running the projection. 
+parameters for each spatial entity before running the projection. [This vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)
+includes tips of how to prepare your input data.  
 - Similarly, if you wish to adjust parameters (e.g., mortality rates that 
 vary between regions) you need to prepare the parameters accordingly. 
 - `propop::propop()`offers the possibility to account for varying 
 subregional migration patterns and migration between subregions. However, before
-using this feature, users must adjust or calculate the required parameters. 
+using this feature, users must adjust or calculate the required parameters ([see this vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)). 
 - Custom parameters (e.g., consideration of sub-cantonal spatial entities, 
 adjustments to reflect regional differences, or addition of subregional migration 
 parameter) can be passed through the `parameters` object to `propop::propop()`. 
@@ -88,7 +93,7 @@ growth varies between municipalities.
 **If you are interested in contributing to these or other developments, please
 get in touch with the package maintainer.**
 
-## Example
+## Quick example
 
 To run `propop::propop()` with the example data included in the package 
 (canton of Aargau) for the period 2019-2030, use the following code:

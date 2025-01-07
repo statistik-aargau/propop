@@ -1,3 +1,9 @@
+# propop 1.2.0
+
+- Added function `calculate_shares` to distribute FSO estimates expressed as 
+"number of people" among sub-cantonal entitities (e.g., immigration to 
+municipalities). 
+
 # propop 1.1.0
 
 - Added unit test that fails if projection outcomes differ from FSO projections
