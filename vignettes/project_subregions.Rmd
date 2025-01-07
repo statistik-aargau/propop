@@ -165,7 +165,7 @@ the identical for both types of immigration.
 parameters_sub_size <- fso_parameters_sub |>
   dplyr::left_join(
     df_population_shares |>
-      select("spatial_unit", "nat", "sex", "age", "share"),
+      dplyr::select("spatial_unit", "nat", "sex", "age", "share"),
     by = c("spatial_unit", "nat", "sex", "age")
   ) |>
   dplyr::mutate(
@@ -396,7 +396,7 @@ data_distr_hist <- data_distr_hist_int |>
 fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   dplyr::left_join(
     data_distr_hist |>
-      select(
+      dplyr::select(
         "spatial_unit", "nat", "sex", "age", "share_imm_int", "share_imm_nat"
       ),
     by = c("spatial_unit", "nat", "sex", "age"),
@@ -451,11 +451,11 @@ the column `mig_sub` (= migration in subregions) is required in the parameter da
 
 Let's add this fictitious parameter to the parameter input file:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 parameters_sub_mig <- fso_parameters_sub_distr_hist |>
   # Create fictitious migration parameters
   dplyr::mutate(
-    mig_sub = case_when(
+    mig_sub = dplyr::case_when(
       # Four regions with emigration, 1 region with immigration
       spatial_unit == 1 ~ {
         set.seed(1)
@@ -476,8 +476,10 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
       TRUE ~ NA
     )
   ) |>
-  mutate(
-    mig_sub = case_when(spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub),
+  dplyr::mutate(
+    mig_sub = dplyr::case_when(
+      spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub
+    ),
     # check = sum(mig_sub, na.rm = TRUE),
     .by = c("nat", "sex", "age", "year", "scen")
   ) |>
@@ -490,7 +492,7 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
 Now that all required input files are available, we can set `subregional` to
 `TRUE` and use `propop::propop()`:
 
-```{r project-3, eval = FALSE}
+```{r project-3, eval = TRUE}
 propop(
   parameters = parameters_sub_mig,
   year_first = 2019,
