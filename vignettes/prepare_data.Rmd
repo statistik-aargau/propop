@@ -101,7 +101,7 @@ contain special characters. The spelling may also vary between FSO tables.
 `BFS::bfs_get_metadata()` is helpful to identify the required spelling(s).
 
 Here's an example of how to get the population for the canton of Aargau:
-```{r eval = FALSE}
+```{r eval = FALSE, warning=FALSE}
 library(propop) 
 ag_population <- get_population(
   number_fso = "px-x-0102010000_101",
