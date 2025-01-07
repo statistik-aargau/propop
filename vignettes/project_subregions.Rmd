@@ -328,18 +328,18 @@ spatial unit. (`share =  use_share / use_share_sum`).
 
 ```{r result-historical-immigration}
 data_distr_hist_int <- df_hist_imm |>
-  calculate_shares(column_migration = "hist_imm_int")
+  calculate_shares(column_migration = "hist_imm_int", age_group = "age_group_5")
 
 data_distr_hist_int |>
   # Display rounded numbers to save space
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(
-    "use_share",
+    "n",
     backgroundColor = "#96D4FF"
   ) |>
   DT::formatStyle(
-    "use_share_sum",
+    "n_sum",
     backgroundColor = "#96D4FF"
   ) |>
   DT::formatStyle(
@@ -375,8 +375,8 @@ data_distr_hist_nat <- df_hist_imm |>
   dplyr::rename(share_imm_nat = share) |>
   # Drop unnecessary variables
   dplyr::select(-c(
-    "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
-    "prop_10", "use_group", "use_share", "use_share_sum"
+    "hist_imm_nat", "hist_imm_int", "age_group_5", "sum_5", "prop_5", 
+    "age_group_10", "sum_10", "prop_10", "use_age_group", "n", "n_sum"
   ))
 
 # Join all data frames holding shares
@@ -386,7 +386,7 @@ data_distr_hist <- data_distr_hist_int |>
   # Drop unnecessary variables
   dplyr::select(-c(
     "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
-    "prop_10", "use_group", "use_share", "use_share_sum"
+    "prop_10", "use_age_group", "n", "n_sum"
   )) |>
   dplyr::left_join(data_distr_hist_nat,
     by = c("spatial_unit", "nat", "sex", "age")
