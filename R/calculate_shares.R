@@ -5,8 +5,9 @@
 #' @param col character, name of the column which contains the
 #' data for historical occurrences.
 #' @param age_group character \bold{(optional)}, either 1-year, 5-year, or
-#' 10-year age group used as basis for calculating shares. If the argument is not
-#' specified, the default attempts to avoid age groups without any observations.
+#' 10-year age group used as basis for calculating shares. If the argument is
+#' not specified, the default attempts to avoid age groups without any
+#' observations.
 #' It prioritizes age groups based on their resolution (1-year age groups =
 #' most informative and highest priority, 10-year age groups = least informative
 #' and lowest priority).
