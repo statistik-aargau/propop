@@ -75,7 +75,8 @@ recent population records.
 - This package was developed for use with *FSO parameters*. Most parameters are 
 only available for cantons and the whole of Switzerland. If you wish to run 
 projections at smaller scales (e.g., districts), you need to prepare the 
-parameters for each spatial entity before running the projection. [This vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)
+parameters for each spatial entity before running the projection. 
+[This vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)
 includes tips of how to prepare your input data.  
 - Similarly, if you wish to adjust parameters (e.g., mortality rates that 
 vary between regions) you need to prepare the parameters accordingly. 
