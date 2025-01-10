@@ -7,8 +7,6 @@ options(cli.default_handler = function(...) { })
 
 test_that("tests propop: 1 region vs. 5 regions", {
 
-    skip_on_ci()
-
   ## FSO parameters ----
   # fso_parameters |>
   #   dplyr::filter(year < 2021) |>
