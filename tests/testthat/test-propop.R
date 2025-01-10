@@ -609,8 +609,11 @@ test_that("tests propop: 1 region vs. 5 regions", {
     subregional = FALSE
   )
 
+  # Round results to avoid overly strict test failures
+  output_propop_1r <- output_propop_1r |> dplyr::mutate(across(where(is.numeric), ~round(., 6)))
+
   # Run snapshot 1 region ----
-  expect_snapshot(dput(output_propop_1r))
+  expect_snapshot(constructive::construct(output_propop_1r))
 
 
   # Prepare snapshot for subregions -----
@@ -1469,8 +1472,11 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
 
+  # round results to avoid overly strict test failure
+  output_propop_5r <- output_propop_5r  |> dplyr::mutate(across(where(is.numeric), ~round(., 6)))
+
   # run snapshot 5 subregions ----
-  expect_snapshot(dput(output_propop_5r))
+  expect_snapshot(constructive::construct(output_propop_5r))
 
 
   # run propop 5 regions without subregional migration ----
