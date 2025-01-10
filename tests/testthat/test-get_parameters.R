@@ -11,7 +11,7 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
   one_snapshot <- get_parameters(
     year_first = 2026,
     year_last = 2050,
-    spatial_units = c("Aargau")
+    spatial_units = "Aargau"
   )
   expect_snapshot(constructive::construct(one_snapshot))
 })

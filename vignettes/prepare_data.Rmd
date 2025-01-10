@@ -117,7 +117,7 @@ FSO tables; see comment above):
 ag_parameters <- get_parameters(
   year_first = 2023,
   year_last = 2026,
-  spatial_units = c("Aargau")
+  spatial_units = "Aargau"
 )
 ```
 The projection can be run as follows:
