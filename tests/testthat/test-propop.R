@@ -1456,7 +1456,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     ),
   )
 
-  # run propop 5 regions ----
+  # run propop 5 regions with subregional migration ----
   output_propop_5r <- propop(
     parameters = parameters_short_5r,
     year_first = 2019,
@@ -1470,8 +1470,31 @@ test_that("tests propop: 1 region vs. 5 regions", {
     subregional = TRUE
   )
 
+
   # run snapshot 5 subregions ----
   expect_snapshot(constructive::construct(output_propop_5r))
+
+
+  # run propop 5 regions without subregional migration ----
+  output_propop_5r_F <- propop(
+    parameters = parameters_short_5r,
+    year_first = 2019,
+    year_last = 2020,
+    age_groups = 101,
+    fert_first = 16,
+    fert_last = 50,
+    share_born_female = 100 / 205,
+    population = population_short_5r,
+    binational = TRUE,
+    subregional = FALSE
+  )
+
+  # Remove additional column to enable fair comparison
+  output_propop_5r_T <- output_propop_5r |>
+    dplyr::select(-mig_sub)
+
+  # Ensure that results with / without subregional are different ----
+  expect_failure(expect_equal(output_propop_5r_T, output_propop_5r_F))
 
   # prepare comparison 1 vs 5 regions ----
 
