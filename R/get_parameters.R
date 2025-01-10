@@ -121,7 +121,7 @@
 #' one_canton <- get_parameters(
 #'   year_first = 2025,
 #'   year_last = 2050,
-#'   spatial_units = c("Aargau")
+#'   spatial_units = "Aargau"
 #' )
 #' two_cantons_4years <- get_parameters(
 #'   year_first = 2018,
