@@ -1,7 +1,8 @@
 # tests propop: 1 region vs. 5 regions
 
     Code
-      constructive::construct(output_propop_1r)
+      constructive::construct(dplyr::mutate(output_propop_1r, across(where(is.numeric),
+      ~ round(., 6))))
     Output
       tibble::tibble(
         year = rep(c(2019, 2020), each = 404L),
@@ -899,7 +900,8 @@
 ---
 
     Code
-      constructive::construct(output_propop_5r)
+      constructive::construct(dplyr::mutate(output_propop_5r, across(where(is.numeric),
+      ~ round(., 6))))
     Output
       tibble::tibble(
         year = rep(rep(c(2019, 2020), 5), each = 404L),
