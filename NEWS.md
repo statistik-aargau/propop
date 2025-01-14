@@ -1,3 +1,5 @@
+# propop 1.2.1
+
 # propop 1.2.0
 
 - Added function `calculate_shares` to distribute FSO estimates expressed as 
