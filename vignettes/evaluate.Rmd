@@ -43,7 +43,7 @@ Here we use the observed **population records** from the canton of Aargau
 ``` {r get-benchmark, message = FALSE, eval = FALSE}
 data_benchmark <- get_population(
   number_fso = "px-x-0102010000_101",
-  year_first = 2018,
+  year = 2018,
   year_last = 2022,
   spatial_units = "- Aargau"
 )
