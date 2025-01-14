@@ -1,4 +1,9 @@
 # propop 1.2.1
+- `get_population`: Using clearer, more intuitive name for argument to specify
+start year; less typing for users; 
+- revised function documentation
+- More detailed feedback after running propop::propop(), stating which arguments 
+were used)
 
 # propop 1.2.0
 
