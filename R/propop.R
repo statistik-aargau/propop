@@ -582,7 +582,7 @@ propop <- function(
     "-",
     "{.val {fert_last}}")
   cli::cli_text(
-    "Share baby girls: ",
+    "Share of female newborns: ",
     "{.val {round(share_born_female, digits = 3)}}")
   cli::cli_text(
     "Size of starting population: ",
