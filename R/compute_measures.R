@@ -141,19 +141,6 @@ compute_measures <- function(combined, weight_groups = NULL) {
   df <- df |>
     dplyr::mutate(dplyr::across(everything(), ~replace(., is.infinite(.), NA)))
 
-  # Feedback when there are Inf values in output ----
-  if (any(sapply(df, is.infinite))) {
-    cli::cli_text(cli::col_red("Warning message:"))
-    cli::cli_text("The following columns of the output have `Inf` values:")
-    cli::cli_alert_warning(cli::col_magenta(
-      "{.val { df |> select_if(function(x) any(is.infinite(x))) |> names()}}."
-    ))
-    cli::cli_alert_info(paste0(
-      "`Inf` values are probably caused by divisions by zero",
-      "(e.g., when `n_benchmark` = 0).","\n", "Consider using age groups that",
-      "include more than 1 year."))
-  }
-
   # Check for missing values in output ----
   if (anyNA(df)) {
     cli::cli_text(cli::col_red("Warning message:"))
