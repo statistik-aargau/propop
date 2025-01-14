@@ -137,6 +137,10 @@ compute_measures <- function(combined, weight_groups = NULL) {
       )
   }
 
+  # Replace Inf values with NA
+  df <- df |>
+    dplyr::mutate(dplyr::across(everything(), ~replace(., is.infinite(.), NA)))
+
   # Feedback when there are Inf values in output ----
   if (any(sapply(df, is.infinite))) {
     cli::cli_text(cli::col_red("Warning message:"))
