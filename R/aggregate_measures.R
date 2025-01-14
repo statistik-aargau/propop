@@ -81,8 +81,8 @@ aggregate_measures <- function(data, weight_groups = NULL) {
       # check calculation of rmse
       rmse = sqrt(mean((n_benchmark - n_projected)^2)),
       n_measure = n(),
-      ape_under_1 = sum(ape < 1) / n_measure,
-      ape_under_5 = sum(ape < 5) / n_measure,
+      ape_under_1 = sum(ape < 1, na.rm = TRUE) / n_measure,
+      ape_under_5 = sum(ape < 5, na.rm = TRUE) / n_measure,
       .by = {{ weight_groups }}
     )
   # Remove `wmape` if input doesn't include weight_groups
@@ -121,6 +121,8 @@ aggregate_measures <- function(data, weight_groups = NULL) {
     cli::cli_alert_warning(cli::col_magenta(
       "{.val { data |> select_if(function(x) any(is.na(x))) |> names()}}."
     ))
+    cli::cli_alert_info("Missing values may lead to inaccurate evaluation
+                        measures.")
   }
 
   # Feedback when results contain `Inf` values
