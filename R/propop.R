@@ -574,6 +574,17 @@ propop <- function(
     "Year of starting population: ",
     "{.val {min(as.numeric(as.character(population$year)))}}")
   cli::cli_text(
+    "Number of age groups: ",
+    "{.val {age_groups}}")
+    cli::cli_text(
+    "Fertile period: ",
+    "{.val {fert_first}}",
+    "-",
+    "{.val {fert_last}}")
+  cli::cli_text(
+    "Share baby girls: ",
+    "{.val {round(share_born_female, digits = 3)}}")
+  cli::cli_text(
     "Size of starting population: ",
     "{.val {population |> dplyr:: summarise(sum(n, na.rm = TRUE)) |>
     dplyr::pull()}}")
