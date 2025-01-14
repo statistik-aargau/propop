@@ -4,25 +4,22 @@
 #' Users who do not have the required population data can use this convenience
 #' function to get the mandatory starting population for
 #' `propop::propop()` from the Federal Statistical Office (FSO). The function
-#' can also be used to obtain historical population records (e.g., for model
+#' can also be used to obtain the population records for several years (e.g., for model
 #' performance evaluations).
 #'
-#' To get population data, you must use the spelling defined in the
+#' To get the population data, you must use the spelling defined in the
 #' corresponding FSO table. For more details see
 #' \code{vignette("prepare_data", package = "propop")}.
 #'
-#' Changes to the API interface may break this function. If problems occur, see
-#' \code{vignette("prepare_data", package = "propop")}.
+#' Changes to the API interface may break this function.
 #'
 #' @param number_fso character, px-x table ID for population records,
 #'        defaults to `px-x-0102010000_101`.
-#' @param year_first numeric, first year for which the population records are to
-#'        be downloaded.
-#' @param year_last numeric, last year for which the population records are to
-#'        be downloaded. When downloading the starting population for the
-#'        projection, this will be the same as `year_first`.
-#'
-#' `year_first` when requesting the starting population for `propop::propop()`
+#' @param year numeric, year for which the population records are to
+#'        be downloaded. This usually is the starting population. To download
+#'        longer time periods, use `year` to indicate the onset of the period.
+#' @param year_last numeric \bold{(optional)}; specifies the final year of the
+#'        time period for which data will be downloaded.
 #' @param spatial_units character vector, indicating at least one spatial
 #' entity for which the projection will be run. Typically a canton, districts,
 #' or municipalities.
@@ -54,31 +51,36 @@
 #' \dontrun{
 #' get_population(
 #'   number_fso = "px-x-0102010000_101",
-#'   year_first = 2018,
+#'   year = 2018,
 #'   year_last = 2019,
 #'   spatial_units = "- Aargau"
 #' )
 #' get_population(
-#'   year_first = 2018,
-#'   year_last = 2018,
+#'   year = 2018,
 #'   spatial_units = c("- Aargau", "......0301 Aarberg")
 #' )
 #' }
 get_population <- function(number_fso = "px-x-0102010000_101",
-                           year_first,
-                           year_last,
+                           year,
+                           year_last = NULL,
                            spatial_units) {
+
+  # Set `year_last` to `year` if only 1 year is requested
+  if (is.null(year_last)) {
+    year_last <- year
+  }
+
   # Test input
   # convert input in years to integer, results in error if not possible
-  year_first <- vctrs::vec_cast(year_first, integer())
+  year <- vctrs::vec_cast(year, integer())
   year_last <- vctrs::vec_cast(year_last, integer())
 
   # get last year (most recent possible population record)
   current_year <- (as.numeric(format(Sys.Date(), "%Y")))
-  assertthat::assert_that(is.integer(year_first),
-    year_first >= 2018 && year_first < current_year,
+  assertthat::assert_that(is.integer(year),
+    year >= 2018 && year < current_year,
     msg = paste0(
-      "`year_first` must be an integer or a numeric value without decimals
+      "`year` must be an integer or a numeric value without decimals
       larger than 2017 and smaller than ",
       current_year
     )
@@ -92,9 +94,9 @@ get_population <- function(number_fso = "px-x-0102010000_101",
       current_year
     )
   )
-  assertthat::assert_that(is.integer(year_first),
-    is.integer(year_last), year_first <= year_last,
-    msg = "year_first must be smaller than or equal to year_last."
+  assertthat::assert_that(is.integer(year),
+    is.integer(year_last), year <= year_last,
+    msg = "year must be smaller than or equal to year_last."
   )
   assertthat::assert_that(is.vector(spatial_units),
     length(spatial_units) > 0,
@@ -140,10 +142,10 @@ get_population <- function(number_fso = "px-x-0102010000_101",
     max() |>
     as.numeric()
 
-  assertthat::assert_that(year_first >= min_year,
+  assertthat::assert_that(year >= min_year,
     msg = paste0(
-      "No data available for `year_first` = ",
-      year_first,
+      "No data available for `year` = ",
+      year,
       ". Population data are available for ",
       min_year, "-", max_year, "."
     )
@@ -181,7 +183,7 @@ get_population <- function(number_fso = "px-x-0102010000_101",
   dim2 <- metadata_pop_tidy |>
     dplyr::filter(
       text == "Jahr" &
-        valueTexts %in% year_first:year_last
+        valueTexts %in% year:year_last
     ) # get population in December
 
   dim3 <- metadata_pop_tidy |>
