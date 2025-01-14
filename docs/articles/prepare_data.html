@@ -44,7 +44,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,6 +111,8 @@ structure. If you don’t have the relevant data, you can download them
 from the Federal Statistical Office (FSO). This vignette explains how to
 get the data. You’ll also learn how to prepare the relevant information
 to run population projections <a href="https://statistik-aargau.github.io/propop">propop</a>.</p>
+<p><em>Note that some data are only available for certain administrative
+levels.</em></p>
 </div>
 <div class="section level2">
 <h2 id="required-data">Required data<a class="anchor" aria-label="anchor" href="#required-data"></a>
@@ -208,17 +210,16 @@ Aargau:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span> </span>
 <span><span class="va">ag_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_population.html">get_population</a></span><span class="op">(</span></span>
 <span>  number_fso <span class="op">=</span> <span class="st">"px-x-0102010000_101"</span>,</span>
-<span>  year_first <span class="op">=</span> <span class="fl">2022</span>,</span>
-<span>  year_last <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
 <span>  spatial_units <span class="op">=</span> <span class="st">"- Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Get the parameters for a sample canton (mind using the same spelling
 as in the FSO tables; see comment above):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ag_parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parameters.html">get_parameters</a></span><span class="op">(</span></span>
-<span>  year_first <span class="op">=</span> <span class="fl">2023</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
-<span>  spatial_units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Aargau"</span><span class="op">)</span></span>
+<span>  spatial_units <span class="op">=</span> <span class="st">"Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The projection can be run as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -228,7 +229,7 @@ as in the FSO tables; see comment above):</p>
 <span></span>
 <span><span class="fu"><a href="../reference/propop.html">propop</a></span><span class="op">(</span></span>
 <span>  parameters <span class="op">=</span> <span class="va">ag_parameters_ref</span>,</span>
-<span>  year_first <span class="op">=</span> <span class="fl">2023</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
