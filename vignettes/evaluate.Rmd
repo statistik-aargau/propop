@@ -165,14 +165,11 @@ aggregate_measures(evaluation_1) |>
     ))
 ```
 
-Note the **warning message:** Several evaluation measures have `Inf` values. 
-The reason for this is that it is not allowed to divide by `0`.
-
 ## Evaluate larger age groups
 
 One-year age classes often lead to small group sizes. This is particularly 
-problematic when the benchmark is equal to 0; then several measures cannot be
-computed because divisions by zero are not allowed (`Inf` values are returned). 
+problematic when the benchmark is equal to 0; then some measures may be 
+inaccurate. 
 
 A solution to this problem is to use larger age groups that contain several
 years.
