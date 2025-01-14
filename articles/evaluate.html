@@ -197,10 +197,10 @@ several performance metrics:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">evaluation_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_measures.html">compute_measures</a></span><span class="op">(</span><span class="va">combined</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">Warning message:</span></span></span>
-<span><span class="co">#&gt; The following columns of the output have `Inf` values:</span></span>
+<span><span class="co">#&gt; The following columns of the output have missing values:</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> <span style="color: #0000BB;">"pe"</span> and <span style="color: #0000BB;">"ape"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `Inf` values are probably caused by divisions by zero(e.g., when `n_benchmark` = 0).</span></span>
-<span><span class="co">#&gt; Consider using age groups thatinclude more than 1 year.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Missing values are likely to lead to biased evaluation</span></span>
+<span><span class="co">#&gt; measures that cannot be properly interpreted.</span></span>
 <span></span>
 <span><span class="co"># Create table</span></span>
 <span><span class="va">evaluation_1</span> <span class="op">|&gt;</span></span>
@@ -237,25 +237,20 @@ use the <code><a href="../reference/aggregate_measures.html">aggregate_measures(
 <span><span class="st">      across all observations."</span></span>
 <span>    <span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">Warning message:</span></span></span>
-<span><span class="co">#&gt; The following columns in `data` have `Inf` values:</span></span>
+<span><span class="co">#&gt; The following columns in `data` have missing values:</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> <span style="color: #0000BB;">"pe"</span> and <span style="color: #0000BB;">"ape"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `Inf` values are probably caused by divisions by zero (e.g., when `n_benchmark` = 0). Consider using larger age groups that include more than 1 year.</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">Warning message:</span></span></span>
-<span><span class="co">#&gt; The following columns in the output have `Inf` values:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> <span style="color: #0000BB;">"mpe"</span> and <span style="color: #0000BB;">"mape"</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Missing values may lead to inaccurate evaluation</span></span>
+<span><span class="co">#&gt; measures.</span></span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: top; text-align: left; font-weight: bold\">Evaluation measures of projection with one-year age classes, aggregated \n      across all observations.<\/caption>","data":[["1"],["Inf"],["0.31"],["Inf"],["1.17"],["30.90"],["1616.00"],["0.45"],["0.85"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpe<\/th>\n      <th>medpe<\/th>\n      <th>mape<\/th>\n      <th>medape<\/th>\n      <th>rmse<\/th>\n      <th>n_measure<\/th>\n      <th>ape_under_1<\/th>\n      <th>ape_under_5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"mpe","targets":1},{"name":"medpe","targets":2},{"name":"mape","targets":3},{"name":"medape","targets":4},{"name":"rmse","targets":5},{"name":"n_measure","targets":6},{"name":"ape_under_1","targets":7},{"name":"ape_under_5","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>Note the <strong>warning message:</strong> Several evaluation
-measures have <code>Inf</code> values. The reason for this is that it is
-not allowed to divide by <code>0</code>.</p>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: top; text-align: left; font-weight: bold\">Evaluation measures of projection with one-year age classes, aggregated \n      across all observations.<\/caption>","data":[["1"],["2.18"],["0.30"],["4.08"],["1.16"],["30.90"],["1616.00"],["0.45"],["0.85"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpe<\/th>\n      <th>medpe<\/th>\n      <th>mape<\/th>\n      <th>medape<\/th>\n      <th>rmse<\/th>\n      <th>n_measure<\/th>\n      <th>ape_under_1<\/th>\n      <th>ape_under_5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"mpe","targets":1},{"name":"medpe","targets":2},{"name":"mape","targets":3},{"name":"medape","targets":4},{"name":"rmse","targets":5},{"name":"n_measure","targets":6},{"name":"ape_under_1","targets":7},{"name":"ape_under_5","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="section level3">
 <h3 id="evaluate-larger-age-groups">Evaluate larger age groups<a class="anchor" aria-label="anchor" href="#evaluate-larger-age-groups"></a>
 </h3>
 <p>One-year age classes often lead to small group sizes. This is
-particularly problematic when the benchmark is equal to 0; then several
-measures cannot be computed because divisions by zero are not allowed
-(<code>Inf</code> values are returned).</p>
+particularly problematic when the benchmark is equal to 0; then some
+measures may be inaccurate.</p>
 <p>A solution to this problem is to use larger age groups that contain
 several years.</p>
 <div class="section level4">
