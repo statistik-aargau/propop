@@ -9,8 +9,7 @@ test_that("get population snapshots - 1 region 1 year", {
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
   get_population_snapshot <- get_population(
     number_fso = "px-x-0102010000_101",
-    year_first = 2022,
-    year_last = 2022,
+    year = 2022,
     spatial_units = "......4232 Geltwil"
   )
 
@@ -26,7 +25,7 @@ test_that("get population snapshots - 2 regions & 2 years", {
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
   get_population_snapshot2 <- get_population(
     number_fso = "px-x-0102010000_101",
-    year_first = 2022,
+    year = 2022,
     year_last = 2022,
     spatial_units = c("......4232 Geltwil", "- Aargau")
   )
@@ -39,7 +38,7 @@ test_that("error when requesting population for current year", {
   expect_error(
     get_population(
       number_fso = "px-x-0102010000_101",
-      year_first = current_year,
+      year = current_year,
       year_last = current_year,
       spatial_units = "- Aargau"
     )

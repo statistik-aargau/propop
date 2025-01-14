@@ -10,8 +10,8 @@ Federal Statistical Office:
 \usage{
 get_population(
   number_fso = "px-x-0102010000_101",
-  year_first,
-  year_last,
+  year,
+  year_last = NULL,
   spatial_units
 )
 }
@@ -19,14 +19,12 @@ get_population(
 \item{number_fso}{character, px-x table ID for population records,
 defaults to \verb{px-x-0102010000_101}.}
 
-\item{year_first}{numeric, first year for which the population records are to
-be downloaded.}
+\item{year}{numeric, year for which the population records are to
+be downloaded. This usually is the starting population. To download
+longer time periods, use \code{year} to indicate the onset of the period.}
 
-\item{year_last}{numeric, last year for which the population records are to
-be downloaded. When downloading the starting population for the
-projection, this will be the same as \code{year_first}.
-
-\code{year_first} when requesting the starting population for \code{propop::propop()}}
+\item{year_last}{numeric \bold{(optional)}; specifies the final year of the
+time period for which data will be downloaded.}
 
 \item{spatial_units}{character vector, indicating at least one spatial
 entity for which the projection will be run. Typically a canton, districts,
@@ -53,28 +51,26 @@ demographic group.}
 Users who do not have the required population data can use this convenience
 function to get the mandatory starting population for
 \code{propop::propop()} from the Federal Statistical Office (FSO). The function
-can also be used to obtain historical population records (e.g., for model
+can also be used to obtain the population records for several years (e.g., for model
 performance evaluations).
 
-To get population data, you must use the spelling defined in the
+To get the population data, you must use the spelling defined in the
 corresponding FSO table. For more details see
 \code{vignette("prepare_data", package = "propop")}.
 
-Changes to the API interface may break this function. If problems occur, see
-\code{vignette("prepare_data", package = "propop")}.
+Changes to the API interface may break this function.
 }
 \examples{
 \dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
 get_population(
   number_fso = "px-x-0102010000_101",
-  year_first = 2018,
+  year = 2018,
   year_last = 2019,
   spatial_units = "- Aargau"
 )
 get_population(
-  year_first = 2018,
-  year_last = 2018,
+  year = 2018,
   spatial_units = c("- Aargau", "......0301 Aarberg")
 )
 }
