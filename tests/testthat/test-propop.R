@@ -3,9 +3,26 @@
 
 options(cli.default_handler = function(...) { })
 
+# Run simple test on ci
+test_that("Simple propop test for ci", {
+  expect_snapshot(dput(
+    propop(
+      parameters = fso_parameters,
+      year_first = 2019,
+      year_last = 2022,
+      population = fso_population,
+      subregional = FALSE,
+      binational = TRUE
+    )
+    ))
+}
+)
+
 # Prepare snapshot 1 region ----
 
 test_that("tests propop: 1 region vs. 5 regions", {
+
+  skip_on_ci()
 
   ## FSO parameters ----
   # fso_parameters |>
@@ -610,10 +627,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # Run snapshot 1 region ----
-  expect_snapshot(constructive::construct(output_propop_1r |>
-                                            dplyr::mutate(
-                                              across(where(is.numeric),
-                                                     ~round(., 6)))))
+  expect_snapshot(constructive::construct(output_propop_1r))
 
 
   # Prepare snapshot for subregions -----
@@ -1473,10 +1487,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
 
   # run snapshot 5 subregions ----
-  expect_snapshot(constructive::construct(output_propop_5r |>
-                                            dplyr::mutate(across(
-                                              where(is.numeric),
-                                              ~round(., 6)))))
+  expect_snapshot(constructive::construct(output_propop_5r))
 
 
   # run propop 5 regions without subregional migration ----
