@@ -31,7 +31,7 @@
 #'    foreign / international).
 #'    * `sex`, character (f = female, m = male).
 #'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
-#'    * `birthrate`, numeric, number of children per year.
+#'    * `birthrate`, numeric, number of births per mother
 #'    * `int_mothers` \bold{(optional)}, numeric, proportion of children with
 #'    Swiss nationality born to non-Swiss mothers.
 #'    * `mor`, numeric, prospective mortality rate (probability of death).
