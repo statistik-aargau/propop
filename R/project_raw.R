@@ -220,23 +220,23 @@ project_raw <-
     fert_last <- vctrs::vec_cast(fert_last, integer())
 
     assertthat::assert_that(is.integer(year_first),
-      dplyr::between(year_first, 2018, 2050),
-      msg = paste0(
-        "`year_first` must be an integer or a numeric value without decimals",
-        " between 2018 and 2050"
-      )
-    )
+                            msg = "The argument 'year_first' must be numeric")
     assertthat::assert_that(is.integer(year_last),
-      dplyr::between(year_last, 2018, 2050),
-      msg = paste0(
-        "`year_last` must be an integer or a numeric value without decimals",
-        " between 2018 and 2050"
-      )
-    )
+                            msg = "The argument 'year_last' must be numeric")
     assertthat::assert_that(is.integer(year_first),
       is.integer(year_last), year_first <= year_last,
       msg = "year_first must be smaller than or equal to year_last"
     )
+    assertthat::assert_that(year_first %in% parameters$year,
+                            msg = paste0("The value provided for `year_first` ('",
+                            year_first,
+                            "') is not included in `parameters$year`."))
+
+    assertthat::assert_that(year_last %in% parameters$year,
+                            msg = paste0("The value provided for `year_last` ('",
+                                         year_last,
+                                         "') is not included in `parameters$year`."))
+
     assertthat::assert_that(is.vector(age_groups),
       all(sapply(age_groups, is.numeric)),
       all(!is.na(age_groups)),
@@ -1260,7 +1260,7 @@ project_raw <-
     }
 
     ## Final data set ----
-    data.frame(
+    df <- data.frame(
       # pop size
       N = n,
       # number of births
@@ -1280,4 +1280,17 @@ project_raw <-
       # intracantonal migration saldo
       MIG_SUB = MIG_SUB + MIG_SUB0
     )
+
+    # Feedback if years are outside current FSO projection period----
+    if (year_first < 2025 |
+        year_first > 2055 |
+        year_last < 2025 |
+        year_last > 2055) {
+      cli::cli_text(cli::col_red("Warning message:"))
+      cli::cli_text("`year_first` or `year_last` is outside FSO's current
+                    projection period (2025-2055).")
+      cli::cli_alert_info("You might want to double-check your input variables.")
+    }
+
+    return(df)
   }

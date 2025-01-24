@@ -143,17 +143,15 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   year_last <- vctrs::vec_cast(year_last, integer())
 
   assertthat::assert_that(
-    is.integer(year_first), dplyr::between(year_first, 2018, 2050),
+    is.integer(year_first),
     msg = paste0(
-      "`year_first` must be an integer or a numeric value without decimals",
-      " between 2018 and 2050"
+      "`year_first` must be an integer or a numeric value without decimals"
     )
   )
   assertthat::assert_that(
-    is.integer(year_last), dplyr::between(year_last, 2018, 2050),
+    is.integer(year_last),
     msg = paste0(
-      "`year_last` must be an integer or a numeric value without decimals",
-      " between 2018 and 2050"
+      "`year_last` must be an integer or a numeric value without decimals"
     )
   )
   assertthat::assert_that(
@@ -725,6 +723,17 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n,
       -c(Kanton, emi_n)
     )
+
+  # Feedback if years are outside current FSO projection period----
+  if (year_first < 2025 |
+      year_first > 2055 |
+      year_last < 2025 |
+      year_last > 2055) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("`year_first` or `year_last` is outside FSO's current
+                    projection period (2025-2055).")
+    cli::cli_alert_info("You might want to double-check your input variables.")
+  }
 
   return(projection_parameters_clean)
 }

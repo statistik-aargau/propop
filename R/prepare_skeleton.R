@@ -28,14 +28,6 @@ prepare_skeleton <-
       msg = "The argument 'year_last' must be numeric"
     )
     assertthat::assert_that(is.numeric(year_first),
-      dplyr::between(year_first, 2018, 2060),
-      msg = "`year_first` must be a numeric value between 2018 and 2060"
-    )
-    assertthat::assert_that(is.numeric(year_last),
-      dplyr::between(year_first, 2018, 2060),
-      msg = "`year_last` must be a numeric value between 2018 and 2060"
-    )
-    assertthat::assert_that(is.numeric(year_first),
       is.numeric(year_last), year_first <= year_last,
       msg = "year_first must be smaller than or equal to year_last"
     )
