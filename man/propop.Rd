@@ -31,7 +31,7 @@ with multiple scenarios (r = reference, l = low growth, h = high growth).
 foreign / international).
 \item \code{sex}, character (f = female, m = male).
 \item \code{age}, numeric, typically ranging from 0 to 100 (incl. >100).
-\item \code{birthrate}, numeric, number of children per year.
+\item \code{birthrate}, numeric, number of births per mother
 \item \code{int_mothers} \bold{(optional)}, numeric, proportion of children with
 Swiss nationality born to non-Swiss mothers.
 \item \code{mor}, numeric, prospective mortality rate (probability of death).
