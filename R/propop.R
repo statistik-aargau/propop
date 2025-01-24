@@ -411,20 +411,6 @@ propop <- function(
   fert_last <- vctrs::vec_cast(fert_last, integer())
 
   assertthat::assert_that(is.integer(year_first),
-    dplyr::between(year_first, 2018, 2050),
-    msg = paste0(
-      "`year_first` must be an integer or a numeric ",
-      "value without decimals between 2018 and 2050"
-    )
-  )
-  assertthat::assert_that(
-    is.integer(year_last), dplyr::between(year_last, 2018, 2050),
-    msg = paste0(
-      "`year_last` must be an integer or a numeric value without decimals",
-      " between 2018 and 2050"
-    )
-  )
-  assertthat::assert_that(is.integer(year_first),
     is.integer(year_last), year_first <= year_last,
     msg = paste0(
       "year_first must be smaller than or",
@@ -607,7 +593,6 @@ propop <- function(
     "Subregional migration: ",
     "{.val {if (subregional) 'yes' else 'no'}}")
   cli::cli_rule()
-
 
   if (subregional == FALSE) {
     population |> dplyr::reframe(n, .by = year)
