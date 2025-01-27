@@ -40,10 +40,8 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
 
   assertthat::assert_that(
     is.numeric(skeleton$year),
-    all(skeleton$year >= 2018),
-    all(skeleton$year <= 2061),
     !any(is.na(skeleton$year)),
-    msg = "`year` must only inlcude numeric values between 2018 and 2061."
+    msg = "`year` must only inlcude numeric values."
   )
 
   # apply skeleton
