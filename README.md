@@ -70,7 +70,7 @@ non-Swiss nationals) or without distinguishing between nationalities.
 involving different cantons add up, which leads to some differences
 between the projections from the FSO and `propop`. Moreover, the FSO projections
 are only published in five-year intervals, the most recent ones being based on 
-population records from 2018. `propop` enables you to run projections with more
+population records from 2023. `propop` enables you to run projections with more
 recent population records.
 - This package was developed for use with *FSO parameters*. Most parameters are 
 only available for cantons and the whole of Switzerland. If you wish to run 
