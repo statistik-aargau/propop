@@ -596,9 +596,7 @@ propop <- function(
 
   if (subregional == FALSE) {
     population |> dplyr::reframe(n, .by = year)
-  } #else if (subregional == TRUE) {
-  #   population |> dplyr::reframe(n, .by = c("year", "spatial_unit"))
-  # }
+  }
 
   return(projection_results)
 }
