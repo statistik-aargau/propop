@@ -19,8 +19,8 @@ component method** (see e.g.,
 The package was developed for use with 
 [population data](https://www.pxweb.bfs.admin.ch/pxweb) 
 and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
-from the Swiss Federal Statistical Office (FSO). But you can also use your own
-input data. 
+from the Swiss Federal Statistical Office (FSO). The current scenarios are 
+available for the years 2025-2055. 
 
 `propop` uses the same matrix calculation method as the FSO 
 ([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf); only available in French) 
@@ -30,10 +30,12 @@ The package can be used to project the development of different
 **demographic groups** for different **scenarios** and at different 
 **spatial levels** (e.g., single canton or municipalities within a canton). 
 
-Although the package was developed for use in Switzerland, it should in principle 
-also work for other contexts, provided the required input data is available in 
-the 
+While the package was primarily designed for use with FSO input data (e.g., 
+mortality rates), it should in principle also work for other contexts (e.g., 
+custom input data). However, it is important to provide the required input data 
+in the 
 [specified form](https://statistik-aargau.github.io/propop/articles/prepare_data.html).
+
 
 ## Installation
 
@@ -72,14 +74,15 @@ between the projections from the FSO and `propop`. Moreover, the FSO projections
 are only published in five-year intervals, the most recent ones being based on 
 population records from 2023. `propop` enables you to run projections with more
 recent population records.
-- This package was developed for use with *FSO parameters*. Most parameters are 
-only available for cantons and the whole of Switzerland. If you wish to run 
-projections at smaller scales (e.g., districts), you need to prepare the 
-parameters for each spatial entity before running the projection. 
+- This package was developed for use with *FSO parameters* (e.g., mortality rate,
+or emigration rate). Most parameters are only available for cantons and the 
+whole of Switzerland. If you wish to run projections at smaller scales (e.g., 
+districts), you need to prepare the parameters for each spatial entity before 
+running the projection. 
 [This vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)
 includes tips of how to prepare your input data.  
 - Similarly, if you wish to adjust parameters (e.g., mortality rates that 
-vary between regions) you need to prepare the parameters accordingly. 
+vary between subregions), you need to prepare the parameters accordingly. 
 - `propop::propop()`offers the possibility to account for varying 
 subregional migration patterns and migration between subregions. However, before
 using this feature, users must adjust or calculate the required parameters ([see this vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)). 
@@ -102,10 +105,10 @@ To run `propop::propop()` with the example data included in the package
 ``` r
 library(propop)
 projection_canton_2030 <- propop(
-  parameters = fso_parameters,
-  year_first = 2019,
-  year_last = 2030,
-  population = fso_population,
-  subregional = FALSE,
-  binational = TRUE)
+parameters = fso_parameters,
+year_first = 2019,
+year_last = 2030,
+population = fso_population,
+subregional = FALSE,
+binational = TRUE)
 ```
