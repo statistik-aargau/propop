@@ -1,4 +1,5 @@
 # propop 1.2.2
+- Projections enabled beyond 2018-2050.
 
 # propop 1.2.1
 - `get_population`: Using clearer, more intuitive name for argument to specify
