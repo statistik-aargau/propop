@@ -84,16 +84,12 @@ prepare_evaluation <- function(
 
   # Test input ----
   assertthat::assert_that(
-    all(data_benchmark$year >= 2018),
-    all(data_benchmark$year <= 2050),
     all(as.integer(data_benchmark$year) == data_benchmark$year),
-    msg = "All years in `data_benchmark` must be integers between 2018 and 2050"
+    msg = "All years in `data_benchmark` must be integers"
   )
   assertthat::assert_that(
-    all(data_projected$year >= 2018),
-    all(data_projected$year <= 2050),
     all(as.integer(data_projected$year) == data_projected$year),
-    msg = "All years in `data_projected` must be integers between 2018 and 2050"
+    msg = "All years in `data_projected` must be integers"
   )
   assertthat::assert_that(
     identical(
