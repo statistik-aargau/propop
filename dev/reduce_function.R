@@ -5,13 +5,13 @@
 # devtools::install_github("statistik-aargau/propop", ref = "f-proj-tables")
 
 # Load the package
-# devtools::load_all()
+devtools::load_all()
 
 # Note: new dependency: `purrr`
 
 # Run projections
 
-{
+system.time({
   library(purrr)
 
   # Prepare initial population
@@ -51,10 +51,11 @@
     ) |>
     # clean the data
     filter(year != unique(init_population$year))
-}
+})
 
 # Compare with propop() (using matrices)
 ## Run propop
+system.time({
 propop_original <-
   propop(
     parameters = fso_parameters,
@@ -65,7 +66,7 @@ propop_original <-
     binational = TRUE
   ) |>
   mutate(year = year + 1)
-
+})
 
 # Compare results
 comp_models = propop_original |>
