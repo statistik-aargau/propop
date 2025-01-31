@@ -1282,15 +1282,15 @@ project_raw <-
     )
 
     # Feedback if years are outside current FSO projection period----
-    if (year_first < 2025 |
-        year_first > 2055 |
-        year_last < 2025 |
-        year_last > 2055) {
-      cli::cli_text(cli::col_red("Warning message:"))
-      cli::cli_text("`year_first` or `year_last` is outside FSO's current
-                    projection period (2025-2055).")
-      cli::cli_alert_info("You might want to double-check your input variables.")
-    }
+    # if (year_first < 2025 |
+    #     year_first > 2055 |
+    #     year_last < 2025 |
+    #     year_last > 2055) {
+    #   cli::cli_text(cli::col_red("Warning message:"))
+    #   cli::cli_text("`year_first` or `year_last` is outside FSO's current
+    #                 projection period (2025-2055).")
+    #   cli::cli_alert_info("You might want to double-check your input variables.")
+    # }
 
     return(df)
   }

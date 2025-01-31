@@ -724,16 +724,16 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       -c(Kanton, emi_n)
     )
 
-  # Feedback if years are outside current FSO projection period----
-  if (year_first < 2025 |
-      year_first > 2055 |
-      year_last < 2025 |
-      year_last > 2055) {
-    cli::cli_text(cli::col_red("Warning message:"))
-    cli::cli_text("`year_first` or `year_last` is outside FSO's current
-                    projection period (2025-2055).")
-    cli::cli_alert_info("You might want to double-check your input variables.")
-  }
+  # # Feedback if years are outside current FSO projection period----
+  # if (year_first < 2025 |
+  #     year_first > 2055 |
+  #     year_last < 2025 |
+  #     year_last > 2055) {
+  #   cli::cli_text(cli::col_red("Warning message:"))
+  #   cli::cli_text("`year_first` or `year_last` is outside FSO's current
+  #                   projection period (2025-2055).")
+  #   cli::cli_alert_info("You might want to double-check your input variables.")
+  # }
 
   return(projection_parameters_clean)
 }
