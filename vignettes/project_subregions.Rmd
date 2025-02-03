@@ -55,8 +55,8 @@ for spatial entities at smaller scales.
 Supplying input data for spatial units at the sub-cantonal level (e.g. 
 municipalities) can be straightforward for data expressed as rates (e.g. 
 mortality rate). The simplest approach is to use the same figures for the 
-subregions as for the canton (unless the figures are implausible for some
-theoretical or empirical reason). The task is more demanding, though, if 
+subregions as for the canton (unless the figures are implausible for 
+theoretical or empirical reasons). The task is more demanding, though, if 
 you want to alter rates for subregions or when you need to downscale input data 
 expressed as "number of people". While we don't offer a solution to adjust rates
 (yet), the next two sections show two possibilities to distribute the cantonal 
@@ -64,19 +64,19 @@ expressed as "number of people". While we don't offer a solution to adjust rates
 
 ## Distribution of people according to population size
 
-The simplest approach to allocating canton-wide "number of people" estimates to 
+A very simple approach to allocate canton-wide "number of people" estimates to 
 subregions is to determine each subregion's population size relative to the 
 canton's total population and distribute the numbers accordingly. To put it 
 somewhat simplistically, if a municipality represents 10% of the canton's 
 population, it should proportionally receive 10% of the canton's incoming 
-immigrants. The approach described below is more sophisticated in that it uses 
+migrants. The approach described below is more sophisticated in that it uses 
 the spatial units' shares per demographic group but the core idea is the same.
 
 Let us look at a concrete, numeric example. For the sake of simplicity, we use 
 the data included in the package to create small, fictitious input data with 
 five regions:
 
-Input parameters (after this step, the rates and numbers for the 
+**Input parameters** (after this step, the rates and numbers for the 
 subregions are still identical to those for the whole canton): 
 
 ```{r data-parameters} 
@@ -89,11 +89,11 @@ fso_parameters_sub <- fso_parameters |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
-Population data: 
+**Population** data: 
 
 ```{r data-population}
 # Generate 5 random "cuts" to distribute the original population; 
-# avoid extreme values with a range of 0.1 to 0.5
+# use range 0.1-0.5 to avoid very small or very large regions
 cut_1 <- {
   set.seed(1)
   round(runif(1, min = 0.1, max = 0.5), digits = 2)
@@ -110,7 +110,7 @@ cut_4 <- {
   set.seed(4)
   round(runif(1, min = 0.1, max = 0.5), digits = 2)
 }
-# make sure everything adds up to 100%
+# Create last cut so that everything adds up to 100%
 cut_5 <- 1 - cut_1 - cut_2 - cut_3 - cut_4
 
 # Generate population data for five subregions
@@ -137,10 +137,11 @@ df_population <- fso_population |>
 ```
 
 To calculate the shares, we count the number of people in each demographic group 
-across all spatial units (`sum_n`). Next, the `share` is obtained by 
-dividing the spatial unit's `n` by the sum of all people across all spatial units in this
-demographic group (`sum_n`). Note that the sum of all five region's shares is 1
-(e.g., 0.21 + 0.17 + 0.17 + 0.33 + 0.12 = `r 0.21 + 0.17 + 0.17 + 0.33 + 0.12`).
+across all spatial units (`sum_n`). Next, the `share` is obtained by dividing 
+the spatial unit's `n` by the sum of all people across all spatial units in the
+respective demographic group (`sum_n`). Note that the sum of all five region's 
+shares is 1 (e.g., 0.21 + 0.17 + 0.17 + 0.33 + 0.12 = 
+`r 0.21 + 0.17 + 0.17 + 0.33 + 0.12`).
 
 ```{r shares-pop-size}
 # Calculate shares
@@ -158,8 +159,8 @@ df_population_shares |>
 ```
 \ 
 
-Now all required data are available and we can distribute projection parameters
-expressed as "number of people" between subregions. 
+Now all required data are available and we can distribute the input variables
+expressed as "number of people" among subregions. 
 
 Let's do this with immigration from other countries (`imm_int_n`) and immigration 
 from other cantons (`imm_nat_n`). We first join the data frame containing the 
@@ -261,10 +262,11 @@ immigration among children aged 0-4 years. Consequently, the value in the column
 conditions but helps to illustrate the suggested procedure in cases where zero 
 observations exist for demographic groups.
 
-With real data, the same can be achieved by summarizing the 
+> With *real data,* the same can be achieved by summarizing the 
 historical migration data. Since real migration usually varies from 
 year to year, we advise calculating an average across several years. 
 The fictitious data assumes that we have already performed this step. 
+
 
 ```{r data}
 set.seed(145)
@@ -319,10 +321,10 @@ To use this function, you need to provide a data frame containing a column with
 the number of immigrants per demographic group (e.g., `hist_imm_nat` or 
 `hist_imm_int` as calculated above). The function assigns each 1-year
 age group to a 5-year and a 10-year age group (e.g., 2-year olds become part of 
-the age_groups 0-4 and 0-9), sums up all observations within the respective 
-5-year and 10-year age group (e.g., 0-4 and 0-9 year old Swiss males). These 
+the age_groups 0-4 and 0-9) and sums up all observations within the respective 
+5-year and 10-year age group (e.g., all 0-4 and 0-9 year old Swiss males). These 
 sums (`sum_5`and `sum_10` in the table below) are then divided by five or ten, 
-respectively, and proportionally assigned to each member of the age group 
+respectively, and equally assigned to each "member" of the age group 
 (`prop_5` and `prop_10` in the table below). 
 
 To **distribute the canton-wide numbers** among subregions, 
@@ -339,7 +341,7 @@ this default algorithm.
 
 The final outcome `share` indicates the proportion of the historical total per
 demographic group (`n_sum`) that is to be allocated to the respective
-spatial unit. (`share =  n / n_sum`).
+spatial unit (`share =  n / n_sum`).
 
 ```{r result-historical-immigration}
 data_distr_hist_int <- df_hist_imm |>
@@ -436,6 +438,33 @@ fso_parameters_sub_distr_hist |>
   )) |>
   DT::datatable()
 ```
+
+\
+A quick double-check confirms that the sums of the migration in the subregions 
+is identical with the number of people in the larger unit (whole canton):
+
+```{r sum-check}
+check_sums_subregions <- fso_parameters_sub_distr_hist |>
+  # add up number of people in different spatial units
+  dplyr::summarise(
+    sum_imm_int_sub = round(sum(imm_int_n, na.rm = TRUE), digits = 0), 
+    sum_imm_nat_sub = round(sum(imm_nat_n, na.rm = TRUE), digits = 0), 
+    .by = c(nat, sex, age, year)) |>
+  # join with original input data (for the whole canton)
+  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>  
+  # calculate difference between immigration at the level of subregions and canton 
+  dplyr::mutate(
+    diff_int = sum_imm_int_sub - imm_int_n,
+    diff_nat = sum_imm_nat_sub - imm_nat_n,
+  ) 
+
+# All observed differences are equal to zero
+unique(check_sums_subregions$diff_int)
+unique(check_sums_subregions$diff_nat)
+
+```
+\
+
 Now everything is ready to run the projection: 
 
 ```{r project-2}
@@ -455,13 +484,14 @@ propop(
 
 # Migration between subregions
 
-`propop` offers the possibility to account for migration between subregions. To
-adjust the population size in each subregion according to past migration,
-the column `mig_sub` (= migration in subregions) is required in the parameter 
-data frame.
+In `propop` you may account for migration between subregions. To adjust the 
+population size in each subregion according to past migration, the column 
+`mig_sub` (= migration in subregions) is required in the parameter data frame.
 
-Here we add `mig_sub` as a *fictitious* parameter the parameter input file. (In 
-real life you use population register records instead). 
+Here we add `mig_sub` as a *fictitious* parameter the parameter input file. 
+
+> In real life you may use population register records as we described in the
+section "Distribution of people according to past migration". 
 
 ```{r, eval = TRUE}
 parameters_sub_mig <- fso_parameters_sub_distr_hist |>
