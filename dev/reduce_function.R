@@ -17,6 +17,7 @@ system.time({
   # Prepare initial population
   init_population <- fso_population |>
     mutate(year = as.numeric(year)) |>
+    # mutate(year = as.numeric(year)) |>
     # n_dec ('n_december') refers to the population at the end of the year from
     # the initial population
     rename(n_dec = n)
@@ -37,7 +38,7 @@ system.time({
     split(parameters_test, parameters_test$year) |>
     set_names(~ paste0("parameters_", .))
 
-  # Run projection with tables
+# Run projection with tables
   df_result <-
     # use purrr::reduce() to iterate across years (in parameters)
     purrr::reduce(
