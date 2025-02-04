@@ -24,6 +24,7 @@ calc_newborns <- function(
     share_born_female) {
   # Prepare population data
   population_prep <- population |>
+    mutate(year = year + 1) |>
     # add parameters
     left_join(
       parameters |>
