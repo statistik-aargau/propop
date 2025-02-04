@@ -68,6 +68,7 @@ apply_parameters <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205) {
+
   # `pop_year` helps to identify the progress of the iteration. For the first
   # iteration, pop_year returns a single year. For all following iterations,
   # `pop_year` contains two years.
@@ -91,18 +92,14 @@ apply_parameters <- function(
     # adapt year to parameters
     mutate(year = unique(parameters$year))
 
-  # remove later:
-  # browser()
-
   # calculate newborns
   newborns <- calc_newborns(
-    population = population_aged,
+    population = population_prev,
     parameters = parameters,
     fert_first = fert_first,
     fert_last = fert_last,
     share_born_female = share_born_female
   )
-
 
   # Prepare the population from the previous iteration to calculate the
   # projection of the next year
@@ -126,7 +123,10 @@ apply_parameters <- function(
   # Calculate the projection
   population_new <- parameters |>
     # join population and parameters
-    left_join(population_aged_prep) |>
+    left_join(
+      population_aged_prep,
+      by = c("year", "spatial_unit", "nat", "sex", "age")
+    ) |>
     # calculate the projection
     calc_proj_tables()
 
