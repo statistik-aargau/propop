@@ -1,5 +1,6 @@
 # run and compare projection for 1 and 5 region(s)
 
+
 test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
 
   skip_on_ci()
@@ -8,6 +9,7 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
   options(cli.default_handler = function(...) { })
 
   # Snapshot 1 region ----
+
 
   # Create short version of fso parameters
   # nolint start
@@ -21,8 +23,7 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
     age = rep(seq(0, 100, by = 1), 8),
     year = rep(c("2019", "2020"), each = 404L),
     scen = rep("reference", 808L),
-    spatial_unit = rep("Aargau", 808L),
-    birthrate = rep(
+    birth_rate = rep(
       c(
         0, 0.00041, 0.000808, 0.001581, 0.003418, 0.006455, 0.010405, 0.016157,
         0.02364, 0.032479, 0.042954, 0.055049, 0.068632, 0.083007, 0.09798, 0.111332,
@@ -1461,6 +1462,7 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
       2, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1
     ),
   )
+
 
   # Run project_raw
   # Iterate over projection function (for all projection units)
