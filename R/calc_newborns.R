@@ -22,16 +22,16 @@ calc_newborns <- function(
     fert_first,
     fert_last,
     share_born_female) {
+  browser()
   # Prepare population data
   population_prep <- population |>
-    mutate(year = year + 1) |>
     # add parameters
     left_join(
       parameters |>
         select(any_of(c(
           "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
           "int_mothers"
-      )))) |>
+        )))) |>
     # filter for females in the fertile age
     filter(age %in% c(fert_first:fert_last), sex != "m") |>
     # calculate shares and rates
@@ -44,6 +44,7 @@ calc_newborns <- function(
         sex == "f" & nat == "ch" & !(age %in% c(fert_first:fert_last)) ~ 0,
         TRUE ~ int_mothers
       ),
+
       share_born_female = case_when(
         sex == "m" ~ 0,
         sex == "f" & !(age %in% c(fert_first:fert_last)) ~ 0,
@@ -61,35 +62,45 @@ calc_newborns <- function(
       )
     )
 
-  # Calculate newborns
+  # Calculate newborns (are these births???)
+  # In documentation have gender proportion  tames all births,
+  # These parts below seem no but mostly they average out the number of females with
+  #  the relevant age this year with number of females in the age-1 from the previous
+  #  year before and then multiplying by the birth rate of this year
   df_newborns_calc <- population_prep |>
     mutate(
       # newborn Swiss males
       ch_m = case_when(
         # swiss females giving birth to Swiss males
         nat == "ch" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_male,
+          # n_dec * birthrate * share_born_male,
+          ((n_jan +n_dec)/2 * birthrate) * share_born_male,
         # foreign females giving birth to Swiss males
         nat == "int" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_male * int_mothers
+          # n_dec * birthrate * share_born_male * int_mothers
+          ((n_jan + n_dec)/2 * birthrate) * share_born_male * int_mothers
       ),
       # newborn Swiss females
       ch_f = case_when(
         # swiss females giving birth to Swiss females
         nat == "ch" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_female,
+          # n_dec * birthrate * share_born_female,
+          ((n_jan +n_dec)/2 * birthrate) * share_born_female,
         nat == "int" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_female * int_mothers
+          # n_dec * birthrate * share_born_female * int_mothers
+          ((n_jan +n_dec)/2 * birthrate) * share_born_female * int_mothers
       ),
       # foreign females giving birth to foreign males
       int_m = case_when(
         nat == "int" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_male * births_int_int
+          # n_dec * birthrate * share_born_male * births_int_int
+          ((n_jan +n_dec)/2 * birthrate) * share_born_male * births_int_int
       ),
       # foreign females giving birth to foreign females
       int_f = case_when(
         nat == "int" & age %in% c(fert_first:fert_last) ~
-          n_dec * birthrate * share_born_female * births_int_int
+          # n_dec * birthrate * share_born_female * births_int_int
+          ((n_jan +n_dec)/2 * birthrate) * share_born_female * births_int_int
       )
     )
 
@@ -106,33 +117,67 @@ calc_newborns <- function(
     tidyr::separate(ID, into = c("nat", "sex"), sep = "_") |>
     filter(!is.na(births))
 
+  # Check needed later for i9f only have one nationality need to adapt correctly
+  # # Check if the number of rows is as expected (adapt for binational = FALSE?)
+  # assertthat::assert_that(
+  #   nrow(df_newborns) == (
+  #     # Swiss females: age range for fertility x two sexes of newborns
+  #     ((fert_last + 1 - fert_first) * 2) +
+  #       # International females: age range for fertility x two sexes of newborns
+  #       # x two nationalities of newborns
+  #       ((fert_last + 1 - fert_first) * 2 * 2)
+  #   ),
+  #   msg = "The number of rows in df_newborns is smaller or larger than expected."
+  # )
 
-  # Check if the number of rows is as expected (adapt for binational = FALSE?)
-  assertthat::assert_that(
-    nrow(df_newborns) == (
-      # Swiss females: age range for fertility x two sexes of newborns
-      ((fert_last + 1 - fert_first) * 2) +
-        # International females: age range for fertility x two sexes of newborns
-        # x two nationalities of newborns
-        ((fert_last + 1 - fert_first) * 2 * 2)
-    ),
-    msg = "The number of rows in df_newborns is smaller or larger than expected."
-  )
+  # Newborn parameter prep
+  parameters_prep <- parameters |>
+    mutate(
+      births_int_int = 1 - int_mothers,
+      share_born_female = share_born_female,
+      share_born_male = 1 - share_born_female,
+      int_mothers = case_when(
+        sex == "m" | nat == "ch" ~ 0,
+        sex == "f" & nat == "ch" & !(age %in% c(fert_first:fert_last)) ~ 0,
+        TRUE ~ int_mothers
+      ),
+
+      share_born_female = case_when(
+        sex == "m" ~ 0,
+        sex == "f" & !(age %in% c(fert_first:fert_last)) ~ 0,
+        TRUE ~ share_born_female
+      ),
+      share_born_male = case_when(
+        sex == "m" ~ 0,
+        sex == "f" & !(age %in% c(fert_first:fert_last)) ~ 0,
+        TRUE ~ share_born_male
+      ),
+      births_int_int = case_when(
+        sex == "m" | nat == "ch" ~ 0,
+        sex == "f" & !(age %in% c(fert_first:fert_last)) ~ 0,
+        TRUE ~ births_int_int
+      )
+    )
 
   # Aggregate newborns by demographic groups
   df_newborns_agg <- df_newborns |>
     summarize(births = sum(births), .by = c(nat, sex)) |>
+    # How come do we not need the year info and also group by year?
+    # or we loop this function for every year?
     # complement data
     mutate(
-      year = unique(population_prep$year),
+      year = max(unique(population_prep$year)),
       age = 0,
-      scen = unique(population_prep$scen),
-      spatial_unit = unique(population_prep$spatial_unit),
-      n_dec = 0
+      scen = unique(population_prep$scen[!is.na(population_prep$scen)]),
+      spatial_unit = unique(population_prep$spatial_unit[!is.na(population_prep$spatial_unit)]),
+      n_dec = 0 # why zero?
     ) |>
     select(
       year, nat, sex, age, scen, spatial_unit, n_dec, births
-    )
+    ) |>
+    left_join(
+      parameters_prep )
+
 
 
   # Check if there are no NAs
@@ -143,3 +188,5 @@ calc_newborns <- function(
 
   return(df_newborns_agg)
 }
+
+

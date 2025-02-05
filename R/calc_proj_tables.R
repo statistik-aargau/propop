@@ -7,62 +7,87 @@
 #' @export
 #'
 calc_proj_tables <- function(.data) {
-  .data |>
-    # apply FSO method for projections
-    mutate(
-      # rates (resulting people are subtracted from the population) -----
-      ## mortality -----
-      mor_n = case_when(
-        # ages 1-100
-        age > 0 ~ n_jan - (n_jan * (1 - mor_rate)),
-        # newborns
-        age == 0 ~ births - (births * (1 - mor_rate)),
-        TRUE ~ NA
-      ),
-      # international emigration -----
-      emi_int_n = case_when(
-        # ages 1-100
-        age > 0 ~ n_jan * (emi_int_rate * (1 - (mor_rate / 2))),
-        # newborns
-        age == 0 ~ births * (emi_int_rate * (1 - (mor_rate / 2))),
-        TRUE ~ NA
-      ),
-      # emigration to other cantons -----
-      emi_nat_n = case_when(
-        # ages 1-100
-        age > 0 ~ n_jan * (emi_nat_rate * (1 - (mor_rate / 2))),
-        # newborns
-        age == 0 ~ births * (emi_nat_rate * (1 - (mor_rate / 2))),
-        TRUE ~ NA
-      ),
-      # surviving newborns -----
-      birth_balance = case_when(
-        age == 0 ~ births - mor_n - emi_int_n - emi_nat_n, TRUE ~ NA
-      ),
-      # absolute numbers (are added to the population) -----
-      ## acquisition of Swiss citizenship -----
-      acq_n = case_when(
-        # ages 1-100
-        age > 0 ~ n_jan * (acq_rate * (1 - (mor_rate / 2))),
-        # newborns
-        age == 0 ~ birth_balance * (acq_rate * (1 - (mor_rate / 2))),
-        TRUE ~ NA
-      ),
-      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2 * 101), -acq_n),
-      ## international immigration -----
-      imm_int_nn = imm_int_n * (1 - (mor_rate / 2)),
-      ## immigration from other cantons
-      imm_nat_nn = imm_nat_n * (1 - (mor_rate / 2)),
-      # calculate the new population in December of the respective year -----
-      # population balance
-      n_dec = n_jan - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n +
-        imm_nat_n,
-      # add newborns
-      n_dec = case_when(age == 0 ~ n_dec + births, TRUE ~ n_dec)
-    ) |>
-    # clean the data
-    select(
-      year:spatial_unit, n_jan, births, mor_n, emi_int_n, emi_nat_n, imm_int_n,
-      imm_nat_n, acq_n, n_dec
-    )
-}
+
+
+    .data |>
+      # population_new |>
+      # apply FSO method for projections
+      mutate(
+        births = 0,
+        # rates (resulting people are subtracted from the population) -----
+
+        # international emigration -----
+        emi_int_n = case_when(
+          # ages 1-100
+          age > 0 ~ n_jan * (emi_int_rate * (1 - (mor_rate / 2))),
+          # newborns
+          # age == 0 ~ births * (emi_int_rate * (1 - (mor_rate / 2))),
+          # Using emigration international function:
+          # age == 0 ~ births * emi_int_rate ,
+          TRUE ~ NA
+        ),
+        # emigration to other cantons -----
+        emi_nat_n = case_when(
+          # ages 1-100
+          age > 0 ~ n_jan * (emi_nat_rate * (1 - (mor_rate / 2))),
+          # newborns
+          # age == 0 ~ births * (emi_nat_rate * (1 - (mor_rate / 2))),
+          # Using function for intercatonal emmigration
+          # age == 0 ~ births * emi_nat_rate ,
+          TRUE ~ NA
+        ),
+        # surviving newborns -----
+        # birth_balance = case_when(
+        #   age == 0 ~ births - mor_n - emi_int_n - emi_nat_n, TRUE ~ NA
+        # ),
+        #
+        # birth_balance = 0,
+        # absolute numbers (are added to the population) -----
+        ## acquisition of Swiss citizenship -----
+        acq_n = case_when(
+          # ages 1-100
+          age > 0 ~ n_jan * (acq_rate * (1 - (mor_rate / 2))),
+          # newborns
+          # age == 0 ~ birth_balance * (acq_rate * (1 - (mor_rate / 2))),
+          # USing aquisition function
+          # age == 0 ~ births * acq_rate,
+          TRUE ~ NA
+        ),
+
+        # Stopped here ----
+        acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2 * 100), -acq_n),
+        ## international immigration -----
+        imm_int_nn = imm_int_n,
+        ## immigration from other cantons
+        imm_nat_nn = imm_nat_n,
+        # calculate the new population in December of the respective year -----
+        # population balance
+        # n_dec = n_jan - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n +
+        #   imm_nat_n,
+        # add newborns
+
+        ## mortality -----
+        mor_n = case_when(
+          # ages 1-100
+          age > 0 ~ n_jan - (n_jan * (1 - mor_rate)),
+          # newborns
+          # age == 0 ~ births - (births * (1 - mor_rate)),
+          # Using death function:
+          # age == 0 ~ mor_rate*(births*(1-(2/3)*(emi_int_rate+acq_rate+emi_nat_rate))+(2/3)*(imm_int_n+acq_n+imm_nat_n )),
+          TRUE ~ NA
+        ),
+        #STOPPED HERE ----
+        n_dec = case_when(
+          age > 0 ~ n_jan - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n +
+            imm_nat_n,
+          # age == 0 ~ births - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n +
+          # imm_nat_n,
+          TRUE ~ NA)
+      ) # |>
+    # # clean the data (no longer needed and is done at the end of main function)
+    # select(
+    #   year:spatial_unit, n_jan, births, mor_n, emi_int_n, emi_nat_n, imm_int_n,
+    #   imm_nat_n, acq_n, n_dec
+    # )
+  }
+
