@@ -1,8 +1,8 @@
 #' Advances the population by one year.
 #'
 #' @description
-#' Advance the population by one year: increase the age by one year, aggregate
-#' people aged 100 and older, and add newborns.
+#' Advances the population by one year; increases age by one year and aggregates
+#' people aged 100 and older.
 #'
 #' @param .data data frame including the starting population of each
 #' demographic group; either the initial population or the previous projected
@@ -25,10 +25,19 @@ advance_population <- function(.data) {
       # advance the populations' age by one year
       age = age + 1,
       # group people aged 100 and older (age = 101) into one group (age = 100)
-      age = case_when(age == 101 ~ 100, TRUE ~ age),
-      # remove later:
-      year = as.numeric(year)
+      age = case_when(age == 101 ~ 100, TRUE ~ age)
     ) |>
     # aggregate people aged 100 and older
-    summarize(n_dec = sum(n_dec), .by = c(year, nat, sex, age, spatial_unit))
+    summarize(n_dec = sum(n_dec), .by = c(year, nat, sex, age, spatial_unit)) |>
+    # define factor levels
+    mutate(sex = factor(sex, levels = c("m", "f"))) |>
+    # arrange data
+    arrange(year, nat, sex, age) |>
+    # select identifier columns and population
+    select(any_of(c(
+      "year", "nat", "sex", "age", "spatial_unit", "n_dec"
+    ))) |>
+    # the population in December of year t becomes the population in January
+    # of year t+1
+    rename(n_jan = n_dec)
 }
