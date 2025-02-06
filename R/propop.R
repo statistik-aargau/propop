@@ -580,18 +580,20 @@ propop <- function(
     "-",
     "{.val {year_last}}")
   cli::cli_text(
-    "{.emph Projected} population size (",
-    "{.val {year_last}}): ",
-    "{.emph {.val {projection_results |>
-    dplyr::filter(year == year_last) |>
-    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}")
-  cli::cli_text(
     "Nationality-specific projection: ",
     "{.val {if (binational) 'yes' else 'no'}}")
   cli::cli_text(
     "Subregional migration: ",
     "{.val {if (subregional) 'yes' else 'no'}}")
+  cli::cli_rule()
+  cli::cli_text(
+    "{.emph Projected} population size by ",
+    "{.val {year_last}}: ",
+    "{.emph {.val {projection_results |>
+    dplyr::filter(year == year_last) |>
+    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
+    dplyr::pull() |> round(digits = 0)}}}")
+  cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 
   if (subregional == FALSE) {
