@@ -56,7 +56,7 @@
 #'    * `acq`: numeric, rate of acquisition of Swiss citizenship.
 #'    * `imm_int_n`: numeric, number of people immigrating from abroad
 #'      (formelry `imm_int`).
-#'    * `imm_nat_n`: numeric, number of people immgrating from other cantons
+#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons
 #'      (new parameter).
 #'    * `emi_nat_n`: numeric, number of people emigrating to other cantons
 #'      (parameter previously used to compute `mig_nat_n`).
