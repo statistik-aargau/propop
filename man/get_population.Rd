@@ -54,9 +54,11 @@ function to get the mandatory starting population for
 can also be used to obtain the population records for several years (e.g., for model
 performance evaluations).
 
-To get the population data, you must use the spelling defined in the
-corresponding FSO table. For more details see
-\code{vignette("prepare_data", package = "propop")}.
+To get the population data, you must use the \strong{spelling} defined in the
+corresponding FSO table (STATTAB cube
+\href{https://www.bfs.admin.ch/asset/de/32207872}{px-x-0102010000_101}).
+Inspecting the column 'valueTexts' in the following package data may also
+help: \code{data('stattab_pop_snap')}.
 
 Changes to the API interface may break this function.
 }
