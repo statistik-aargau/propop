@@ -600,5 +600,55 @@ propop <- function(
     population |> dplyr::reframe(n, .by = year)
   }
 
+
+  # Check if FSO parameters expressed as "number of people" correspond to output
+  # Prepare FSO for comparison
+  if (binational == TRUE) {
+    n_input <- parameters |>
+    dplyr::select(year, spatial_unit, age, sex, nat,
+                  imm_int = imm_int_n, imm_nat = imm_nat_n) |>
+    dplyr::filter(year >= year_first & year <= year_last) |>
+    arrange(year, spatial_unit, age, sex, nat)
+  # Prepare results for comparison
+  n_output <- projection_results |>
+    dplyr::select(year, spatial_unit, age, sex, nat,
+                  imm_int, imm_nat) |>
+    dplyr::mutate(sex = as.character(sex),
+                  nat = as.character(nat)) |>
+    arrange(year, spatial_unit, age, sex, nat)
+  }
+
+  if (binational == FALSE) {
+    n_input <- parameters |>
+      dplyr::select(year, spatial_unit, age, sex,
+                    imm_int = imm_int_n, imm_nat = imm_nat_n) |>
+      dplyr::filter(year >= year_first & year <= year_last) |>
+      arrange(year, spatial_unit, age, sex)
+    # Prepare results for comparison
+    n_output <- projection_results |>
+      dplyr::select(year, spatial_unit, age, sex,
+                    imm_int, imm_nat) |>
+      dplyr::mutate(sex = as.character(sex)) |>
+      arrange(year, spatial_unit, age, sex)
+  }
+
+
+  # Feedback if input doesn't match output
+  if (!isTRUE(all.equal(n_input$imm_int, n_output$imm_int))) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("When comparing `imm_int_n` from `parameters` with `imm_int`
+                  in the results, there is an unexpected discrepancy in the
+                  number of people for at least one demographic group in at
+                  least one year.")
+  }
+
+  if (!isTRUE(all.equal(n_input$imm_nat, n_output$imm_nat))) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("When comparing `imm_nat_n` from `parameters` with `imm_nat`
+                  in the results, there is an unexpected discrepancy in the
+                  number of people for at least one demographic group in at
+                  least one year.")
+  }
+
   return(projection_results)
 }
