@@ -112,7 +112,7 @@ born to non-Swiss mothers
 \item \code{acq}: numeric, rate of acquisition of Swiss citizenship.
 \item \code{imm_int_n}: numeric, number of people immigrating from abroad
 (formelry \code{imm_int}).
-\item \code{imm_nat_n}: numeric, number of people immgrating from other cantons
+\item \code{imm_nat_n}: numeric, number of people immigrating from other cantons
 (new parameter).
 \item \code{emi_nat_n}: numeric, number of people emigrating to other cantons
 (parameter previously used to compute \code{mig_nat_n}).
