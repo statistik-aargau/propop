@@ -2,7 +2,7 @@
 #'
 #' @param .data data frame, population and parameters for one year.
 #'
-#' @return data frame, contains the staring population `n_jan`, components, and
+#' @return data frame, contains the starting population `n_jan`, components, and
 #' the resulting projected population for the next year `n_dec`.
 #' @export
 #'
