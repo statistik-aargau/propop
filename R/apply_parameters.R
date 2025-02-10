@@ -132,7 +132,9 @@ apply_parameters <- function(
 
   # Projection result ----
   # Bind results of year t and year t+1
-  population_out <- bind_rows(population_new, newborns) |>
+  population_out <- population_new |>
+    full_join(newborns) |>
+    # clean the data
     # clean the data
     select(any_of(c(
       "year", "spatial_unit", "scen", "nat", "sex", "age", "n_jan", "births",
@@ -143,7 +145,7 @@ apply_parameters <- function(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
-    arrange(nat, desc(sex), age, year, spatial_unit)
+    arrange(nat, desc(sex), year, spatial_unit)
 
   return(population_out)
 }
