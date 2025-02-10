@@ -596,11 +596,6 @@ propop <- function(
   cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 
-  if (subregional == FALSE) {
-    population |> dplyr::reframe(n, .by = year)
-  }
-
-
   # Check if FSO parameters expressed as "number of people" correspond to output
   # Prepare FSO for comparison
   if (binational == TRUE) {
