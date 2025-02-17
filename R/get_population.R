@@ -82,18 +82,13 @@ get_population <- function(number_fso = "px-x-0102010000_101",
   assertthat::assert_that(is.integer(year),
     year >= 2018 && year < current_year,
     msg = paste0(
-      "`year` must be an integer or a numeric value without decimals
-      larger than 2017 and smaller than ",
-      current_year
+      "`year` must be an integer or a numeric value without decimals"
     )
   )
   assertthat::assert_that(is.integer(year_last),
     year_last >= 2018 && year_last < current_year,
     msg = paste0(
-      "`year_last` must be an integer or
-                                       a numeric value without decimals
-                                       larger than 2017 and smaller than ",
-      current_year
+      "`year_last` must be an integer or a numeric value without decimals"
     )
   )
   assertthat::assert_that(is.integer(year),
