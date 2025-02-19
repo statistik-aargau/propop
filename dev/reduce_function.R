@@ -76,8 +76,8 @@ comp_models = propop_original |>
       rename_with(~ paste("new_", .x , sep = ""), .cols = n_jan:n_dec)
   ) |>
   mutate(
-    diff_n_jan = round(n - new_n_jan, 3),
-    diff_n_dec = round(balance_n - new_n_dec, 3)
+    diff_n_jan = round(n_jan - new_n_jan, 3),
+    diff_n_dec = round(n_dec - new_n_dec, 3)
   )
 
 
