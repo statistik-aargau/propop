@@ -75,7 +75,9 @@ apply_parameters <- function(
     parameters,
     fert_first = 16,
     fert_last = 50,
-    share_born_female = 100 / 205) {
+    share_born_female = 100 / 205,
+    subregional = FALSE) {
+  browser()
 
   # Checks ----
   # numeric year if not numeric
@@ -92,7 +94,7 @@ apply_parameters <- function(
   if (isTRUE(length(pop_year) != 1)) {
     population_prev <- population |>
       # filter for year from parameters
-      filter(year == parameters$year - 1)
+      filter(year == unique(parameters$year) - 1)
   } else {
     population_prev <- population
   }
@@ -137,11 +139,17 @@ apply_parameters <- function(
   # Projection result ----
   # Bind results of year t and year t+1
   population_out <- population_new |>
-    full_join(newborns) |>
-    # clean the data
+    full_join(
+      newborns,
+      by = join_by(
+        nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
+        emi_int, emi_nat, imm_int_n,  imm_nat_n, acq, mig_sub, n_jan, births,
+        emi_int_n, emi_nat_n, acq_n, mor_n, n_dec
+      )
+    ) |>
     # clean the data
     select(any_of(c(
-      "year", "spatial_unit", "scen", "nat", "sex", "age", "n_jan", "births",
+      "year", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
       "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n",
       "mig_sub", "n_dec"
     ))) |>
@@ -149,7 +157,7 @@ apply_parameters <- function(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
-    arrange(nat, desc(sex), year, spatial_unit)
+    arrange(year, age, nat, desc(sex))
 
   return(population_out)
 }

@@ -6,7 +6,7 @@
 #' the resulting projected population for the next year `n_dec`.
 #' @export
 #'
-calculate_projection <- function(.data) {
+calculate_projection <- function(.data, subregional = FALSE) {
   # Cohort component method
   .data |>
     mutate(
@@ -23,7 +23,12 @@ calculate_projection <- function(.data) {
       # mortality (deaths)
       mor_n = n_jan - (n_jan * (1 - mor)),
       # calculate the population balance
-      n_dec =
-        n_jan - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n + imm_nat_n
+      n_dec = case_when(
+        subregional == FALSE ~ n_jan - mor_n - emi_int_n - emi_nat_n + acq_n +
+          imm_int_n + imm_nat_n,
+        subregional == TRUE ~ n_jan - mor_n - emi_int_n - emi_nat_n + acq_n +
+          imm_int_n + imm_nat_n + mig_sub,
+        .default = NA
+      )
     )
 }

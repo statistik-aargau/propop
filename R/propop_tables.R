@@ -19,13 +19,18 @@ propop_tables <- function(
     spatial_unit = "spatial_unit") {
 
   # Rename n in the initial population
-  init_population <- population |>
+  population <- population |>
     rename(n_dec = n)
+
+  # browser()
 
   # Split parameters into a list to iterate across
   list_parameters <-
     # split parameters by year
     split(parameters, parameters$year) |>
+    purrr::map(~ .x |> mutate(mig_sub = case_when(
+      subregional == TRUE ~ subregional, .default = 0))
+    ) |>
     rlang::set_names(~ paste0("parameters_", .))
 
   # Run projection with tables
@@ -38,8 +43,6 @@ propop_tables <- function(
         parameters = ..2
       ),
       # initial population
-      .init = init_population
-    ) |>
-    # clean the data
-    filter(year != unique(init_population$year))
+      .init = population
+    )
 }
