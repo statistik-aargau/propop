@@ -1,4 +1,4 @@
-#' Calculate newborn children per projection year and demographic group.
+#' Calculate newborns per demographic group.
 #'
 #' @param population data frame including the starting population of each
 #'        demographic group; either the initial population or the previous

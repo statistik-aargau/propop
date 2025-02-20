@@ -1,5 +1,9 @@
-# Run projections with tables instead of matrices (work-in-progress)
-# Norah Efosa (Statistik Aargau), 2024
+#' Project population development
+#'
+#' @description
+#' Wrapper function to project population development using the cohort
+#' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
+#' for more details).
 
 propop_tables <- function(
     parameters,
@@ -13,7 +17,6 @@ propop_tables <- function(
     subregional = FALSE,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
-  # browser()
 
   # Rename n in the initial population
   init_population <- population |>
@@ -23,7 +26,7 @@ propop_tables <- function(
   list_parameters <-
     # split parameters by year
     split(parameters, parameters$year) |>
-    set_names(~ paste0("parameters_", .))
+    rlang::set_names(~ paste0("parameters_", .))
 
   # Run projection with tables
   df_result <-

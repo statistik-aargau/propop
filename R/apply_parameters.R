@@ -1,12 +1,16 @@
-#' This function runs projections with tables instead of matrices
-#' (work-in-progress)
+#' Project population development
 #'
 #' @description
-#' This function is applied with `purrr::reduce()` to iterate across years.
-#' An example is currently in development; see script: dev/reduce_function.R
-#' The process uses three helper functions:
-#' * `advance_population()`: Advances the population by one year; increases
-#'    age by one year and aggregates people aged 100 and older.
+#' This function is applied within the wrapper function `propop_tables()`
+#' to iterate across years. An example is currently in development;
+#' see script: dev/run_propop_tables.R
+#'
+#' The calculations involve three helper functions:
+#' * `advance_population()`: Advances the population by one year (increases
+#'    age by one year and aggregates people aged 100 and older).
+#' * `calculate_projection()`: Calculates the projection for ages 1-100. Follows
+#'   the method from the FSO.
+#' * `calculate_newborns()`: Calculate newborns per demographic group.
 #'
 #' @param population data frame including the starting population of each
 #' demographic group; either the initial population or the previous projected
@@ -65,6 +69,7 @@
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship.}
 #'
 #' @export
+#'
 apply_parameters <- function(
     population,
     parameters,
