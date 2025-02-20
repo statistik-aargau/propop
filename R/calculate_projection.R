@@ -6,7 +6,7 @@
 #' the resulting projected population for the next year `n_dec`.
 #' @export
 #'
-calc_proj_tables <- function(.data) {
+calculate_projection <- function(.data) {
   # Cohort component method
   .data |>
     mutate(

@@ -71,7 +71,6 @@ apply_parameters <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205) {
-  browser()
 
   # Checks ----
   # numeric year if not numeric
@@ -115,14 +114,14 @@ apply_parameters <- function(
       by = c("year", "spatial_unit", "nat", "sex", "age")
     ) |>
     # use helper function to calculate projections
-    calc_proj_tables() |>
+    calculate_projection() |>
     # bind results of year t and year t+1
     bind_rows(population)
 
 
   # Project newborns of year t+1 ----
   newborns <-
-    calc_newborns(
+    calculate_newborns(
       population = population_new,
       parameters = parameters,
       fert_first = fert_first,

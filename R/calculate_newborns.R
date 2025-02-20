@@ -16,7 +16,7 @@
 #' structured in demographic groups.
 #' @export
 #'
-calc_newborns <- function(
+calculate_newborns <- function(
     population,
     parameters,
     fert_first,
