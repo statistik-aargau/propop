@@ -13,15 +13,15 @@ calc_proj_tables <- function(.data) {
       # placeholder for newborns (those will be calculated later)
       births = 0,
       # international emigration
-      emi_int_n = n_jan * (emi_int_rate * (1 - (mor_rate / 2))),
+      emi_int_n = n_jan * (emi_int * (1 - (mor / 2))),
       # emigration to other cantons
-      emi_nat_n = n_jan * (emi_nat_rate * (1 - (mor_rate / 2))),
+      emi_nat_n = n_jan * (emi_nat * (1 - (mor / 2))),
       # acquisition of the Swiss citizenship
-      acq_n = n_jan * (acq_rate * (1 - (mor_rate / 2))),
+      acq_n = n_jan * (acq * (1 - (mor / 2))),
       # subtract new Swiss citizens from the international population
       acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2 * 100), - acq_n),
       # mortality (deaths)
-      mor_n = n_jan - (n_jan * (1 - mor_rate)),
+      mor_n = n_jan - (n_jan * (1 - mor)),
       # calculate the population balance
       n_dec =
         n_jan - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n + imm_nat_n

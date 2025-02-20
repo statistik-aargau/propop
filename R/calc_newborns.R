@@ -121,16 +121,16 @@ calc_newborns <- function(
     # apply FSO method for projections
     mutate(
       # international emigration
-      emi_int_n = births * emi_int_rate,
+      emi_int_n = births * emi_int,
       # emigration to other cantons
-      emi_nat_n = births * emi_nat_rate,
+      emi_nat_n = births * emi_nat,
       # acquisition of the Swiss citizenship
-      acq_n = births * acq_rate,
+      acq_n = births * acq,
       # subtract new Swiss citizens from the international population
       acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2), -acq_n),
       # mortality (deaths)
-      mor_n = mor_rate *
-        (births * (1 - (2 / 3) * (emi_int_rate + acq_rate + emi_nat_rate)) +
+      mor_n = mor *
+        (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
           (2 / 3) * (imm_int_n + acq_n + imm_nat_n)),
       # calculate the population balance
       n_dec = births - mor_n - emi_int_n - emi_nat_n + acq_n + imm_int_n +
