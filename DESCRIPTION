@@ -62,8 +62,7 @@ Imports:
     Matrix,
     stringi,
     tibble,
-    tidyr,
-    purrr
+    tidyr
 Suggests: 
     constructive (>= 1.0.1),
     devtools,
@@ -75,7 +74,8 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vctrs
+    vctrs,
+    purrr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
