@@ -24,11 +24,10 @@ calculate_projection <- function(.data, subregional = FALSE) {
       mor_n = n_jan - (n_jan * (1 - mor)),
       # calculate the population balance
       n_dec = case_when(
-        subregional == FALSE ~ n_jan - mor_n - emi_int_n - emi_nat_n + acq_n +
-          imm_int_n + imm_nat_n,
         subregional == TRUE ~ n_jan - mor_n - emi_int_n - emi_nat_n + acq_n +
           imm_int_n + imm_nat_n + mig_sub,
-        .default = NA
+        .default = n_jan - mor_n - emi_int_n - emi_nat_n + acq_n +
+          imm_int_n + imm_nat_n
       )
     )
 }

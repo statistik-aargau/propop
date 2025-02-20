@@ -76,8 +76,8 @@ apply_parameters <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = FALSE) {
-  browser()
+    subregional = FALSE,
+    binational = TRUE) {
 
   # Checks ----
   # numeric year if not numeric
@@ -98,6 +98,15 @@ apply_parameters <- function(
   } else {
     population_prev <- population
   }
+
+  ## Progress feedback ----
+  cli::cli_text(
+    "Running projection for: {.val { parameters |>",
+    "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
+  )
+
+  # Provide progress information
+  cli::cli_alert_success("Year: {.val { max(pop_year) }}")
 
   # Advance population ----
   # prepare the population from the previous iteration for the projection of the
