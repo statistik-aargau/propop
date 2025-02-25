@@ -406,7 +406,9 @@ propop_tables <- function(
       ),
       # initial population
       .init = init_population
-    )
+    ) |>
+    # remove initial population's year
+    filter(year != unique(df_population$year))
 
   # Format output ----
   # No distinction between nationalities (binational = FALSE)
