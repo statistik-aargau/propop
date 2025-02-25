@@ -39,53 +39,53 @@ propop_tables <- function(
   fert_last <- vctrs::vec_cast(fert_last, integer())
 
   assertthat::assert_that(is.integer(year_first),
-                          is.integer(year_last), year_first <= year_last,
-                          msg = paste0(
-                            "year_first must be smaller than or",
-                            "equal to year_last"
-                          )
+    is.integer(year_last), year_first <= year_last,
+    msg = paste0(
+      "year_first must be smaller than or",
+      "equal to year_last"
+    )
   )
   assertthat::assert_that(is.vector(age_groups),
-                          all(sapply(age_groups, is.numeric)),
-                          all(!is.na(age_groups)),
-                          msg = paste0(
-                            "The argument 'age_groups' must be a vector ",
-                            "containing only numeric values and no `NA` values."
-                          )
+    all(sapply(age_groups, is.numeric)),
+    all(!is.na(age_groups)),
+    msg = paste0(
+      "The argument 'age_groups' must be a vector ",
+      "containing only numeric values and no `NA` values."
+    )
   )
   assertthat::assert_that(is.integer(fert_first),
-                          msg = paste0(
-                            "The argument 'fert_first' must be an integer or ",
-                            "a numeric value without decimals"
-                          )
+    msg = paste0(
+      "The argument 'fert_first' must be an integer or ",
+      "a numeric value without decimals"
+    )
   )
   assertthat::assert_that(is.integer(fert_last),
-                          msg = paste0(
-                            "The argument 'fert_last' must be an integer or a ",
-                            "numeric value without decimals"
-                          )
+    msg = paste0(
+      "The argument 'fert_last' must be an integer or a ",
+      "numeric value without decimals"
+    )
   )
   assertthat::assert_that(is.integer(fert_first),
-                          is.integer(fert_last), fert_first <= fert_last,
-                          msg = paste0(
-                            "fert_first must be smaller than or ",
-                            "equal to fert_last"
-                          )
+    is.integer(fert_last), fert_first <= fert_last,
+    msg = paste0(
+      "fert_first must be smaller than or ",
+      "equal to fert_last"
+    )
   )
   assertthat::assert_that(is.numeric(share_born_female),
-                          msg = "The argument 'share_born_female' must be numeric."
+    msg = "The argument 'share_born_female' must be numeric."
   )
   assertthat::assert_that(is.logical(subregional),
-                          msg = paste0(
-                            "The argument 'subregional' must ",
-                            "either be `TRUE` or `FALSE`."
-                          )
+    msg = paste0(
+      "The argument 'subregional' must ",
+      "either be `TRUE` or `FALSE`."
+    )
   )
   assertthat::assert_that(is.character(spatial_unit),
-                          msg = paste0(
-                            "The argument 'spatial_unit' must be ",
-                            "of type `character`."
-                          )
+    msg = paste0(
+      "The argument 'spatial_unit' must be ",
+      "of type `character`."
+    )
   )
 
   ## Check years ----
@@ -270,7 +270,7 @@ propop_tables <- function(
     assertthat::assert_that("mig_sub" %in% names(parameters),
       msg = "Column `mig_sub` is missing in parameters."
     )
-    } else if (subregional == FALSE) {
+  } else if (subregional == FALSE) {
     parameters <- parameters |>
       # set subregional to null
       mutate(mig_sub = case_when(subregional == TRUE ~ subregional, .default = 0))
@@ -397,15 +397,24 @@ propop_tables <- function(
 
   # Run projection ----
   df_result <-
-    # iterate across years
-    purrr::reduce(
-      list_parameters,
-      ~ apply_parameters(
-        population = ..1,
-        parameters = ..2
-      ),
-      # initial population
-      .init = init_population
+    # iterate across spatial units
+    purrr::map_df(
+      .x = parameters |>
+        dplyr::select(spatial_unit) |>
+        dplyr::distinct() |>
+        dplyr::pull(),
+      # iterate across years
+      .f = ~ purrr::reduce(
+        list_parameters,
+        ~ apply_parameters(
+          population = ..1,
+          parameters = ..2
+        ),
+        # initial population
+        .init = init_population |>
+          dplyr::filter(!!sym(spatial_unit) == .x) |>
+          dplyr::pull(n)
+      )
     ) |>
     # remove initial population's year
     filter(year != unique(df_population$year))
@@ -417,7 +426,7 @@ propop_tables <- function(
     # remove the `nat` and `acq`-columns
     df_result <- df_result |>
       dplyr::filter(nat != "int") |>
-      dplyr::select(-any_of(c("nat" , "acq")))
+      dplyr::select(-any_of(c("nat", "acq")))
   }
 
   # Only one spatial_unit (subregional = FALSE)
@@ -431,40 +440,49 @@ propop_tables <- function(
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
     "Year of starting population: ",
-    "{.val {min(as.numeric(as.character(population$year)))}}")
+    "{.val {min(as.numeric(as.character(population$year)))}}"
+  )
   cli::cli_text(
     "Number of age groups: ",
-    "{.val {age_groups}}")
+    "{.val {age_groups}}"
+  )
   cli::cli_text(
     "Fertile period: ",
     "{.val {fert_first}}",
     "-",
-    "{.val {fert_last}}")
+    "{.val {fert_last}}"
+  )
   cli::cli_text(
     "Share of female newborns: ",
-    "{.val {round(share_born_female, digits = 3)}}")
+    "{.val {round(share_born_female, digits = 3)}}"
+  )
   cli::cli_text(
     "Size of starting population: ",
     "{.val {population |> dplyr:: summarise(sum(n, na.rm = TRUE)) |>
-    dplyr::pull()}}")
+    dplyr::pull()}}"
+  )
   cli::cli_text(
     "Projection period: ",
     "{.val {year_first}}",
     "-",
-    "{.val {year_last}}")
+    "{.val {year_last}}"
+  )
   cli::cli_text(
     "{.emph Projected} population size (",
     "{.val {year_last}}): ",
     "{.emph {.val {df_result |>
     dplyr::filter(year == year_last) |>
     dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}")
+    dplyr::pull() |> round(digits = 0)}}}"
+  )
   cli::cli_text(
     "Nationality-specific projection: ",
-    "{.val {if (binational) 'yes' else 'no'}}")
+    "{.val {if (binational) 'yes' else 'no'}}"
+  )
   cli::cli_text(
     "Subregional migration: ",
-    "{.val {if (subregional) 'yes' else 'no'}}")
+    "{.val {if (subregional) 'yes' else 'no'}}"
+  )
   cli::cli_rule()
 
   if (subregional == FALSE) {
@@ -472,5 +490,4 @@ propop_tables <- function(
   }
 
   return(df_result)
-
 }
