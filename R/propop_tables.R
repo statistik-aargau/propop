@@ -381,6 +381,10 @@ propop_tables <- function(
   }
 
   # Prepare projection ----
+  # Projection period
+  proj_years <- year_first:year_last
+  # filter for years within in the range between year_first and year_last
+  parameters <- parameters |> filter(year %in% c(year_first:year_last))
   # Rename n to n_dec in the initial population
   init_population <- population |> rename(n_dec = n)
 
