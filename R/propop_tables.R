@@ -387,37 +387,34 @@ propop_tables <- function(
   parameters <- parameters |> filter(year %in% c(year_first:year_last))
   # Rename n to n_dec in the initial population
   init_population <- population |> rename(n_dec = n)
+  # Levels for subregional levels (spatial units)
+  subregional_levels <- parameters |>
+    dplyr::select(spatial_unit) |>
+    dplyr::distinct() |>
+    dplyr::pull()
 
   # Split parameters into a list to iterate across
   list_parameters <-
-    # split parameters by year
-    split(parameters, parameters$year) |>
+    # split parameters by year and spatial unit
+    split(parameters, list(parameters$year, parameters$spatial_unit)) |>
     # years as names for list elements
     rlang::set_names(~ paste0("parameters_", .))
 
   # Run projection ----
   df_result <-
     # iterate across spatial units
-    purrr::map_df(
-      .x = parameters |>
-        dplyr::select(spatial_unit) |>
-        dplyr::distinct() |>
-        dplyr::pull(),
       # iterate across years
-      .f = ~ purrr::reduce(
+      purrr::reduce(
         list_parameters,
         ~ apply_parameters(
           population = ..1,
           parameters = ..2
         ),
         # initial population
-        .init = init_population |>
-          dplyr::filter(!!sym(spatial_unit) == .x) |>
-          dplyr::pull(n)
-      )
-    ) |>
+        .init = init_population
+      ) |>
     # remove initial population's year
-    filter(year != unique(df_population$year))
+    filter(year != unique(init_population$year))
 
   # Format output ----
   # No distinction between nationalities (binational = FALSE)
