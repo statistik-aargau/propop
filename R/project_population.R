@@ -70,7 +70,7 @@
 #'
 #' @export
 #'
-apply_parameters <- function(
+project_population <- function(
     population,
     parameters,
     fert_first = 16,
@@ -79,6 +79,7 @@ apply_parameters <- function(
     subregional = FALSE,
     binational = TRUE) {
 
+  # browser()
   # Checks ----
   # numeric year if not numeric
 
@@ -100,10 +101,6 @@ apply_parameters <- function(
   }
 
   ## Progress feedback ----
-  cli::cli_text(
-    "Running projection for: {.val { parameters |>",
-    "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
-  )
 
   # Provide progress information
   cli::cli_alert_success("Year: {.val { max(pop_year) }}")
