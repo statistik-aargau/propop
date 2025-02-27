@@ -151,10 +151,19 @@ propop <- function(
       "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
       "acq", "mig_sub"
     ))) |>
-    mutate(across(where(is.factor), ~fct_reorder(., as.character(.))))
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
+
   population <- population |>
     select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n"))) |>
-    mutate(across(where(is.factor), ~fct_reorder(., as.character(.))))
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
 
   # Only 1 year in population
   assertthat::assert_that(
@@ -609,13 +618,13 @@ propop <- function(
       imm_nat = imm_nat_n
     ) |>
     dplyr::filter(year >= year_first & year <= year_last) |>
-    dplyr::mutate(across(c(year:nat), as.character)) |>
+    # dplyr::mutate(across(c(year:nat), as.character)) |>
     arrange(year, spatial_unit, nat, sex, age)
 
   # Prepare results for comparison
   n_output <- projection_results |>
     dplyr::select(year, spatial_unit, age, sex, nat, imm_int, imm_nat) |>
-    dplyr::mutate(across(c(year:nat), as.character)) |>
+    # dplyr::mutate(across(c(year:nat), as.character)) |>
     arrange(year, spatial_unit, nat, sex, age)
   }
 
