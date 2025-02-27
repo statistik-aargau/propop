@@ -4,7 +4,7 @@
       constructive::construct(combined_snapshot)
     Output
       tibble::tibble(
-        year = rep(2019, 404L),
+        year = rep(2019L, 404L),
         spatial_unit = rep("Aargau", 404L),
         nat = rep(c("ch", "int"), each = 202L),
         sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -79,7 +79,7 @@
       constructive::construct(combined_grouped_snapshot)
     Output
       tibble::tibble(
-        year = rep(2019, 12L),
+        year = rep(2019L, 12L),
         spatial_unit = rep("Aargau", 12L),
         age = rep(c("age_00_19", "age_20_64", "age_65_plus"), each = 4L),
         sex = rep(rep(c("f", "m"), 3), each = 2L),
