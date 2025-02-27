@@ -618,13 +618,13 @@ propop <- function(
       imm_nat = imm_nat_n
     ) |>
     dplyr::filter(year >= year_first & year <= year_last) |>
-    # dplyr::mutate(across(c(year:nat), as.character)) |>
+    dplyr::mutate(across(c(year:nat), as.character)) |>
     arrange(year, spatial_unit, nat, sex, age)
 
   # Prepare results for comparison
   n_output <- projection_results |>
     dplyr::select(year, spatial_unit, age, sex, nat, imm_int, imm_nat) |>
-    # dplyr::mutate(across(c(year:nat), as.character)) |>
+    dplyr::mutate(across(c(year:nat), as.character)) |>
     arrange(year, spatial_unit, nat, sex, age)
   }
 
