@@ -600,31 +600,36 @@ propop <- function(
   # Prepare FSO for comparison
   if (binational == TRUE) {
     n_input <- parameters |>
-    dplyr::select(year, spatial_unit, age, sex, nat,
-                  imm_int = imm_int_n, imm_nat = imm_nat_n) |>
+    dplyr::select(
+      year, spatial_unit, age, sex, nat, imm_int = imm_int_n,
+      imm_nat = imm_nat_n
+    ) |>
     dplyr::filter(year >= year_first & year <= year_last) |>
-    arrange(year, spatial_unit, age, sex, nat)
+    dplyr::mutate(across(c(year:nat), as.character)) |>
+    arrange(year, spatial_unit, nat, sex, age)
+
   # Prepare results for comparison
   n_output <- projection_results |>
-    dplyr::select(year, spatial_unit, age, sex, nat,
-                  imm_int, imm_nat) |>
-    dplyr::mutate(sex = as.character(sex),
-                  nat = as.character(nat)) |>
-    arrange(year, spatial_unit, age, sex, nat)
+    dplyr::select(year, spatial_unit, age, sex, nat, imm_int, imm_nat) |>
+    dplyr::mutate(across(c(year:nat), as.character)) |>
+    arrange(year, spatial_unit, nat, sex, age)
   }
 
   if (binational == FALSE) {
     n_input <- parameters |>
-      dplyr::select(year, spatial_unit, age, sex,
-                    imm_int = imm_int_n, imm_nat = imm_nat_n) |>
+      dplyr::select(
+        year, spatial_unit, age, sex, imm_int = imm_int_n, imm_nat = imm_nat_n
+      ) |>
       dplyr::filter(year >= year_first & year <= year_last) |>
-      arrange(year, spatial_unit, age, sex)
+      dplyr::mutate(across(c(year:sex), as.character)) |>
+      arrange(year, spatial_unit, sex, age)
+
     # Prepare results for comparison
     n_output <- projection_results |>
       dplyr::select(year, spatial_unit, age, sex,
                     imm_int, imm_nat) |>
-      dplyr::mutate(sex = as.character(sex)) |>
-      arrange(year, spatial_unit, age, sex)
+      dplyr::mutate(across(c(year:sex), as.character)) |>
+      arrange(year, spatial_unit, sex, age)
   }
 
 
