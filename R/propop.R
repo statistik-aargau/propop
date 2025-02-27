@@ -144,21 +144,25 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
-  # Select relevant columns
+  # Select relevant columns and reorder factors alphabetically
   parameters <- parameters |>
     select(any_of(c(
       "nat", "sex", "age", "year", "scen", "spatial_unit", "birthrate",
       "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
       "acq", "mig_sub"
-    )))
+    ))) |>
+    mutate(across(where(is.factor), ~fct_reorder(., as.character(.))))
   population <- population |>
-    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n")))
+    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n"))) |>
+    mutate(across(where(is.factor), ~fct_reorder(., as.character(.))))
+
   # Only 1 year in population
   assertthat::assert_that(
     length(unique(population$year)) == 1,
     msg = paste0("The column `year` in `population` must only contain ",
                  "one value (i.e., one year).")
   )
+
   # All requested years available in parameters
   assertthat::assert_that(
     all(year_first:year_last %in% parameters$year),
