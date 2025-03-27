@@ -645,5 +645,10 @@ propop <- function(
                   least one year.")
   }
 
+
+  # TODO
+  # Implement a consistent arrangement for the identifier-columns throughout input and output tables:
+  # year - spatial unit - scen - nat - sex - age
+
   return(projection_results)
 }
