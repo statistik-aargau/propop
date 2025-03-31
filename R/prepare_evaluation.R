@@ -105,10 +105,6 @@ prepare_evaluation <- function(
     msg = "`age_groups` must be either NULL or 'age_groups_3'"
   )
   assertthat::assert_that(
-    "nat" %in% names(data_benchmark),
-    msg = "column `nat` is missing in data_benchmark"
-  )
-  assertthat::assert_that(
     "sex" %in% names(data_benchmark),
     msg = "column `sex` is missing in data_benchmark"
   )
@@ -119,10 +115,6 @@ prepare_evaluation <- function(
   assertthat::assert_that(
     "year" %in% names(data_benchmark),
     msg = "column `year` is missing in data_benchmark"
-  )
-  assertthat::assert_that(
-    "spatial_unit" %in% names(data_benchmark),
-    msg = "column `spatial_unit` is missing in data_benchmark"
   )
   assertthat::assert_that(
     "n_benchmark" %in% names(data_benchmark),
@@ -164,7 +156,7 @@ prepare_evaluation <- function(
   .data <- data_benchmark |>
     dplyr::full_join(
       data_projected_clean,
-      by = c("year", "spatial_unit", "age", "sex", "nat")
+      by = any_of(c("year", "spatial_unit", "age", "sex", "nat"))
     )
 
 
