@@ -415,7 +415,8 @@ propop_tables <- function(
   # Run projection ----
   # iterate across spatial units and years
   df_result <- purrr::map2_df(
-    split_list, init_list,
+    .x = split_list,
+    .y = init_list,
     ~ purrr::reduce(
       ..1,
       ~ project_population(
