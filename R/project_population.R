@@ -101,7 +101,10 @@ project_population <- function(
   }
 
   ## Progress feedback ----
-
+  # cli::cli_text(
+  #   "Running projection for: {.val { parameters |>",
+  #   "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
+  # )
   # Provide progress information
   cli::cli_alert_success("Year: {.val { max(pop_year) }}")
 
