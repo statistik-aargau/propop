@@ -212,22 +212,53 @@ system.time({
 # Compare results ----
 compare_models <- result_matrices |>
   arrange(year, nat, sex, age) |>
+  select(year:nat, births:n_dec) |>
+  pivot_longer(
+    cols = -c(year:nat),
+    names_to = "variable",
+    values_to = "n_matrix"
+  ) |>
   left_join(
     result_tables |>
-      # clean the data
-      rename_with(~ paste("new_", .x, sep = ""), .cols = n_jan:n_dec),
-    by = c("year", "spatial_unit", "nat", "sex", "age"),
-    relationship = "one-to-one"
+      select(
+        year:births, mor = mor_n, emi_int = emi_int_n, emi_nat = emi_nat_n,
+        imm_int = imm_int_n, imm_nat = imm_nat_n, acq = acq_n, mig_sub, n_dec
+      ) |>
+      pivot_longer(
+        cols = -c(year:age),
+        names_to = "variable",
+        values_to = "n_table"
+      ),
+    by = join_by(year, spatial_unit, age, sex, nat, variable)
   ) |>
   # rowwise() |>
   mutate(
-    abs_error = n_dec - new_n_dec, 3,
-    abs_perc_error = abs((n_dec - new_n_dec) / n_dec) * 100
+    abs_error = n_matrix - n_table,
+    abs_perc_error = abs((n_matrix - n_table) / n_matrix) * 100
   )
 
 
 # Discrepancies of new projected values (with tables) with original projected
 # values (matrices)
+## Facets for components
+compare_models |>
+  summarize(
+    n_matrix = sum(n_matrix, na.rm = TRUE),
+    n_tables = sum(n_tables, na.rm = TRUE),
+    .by = c(year, spatial_unit, variable)
+  ) |>
+  # filter(variable == "mor") |>
+  ggplot2::ggplot(
+    ggplot2::aes(x = as.numeric(year), color = spatial_unit)
+  ) +
+  ggplot2::geom_line(ggplot2::aes(y = n_matrix)) +
+  ggplot2::geom_point(ggplot2::aes(y = n_tables)) +
+  # ggplot2::scale_y_continuous(limits = c(0, 10)) +
+  ggplot2::theme_light() +
+  ggplot2::theme(legend.position = "right") +
+  ggplot2::facet_wrap(~ variable, scales = "free")
+
+
 ## Per age and across time
 ### Absolute number of people
 compare_models |>
