@@ -11,6 +11,7 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
+#' @param subregional
 #'
 #' @return Returns a data frame with the number of newborn children 'births'
 #' structured in demographic groups.
@@ -42,10 +43,6 @@ calculate_newborns <- function(
     )
 
   # Calculate newborns ----
-  # In documentation have gender proportion  tames all births,
-  # These parts below seem no but mostly they average out the number of females with
-  #  the relevant age this year with number of females in the age-1 from the previous
-  #  year before and then multiplying by the birth rate of this year
   df_newborns_calc <- population_prep |>
     mutate(
       # average number of females between year t and year t+1
