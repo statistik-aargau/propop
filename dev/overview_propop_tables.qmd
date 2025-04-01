@@ -75,6 +75,27 @@ propop::propop_tables(
 
 ![](overview_propop_tables.png)
 
+#### Excerpt from `propop_tables()`
+
+```{r, echo = TRUE, eval = FALSE}
+# [...]
+# Run projection ----
+# iterate across spatial units and years
+df_result <- purrr::map2_df(
+  .x = split_list, # split by spatial_unit and year
+  .y = init_list, # initial population; split by spatial unit
+  ~ purrr::reduce(
+    ..1,
+    ~ project_population(
+      population = ..1,
+      parameters = ..2
+    ),
+    .init = ..2
+  )
+)
+# [...]
+```
+
 ### Performance for one region (Canton of Aargau)
 
 We use STAT-TAB data as described in the [vignette for projecting a single region](vignettes/project_single_region.Rmd):
@@ -105,7 +126,7 @@ system.time({
 })
 ```
 
-### Comparison between `propop::tables()` and `propop::propop()` 
+### Comparison between `propop::tables()` and `propop::propop()`
 
 ```{r comparison-propop, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
 # Compare results
@@ -212,5 +233,5 @@ compare_models |>
 # Next steps
 
 -   [ ] Fine tuning for rates (esp. people aged 80 years and older)
--   [ ] Evaluation for subregions (in progress) -> computation speed?
+-   [ ] Evaluation for subregions (in progress) -\> computation speed?
 -   [ ] Code cleaning, function-feedback, package tests
