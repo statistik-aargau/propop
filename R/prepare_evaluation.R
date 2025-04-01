@@ -150,14 +150,25 @@ prepare_evaluation <- function(
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
     dplyr::mutate(n_projected = round(n_projected, digits = 0)) |>
-    dplyr::select(year, spatial_unit, age, sex, nat, n_projected)
+    dplyr::select(any_of(c(
+      "year", "spatial_unit", "age", "sex", "nat", "n_projected")
+    ))
+
+  # Columns to join
+  columns_join_prep = data_projected_clean |>
+    dplyr::select(any_of(c(
+      "year", "spatial_unit", "age", "sex", "nat")
+    ))
+
+  columns_join <- as.character(colnames(columns_join_prep))
 
   ## Combine data ----
   .data <- data_benchmark |>
     dplyr::full_join(
       data_projected_clean,
-      by = any_of(c("year", "spatial_unit", "age", "sex", "nat"))
+      by = columns_join
     )
+
 
 
   ## Summarize age groups if applicable ----
