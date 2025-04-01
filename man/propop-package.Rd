@@ -34,6 +34,7 @@ Other contributors:
   \item Nadine Herrmann [contributor]
   \item Lutz Benson [contributor]
   \item Eric Meyer [contributor]
+  \item Thomas Knecht [contributor]
   \item Statistik Aargau [funder, copyright holder]
 }
 
