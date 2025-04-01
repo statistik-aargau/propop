@@ -29,6 +29,8 @@ projection for a specific spatial level (e.g., canton, municipality).}
 
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
+
+\item{subregional}{}
 }
 \value{
 Returns a data frame with the number of newborn children 'births'
