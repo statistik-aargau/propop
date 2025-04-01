@@ -5,6 +5,7 @@
 #' @return data frame, contains the staring population `n_jan`, components, and
 #' the resulting projected population for the next year `n_dec`.
 #' @export
+#' @autoglobal
 #'
 calculate_projection <- function(.data, subregional = FALSE) {
   # Cohort component method

@@ -5,6 +5,7 @@
 #' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
 #' for more details).
 #' @export
+#' @autoglobal
 
 propop_tables <- function(
     parameters,

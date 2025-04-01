@@ -18,6 +18,7 @@
 #'
 #' @return returns an identically structured data frame with the aged population.
 #' @export
+#' @autoglobal
 #'
 advance_population <- function(.data) {
   .data |>

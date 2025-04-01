@@ -17,6 +17,8 @@
 #' structured in demographic groups.
 #' @export
 #'
+#' @autoglobal
+#'
 calculate_newborns <- function(
     population,
     parameters,

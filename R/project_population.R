@@ -69,6 +69,7 @@
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship.}
 #'
 #' @export
+#' @autoglobal
 #'
 project_population <- function(
     population,
