@@ -28,8 +28,6 @@ cache: false
 
 ✅more flexibility for adding/removing columns
 
-✅a bit slower compared to matrices
-
 ✅for now, both functions will be kept and maintained
 
 ```{r packages, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
@@ -58,7 +56,7 @@ The new function's arguments are identical to `propop::propop()`:
 (only the first four arguments in blue are mandatory)
 
 ```{r, echo = TRUE, eval = FALSE}
-propop_table(
+propop::propop_tables(
   parameters,
   population,
   year_first,
@@ -181,7 +179,7 @@ compare_models |>
   ggplot2::ggplot(
     ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups)
   ) +
-  geom_hline(yintercept = 0, size = 0.3) +
+  geom_hline(yintercept = 0, linewidth = 0.3) +
   geom_point() +
   scale_y_continuous(
     labels = add_percent,
@@ -213,6 +211,6 @@ compare_models |>
 
 # Next steps
 
--   [ ] Fine tuning for rates (mortality, international & intercantonal emigration)
+-   [ ] Fine tuning for rates (esp. people aged 80 years and older)
 -   [ ] Evaluation for subregions (in progress) -> computation speed?
 -   [ ] Code cleaning, function-feedback, package tests
