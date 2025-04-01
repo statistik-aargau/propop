@@ -43,7 +43,7 @@ Authors@R: c(
     person(
       "Thomas", "Knecht",
       role = "ctb"
-    )
+    ),
     person(
     "Statistik", "Aargau",
     role = c("fnd", "cph")
@@ -57,7 +57,7 @@ URL: https://statistik-aargau.github.io/propop
 BugReports: https://github.com/statistik-aargau/propop
 License: GPL (>= 3)
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports: 
     assertthat,
     BFS,
