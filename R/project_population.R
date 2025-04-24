@@ -167,7 +167,7 @@ project_population <- function(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
-    arrange(year, age, nat, desc(sex))
+    arrange(spatial_unit, year, age, nat, desc(sex))
 
   return(population_out)
 }
