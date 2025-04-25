@@ -401,32 +401,15 @@ propop_tables <- function(
     dplyr::distinct() |>
     dplyr::pull()
 
-  # Split parameters into a list to iterate across
-  list_parameters <-
-    # split parameters by year and spatial unit
-    # split(parameters, list(parameters$year, parameters$spatial_unit)) |>
-    split(parameters, parameters$spatial_unit) |>
-    # years as names for list elements
-    rlang::set_names(~ paste0("parameters_", .))
-
-  split_list <- purrr::map(list_parameters, ~ split(.x, .x$year))
-
-  # check if same order as split list
-  init_list <- split(init_population, init_population$spatial_unit)
+  # Split parameters into a list by year to iterate across
+  list_parameters <- split(parameters, parameters$year)
 
   # Run projection ----
-  # iterate across spatial units and years
-  df_result <- purrr::map2_df(
-    .x = split_list, # split by spatial_unit and year
-    .y = init_list, # initial population; split by spatial unit
-    ~ purrr::reduce(
-      ..1,
-      ~ project_population(
-        population = ..1,
-        parameters = ..2
-      ),
-      .init = ..2
-    )
+  # iterate across years
+  df_result <- purrr::reduce(
+    .x = list_parameters,
+    .f = \(population, parameters) project_population(population, parameters),
+    .init = init_population
   ) |>
     # remove initial population's year
     filter(year != unique(init_population$year))

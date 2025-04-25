@@ -11,6 +11,7 @@ calculate_projection <- function(.data, subregional = FALSE) {
   # Cohort component method
   .data |>
     mutate(
+      .by = spatial_unit,
       # placeholder for newborns (those will be calculated later)
       births = 0,
       # international emigration

@@ -121,9 +121,10 @@ calculate_newborns <- function(
     ) |>
     # arrange data
     mutate(sex = factor(sex, levels = c("m", "f"))) |>
-    arrange(year, nat, sex, age) |>
+    arrange(spatial_unit, year, nat, sex, age) |>
     # apply FSO method for projections
     mutate(
+      .by = spatial_unit,
       n_jan = NA,
       # international emigration
       emi_int_n = births * emi_int,

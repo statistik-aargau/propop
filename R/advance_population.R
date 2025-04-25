@@ -33,7 +33,7 @@ advance_population <- function(.data) {
     # define factor levels
     mutate(sex = factor(sex, levels = c("m", "f"))) |>
     # arrange data
-    arrange(year, nat, sex, age) |>
+    arrange(spatial_unit, year, nat, sex, age) |>
     # select identifier columns and population
     select(any_of(c(
       "year", "nat", "sex", "age", "spatial_unit", "n_dec"
