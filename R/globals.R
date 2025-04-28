@@ -30,6 +30,7 @@ utils::globalVariables(c(
   "nat", # <calculate_newborns>
   "emi_int", # <calculate_newborns>
   "emi_nat", # <calculate_newborns>
+  "emi_sub", # <calculate_newborns>
   "acq", # <calculate_newborns>
   "acq_n", # <calculate_newborns>
   "mor", # <calculate_newborns>
@@ -38,19 +39,32 @@ utils::globalVariables(c(
   "mor_n", # <calculate_newborns>
   "emi_int_n", # <calculate_newborns>
   "emi_nat_n", # <calculate_newborns>
+  "emi_sub_n", # <calculate_newborns>
+  "imm_sub", # <calculate_newborns>
+  "emi_sub_n_total", # <calculate_newborns>
+  "imm_sub_n", # <calculate_newborns>
   "spatial_unit", # <calculate_projection>
   "n_jan", # <calculate_projection>
   "emi_int", # <calculate_projection>
   "mor", # <calculate_projection>
   "emi_nat", # <calculate_projection>
+  "emi_sub", # <calculate_projection>
   "acq", # <calculate_projection>
   "nat", # <calculate_projection>
   "acq_n", # <calculate_projection>
   "mor_n", # <calculate_projection>
   "emi_int_n", # <calculate_projection>
   "emi_nat_n", # <calculate_projection>
+  "emi_sub_n", # <calculate_projection>
   "imm_int_n", # <calculate_projection>
   "imm_nat_n", # <calculate_projection>
+  "year", # <calculate_projection>
+  "sex", # <calculate_projection>
+  "age", # <calculate_projection>
+  "imm_sub", # <calculate_projection>
+  "emi_sub_n_total", # <calculate_projection>
+  "n_dec", # <calculate_projection>
+  "imm_sub_n", # <calculate_projection>
   "age", # <calculate_shares>
   "sum_5", # <calculate_shares>
   "sum_10", # <calculate_shares>
@@ -134,26 +148,9 @@ utils::globalVariables(c(
   "nat", # <prepare_evaluation>
   "year", # <project_population>
   "age", # <project_population>
-  "nat", # <project_population>
   "sex", # <project_population>
-  "scen", # <project_population>
+  "nat", # <project_population>
   "spatial_unit", # <project_population>
-  "birthrate", # <project_population>
-  "int_mothers", # <project_population>
-  "mor", # <project_population>
-  "emi_int", # <project_population>
-  "emi_nat", # <project_population>
-  "imm_int_n", # <project_population>
-  "imm_nat_n", # <project_population>
-  "acq", # <project_population>
-  "mig_sub", # <project_population>
-  "n_jan", # <project_population>
-  "births", # <project_population>
-  "emi_int_n", # <project_population>
-  "emi_nat_n", # <project_population>
-  "acq_n", # <project_population>
-  "mor_n", # <project_population>
-  "n_dec", # <project_population>
   "year", # <project_raw>
   "age", # <project_raw>
   "parameter", # <project_raw>

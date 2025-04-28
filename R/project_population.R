@@ -131,7 +131,7 @@ project_population <- function(
       by = c("year", "spatial_unit", "nat", "sex", "age")
     ) |>
     # use helper function to calculate projections
-    calculate_projection() |>
+    calculate_projection(subregional = subregional) |>
     # bind results of year t and year t+1
     bind_rows(population)
 
@@ -143,25 +143,19 @@ project_population <- function(
       parameters = parameters,
       fert_first = fert_first,
       fert_last = fert_last,
-      share_born_female = share_born_female
+      share_born_female = share_born_female,
+      subregional = subregional
     )
 
   # Projection result ----
   # Bind results of year t and year t+1
   population_out <- population_new |>
-    full_join(
-      newborns,
-      by = join_by(
-        nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
-        emi_int, emi_nat, imm_int_n,  imm_nat_n, acq, mig_sub, n_jan, births,
-        emi_int_n, emi_nat_n, acq_n, mor_n, n_dec
-      )
-    ) |>
+    bind_rows(newborns) |>
     # clean the data
     select(any_of(c(
       "year", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
-      "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n",
-      "mig_sub", "n_dec"
+      "mor_n", "emi_int_n", "emi_nat_n", "emi_sub_n", "imm_int_n", "imm_nat_n",
+      "imm_sub_n", "acq_n", "n_dec"
     ))) |>
     mutate(
       sex = factor(sex, levels = c("m", "f")),

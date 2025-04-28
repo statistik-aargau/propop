@@ -25,7 +25,7 @@ propop_tables <- function(
     select(any_of(c(
       "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
       "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
-      "acq", "mig_sub"
+      "acq", "emi_sub", "imm_sub"
     )))
 
   # Population
@@ -196,7 +196,7 @@ propop_tables <- function(
       mutate(across(any_of(
         c(
           "birthrate", "int_mothers", "mor", "emi_int", "emi_nat", "acq",
-          "imm_int_n", "imm_nat_n", "mig_sub"
+          "imm_int_n", "imm_nat_n", "emi_sub", "imm_sub"
         )
       ), ~ if_else(nat == "int", 0, .x))) |>
       # add remaining columns `acq` and `int_mothers`
@@ -205,7 +205,7 @@ propop_tables <- function(
       select(any_of(c(
         "nat", "sex", "age", "year", "scen", "birthrate", "int_mothers",
         "mor", "emi_int", "emi_nat", "acq", "imm_int_n", "imm_nat_n",
-        "mig_sub", "spatial_unit"
+        "emi_sub", "imm_sub", "spatial_unit"
       ))) |>
       arrange(nat, desc(sex), year, spatial_unit)
 
@@ -269,13 +269,16 @@ propop_tables <- function(
   ## Optional parameter when requested ----
   # Subregional migration
   if (subregional == TRUE) {
-    assertthat::assert_that("mig_sub" %in% names(parameters),
-      msg = "Column `mig_sub` is missing in parameters."
+    assertthat::assert_that("emi_sub" %in% names(parameters),
+      msg = "Column `emi_sub` is missing in parameters."
+    )
+    assertthat::assert_that("imm_sub" %in% names(parameters),
+      msg = "Column `imm_sub` is missing in parameters."
     )
   } else if (subregional == FALSE) {
     parameters <- parameters |>
       # set subregional to null
-      mutate(mig_sub = case_when(subregional == TRUE ~ subregional, .default = 0))
+      mutate(emi_sub = 0, imm_sub = 0)
   }
 
   ## Population data frame ----
@@ -395,11 +398,6 @@ propop_tables <- function(
   parameters <- parameters |> filter(year %in% c(year_first:year_last))
   # Rename n to n_dec in the initial population
   init_population <- population |> rename(n_dec = n)
-  # Levels for subregional levels (spatial units)
-  subregional_levels <- parameters |>
-    dplyr::select(spatial_unit) |>
-    dplyr::distinct() |>
-    dplyr::pull()
 
   # Split parameters into a list by year to iterate across
   list_parameters <- split(parameters, parameters$year)
@@ -408,7 +406,7 @@ propop_tables <- function(
   # iterate across years
   df_result <- purrr::reduce(
     .x = list_parameters,
-    .f = \(population, parameters) project_population(population, parameters),
+    .f = \(population, parameters) project_population(population, parameters, subregional = subregional),
     .init = init_population
   ) |>
     # remove initial population's year
@@ -428,7 +426,7 @@ propop_tables <- function(
   if (subregional == FALSE) {
     # remove the `mig_sub`column (otherwise is filled with zeros if present)
     df_result <- df_result |>
-      dplyr::select(-any_of(c("mig_sub")))
+      dplyr::select(-any_of(c("emi_sub_n", "imm_sub_n")))
   }
 
   # Feedback about arguments used ----
@@ -479,10 +477,6 @@ propop_tables <- function(
     "{.val {if (subregional) 'yes' else 'no'}}"
   )
   cli::cli_rule()
-
-  if (subregional == FALSE) {
-    population |> dplyr::reframe(n, .by = year)
-  }
 
   return(df_result)
 }
