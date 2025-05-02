@@ -6,7 +6,7 @@
 \title{Sample parameters to run population projection}
 \format{
 The example data include the required parameters for each demographic group
-(nationality (2) X sex (2) X age classes (101)) for the years 2019-2030.
+(nationality (2) X sex (2) X age classes (101)) for the years 2025-2055.
 }
 \source{
 Data obtained from the Swiss Federal Statistical Office (FSO):
@@ -26,8 +26,8 @@ Data frame containing the rates and number of people from the
 \href{https://www.bfs.admin.ch/bfs/en/home.html}{Federal Statistical Office (FSO)}
 required to project the development of four demographic groups for a selected
 canton (Aargau). The parameters are from the
-\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{model published in 2020}.
-The sample data only include the reference scenario and the years 2019-2030.
+\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{model published in 2025}.
+The sample data include three scenarios for the years 2025-2055.
 }
 \section{Demographic groups}{
 

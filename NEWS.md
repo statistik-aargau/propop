@@ -1,4 +1,6 @@
 # propop 1.3.0
+- Updated functions, package data, and documentation according to new projection
+scenarios from the FSO
 
 # propop 1.2.1
 - `get_population`: Using clearer, more intuitive name for argument to specify

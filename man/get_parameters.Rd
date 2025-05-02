@@ -146,12 +146,12 @@ cantons and the emigration to other cantons.
 \dontrun{
 one_canton <- get_parameters(
   year_first = 2025,
-  year_last = 2050,
+  year_last = 2055,
   spatial_units = "Aargau"
 )
 two_cantons_4years <- get_parameters(
-  year_first = 2018,
-  year_last = 2021,
+  year_first = 2025,
+  year_last = 2028,
   spatial_units = c("Aargau", "Zug")
 )
 }
