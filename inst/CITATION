@@ -7,8 +7,7 @@ bibentry(
   person("Tina", "Cornioley"),
   person("Jan", "Wunder"),
   person("Niklas", "Haffert")),
-  year = 2024,
-  note = "R package version 0.1.0",
+  year = 2025,
   url = "https://github.com/statistik-aargau/propop",
 )
 
