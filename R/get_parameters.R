@@ -120,12 +120,12 @@
 #' \dontrun{
 #' one_canton <- get_parameters(
 #'   year_first = 2025,
-#'   year_last = 2050,
+#'   year_last = 2055,
 #'   spatial_units = "Aargau"
 #' )
 #' two_cantons_4years <- get_parameters(
-#'   year_first = 2018,
-#'   year_last = 2021,
+#'   year_first = 2025,
+#'   year_last = 2028,
 #'   spatial_units = c("Aargau", "Zug")
 #' )
 #' }
@@ -172,11 +172,11 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   cli::cli_progress_step("Preparing number parameters")
 
   # Get "number of people" parameters ----
-  # Prepare meta data to specify what to download
+  ##  Prepare meta data to specify what to download ----
   metadata <- BFS::bfs_get_metadata(
     number_bfs = number_fso_ref # "px-x-0104020000_101")
   )
-  metadata_tidy <- metadata |>
+  metadata_tidy_ref <- metadata |>
     dplyr::select(-valueTexts) |>
     tidyr::unnest_longer(values) |>
     dplyr::mutate(
@@ -187,61 +187,103 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     dplyr::select(code, text, values, valueTexts, everything())
 
-  # Check if spatial units are available
+  # Meta data for version high
+  metadata_high <- BFS::bfs_get_metadata(
+    number_bfs = number_fso_high # "px-x-0104020000_102"
+  )
+  metadata_tidy_high <- metadata_high |>
+    dplyr::select(-valueTexts) |>
+    tidyr::unnest_longer(values) |>
+    dplyr::mutate(
+      valueTexts = metadata |>
+        dplyr::select(valueTexts) |>
+        tidyr::unnest_longer(valueTexts) |>
+        dplyr::pull(valueTexts)
+    ) |>
+    dplyr::select(code, text, values, valueTexts, everything())
+
+  # Ensure structue ref-high is identical
+  assertthat::assert_that(
+    identical(metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
+              metadata_tidy_high[, -ncol(metadata_tidy_high)]),
+    msg = paste0(
+      "The metadata of the following px objects differ: ",
+      "px-x-0104020000_101 (reference) & ",
+      "px-x-0104020000_102 (high). ",
+      "Check if the FSO has changed the structure of the data cube."
+    )
+  )
+
+  # Meta data for version low
+  metadata_low <- BFS::bfs_get_metadata(
+    number_bfs = number_fso_low # "px-x-0104020000_103")
+  )
+  metadata_tidy_low <- metadata_low |>
+    dplyr::select(-valueTexts) |>
+    tidyr::unnest_longer(values) |>
+    dplyr::mutate(
+      valueTexts = metadata |>
+        dplyr::select(valueTexts) |>
+        tidyr::unnest_longer(valueTexts) |>
+        dplyr::pull(valueTexts)
+    ) |>
+    dplyr::select(code, text, values, valueTexts, everything())
+
+  # Ensure structue ref-low is identical
+  assertthat::assert_that(
+    identical(metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
+              metadata_tidy_low[, -ncol(metadata_tidy_low)]),
+    msg = paste0(
+      "The metadata of the following px objects differ: ",
+      "px-x-0104020000_101 (reference) & ",
+      "px-x-0104020000_103 (low). ",
+      "Check if the FSO has changed the structure of the data cube."
+    )
+  )
+
+  # Check if spatial units are available in cubes 101-103
   assertthat::assert_that(
     all(spatial_units
         %in%
-          metadata_tidy$valueTexts[
-            metadata_tidy$text ==
-              "Kanton"]) ,
+          metadata_tidy_ref$valueTexts[
+            metadata_tidy_ref$text ==
+              "Kanton"]),
     msg = paste0("At least one of the requested spatial units is not available.",
                  " Check the spelling against those in the STATTAB cubes ",
                  number_fso_ref, " / ", number_fso_high, " / ", number_fso_low,
-                 ". Inspecting column 'valueTexts' the following package data ",
-                 "may also help: data('stattab_101_snap') / ",
+                 ". Inspecting the column 'valueTexts' in the following package ",
+                 "data may help to identify the correct spelling: ",
+                 "data('stattab_101_snap') / ",
                  "data('stattab_102_snap') / ",
                  "data('stattab_103_snap')"))
 
 
   # Specify the elements to download
-  dim1 <- metadata_tidy |>
+  dim1 <- metadata_tidy_ref |>
     dplyr::filter(
       text == "Kanton" & # Canton
         valueTexts %in% spatial_units
     )
 
-  dim2 <- metadata_tidy |>
+  dim2 <- metadata_tidy_ref |>
     dplyr::filter(
       text == "Geschlecht" & # sex
         valueTexts %in% c("Mann", "Frau")
     )
 
-  dim3 <- metadata_tidy |>
+  dim3 <- metadata_tidy_ref |>
     dplyr::filter(
       text == "Alter" & # age
         !(valueTexts %in% "Alter - Total")
     ) # exclude "Total"
 
-  dim4 <- metadata_tidy |>
+  dim4 <- metadata_tidy_ref |>
     dplyr::filter(
       text == "Jahr" & # get years
         valueTexts %in% year_first:year_last
     )
 
-  # adapt to the different structure of the "low" scenario table
-  number_of_years <- metadata_tidy |>
-    # in this version values run from 0 (first year) to 31 (last year)
-    dplyr::filter(text == "Jahr") |>
-    nrow() - 1
-
-  dim4_103 <- metadata_tidy |>
-    # in this version values run from 0 (first year) to 31 (last year)
-    dplyr::filter(text == "Jahr") |>
-    dplyr::mutate(values = as.character(0:number_of_years)) |>
-    # filter requested years
-    dplyr::filter(text == "Jahr" & valueTexts %in% year_first:year_last)
-
-  dim5 <- metadata_tidy |>
+  dim5 <- metadata_tidy_ref |>
     dplyr::filter(
       # "Staatsangehörigkeit (Kategorie)" & # nationality
       text == stringi::stri_unescape_unicode(
@@ -249,7 +291,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       ) & valueTexts %in% c("Schweiz", "Ausland")
     )
 
-  dim6 <- metadata_tidy |>
+  dim6 <- metadata_tidy_ref |>
     dplyr::filter(text == "Beobachtungseinheit" & # type of parameter types
                     valueTexts %in% c(
                       "Einwanderungen",
@@ -281,77 +323,145 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     unique(dim6$code)
   )
 
-  # version for _103
-  # build dimensions list object
-  dimensions_103 <- list(
-    dim1$values,
-    dim2$values,
-    dim3$values,
-    dim4_103$values,
-    dim5$values,
-    dim6$values
-  )
-
-  # add names
-  names(dimensions_103) <- c(
-    unique(dim1$code),
-    unique(dim2$code),
-    unique(dim3$code),
-    unique(dim4_103$code),
-    unique(dim5$code),
-    unique(dim6$code)
-  )
 
   # download number of people parameters
 
   cli::cli_progress_step("Downloading number parameters (reference scenario)")
 
+  ## Get px-data for reference scenario ----
   fso_numbers_r <- BFS::bfs_get_data(
     number_bfs = number_fso_ref, # "px-x-0104020000_101",
     query = dimensions
-  ) |>
-    dplyr::rename(value = stringi::stri_unescape_unicode(
-      paste0(
-        "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2020-2050,",
-        " Referenzszenario AR-00-2020",
-        " - zuk\\u00fcnftige Bev\\u00f6lkerungsentwicklung"
-      )
-    )) |>
-    dplyr::mutate(scen = "reference")
-
-  cli::cli_progress_step(
-    "Downloading download number parameters (high growth scenario)"
   )
 
+  # Check structure
+  assertthat::assert_that(is.data.frame(fso_numbers_r))
+  assertthat::assert_that(ncol(fso_numbers_r) == 7)
+
+  # Column names
+  expected_names <- c(
+    "Kanton",
+    stringi::stri_unescape_unicode("Staatsangeh\\u00f6rigkeit (Kategorie)"),
+    "Geschlecht",
+    "Alter",
+    "Jahr",
+    "Beobachtungseinheit"
+  )
+
+  # Check the first 6 columns by name
+  assertthat::assert_that(all(names(fso_numbers_r)[1:6] == expected_names))
+
+  # Check if column 7 starts with "Szenarien zur" and includes numeric values
+  assertthat::assert_that(startsWith(names(fso_numbers_r)[7], "Szenarien zur"))
+  assertthat::assert_that(is.numeric(fso_numbers_r[[7]]))
+
+  # Rename column for consistency and easier handling
+  fso_numbers_r <- fso_numbers_r |>
+    dplyr::rename(value = 7)|>
+    dplyr::mutate(scen = "reference")
+
+  # Assert that "Jahr" contains no NAs and matches required values exactly
+  assertthat::assert_that(
+    is.character(fso_numbers_r$Jahr),
+    all(!is.na(fso_numbers_r$Jahr)),
+    setequal(fso_numbers_r$Jahr, as.character(year_first:year_last))
+  )
+
+  # End of reference scenario
+
+  # Initiating scenario "high"
+  cli::cli_progress_step(
+    "Downloading number parameters (high growth scenario)"
+  )
+
+  ## Get px-data for scenario "high" ----
   fso_numbers_h <- BFS::bfs_get_data(
     number_bfs = number_fso_high, # "px-x-0104020000_102",
     query = dimensions
-  ) |>
-    dplyr::rename(value = stringi::stri_unescape_unicode(
-      paste0(
-        "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2020-2050,",
-        " \\'hohes\\' Szenario BR-00-2020",
-        " - zuk\\u00fcnftige Bev\\u00f6lkerungsentwicklung"
-      )
-    )) |>
-    dplyr::mutate(scen = "high")
-
-  cli::cli_progress_step(
-    "Downloading download number parameters (low growth scenario)"
   )
 
+  # Check structure
+  assertthat::assert_that(is.data.frame(fso_numbers_h))
+  assertthat::assert_that(ncol(fso_numbers_h) == 7)
+
+  # Column names
+  expected_names <- c(
+    "Kanton",
+    stringi::stri_unescape_unicode("Staatsangeh\\u00f6rigkeit (Kategorie)"),
+    "Geschlecht",
+    "Alter",
+    "Jahr",
+    "Beobachtungseinheit"
+  )
+
+  # Check the first 6 columns by name
+  assertthat::assert_that(all(names(fso_numbers_h)[1:6] == expected_names))
+
+  # Check if column 7 starts with "Szenarien zur" and includes numeric values
+  assertthat::assert_that(startsWith(names(fso_numbers_h)[7], "Szenarien zur"))
+  assertthat::assert_that(is.numeric(fso_numbers_h[[7]]))
+
+  # rename column for consistency and easier handling
+  fso_numbers_h <- fso_numbers_h |>
+    dplyr::rename(value = 7)|>
+    dplyr::mutate(scen = "high")
+
+  # Assert that "Jahr" contains no NAs and matches required values exactly
+  assertthat::assert_that(
+    is.character(fso_numbers_h$Jahr),
+    all(!is.na(fso_numbers_h$Jahr)),
+    setequal(fso_numbers_h$Jahr, as.character(year_first:year_last))
+  )
+
+  # End of scenario "high"
+
+  # Initiating scenario "low"
+
+  cli::cli_progress_step(
+    "Downloading number parameters (low growth scenario)"
+  )
+
+  ## Get px-data for scenario "low" ----
   fso_numbers_l <- BFS::bfs_get_data(
     number_bfs = number_fso_low, # "px-x-0104020000_103",
-    query = dimensions_103
-  ) |>
-    dplyr::rename(value = stringi::stri_unescape_unicode(
-      paste0(
-        "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2020-2050,",
-        " \\'tiefes\\' Szenario CR-00-2020",
-        " - zuk\\u00fcnftige Bev\\u00f6lkerungsentwicklung"
-      )
-    )) |>
+    query = dimensions
+  )
+
+  # Check structure
+  assertthat::assert_that(is.data.frame(fso_numbers_l))
+  assertthat::assert_that(ncol(fso_numbers_l) == 7)
+
+  # Column names
+  expected_names <- c(
+    "Kanton",
+    stringi::stri_unescape_unicode("Staatsangeh\\u00f6rigkeit (Kategorie)"),
+    "Geschlecht",
+    "Alter",
+    "Jahr",
+    "Beobachtungseinheit"
+  )
+
+  # Check the first 6 columns by name
+  assertthat::assert_that(all(names(fso_numbers_l)[1:6] == expected_names))
+
+  # Check if column 7 starts with "Szenarien zur" and includes numeric values
+  assertthat::assert_that(startsWith(names(fso_numbers_l)[7], "Szenarien zur"))
+  assertthat::assert_that(is.numeric(fso_numbers_l[[7]]))
+
+  # rename column for consistency and easier handling
+  fso_numbers_l <- fso_numbers_l |>
+    dplyr::rename(value = 7)|>
     dplyr::mutate(scen = "low")
+
+  # Assert that "Jahr" contains no NAs and matches required values exactly
+  assertthat::assert_that(
+    is.character(fso_numbers_l$Jahr),
+    all(!is.na(fso_numbers_l$Jahr)),
+    setequal(fso_numbers_l$Jahr, as.character(year_first:year_last))
+  )
+
+  # End of scenario "low"
+
 
   # combine into single data frame
   fso_numbers_raw <- dplyr::full_join(fso_numbers_r, fso_numbers_h) |>
@@ -396,12 +506,12 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   cli::cli_progress_step("Preparing download of rate parameters")
 
   # Get "rate and probability" parameters ----
-  # get meta data to determine what to download
+  # Get meta data to determine what to download
   metadata <- BFS::bfs_get_metadata(
     number_bfs = number_fso_rates # "px-x-0104020000_109")
   )
 
-  metadata_tidy <- metadata |>
+  metadata_tidy_109 <- metadata |>
     dplyr::select(-valueTexts) |>
     tidyr::unnest_longer(values) |>
     dplyr::mutate(
@@ -417,49 +527,50 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   assertthat::assert_that(
     all(spatial_units
         %in%
-          metadata_tidy$valueTexts[
-            metadata_tidy$text ==
+          metadata_tidy_109$valueTexts[
+            metadata_tidy_109$text ==
               "Kanton"]) ,
     msg = paste0("At least one of the requested spatial units is not available.",
                  " Check the spelling against those in the STATTAB cube ",
-                 number_fso_rates, ". Inspecting column 'valueTexts' the ",
-                 "following package data may also help: data('stattab_109_snap')"
+                 number_fso_rates, ". Inspecting the column 'valueTexts' in the",
+                 " following package data may help to identify the correct",
+                 "spelling: data('stattab_109_snap')"
     ))
 
   # Specify the elements to download
-  dim1 <- metadata_tidy |>
+  dim1 <- metadata_tidy_109 |>
     dplyr::filter(
       text == "Kanton" & # Canton
         valueTexts %in% spatial_units
     )
-  dim2 <- metadata_tidy |>
+  dim2 <- metadata_tidy_109 |>
     dplyr::filter(
       text == "Szenario-Variante" & # sex
         valueTexts %in% c(
-          "Referenzszenario AR-00-2020", "'hohes' Szenario BR-00-2020",
-          "'tiefes' Szenario CR-00-2020"
+          "Referenzszenario AR-00-2025", "'hohes' Szenario BR-00-2025",
+          "'tiefes' Szenario CR-00-2025"
         )
     )
-  dim3 <- metadata_tidy |>
+  dim3 <- metadata_tidy_109 |>
     dplyr::filter(
       text == stringi::stri_unescape_unicode(
         "Staatsangeh\\u00f6rigkeit (Kategorie)"
       ), # "Staatsangehörigkeit (Kategorie)" & # nationality
       valueTexts %in% c("Schweiz", "Ausland")
     )
-  dim4 <- metadata_tidy |>
+  dim4 <- metadata_tidy_109 |>
     dplyr::filter(text == "Geschlecht" & valueTexts %in% c("Mann", "Frau")) # sex
-  dim5 <- metadata_tidy |>
+  dim5 <- metadata_tidy_109 |>
     dplyr::filter(
       text == "Alter" & # age
         !(valueTexts %in% "Alter - Total")
     ) # exclude "Total"
-  dim6 <- metadata_tidy |>
+  dim6 <- metadata_tidy_109 |>
     dplyr::filter(
       text == "Jahr" & # get years
         valueTexts %in% year_first:year_last
     )
-  dim7 <- metadata_tidy |>
+  dim7 <- metadata_tidy_109 |>
     dplyr::filter(text == "Beobachtungseinheit" & # type of parameter types
                     valueTexts %in% c(
                       "Geburtenziffern",
@@ -499,6 +610,40 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     query = dimensions
   )
 
+  # Check structure
+  assertthat::assert_that(is.data.frame(fso_rates_raw))
+  assertthat::assert_that(ncol(fso_rates_raw) == 8)
+
+  # Column names
+  expected_names_109 <- c(
+    "Kanton",
+    "Szenario-Variante",
+    stringi::stri_unescape_unicode("Staatsangeh\\u00f6rigkeit (Kategorie)"),
+    "Geschlecht",
+    "Alter",
+    "Jahr",
+    "Beobachtungseinheit",
+    stringi::stri_unescape_unicode(paste0(
+      "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2025-2055 - ",
+      "Ziffern nach Kanton, Szenario-Variante, ",
+      "Staatsangeh\\u00f6rigkeit (Kategorie), ",
+      "Geschlecht und Alter")
+    )
+  )
+
+  # Check columns by name
+  assertthat::assert_that(all(names(fso_rates_raw)[1:8] == expected_names_109))
+
+  # Check if column 8 includes numeric values
+  assertthat::assert_that(is.numeric(fso_rates_raw[[8]]))
+
+
+  # Assert that "Jahr" contains no NAs and matches required values exactly
+  assertthat::assert_that(
+    is.character(fso_rates_raw$Jahr),
+    all(!is.na(fso_rates_raw$Jahr)),
+    setequal(fso_rates_raw$Jahr, as.character(year_first:year_last))
+  )
 
   # Bring variable names and factor levels into the format required later
   fso_rates <- fso_rates_raw |>
@@ -511,20 +656,16 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       year = Jahr,
       fso_parameter = Beobachtungseinheit,
       scen = "Szenario-Variante",
-      value = stringi::stri_unescape_unicode(
-        paste0(
-          "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone",
-          " 2020-2050 - Ziffern"
-        )
-      )
+      # Rename column according to position rather than by referring to long name
+      value = 8
     ) |>
     # change factor levels
     dplyr::mutate(
       scen = dplyr::case_match(
         scen,
-        "Referenzszenario AR-00-2020" ~ "reference",
-        "'hohes' Szenario BR-00-2020" ~ "high",
-        "'tiefes' Szenario CR-00-2020" ~ "low"
+        "Referenzszenario AR-00-2025" ~ "reference",
+        "'hohes' Szenario BR-00-2025" ~ "high",
+        "'tiefes' Szenario CR-00-2025" ~ "low"
       ),
       nat = dplyr::case_match(
         nat,
@@ -546,6 +687,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
         "Geburtenziffern" ~ "birthrate"
       )
     )
+  # End of getting rates
 
 
   # Get share of newborns with Swiss citizenship born to internat. mothers ----
@@ -553,14 +695,14 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   cli::cli_progress_step("Preparing download of birth parameter")
 
   # Get meta data to determine what to download
-  metadata <- BFS::bfs_get_metadata(
+  metadata_106 <- BFS::bfs_get_metadata(
     number_bfs = number_fso_births
   ) # "px-x-0104020000_106")
-  metadata_tidy <- metadata |>
+  metadata_tidy_106 <- metadata_106 |>
     dplyr::select(-valueTexts) |>
     tidyr::unnest_longer(values) |>
     dplyr::mutate(
-      valueTexts = metadata |>
+      valueTexts = metadata_106 |>
         dplyr::select(valueTexts) |>
         tidyr::unnest_longer(valueTexts) |>
         dplyr::pull(valueTexts)
@@ -571,53 +713,53 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   assertthat::assert_that(
     all(spatial_units
         %in%
-          metadata_tidy$valueTexts[
-            metadata_tidy$text ==
+          metadata_tidy_106$valueTexts[
+            metadata_tidy_106$text ==
               "Kanton"]) ,
     msg = paste0("At least one of the requested spatial units is not available.",
                  " Check the spelling against those in the STATTAB cube ",
-                 number_fso_births, ". Inspecting column 'valueTexts' the ",
-                 "following package data may also help: data('stattab_106_snap')"
+                 number_fso_births, ". Inspecting the column 'valueTexts' in ",
+                 "the following package data may help to determine the correct",
+                 " spelling: data('stattab_106_snap')"
     ))
 
-
   # Specify the elements to download
-  dim1 <- metadata_tidy |>
+  dim1 <- metadata_tidy_106 |>
     dplyr::filter(
       text == "Kanton" & # Canton
         valueTexts %in% spatial_units
     )
 
-  dim2 <- metadata_tidy |>
+  dim2 <- metadata_tidy_106 |>
     dplyr::filter(text == "Szenario-Variante" & # scenario
                     valueTexts %in% c(
-                      "Referenzszenario AR-00-2020",
-                      "'hohes' Szenario BR-00-2020",
-                      "'tiefes' Szenario CR-00-2020"
+                      "Referenzszenario AR-00-2025",
+                      "'hohes' Szenario BR-00-2025",
+                      "'tiefes' Szenario CR-00-2025"
                     ))
-  dim3 <- metadata_tidy |>
+  dim3 <- metadata_tidy_106 |>
     dplyr::filter(
       text == stringi::stri_unescape_unicode(
         "Staatsangeh\\u00f6rigkeit (Kategorie)"
       ) & # "Staatsangehörigkeit (Kategorie)" & # nationality
         valueTexts %in% "Ausland"
     )
-  dim4 <- metadata_tidy |>
+  dim4 <- metadata_tidy_106 |>
     dplyr::filter(
       text == "Geschlecht" & # sex
         valueTexts %in% "Geschlecht - Total"
     )
-  dim5 <- metadata_tidy |>
+  dim5 <- metadata_tidy_106 |>
     dplyr::filter(
       text == "Altersklasse" & # age
         valueTexts %in% "Altersklasse - Total"
     )
-  dim6 <- metadata_tidy |>
+  dim6 <- metadata_tidy_106 |>
     dplyr::filter(
       text == "Jahr" & # get years
         valueTexts %in% year_first:year_last
     )
-  dim7 <- metadata_tidy |>
+  dim7 <- metadata_tidy_106 |>
     dplyr::filter(
       text == "Beobachtungseinheit" & # type of parameter types
         valueTexts %in%
@@ -653,7 +795,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   cli::cli_progress_step("Downloading birth parameter")
 
-
   # Download rate parameters
   fso_int_mothers_raw <- BFS::bfs_get_data(
     number_bfs = number_fso_births, # "px-x-0104020000_106",
@@ -667,8 +808,10 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       names_from = Beobachtungseinheit,
       values_from = stringi::stri_unescape_unicode(
         paste0(
-          "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2020-2050",
-          " - zuk\\u00fcnftige Bev\\u00f6lkerungsentwicklung"
+          "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2025-2055",
+          " - zuk\\u00fcnftige Bev\\u00f6lkerungsentwicklung nach Kanton, ",
+          "Szenario-Variante, Staatsangeh\\u00f6rigkeit (Kategorie), ",
+          "Geschlecht und Altersklasse"
         )
       )
     ) |>
@@ -694,15 +837,22 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(
       scen = dplyr::case_match(
         scen,
-        "Referenzszenario AR-00-2020" ~ "reference",
-        "'hohes' Szenario BR-00-2020" ~ "high",
-        "'tiefes' Szenario CR-00-2020" ~ "low"
+        "Referenzszenario AR-00-2025" ~ "reference",
+        "'hohes' Szenario BR-00-2025" ~ "high",
+        "'tiefes' Szenario CR-00-2025" ~ "low"
       )
     ) |>
     # remove unnecessary variables
     dplyr::select(Kanton, year, scen, int_mothers) |>
     dplyr::arrange(Kanton, year, scen)
 
+  # Assert that year contains no NAs and matches required values exactly
+  assertthat::assert_that(
+    is.character(fso_int_mothers$year),
+    all(!is.na(fso_int_mothers$year)),
+    setequal(fso_int_mothers$year, as.character(year_first:year_last))
+  )
+  # End of newborns to int mothers
 
   cli::cli_progress_step("Merging and cleaning parameters")
 
