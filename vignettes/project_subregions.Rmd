@@ -230,9 +230,10 @@ Now we can run the projection:
 
 ```{r project-1}
 propop(
-  parameters = parameters_sub_size_clean,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = parameters_sub_size_clean |> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -440,9 +441,10 @@ Now everything is ready to run the projection:
 
 ```{r project-2}
 propop(
-  parameters = fso_parameters_sub_distr_hist,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = fso_parameters_sub_distr_hist|> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -506,9 +508,10 @@ Now that all required input files are available, we can set `subregional` to
 
 ```{r project-3, eval = TRUE}
 propop(
-  parameters = parameters_sub_mig,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = parameters_sub_mig |> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,

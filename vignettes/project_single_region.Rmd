@@ -68,8 +68,9 @@ parameters that are defined in `propop::project_raw()` and passed to
 
 ``` {r project-canton}
 projection_canton_2030 <- propop(
-  parameters = fso_parameters,
-  year_first = 2019,
+  parameters = fso_parameters |> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
   year_last = 2030,
   population = fso_population,
   subregional = FALSE,
@@ -140,8 +141,9 @@ When calling `propop::propop()`, you need to set `binational = FALSE`.
 
 ``` {r project-int}
 projection_int <- propop(
-  parameters = fso_parameters_int,
-  year_first = 2019,
+  parameters = fso_parameters_int|> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
   year_last = 2030,
   population = fso_population_int,
   subregional = FALSE,
