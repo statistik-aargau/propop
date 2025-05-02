@@ -53,12 +53,12 @@
 #' \dontrun{
 #' get_population(
 #'   number_fso = "px-x-0102010000_101",
-#'   year = 2018,
-#'   year_last = 2019,
+#'   year = 2020,
+#'   year_last = 2023,
 #'   spatial_units = "- Aargau"
 #' )
 #' get_population(
-#'   year = 2018,
+#'   year = 2023,
 #'   spatial_units = c("- Aargau", "......0301 Aarberg")
 #' )
 #' }
@@ -77,18 +77,23 @@ get_population <- function(number_fso = "px-x-0102010000_101",
   year <- vctrs::vec_cast(year, integer())
   year_last <- vctrs::vec_cast(year_last, integer())
 
-  # get last year (most recent possible population record)
+  # To avoid impossible requests, ensure the latest year requested is last year
+  # or older
   current_year <- (as.numeric(format(Sys.Date(), "%Y")))
   assertthat::assert_that(is.integer(year),
-    year >= 2018 && year < current_year,
+    year >= 2010 && year < current_year,
     msg = paste0(
-      "`year` must be an integer or a numeric value without decimals"
+      "`year` is beyond the available records (2010 to ",
+      current_year-2, " / ",
+      current_year-1, ")."
     )
   )
   assertthat::assert_that(is.integer(year_last),
-    year_last >= 2018 && year_last < current_year,
+    year_last >= 2010 && year_last < current_year,
     msg = paste0(
-      "`year_last` must be an integer or a numeric value without decimals"
+      "`year_last` is beyond the available records (2010 to ",
+      current_year-2, " / ",
+      current_year-1, ")."
     )
   )
   assertthat::assert_that(is.integer(year),
