@@ -2,8 +2,10 @@
 #'
 #' @description Data frame containing the starting population required to
 #' project the development of four demographic groups for a selected
-#' canton (Aargau). The data from 2018 were obtained from the
+#' canton (Aargau). At the time of the package release v1.2.3, the most recent
+#' available data are from 2023.These data were obtained from the
 #' [Federal Statistical Office (FSO)](https://www.bfs.admin.ch/bfs/en/home.html).
+
 #'
 #' @format
 #' The example population records include the number of people of each
