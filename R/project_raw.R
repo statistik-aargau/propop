@@ -137,9 +137,10 @@
 #'
 #' # run projection
 #' project_raw(
-#'   parameters = fso_parameters,
-#'   year_first = 2019,
-#'   year_last = 2019,
+#'   parameters = fso_parameters |>
+#'  dplyr::filter(scen == "reference"),
+#'   year_first = 2025,
+#'   year_last = 2026,
 #'   n = fso_population |> dplyr::pull(n),
 #'   subregional = FALSE
 #' ) |>
