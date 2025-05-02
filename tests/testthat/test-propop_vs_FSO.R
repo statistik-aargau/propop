@@ -5,6 +5,8 @@ test_that("Projection output from propop matches FSO projection", {
   # don't run on gitlab ci
   skip_on_ci()
 
+  skip("Temporarily disabled, reactivate when STATPOP 2024 are available")
+
   options(cli.default_handler = function(...) { })
 
   # FSO projection
@@ -14,16 +16,17 @@ test_that("Projection output from propop matches FSO projection", {
 
   # propop projection
   data_projected <- propop(
-    parameters = fso_parameters,
-    year_first = 2019,
-    year_last = 2030,
+    parameters = fso_parameters |>
+      dplyr::filter(scen == "reference"),
+    year_first = 2025,
+    year_last = 2055,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
     # population records from 2018 as starting point
     population = fso_population |>
-      dplyr::filter(year == 2018),
+      dplyr::filter(year == 2023),
     subregional = FALSE,
     binational = TRUE
   ) |>
@@ -33,9 +36,9 @@ test_that("Projection output from propop matches FSO projection", {
 # Combine and pre-process the data
 combined <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
   n_benchmark = "fso_projection_n",
-  data_projected = data_projected |> dplyr::filter(year > 2018),
+  data_projected = data_projected |> dplyr::filter(year > 2024),
   n_projected = "n_dec"
 )
 

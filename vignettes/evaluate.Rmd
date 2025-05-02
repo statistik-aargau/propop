@@ -277,54 +277,56 @@ aggregate_measures(evaluation_3, weight_groups = c("age")) |>
 ```
 
 
-## `propop` versus FSO
 
-Instead of comparing the propop projection with population records, we can also
-use the evaluation function to check how close the `propop` projection comes to
-FSO's projection from the 2020 model.
+<!-- ## `propop` versus FSO -->
 
-In the example data, the differences are extremely small (>= 1):
+<!-- Instead of comparing the propop projection with population records, we can also -->
+<!-- use the evaluation function to check how close the `propop` projection comes to -->
+<!-- FSO's projection from the 2020 model. -->
 
-``` {r fso-comparison}
-fso_propop <- prepare_evaluation(
-  data_benchmark = data_parameters |>
-    dplyr::filter(scen == "reference" & year > 2018) |>
-    dplyr::mutate(n = fso_projection_n),
-  n_benchmark = "n",
-  data_projected = data_projected |>
-    dplyr::filter(year > 2018),
-  age_groups = "age_groups_3",
-  n_projected = "n_dec"
-) |>
-  compute_measures()
 
-fso_propop |>
-  dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.3f", x))) |>
-  DT::datatable(
-    filter = "top",
-    caption = htmltools::tags$caption(
-      style = "caption-side: top; text-align: left; font-weight: bold",
-      "Comparison of projetions from FSO versus `propop`."
-    )
-  )
-```
+<!-- In the example data, the differences are extremely small (>= 1): -->
 
-```{r fig.width = 9, fig.height = 7, echo = FALSE}
-library(ggplot2)
+<!-- ``` {r fso-comparison} -->
+<!-- fso_propop <- prepare_evaluation( -->
+<!--   data_benchmark = data_parameters |> -->
+<!--     dplyr::filter(scen == "reference" & year > 2018) |> -->
+<!--     dplyr::mutate(n = fso_projection_n), -->
+<!--   n_benchmark = "n", -->
+<!--   data_projected = data_projected |> -->
+<!--     dplyr::filter(year > 2018), -->
+<!--   age_groups = "age_groups_3", -->
+<!--   n_projected = "n_dec" -->
+<!-- ) |> -->
+<!--   compute_measures() -->
 
-add_percent <- function(x) {
-  paste0(x, "%")
-}
+<!-- fso_propop |> -->
+<!--   dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.3f", x))) |> -->
+<!--   DT::datatable( -->
+<!--     filter = "top", -->
+<!--     caption = htmltools::tags$caption( -->
+<!--       style = "caption-side: top; text-align: left; font-weight: bold", -->
+<!--       "Comparison of projetions from FSO versus `propop`." -->
+<!--     ) -->
+<!--   ) -->
+<!-- ``` -->
 
-ggplot(fso_propop) +
-  geom_jitter(aes(x = year, y = pe), size = 0.7) +
-  labs(
-    title = "Differences between FSO and propop projections for each demographic group (2019-2050)",
-    x = "Year",
-    y = "Difference in percent"
-  ) +
-  scale_y_continuous(labels = add_percent) +
-  theme_minimal()
-```
+<!-- ```{r fig.width = 9, fig.height = 7, echo = FALSE} -->
+<!-- library(ggplot2) -->
+
+<!-- add_percent <- function(x) { -->
+<!--   paste0(x, "%") -->
+<!-- } -->
+
+<!-- ggplot(fso_propop) + -->
+<!--   geom_jitter(aes(x = year, y = pe), size = 0.7) + -->
+<!--   labs( -->
+<!--     title = "Differences between FSO and propop projections for each demographic group (2019-2050)", -->
+<!--     x = "Year", -->
+<!--     y = "Difference in percent" -->
+<!--   ) + -->
+<!--   scale_y_continuous(labels = add_percent) + -->
+<!--   theme_minimal() -->
+<!-- ``` -->
 
 
