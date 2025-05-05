@@ -59,21 +59,20 @@ and parameters).
 - Vignette 3 illustrates how to pepare and run 
 [population projections for subregions](https://statistik-aargau.github.io/propop/articles/project_subregions.html).
 - Vignette 4 shows 
-[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
-for example against benchmarks.
+[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html) against benchmarks.
 
 ## Features, limitations, future plans
 
-- Currently, `propop::propop()` only works with *1-year age classes* (0-100+) 
-and two genders.     
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
+- However, `propop::propop()` currently requires *1-year age classes* (0-100+) 
+and two genders.     
+- The FSO projections are only published in five-year intervals, the most recent 
+ones being based on population records from 2023. `propop` enables you to run 
+projections with more recent population records.
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
 involving different cantons add up, which leads to some differences
-between the projections from the FSO and `propop`. Moreover, the FSO projections
-are only published in five-year intervals, the most recent ones being based on 
-population records from 2023. `propop` enables you to run projections with more
-recent population records.
+between the projections from the FSO and `propop`. 
 - This package was developed for use with *FSO parameters* (e.g., mortality rate,
 or emigration rate). Most parameters are only available for cantons and the 
 whole of Switzerland. If you wish to run projections at smaller scales (e.g., 
@@ -100,12 +99,13 @@ get in touch with the package maintainer.**
 ## Quick example
 
 To run `propop::propop()` with the example data included in the package 
-(canton of Aargau) for the period 2019-2030, use the following code:
+(canton of Aargau), use the following code:
 
 ``` r
 library(propop)
 projection_canton_2030 <- propop(
-parameters = fso_parameters,
+parameters = fso_parameters |> 
+dplyr::filter(scen == "reference"),
 year_first = 2025,
 year_last = 2030,
 population = fso_population,
