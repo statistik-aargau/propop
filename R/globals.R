@@ -64,15 +64,16 @@ utils::globalVariables(c(
   "imm_nat_n", # <get_parameters>
   "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
+  "start_n", # <get_parameters>
   "spatial_unit", # <get_parameters>
-  "fso_projection_n", # <get_parameters>
   "birthrate", # <get_parameters>
   "mor", # <get_parameters>
   "emi_int", # <get_parameters>
   "emi_nat", # <get_parameters>
-  "imm_int_n", # <get_parameters>
   "acq", # <get_parameters>
+  "imm_int_n", # <get_parameters>
   "mig_nat_n", # <get_parameters>
+  "fso_projection_n", # <get_parameters>
   "emi_n", # <get_parameters>
   "valueTexts", # <get_population>
   "values", # <get_population>

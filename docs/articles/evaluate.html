@@ -111,10 +111,14 @@ units).</p>
 <h3 id="get-the-data">Get the data<a class="anchor" aria-label="anchor" href="#get-the-data"></a>
 </h3>
 <p>To run the evaluation function, we need some benchmark data and the
-results from the projection.</p>
-<p>Here we use the observed <strong>population records</strong> from the
-canton of Aargau 2019-2022 as benchmark (2018 will serve as starting
-population):</p>
+results from the projection. An interesting possibility is to compare
+real, observed data to predicted data. Because FSO’s projection
+scenarios have just been published, there aren’t any observed data
+available yet.</p>
+<p>This example therefore uses older data and parameters from the
+previous FSO model. That is, we run a model with the population from
+2018 as starting population and the <strong>population records</strong>
+from 2019-2022 as benchmark data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_population.html">get_population</a></span><span class="op">(</span></span>
 <span>  number_fso <span class="op">=</span> <span class="st">"px-x-0102010000_101"</span>,</span>
@@ -122,7 +126,9 @@ population):</p>
 <span>  year_last <span class="op">=</span> <span class="fl">2022</span>,</span>
 <span>  spatial_units <span class="op">=</span> <span class="st">"- Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Get the parameters for the projection:</p>
+<p>Get the parameters for the projection (note that these parameters
+aren’t available anymore; i.e., this code will fail if you try it for
+the year 2019-2050):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parameters.html">get_parameters</a></span><span class="op">(</span></span>
 <span>  year_first <span class="op">=</span> <span class="fl">2019</span>,</span>

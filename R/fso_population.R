@@ -16,7 +16,7 @@
 #' @format
 #' The example population records include the number of people of each
 #' demographic group (nationality (2) X sex (2) X age classes (101)) for the
-#' canton of Aargau in 2018.
+#' canton of Aargau in 2024.
 #'
 #' @name fso_population
 #'

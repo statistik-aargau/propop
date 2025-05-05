@@ -133,7 +133,9 @@ from other cantons.}
 \description{
 Wrapper function to project population development using the cohort
 component method (see e.g., \href{https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf}{here}
-for more details).
+and \href{https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios\%20cant.pdf}{here}
+for more details). This function calls \code{project_raw.R}, which uses matrix
+algebra to implement the demographic balancing equations.
 
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
