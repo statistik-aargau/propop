@@ -24,9 +24,7 @@ test_that("Projection output from propop matches FSO projection", {
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    # population records from 2018 as starting point
-    population = fso_population |>
-      dplyr::filter(year == 2023),
+    population = fso_population,
     subregional = FALSE,
     binational = TRUE
   ) |>
