@@ -12,6 +12,7 @@
 #' population (i.e., number of people estimated in the FSO model released in 2025).
 #' All parameters and projections are from the
 #' [FSO model published in 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
+#' The parameters are available for the years 2024-2055.
 #' The variables `int_mothers` and `mig_nat_n` are not directly available from
 #' the FSO. They are calculated within this function.
 #'
@@ -122,7 +123,7 @@
 #' @examplesIf (Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")
 #' \dontrun{
 #' one_canton <- get_parameters(
-#'   year_first = 2025,
+#'   year_first = 2024,
 #'   year_last = 2055,
 #'   spatial_units = "Aargau"
 #' )

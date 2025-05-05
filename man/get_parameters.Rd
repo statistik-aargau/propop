@@ -69,6 +69,7 @@ In addition to the parameters, the function also returns the projected
 population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
 \href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2025}.
+The parameters are available for the years 2024-2055.
 The variables \code{int_mothers} and \code{mig_nat_n} are not directly available from
 the FSO. They are calculated within this function.
 
@@ -147,7 +148,7 @@ cantons and the emigration to other cantons.
 \dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
 one_canton <- get_parameters(
-  year_first = 2025,
+  year_first = 2024,
   year_last = 2055,
   spatial_units = "Aargau"
 )
