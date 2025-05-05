@@ -666,5 +666,19 @@ propop <- function(
                   least one year.")
   }
 
+  # Feedback if there is a gap between start year and first year of projection
+  if (
+
+    (
+    (min(parameters$year)) - unique(population$year)
+    )
+
+    > 1) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("There is a gap between the start year and
+                  the first projected year. Are you using the
+                  most recent population records?")
+  }
+
   return(projection_results)
 }
