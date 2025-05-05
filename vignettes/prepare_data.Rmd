@@ -23,11 +23,10 @@ knitr::opts_chunk$set(
 # Overview
 
 To run projections with `{propop}`, you need a starting population and 
-projection parameters. You can of course use your own data but you need to ensure 
-that the input files have the required structure. If you don't have the relevant
-data, you can download them from the Federal Statistical Office (FSO). This 
-vignette explains how to get the data. You'll also learn how to prepare the 
-relevant information to run population projections `{propop}`.
+projection parameters. You can either use your own data or download them from 
+the Federal Statistical Office (FSO). This vignette explains how to get the data
+from FSO. You'll also learn how to prepare the relevant information to run 
+population projections `{propop}`.
 
 *Note that some data are only available for certain administrative levels.*
 
@@ -93,10 +92,10 @@ the information from the following tables are needed:
 
 # Convenient way to get FSO data
 
-The `propop` package provides two convenience functions to download data from 
+`{propop}` provides two convenience functions to download data from 
 the FSO. These are strongly based on the `BFS` package and its documentation.
 
-To get the starting population for a spatial unit, you must use the spelling
+To get the **starting population** for a spatial unit, you must use the spelling
 defined in the corresponding FSO table. The entries in the FSO tables may 
 contain special characters. The spelling may also vary between FSO tables. 
 
