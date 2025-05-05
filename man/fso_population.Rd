@@ -39,7 +39,7 @@ project the development of four demographic groups for a selected
 canton (Aargau). Population data can be downloaded from the FSO using
 the \code{get_population}.
 
-At the time of the release of {propop} v1.3 in May 2025, the most recent data
+At the time of the release of \code{{propop}} v1.3 in May 2025, the most recent data
 available via \code{get_population} are from 2023. To avoid a gap between the
 starting population (2023) and the first year of projection (2025),
 \code{fso_population} is currently based on the estimated starting population
