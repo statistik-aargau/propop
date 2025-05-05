@@ -6,8 +6,8 @@ test_that("skeleton simple checks", {
   # create a skeleton
   output_table <- prepare_skeleton(
     age_groups = 101,
-    year_first = 2020,
-    year_last = 2022,
+    year_first = 2025,
+    year_last = 2027,
     spatial_unit = "My region"
   )
 
@@ -24,8 +24,8 @@ test_that("skeleton snapshots", {
   # create a skeleton
   skeleton_snapshot <- prepare_skeleton(
     age_groups = 101,
-    year_first = 2020,
-    year_last = 2022,
+    year_first = 2025,
+    year_last = 2027,
     spatial_unit = "Canton"
   )
 

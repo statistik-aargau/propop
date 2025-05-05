@@ -7,7 +7,7 @@
         age = rep(0:100, 16),
         sex = factor(rep(rep(c("m", "f"), 8), each = 101L), levels = c("m", "f")),
         nat = factor(rep(rep(c("ch", "int"), 4), each = 202L)),
-        year = rep(2019:2022, each = 404L),
+        year = rep(2024:2027, each = 404L),
         spatial_unit = factor(rep("Canton", 1616L)),
       ) |>
         structure(
@@ -33,7 +33,7 @@
               ),
               sex = c("sex=m", "sex=f"),
               nat = c("nat=ch", "nat=int"),
-              year = c("year=2019", "year=2020", "year=2021", "year=2022"),
+              year = c("year=2024", "year=2025", "year=2026", "year=2027"),
               spatial_unit = "spatial_unit=Canton"
             )
           )
