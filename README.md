@@ -19,7 +19,7 @@ For a breakdown of the components, see [this vignette](https://statistik-aargau.
 
 The package was developed for use with [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
 from the Swiss Federal Statistical Office (FSO). The current scenarios are 
-available for the years 2025-2055. As starting population, you can either use
+available for the years 2024-2055. As starting population, you can either use
 [population data from the FSO](https://www.pxweb.bfs.admin.ch/pxweb) or your own
 population data.
 
@@ -107,7 +107,7 @@ library(propop)
 projection_canton_2030 <- propop(
 parameters = fso_parameters |> 
 dplyr::filter(scen == "reference"),
-year_first = 2025,
+year_first = 2024,
 year_last = 2030,
 population = fso_population,
 subregional = FALSE,

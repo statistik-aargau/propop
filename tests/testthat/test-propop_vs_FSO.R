@@ -18,7 +18,7 @@ test_that("Projection output from propop matches FSO projection", {
   data_projected <- propop(
     parameters = fso_parameters |>
       dplyr::filter(scen == "reference"),
-    year_first = 2025,
+    year_first = 2024,
     year_last = 2055,
     age_groups = 101,
     fert_first = 16,
@@ -34,9 +34,9 @@ test_that("Projection output from propop matches FSO projection", {
 # Combine and pre-process the data
 combined <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2023),
   n_benchmark = "fso_projection_n",
-  data_projected = data_projected |> dplyr::filter(year > 2024),
+  data_projected = data_projected |> dplyr::filter(year > 2023),
   n_projected = "n_dec"
 )
 
