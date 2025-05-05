@@ -6,7 +6,7 @@
 \title{Sample parameters to run population projection}
 \format{
 The example data include the required parameters for each demographic group
-(nationality (2) X sex (2) X age classes (101)) for the years 2019-2030.
+(nationality (2) X sex (2) X age classes (101)) for the years 2025-2055.
 }
 \source{
 Data obtained from the Swiss Federal Statistical Office (FSO):
@@ -26,8 +26,8 @@ Data frame containing the rates and number of people from the
 \href{https://www.bfs.admin.ch/bfs/en/home.html}{Federal Statistical Office (FSO)}
 required to project the development of four demographic groups for a selected
 canton (Aargau). The parameters are from the
-\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{model published in 2020}.
-The sample data only include the reference scenario and the years 2019-2030.
+\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{model published in 2025}.
+The sample data include three scenarios for the years 2025-2055.
 }
 \section{Demographic groups}{
 
@@ -38,6 +38,8 @@ the following demographic variables:
 \item \code{sex}: f = female, m = male.
 \item \code{age}: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 }
 }
 
@@ -47,6 +49,8 @@ The following parameters are included in the returned data frame:
 \itemize{
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
+\item \code{spatial_unit}: character, indicating the user requested spatial
+unit(s).
 \item \code{birthrate}: numeric, total number of live human births per 1,000
 inhabitants.
 (formerly \code{birth_rate}).
@@ -61,15 +65,13 @@ born to non-Swiss mothers
 \item \code{acq}: numeric, rate of acquisition of Swiss citizenship.
 \item \code{imm_int_n}: numeric, number of people immigrating from abroad
 (formelry \code{imm_int}).
-\item \code{imm_nat_n}: numeric, number of people immgrating from other cantons
+\item \code{imm_nat_n}: numeric, number of people immigrating from other cantons
 (new parameter).
 \item \code{emi_nat_n}: numeric, number of people emigrating to other cantons
 (parameter previously used to compute \code{mig_nat_n}).
 \item \code{mig_nat_n}: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
 (formerly \code{mig_ch}, will soon be obsolete and removed).
-\item \code{spatial_unit}: character, indicating the user requested spatial
-unit(s).
 }
 }
 

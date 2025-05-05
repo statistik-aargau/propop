@@ -3,7 +3,9 @@
 #' @description
 #' Wrapper function to project population development using the cohort
 #' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
-#' for more details).
+#' and [here](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf)
+#' for more details). This function calls `project_raw.R`, which uses matrix
+#' algebra to implement the demographic balancing equations.
 #'
 #' You can either use your own parameters and starting population or download
 #' these data from the Swiss Federal Statistical Office (FSO). For instructions
@@ -124,9 +126,10 @@
 #' @examples
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(
-#'   parameters = fso_parameters,
-#'   year_first = 2019,
-#'   year_last = 2022,
+#'   parameters = fso_parameters |>
+#'   dplyr::filter(scen == "reference"),
+#'   year_first = 2025,
+#'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,
 #'   binational = TRUE
@@ -144,21 +147,34 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
-  # Select relevant columns
+  # Select relevant columns and reorder factors alphabetically
   parameters <- parameters |>
     select(any_of(c(
       "nat", "sex", "age", "year", "scen", "spatial_unit", "birthrate",
       "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
       "acq", "mig_sub"
-    )))
+    ))) |>
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
+
   population <- population |>
-    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n")))
+    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n"))) |>
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
+
   # Only 1 year in population
   assertthat::assert_that(
     length(unique(population$year)) == 1,
     msg = paste0("The column `year` in `population` must only contain ",
                  "one value (i.e., one year).")
   )
+
   # All requested years available in parameters
   assertthat::assert_that(
     all(year_first:year_last %in% parameters$year),
@@ -580,22 +596,88 @@ propop <- function(
     "-",
     "{.val {year_last}}")
   cli::cli_text(
-    "{.emph Projected} population size (",
-    "{.val {year_last}}): ",
-    "{.emph {.val {projection_results |>
-    dplyr::filter(year == year_last) |>
-    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}")
-  cli::cli_text(
     "Nationality-specific projection: ",
     "{.val {if (binational) 'yes' else 'no'}}")
   cli::cli_text(
     "Subregional migration: ",
     "{.val {if (subregional) 'yes' else 'no'}}")
   cli::cli_rule()
+  cli::cli_text(
+    "{.emph Projected} population size by ",
+    "{.val {year_last}}: ",
+    "{.emph {.val {projection_results |>
+    dplyr::filter(year == year_last) |>
+    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
+    dplyr::pull() |> round(digits = 0)}}}")
+  cli::cli_div(theme = list(rule = list("line-type" = "double")))
+  cli::cli_rule()
 
-  if (subregional == FALSE) {
-    population |> dplyr::reframe(n, .by = year)
+  # Check if FSO parameters expressed as "number of people" correspond to output
+  # Prepare FSO for comparison
+  if (binational == TRUE) {
+    n_input <- parameters |>
+    dplyr::select(
+      year, spatial_unit, age, sex, nat, imm_int = imm_int_n,
+      imm_nat = imm_nat_n
+    ) |>
+    dplyr::filter(year >= year_first & year <= year_last) |>
+    dplyr::mutate(across(c(year:nat), as.character)) |>
+    arrange(year, spatial_unit, nat, sex, age)
+
+  # Prepare results for comparison
+  n_output <- projection_results |>
+    dplyr::select(year, spatial_unit, age, sex, nat, imm_int, imm_nat) |>
+    dplyr::mutate(across(c(year:nat), as.character)) |>
+    arrange(year, spatial_unit, nat, sex, age)
+  }
+
+  if (binational == FALSE) {
+    n_input <- parameters |>
+      dplyr::select(
+        year, spatial_unit, age, sex, imm_int = imm_int_n, imm_nat = imm_nat_n
+      ) |>
+      dplyr::filter(year >= year_first & year <= year_last) |>
+      dplyr::mutate(across(c(year:sex), as.character)) |>
+      arrange(year, spatial_unit, sex, age)
+
+    # Prepare results for comparison
+    n_output <- projection_results |>
+      dplyr::select(year, spatial_unit, age, sex,
+                    imm_int, imm_nat) |>
+      dplyr::mutate(across(c(year:sex), as.character)) |>
+      arrange(year, spatial_unit, sex, age)
+  }
+
+
+  # Feedback if input doesn't match output
+  if (!isTRUE(all.equal(n_input$imm_int, n_output$imm_int))) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("When comparing `imm_int_n` from `parameters` with `imm_int`
+                  in the results, there is an unexpected discrepancy in the
+                  number of people for at least one demographic group in at
+                  least one year.")
+  }
+
+  if (!isTRUE(all.equal(n_input$imm_nat, n_output$imm_nat))) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("When comparing `imm_nat_n` from `parameters` with `imm_nat`
+                  in the results, there is an unexpected discrepancy in the
+                  number of people for at least one demographic group in at
+                  least one year.")
+  }
+
+  # Feedback if there is a gap between start year and first year of projection
+  if (
+
+    (
+    (min(parameters$year)) - unique(population$year)
+    )
+
+    > 1) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("There is a gap between the start year and
+                  the first projected year. Are you using the
+                  most recent population records?")
   }
 
   return(projection_results)

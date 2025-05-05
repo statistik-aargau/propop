@@ -48,8 +48,8 @@ weighted absolute percentage error.
 }
 }
 \description{
-Uses the differences between a benchmark and the results from a projection
-to compute performance measures.
+Uses the differences between the results from a projection and
+a benchmark to compute performance measures.
 }
 \details{
 The input is a data frame created with \code{propop::prepare_evaluation()}.

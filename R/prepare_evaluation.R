@@ -1,10 +1,9 @@
 #' Prepare data for evaluation
 #'
 #' @description
-#' This functions takes benchmark data (typically population records) and
-#' population projections and prepares a combined data frame to evaluate the
-#' performance of the projection.
-#' For more details on usage, see
+#' Takes population projections and benchmark data (typically population records)
+#' and prepares a combined data frame to evaluate the performance of the
+#' projection. For more details on usage, see
 #' \code{vignette("evaluate", package = "propop")}.
 #'
 #' @section Input data and variables:
@@ -64,8 +63,6 @@ prepare_evaluation <- function(
     n_projected,
     age_groups = NULL) {
 
-  # browser()
-
   # Get earliest year in data_projected
   base_year <- data_projected |>
     distinct(year) |>
@@ -73,27 +70,37 @@ prepare_evaluation <- function(
     min() |>
     as.numeric()
 
-  # Convert `year` in benchmark to integer
+  # Prepare data
   data_benchmark <- data_benchmark |>
+    # Convert `year` to integer
     dplyr::mutate(year = as.integer(year)) |>
-  # Rename columns containing population
-    dplyr::rename(n_benchmark = !!sym(n_benchmark))
+    # Rename column containing population
+    dplyr::rename(n_benchmark = !!sym(n_benchmark)) |>
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
 
   data_projected <- data_projected |>
-    dplyr::rename(n_projected = !!sym(n_projected))
+    # Convert `year` to integer
+    dplyr::mutate(year = as.integer(year)) |>
+    # Rename column containing population
+    dplyr::rename(n_projected = !!sym(n_projected)) |>
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
 
   # Test input ----
   assertthat::assert_that(
-    all(data_benchmark$year >= 2018),
-    all(data_benchmark$year <= 2050),
     all(as.integer(data_benchmark$year) == data_benchmark$year),
-    msg = "All years in `data_benchmark` must be integers between 2018 and 2050"
+    msg = "All years in `data_benchmark` must be integers"
   )
   assertthat::assert_that(
-    all(data_projected$year >= 2018),
-    all(data_projected$year <= 2050),
     all(as.integer(data_projected$year) == data_projected$year),
-    msg = "All years in `data_projected` must be integers between 2018 and 2050"
+    msg = "All years in `data_projected` must be integers"
   )
   assertthat::assert_that(
     identical(

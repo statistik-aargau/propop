@@ -38,10 +38,9 @@ from the projection. Each row contains a unique combination of year, spatial
 unit, and demographic group.
 }
 \description{
-This functions takes benchmark data (typically population records) and
-population projections and prepares a combined data frame to evaluate the
-performance of the projection.
-For more details on usage, see
+Takes population projections and benchmark data (typically population records)
+and prepares a combined data frame to evaluate the performance of the
+projection. For more details on usage, see
 \code{vignette("evaluate", package = "propop")}.
 }
 \section{Input data and variables}{

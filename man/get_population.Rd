@@ -51,12 +51,16 @@ demographic group.}
 Users who do not have the required population data can use this convenience
 function to get the mandatory starting population for
 \code{propop::propop()} from the Federal Statistical Office (FSO). The function
-can also be used to obtain the population records for several years (e.g., for model
-performance evaluations).
+can also be used to obtain the population records for several years
+(e.g., for model performance evaluations). This function can be used to
+obtain data at various spatial levels (e.g., cantons, municipalities).
+The most recent data are usually about 6 to 18 months old.
 
-To get the population data, you must use the spelling defined in the
-corresponding FSO table. For more details see
-\code{vignette("prepare_data", package = "propop")}.
+To get the population data, you must use the \strong{spelling} defined in the
+corresponding FSO table (STATTAB cube
+\href{https://www.bfs.admin.ch/asset/de/32207872}{px-x-0102010000_101}).
+Inspecting the column 'valueTexts' in the following package data may also
+help: \code{data('stattab_pop_snap')}.
 
 Changes to the API interface may break this function.
 }
@@ -65,12 +69,12 @@ Changes to the API interface may break this function.
 \dontrun{
 get_population(
   number_fso = "px-x-0102010000_101",
-  year = 2018,
-  year_last = 2019,
+  year = 2020,
+  year_last = 2023,
   spatial_units = "- Aargau"
 )
 get_population(
-  year = 2018,
+  year = 2023,
   spatial_units = c("- Aargau", "......0301 Aarberg")
 )
 }

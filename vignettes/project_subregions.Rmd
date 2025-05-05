@@ -76,16 +76,20 @@ Let us look at a concrete, numeric example. For the sake of simplicity, we use
 the data included in the package to create small, fictitious input data with 
 five regions:
 
-**Input parameters** (after this step, the rates and numbers for the 
+
+**FSO parameters** for projection (after this step, the rates and numbers for the 
 subregions are still identical to those for the whole canton): 
 
 ```{r data-parameters} 
 # FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
+  dplyr::filter(scen == "reference") |> 
   # duplicating rows 5 times
   tidyr::uncount(5) |>
   # create 5 subregions
-  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |> 
+                                                       dplyr::filter(
+                                                         scen == "reference")))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
@@ -203,6 +207,8 @@ parameters_sub_size |>
   ), \(x) round(x, 3))) |>
   dplyr::mutate(difference = imm_int_n - check) |>
   dplyr::select(-scen) |>
+  # Only use selection of years to save space
+  dplyr::filter(year < 2027) |> 
   DT::datatable() |>
   DT::formatStyle(
     "imm_int_n",
@@ -221,6 +227,7 @@ To proceed with the projection, the columns with the distributed immigration
 ``` {r cleaning}
 parameters_sub_size_clean <- parameters_sub_size |>
   dplyr::mutate(
+    # Rename variables
     imm_int_n = imm_int_n_distr,
     imm_nat_n = imm_nat_n_distr
   ) |>
@@ -231,9 +238,10 @@ Now we can run the projection:
 
 ```{r project-1}
 propop(
-  parameters = parameters_sub_size_clean,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = parameters_sub_size_clean |> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -252,7 +260,7 @@ uses historical migration records. An advantage of this approach is that it can
 differentiate between different types of migration (or any number-of-people 
 input) and thereby enables adjusting each parameter independently (rather than 
 using the same share for adapting all parameters). This is great, for example, if 
-immigration from other cantons differs from immigration from other countries.
+*immigration from other cantons* differs from *immigration from other countries*.
 
 To illustrate this approach, we use international immigration as an example and 
 create a fictitious data frame with five regions. For pedagogical reasons, we 
@@ -469,9 +477,10 @@ Now everything is ready to run the projection:
 
 ```{r project-2}
 propop(
-  parameters = fso_parameters_sub_distr_hist,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = fso_parameters_sub_distr_hist|> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -536,9 +545,10 @@ Now that all required input files are available, we can set `subregional` to
 
 ```{r project-3, eval = TRUE}
 propop(
-  parameters = parameters_sub_mig,
-  year_first = 2019,
-  year_last = 2020,
+  parameters = parameters_sub_mig |> 
+    dplyr::filter(scen == "reference"),
+  year_first = 2025,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
