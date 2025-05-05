@@ -38,9 +38,8 @@ To run the function, you need the following input:
 
 -   a data frame with the **starting population**, that is, the most up-to-date
 number of people for each demographic group before the first projection year; to
-illustrate, the example population data in `propop` are currently from 
-31. December 2023 (update expected for mid-2025)
-and the first projection year is 2025.
+illustrate, the example population data in `propop` are currently from 31. December
+2023 (update expected for mid-2025) and the first projection year is 2025.
 
 -   a data frame containing model **parameters**, that is, information about how
 key demographic variables such as mortality are expected to develop in the 
