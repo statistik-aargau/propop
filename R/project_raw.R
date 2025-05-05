@@ -1,7 +1,9 @@
 #' Project population development (raw results)
 #'
 #' @description Core function that uses the cohort component method and matrix
-#' algebra to project population development. The function can be used for
+#' algebra to project population development (for more details, see
+#' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)).
+#' The function can be used for
 #' different spatial levels (e.g., cantons, municipalities) and for one scenario
 #' at a time.
 #'
@@ -22,16 +24,14 @@
 #' `project_raw` with (with the parameters as columns). The column types, names,
 #' and factor levels need to match those specified below.
 #'
-#' The method used to calculate the projections is a 'cohort-component
-#' analysis' implemented with matrices due to programming performance benefit
-#' compared to data frames. In a nutshell, the starting population ('n') is
-#' multiplied by the survival rate to obtain the number of people which
-#' transition into the projected next year (year + 1). Then, the absolute
-#' number of people immigrating from outside Switzerland and the migration saldo
-#' for people from outside the respective canton is added to the surviving
-#' population. This results in the starting population for projection the next
-#' year. Newborn children are added aeparately to the new starting population
-#' of each year.
+#' The 'cohort component method' is implemented with matrices to enhance
+#' performance and enable efficient code execution. In a nutshell, the starting
+#' population ('n') is multiplied by the survival rate to obtain the
+#' people which transition into the projected next year (year + 1). Then, the
+#' absolute number of people immigrating from other cantons and other countries
+#' is added to the "surviving" population. This results in the starting
+#' population for projection the next year. Newborn children are added
+#' separately to the new starting population of each year.
 #'
 #' The starting population is clustered in 404 groups: 101 age groups times
 #' two nationalities times 2 genders. The survival rate is calculated in the
@@ -40,25 +40,25 @@
 #' rate for the acquisition of the Swiss citizenship by the foreign population
 #' to calculate survival rates. The model from the FSO also includes the rate of
 #' emigration to other cantons in the survival rate. In contrast, we include the
-#' immi- and emigration from and to other cantons by adding the migration
+#' immigration and emigration from and to other cantons by adding the migration
 #' balance (German = 'saldo') (immigration + emigration) afterwards.
 #'
 #' Steps in this function:
 #' 1) Checks: Checking input data and parameter settings for correct formats.
-#' 2) Data preparation: Preparing vectors e.g. for the projection time frame and
-#'    creating empty vectors to be filled with data later on.
+#' 2) Data preparation: Preparing vectors, for example, for the projection time
+#' frame and creation of empty vectors to be filled with data later on.
 #' 3) Loop over years for calculating the projections
 #'    - Subsetting parameters: Depending on the selected projection year and on
 #'      the demographic unit, the parameters for mortality, fertility, acquisition
-#'      of the Swiss citizenship as well as migration parameters are subset by
+#'      of Swiss citizenship as well as migration parameters are subset by
 #'      demographic group.
-#'    - Create matrices: Matrices are build for the survival rate, mortality,
+#'    - Create matrices: Matrices are built for the survival rate, mortality,
 #'      fertility and for calculating the number of newborn babies.
 #'    - Creating vectors: Vectors are built for mortality and migration parameters.
 #'    - Projection: The transition matrix 'L' is multiplied by the starting
 #'      population for the next year. Migrating people are added in absolute
 #'      numbers. People that are 100 years old and older are clustered into one
-#'      age group (age = 100). The newborn babies are added to the resulting
+#'      age group (age = 100+). The newborn babies are added to the resulting
 #'      starting population for the next projection year.
 #' 4) Aggregating the data: All projected years are aggregated into one data
 #'    frame. The function 'propop()', in which this function is contained,

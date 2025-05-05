@@ -9,9 +9,9 @@
 #' on the level of cantons. For smaller-scale projections, the parameters must
 #' be scaled down.
 #' In addition to the parameters, the function also returns the projected
-#' population (i.e., number of people estimated in the FSO model released in 2020).
+#' population (i.e., number of people estimated in the FSO model released in 2025).
 #' All parameters and projections are from the
-#' [FSO model published in 2020](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
+#' [FSO model published in 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
 #' The variables `int_mothers` and `mig_nat_n` are not directly available from
 #' the FSO. They are calculated within this function.
 #'
