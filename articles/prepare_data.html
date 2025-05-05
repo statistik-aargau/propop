@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,12 +92,11 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>To run projections with <a href="https://statistik-aargau.github.io/propop">propop</a>, you need a starting
-population and projection parameters. You can of course use your own
-data but you need to ensure that the input files have the required
-structure. If you don’t have the relevant data, you can download them
-from the Federal Statistical Office (FSO). This vignette explains how to
-get the data. You’ll also learn how to prepare the relevant information
-to run population projections <a href="https://statistik-aargau.github.io/propop">propop</a>.</p>
+population and projection parameters. You can either use your own data
+or download them from the Federal Statistical Office (FSO). This
+vignette explains how to get the data from FSO. You’ll also learn how to
+prepare the relevant information to run population projections
+<a href="https://statistik-aargau.github.io/propop">propop</a>.</p>
 <p><em>Note that some data are only available for certain administrative
 levels.</em></p>
 </div>
@@ -182,13 +181,13 @@ STAT-TAB are provided as arguments</td>
 <div class="section level2">
 <h2 id="convenient-way-to-get-fso-data">Convenient way to get FSO data<a class="anchor" aria-label="anchor" href="#convenient-way-to-get-fso-data"></a>
 </h2>
-<p>The <code>propop</code> package provides two convenience functions to
-download data from the FSO. These are strongly based on the
-<code>BFS</code> package and its documentation.</p>
-<p>To get the starting population for a spatial unit, you must use the
-spelling defined in the corresponding FSO table. The entries in the FSO
-tables may contain special characters. The spelling may also vary
-between FSO tables.</p>
+<p><a href="https://statistik-aargau.github.io/propop">propop</a> provides two convenience functions to download
+data from the FSO. These are strongly based on the <code>BFS</code>
+package and its documentation.</p>
+<p>To get the <strong>starting population</strong> for a spatial unit,
+you must use the spelling defined in the corresponding FSO table. The
+entries in the FSO tables may contain special characters. The spelling
+may also vary between FSO tables.</p>
 <p><code><a href="https://felixluginbuhl.com/BFS/reference/bfs_get_metadata.html" class="external-link">BFS::bfs_get_metadata()</a></code> is helpful to identify the
 required spelling(s).</p>
 <p>Here’s an example of how to get the population for the canton of
@@ -197,14 +196,14 @@ Aargau:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span> </span>
 <span><span class="va">ag_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_population.html">get_population</a></span><span class="op">(</span></span>
 <span>  number_fso <span class="op">=</span> <span class="st">"px-x-0102010000_101"</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2023</span>, </span>
 <span>  spatial_units <span class="op">=</span> <span class="st">"- Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Get the parameters for a sample canton (mind using the same spelling
 as in the FSO tables; see comment above):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ag_parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parameters.html">get_parameters</a></span><span class="op">(</span></span>
-<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2025</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
 <span>  spatial_units <span class="op">=</span> <span class="st">"Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -216,7 +215,7 @@ as in the FSO tables; see comment above):</p>
 <span></span>
 <span><span class="fu"><a href="../reference/propop.html">propop</a></span><span class="op">(</span></span>
 <span>  parameters <span class="op">=</span> <span class="va">ag_parameters_ref</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2025</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>

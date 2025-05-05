@@ -45,7 +45,7 @@
 
     <a class="navbar-brand me-2" href="index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,10 +89,10 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The goal of <code>propop</code> is to create population projections using the <strong>cohort component method</strong> (see e.g., <a href="https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512" class="external-link">Preston, Guillot, and Heuveline, 2000</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf" class="external-link">Statistik Aargau, 2020a</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-hauptbericht-v2.pdf" class="external-link">Statistik Aargau, 2020b</a>).</p>
-<p>The package was developed for use with <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">population data</a> and <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">projection scenarios</a> from the Swiss Federal Statistical Office (FSO). But you can also use your own input data.</p>
+<p>The goal of <code>propop</code> is to create population projections using the <strong>cohort component method</strong> (see e.g., <a href="https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512" class="external-link">Preston, Guillot, and Heuveline, 2000</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf" class="external-link">Statistik Aargau, 2020a</a>; <a href="https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-hauptbericht-v2.pdf" class="external-link">Statistik Aargau, 2020b</a>). For a breakdown of the components, see <a href="https://statistik-aargau.github.io/propop/articles/project_single_region.html">this vignette</a>.</p>
+<p>The package was developed for use with <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">projection scenarios</a> from the Swiss Federal Statistical Office (FSO). The current scenarios are available for the years 2025-2055. As starting population, you can either use <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">population data from the FSO</a> or your own population data.</p>
 <p><code>propop</code> uses the same matrix calculation method as the FSO (<a href="https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf" class="external-link">2020</a>; only available in French) and therefore reveals almost identical results (see vignette <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">Evaluate projections</a>). The package can be used to project the development of different <strong>demographic groups</strong> for different <strong>scenarios</strong> and at different <strong>spatial levels</strong> (e.g., single canton or municipalities within a canton).</p>
-<p>Although the package was developed for use in Switzerland, it should in principle also work for other contexts, provided the required input data is available in the <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">specified form</a>.</p>
+<p>While the package was primarily designed for use with FSO input data (e.g., mortality rates), it should in principle also work for other contexts (e.g., custom input data). However, it is important to provide the required input data in the <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">specified form</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -109,22 +109,23 @@
 <li>Vignette 1 demonstrates <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters).</li>
 <li>Vignette 2 illustrates how to run <a href="https://statistik-aargau.github.io/propop/articles/project_single_region.html">population projections for a single region</a>.</li>
 <li>Vignette 3 illustrates how to pepare and run <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">population projections for subregions</a>.</li>
-<li>Vignette 4 shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a>, for example against benchmarks.</li>
+<li>Vignette 4 shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a> against benchmarks.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="features-limitations-future-plans">Features, limitations, future plans<a class="anchor" aria-label="anchor" href="#features-limitations-future-plans"></a>
 </h2>
 <ul>
-<li>Currently, <code><a href="reference/propop.html">propop::propop()</a></code> only works with <em>1-year age classes</em> (0-100+) and two genders.<br>
-</li>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinguishing between nationalities.<br>
 </li>
-<li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>. Moreover, the FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2018. <code>propop</code> enables you to run projections with more recent population records.</li>
-<li>This package was developed for use with <em>FSO parameters</em>. Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection. <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">This vignette</a> includes tips of how to prepare your input data.<br>
+<li>However, <code><a href="reference/propop.html">propop::propop()</a></code> currently requires <em>1-year age classes</em> (0-100+) and two genders.<br>
 </li>
-<li>Similarly, if you wish to adjust parameters (e.g., mortality rates that vary between regions) you need to prepare the parameters accordingly.</li>
+<li>The FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2023. <code>propop</code> enables you to run projections with more recent population records.</li>
+<li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>.</li>
+<li>This package was developed for use with <em>FSO parameters</em> (e.g., mortality rate, or emigration rate). Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection. <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">This vignette</a> includes tips of how to prepare your input data.<br>
+</li>
+<li>Similarly, if you wish to adjust parameters (e.g., mortality rates that vary between subregions), you need to prepare the parameters accordingly.</li>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code>offers the possibility to account for varying subregional migration patterns and migration between subregions. However, before using this feature, users must adjust or calculate the required parameters (<a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">see this vignette</a>).</li>
 <li>Custom parameters (e.g., consideration of sub-cantonal spatial entities, adjustments to reflect regional differences, or addition of subregional migration parameter) can be passed through the <code>parameters</code> object to <code><a href="reference/propop.html">propop::propop()</a></code>.</li>
@@ -135,16 +136,17 @@
 <div class="section level2">
 <h2 id="quick-example">Quick example<a class="anchor" aria-label="anchor" href="#quick-example"></a>
 </h2>
-<p>To run <code><a href="reference/propop.html">propop::propop()</a></code> with the example data included in the package (canton of Aargau) for the period 2019-2030, use the following code:</p>
+<p>To run <code><a href="reference/propop.html">propop::propop()</a></code> with the example data included in the package (canton of Aargau), use the following code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span></span>
 <span><span class="va">projection_canton_2030</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/propop.html">propop</a></span><span class="op">(</span></span>
-<span>  parameters <span class="op">=</span> <span class="va">fso_parameters</span>,</span>
-<span>  year_first <span class="op">=</span> <span class="fl">2019</span>,</span>
-<span>  year_last <span class="op">=</span> <span class="fl">2030</span>,</span>
-<span>  population <span class="op">=</span> <span class="va">fso_population</span>,</span>
-<span>  subregional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  binational <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>parameters <span class="op">=</span> <span class="va">fso_parameters</span> <span class="op">|&gt;</span> </span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span>
+<span>year_first <span class="op">=</span> <span class="fl">2025</span>,</span>
+<span>year_last <span class="op">=</span> <span class="fl">2030</span>,</span>
+<span>population <span class="op">=</span> <span class="va">fso_population</span>,</span>
+<span>subregional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>binational <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

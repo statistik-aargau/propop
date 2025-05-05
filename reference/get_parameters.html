@@ -5,9 +5,9 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of people estimated in the FSO model released in 2020).
+population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
-FSO model published in 2020.
+FSO model published in 2025.
 The variables int_mothers and mig_nat_n are not directly available from
 the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
@@ -21,9 +21,9 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of people estimated in the FSO model released in 2020).
+population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
-FSO model published in 2020.
+FSO model published in 2025.
 The variables int_mothers and mig_nat_n are not directly available from
 the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
@@ -53,7 +53,7 @@ vignette("prepare_data", package = "propop").'><meta property="og:image" content
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,9 +92,9 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of people estimated in the FSO model released in 2020).
+population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
-<a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">FSO model published in 2020</a>.
+<a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">FSO model published in 2025</a>.
 The variables <code>int_mothers</code> and <code>mig_nat_n</code> are not directly available from
 the FSO. They are calculated within this function.</p>
 <p>To get projection parameters, you must use the spelling defined in the
@@ -190,6 +190,8 @@ the following demographic variables:</p><ul><li><p><code>nat</code>: ch = Swiss;
 <li><p><code>sex</code>: f = female, m = male.</p></li>
 <li><p><code>age</code>: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).</p></li>
+<li><p><code>start_n</code>: numeric, number of people in the corresponding demographic
+group on 1st of January.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a></h2>
@@ -197,6 +199,8 @@ older than 100).</p></li>
 
 <p>The following parameters are included in the returned data frame:</p><ul><li><p><code>year</code>: numeric, year of projection.</p></li>
 <li><p><code>scen</code>: character, projection scenario.</p></li>
+<li><p><code>spatial_unit</code>: character, indicating the user requested spatial
+unit(s).</p></li>
 <li><p><code>birthrate</code>: numeric, total number of live human births per 1,000
 inhabitants.
 (formerly <code>birth_rate</code>).</p></li>
@@ -211,15 +215,13 @@ born to non-Swiss mothers
 <li><p><code>acq</code>: numeric, rate of acquisition of Swiss citizenship.</p></li>
 <li><p><code>imm_int_n</code>: numeric, number of people immigrating from abroad
 (formelry <code>imm_int</code>).</p></li>
-<li><p><code>imm_nat_n</code>: numeric, number of people immgrating from other cantons
+<li><p><code>imm_nat_n</code>: numeric, number of people immigrating from other cantons
 (new parameter).</p></li>
 <li><p><code>emi_nat_n</code>: numeric, number of people emigrating to other cantons
 (parameter previously used to compute <code>mig_nat_n</code>).</p></li>
 <li><p><code>mig_nat_n</code>: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
 (formerly <code>mig_ch</code>, will soon be obsolete and removed).</p></li>
-<li><p><code>spatial_unit</code>: character, indicating the user requested spatial
-unit(s).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="projected-population">Projected population<a class="anchor" aria-label="anchor" href="#projected-population"></a></h2>
@@ -246,12 +248,12 @@ cantons and the emigration to other cantons.</p>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">one_canton</span> <span class="op">&lt;-</span> <span class="fu">get_parameters</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2025</span>,</span></span>
-<span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2050</span>,</span></span>
+<span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2055</span>,</span></span>
 <span class="r-in"><span>  spatial_units <span class="op">=</span> <span class="st">"Aargau"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">two_cantons_4years</span> <span class="op">&lt;-</span> <span class="fu">get_parameters</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2018</span>,</span></span>
-<span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2021</span>,</span></span>
+<span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2025</span>,</span></span>
+<span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2028</span>,</span></span>
 <span class="r-in"><span>  spatial_units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Aargau"</span>, <span class="st">"Zug"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
