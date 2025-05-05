@@ -8,6 +8,7 @@ In addition to the parameters, the function also returns the projected
 population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
 FSO model published in 2025.
+The parameters are available for the years 2024-2055.
 The variables int_mothers and mig_nat_n are not directly available from
 the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
@@ -24,6 +25,7 @@ In addition to the parameters, the function also returns the projected
 population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
 FSO model published in 2025.
+The parameters are available for the years 2024-2055.
 The variables int_mothers and mig_nat_n are not directly available from
 the FSO. They are calculated within this function.
 To get projection parameters, you must use the spelling defined in the
@@ -95,6 +97,7 @@ In addition to the parameters, the function also returns the projected
 population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
 <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html" class="external-link">FSO model published in 2025</a>.
+The parameters are available for the years 2024-2055.
 The variables <code>int_mothers</code> and <code>mig_nat_n</code> are not directly available from
 the FSO. They are calculated within this function.</p>
 <p>To get projection parameters, you must use the spelling defined in the
@@ -247,7 +250,7 @@ cantons and the emigration to other cantons.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># (Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">one_canton</span> <span class="op">&lt;-</span> <span class="fu">get_parameters</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2025</span>,</span></span>
+<span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2055</span>,</span></span>
 <span class="r-in"><span>  spatial_units <span class="op">=</span> <span class="st">"Aargau"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
