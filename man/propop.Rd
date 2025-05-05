@@ -145,7 +145,7 @@ see \code{vignette("prepare_data", package = "propop")}.
 
 For more details on how to use this function to project the population
 development on the level of a canton, see
-\code{vignette("run_projections", package = "propop")}.
+\code{vignette("project_single_region", package = "propop")}.
 
 The projection parameters need to be passed to \code{propop::propop()} as a
 \bold{single data frame} (with the parameters as columns). The column types,
