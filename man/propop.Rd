@@ -154,13 +154,4 @@ names, and factor levels need to match the specifications listed below under
 }
 \examples{
 # Run projection for the sample data (whole canton of Aargau)
-propop(
-  parameters = fso_parameters |>
-  dplyr::filter(scen == "reference"),
-  year_first = 2025,
-  year_last = 2027,
-  population = fso_population,
-  subregional = FALSE,
-  binational = TRUE
-)
 }

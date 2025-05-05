@@ -128,7 +128,7 @@
 #' propop(
 #'   parameters = fso_parameters |>
 #'   dplyr::filter(scen == "reference"),
-#'   year_first = 2025,
+#'   year_first = 2024,
 #'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,
@@ -670,7 +670,7 @@ propop <- function(
   if (
 
     (
-    (min(parameters$year)) - unique(population$year)
+    (year_first) - unique(population$year)
     )
 
     > 1) {
