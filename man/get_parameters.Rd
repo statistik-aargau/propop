@@ -66,9 +66,9 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of people estimated in the FSO model released in 2020).
+population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
-\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2020}.
+\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2025}.
 The variables \code{int_mothers} and \code{mig_nat_n} are not directly available from
 the FSO. They are calculated within this function.
 
@@ -89,6 +89,8 @@ the following demographic variables:
 \item \code{sex}: f = female, m = male.
 \item \code{age}: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 }
 }
 
@@ -98,6 +100,8 @@ The following parameters are included in the returned data frame:
 \itemize{
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
+\item \code{spatial_unit}: character, indicating the user requested spatial
+unit(s).
 \item \code{birthrate}: numeric, total number of live human births per 1,000
 inhabitants.
 (formerly \code{birth_rate}).
@@ -119,8 +123,6 @@ born to non-Swiss mothers
 \item \code{mig_nat_n}: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
 (formerly \code{mig_ch}, will soon be obsolete and removed).
-\item \code{spatial_unit}: character, indicating the user requested spatial
-unit(s).
 }
 }
 

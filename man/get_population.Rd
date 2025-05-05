@@ -51,8 +51,10 @@ demographic group.}
 Users who do not have the required population data can use this convenience
 function to get the mandatory starting population for
 \code{propop::propop()} from the Federal Statistical Office (FSO). The function
-can also be used to obtain the population records for several years (e.g., for model
-performance evaluations).
+can also be used to obtain the population records for several years
+(e.g., for model performance evaluations). This function can be used to
+obtain data at various spatial levels (e.g., cantons, municipalities).
+The most recent data are usually about 6 to 18 months old.
 
 To get the population data, you must use the \strong{spelling} defined in the
 corresponding FSO table (STATTAB cube

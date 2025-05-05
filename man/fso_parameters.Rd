@@ -38,6 +38,8 @@ the following demographic variables:
 \item \code{sex}: f = female, m = male.
 \item \code{age}: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 }
 }
 
@@ -47,6 +49,8 @@ The following parameters are included in the returned data frame:
 \itemize{
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
+\item \code{spatial_unit}: character, indicating the user requested spatial
+unit(s).
 \item \code{birthrate}: numeric, total number of live human births per 1,000
 inhabitants.
 (formerly \code{birth_rate}).
@@ -68,8 +72,6 @@ born to non-Swiss mothers
 \item \code{mig_nat_n}: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
 (formerly \code{mig_ch}, will soon be obsolete and removed).
-\item \code{spatial_unit}: character, indicating the user requested spatial
-unit(s).
 }
 }
 

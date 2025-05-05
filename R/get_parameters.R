@@ -37,11 +37,15 @@
 #'   * `sex`: f = female, m = male.
 #'   * `age`: 101 one-year age classes, ranging from 0 to 100 (including those
 #'   older than 100).
+#'   * `start_n`: numeric, number of people in the corresponding demographic
+#'   group on 1st of January.
 #'
 #' @section Parameters:
 #' The following parameters are included in the returned data frame:
 #'    * `year`: numeric, year of projection.
 #'    * `scen`: character, projection scenario.
+#'    * `spatial_unit`: character, indicating the user requested spatial
+#'      unit(s).
 #'    * `birthrate`: numeric, total number of live human births per 1,000
 #'      inhabitants.
 #'      (formerly `birth_rate`).
@@ -63,8 +67,7 @@
 #'    * `mig_nat_n`: numeric, national / inter-cantonal net migration
 #'      (number of immigrants minus number of emigrants).
 #'      (formerly `mig_ch`, will soon be obsolete and removed).
-#'    * `spatial_unit`: character, indicating the user requested spatial
-#'      unit(s).
+
 #'
 #' @section Projected population:
 #' `n_projected` is the the number of people per demographic group and year on
@@ -294,6 +297,9 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   dim6 <- metadata_tidy_ref |>
     dplyr::filter(text == "Beobachtungseinheit" & # type of parameter types
                     valueTexts %in% c(
+                      stringi::stri_unescape_unicode(
+                        "Bev\\u00f6lkerungsstand am 1. Januar"
+                      ),
                       "Einwanderungen",
                       "Auswanderungen",
                       "Interkantonale Zuwanderungen",
@@ -483,6 +489,9 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(
       fso_parameter = dplyr::case_match(
         fso_parameter,
+        stringi::stri_unescape_unicode(
+          "Bev\\u00f6lkerungsstand am 1. Januar"
+        ) ~ "start_n",
         "Auswanderungen" ~ "emi_n",
         stringi::stri_unescape_unicode(
           "Bev\\u00f6lkerungsstand am 31. Dezember"
@@ -868,9 +877,11 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(spatial_unit = Kanton) |>
     dplyr::mutate(year = as.numeric(year)) |>
     dplyr::select(
-      nat, sex, age, year, scen, spatial_unit, fso_projection_n,
-      birthrate, int_mothers, mor, emi_int, emi_nat,
-      imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n,
+      nat, sex, age, start_n,
+      year, scen, spatial_unit,
+      birthrate, int_mothers, mor, emi_int, emi_nat, acq,
+      imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n,
+      fso_projection_n,
       -c(Kanton, emi_n)
     )
 
