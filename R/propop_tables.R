@@ -1,9 +1,85 @@
 #' Project population development
 #'
-#' @description
-#' Wrapper function to project population development using the cohort
-#' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)
-#' for more details).
+#' @description Wrapper function to project population development using the
+#' cohort component method. This function iterates across years and spatial units
+#' calling the function `project_population.R`, which performs the calculations.
+#' An example is currently in development.
+#' For more information, see script: dev/overview_propop_tables.qmd
+#'
+#' You can either use your own parameters and starting population or download
+#' these data from the Swiss Federal Statistical Office (FSO). For instructions
+#' on how to download this information from
+#' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
+#' see \code{vignette("prepare_data", package = "propop")}.
+#'
+#' For more details on how to use this function to project the population
+#' development on the level of a canton, see
+#' \code{vignette("project_single_region", package = "propop")}.
+#'
+#' The projection parameters need to be passed to `propop::propop()` as a
+#' \bold{single data frame} (with the parameters as columns). The column types,
+#' names, and factor levels need to match the specifications listed below under
+#' `parameters`:
+#'
+#' @param parameters data frame containing the FSO rates and numbers to run the
+#' projection for a specific spatial level (e.g., canton, municipality).
+#'    * `year`, character, projection year.
+#'    * `spatial_unit`, character, ID of spatial entity (e.g., canton,
+#'    municipality) for which to run the projections.
+#'    * `scen`, character, projection scenario, is used to subset data frames
+#'    with multiple scenarios (r = reference, l = low growth, h = high growth).
+#'    * `nat` \bold{(optional)}, character, nationality (ch = Swiss; int =
+#'    foreign / international).
+#'    * `sex`, character (f = female, m = male).
+#'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
+#'    * `birthrate`, numeric, number of births per mother
+#'    * `int_mothers` \bold{(optional)}, numeric, proportion of children with
+#'    Swiss nationality born to non-Swiss mothers.
+#'    * `mor`, numeric, prospective mortality rate (probability of death).
+#'    * `acq` \bold{(optional)}, numeric, rate of acquisition of Swiss citizenship.
+#'    * `emi_int`, numeric, rate of people emigrating abroad.
+#'    (number of immigrants - number of emigrants).
+#'    * `emi_nat`: rate of people emigrating to other cantons.
+#'    * `imm_int_n`, numeric, number of people immigrating from abroad.
+#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons.
+#'    * `mig_sub` \bold{(optional)}, numeric, net migration per subregion; this
+#'    is the migration from / to other subregions (e.g., municipalities,
+#'    districts) within the main superordinate projection unit (e.g., a canton).
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
+#'
+#' @param population data frame including the starting population of each
+#' demographic group and each spatial unit. Possible values are the same as in
+#' `parameters` (apart from year). The data frame only includes one year, usually
+#' the one preceding the first year of the projection.
+#'    * `year` character, should be `year_first` - 1.
+#'    * `spatial_unit` character.
+#'    * `nat` character.
+#'    * `sex` character.
+#'    * `age` numeric.
+#'    * `n` numeric, number of people per demographic group.
+#'
+#' @param year_first numeric, first year to be projected.
+#' @param year_last numeric, last year to be projected.
+#' @param age_groups numeric, number of age classes. Creates a vector with
+#'        1-year age classes running from `0` to (`age_groups` - 1). Must
+#'        currently be set to `= 101` (FSO standard number of age groups).
+#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#'        (FSO standard value).
+#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#'        (FSO standard value).
+#' @param share_born_female numeric, fraction of female babies. Defaults to
+#'        100 / 205 (FSO standard value).
+#' @param subregional boolean, `TRUE` indicates that subregional migration
+#'        patterns (e.g., movement between municipalities within a canton)
+#'        are part of the projection. Requires input (parameters and population)
+#'        on the level of subregions.
+#' @param binational boolean, `TRUE` indicates that projections discriminate
+#'        between two groups of nationalities. `FALSE` indicates that only one
+#'        projection is run without distinguishing between nationalities.
+#' @param spatial_unit character, name of variable containing the names of the
+#'        region or subregions for which the projection shall be performed.
+#'
 #' @export
 #' @autoglobal
 
@@ -387,8 +463,8 @@ propop_tables <- function(
 
   ## Progress feedback ----
   cli::cli_text(
-    "Running projection for: {.val { parameters |>",
-    "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
+    "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
+    "pull() |> paste(collapse = ", ")}}"
   )
 
   # Prepare projection ----
