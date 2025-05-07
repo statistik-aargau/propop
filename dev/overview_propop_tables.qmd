@@ -280,6 +280,42 @@ df_population_sub <- fso_population |>
     ),
     .keep = "all"
   )
+
+parameters_sub_mig <- fso_parameters_sub |>
+  # Create fictitious migration parameters
+  dplyr::mutate(
+    mig_sub = dplyr::case_when(
+      # Four regions with emigration, 1 region with immigration
+      spatial_unit == 1 ~ {
+        set.seed(1)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 2 ~ {
+        set.seed(2)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 3 ~ {
+        set.seed(25)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 4 ~ {
+        set.seed(12)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      TRUE ~ NA
+    )
+  ) |>
+  dplyr::mutate(
+    mig_sub = dplyr::case_when(
+      spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub
+    ),
+    # check = sum(mig_sub, na.rm = TRUE),
+    .by = c("nat", "sex", "age", "year", "scen")
+  ) |>
+  dplyr::select(
+    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
+    emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n, mig_sub
+  )
 ```
 
 
@@ -287,7 +323,8 @@ df_population_sub <- fso_population |>
 # Run propop with tables (new feature)
 system.time({
   result_tables <- propop::propop_tables(
-    parameters = fso_parameters_sub,
+    parameters = parameters_sub_mig |> 
+      mutate(emi_sub = 0, imm_sub = 0),
     year_first = 2019,
     year_last = 2030,
     population = df_population_sub,
@@ -299,7 +336,7 @@ system.time({
 # Run propop with matrices (original)
 system.time({
   result_matrices <- propop::propop(
-    parameters = fso_parameters_sub,
+    parameters = parameters_sub_mig,
     year_first = 2019,
     year_last = 2030,
     population = df_population_sub,
@@ -315,3 +352,4 @@ system.time({
 -   [ ] Fine tuning for rates (esp. people aged 80 years and older)
 -   [ ] Evaluation for subregions (in progress) -\> computation speed?
 -   [ ] Code cleaning, function-feedback, package tests
+-   [ ] Integration into the main branch
