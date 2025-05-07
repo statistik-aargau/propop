@@ -2,14 +2,12 @@
 #'
 #' @description
 #' This function is applied within the wrapper function `propop_tables()`
-#' to iterate across years. An example is currently in development;
-#' see script: dev/run_propop_tables.R
+#' to iterate across years and spatial units.
 #'
 #' The calculations involve three helper functions:
 #' * `advance_population()`: Advances the population by one year (increases
 #'    age by one year and aggregates people aged 100 and older).
-#' * `calculate_projection()`: Calculates the projection for ages 1-100. Follows
-#'   the method from the FSO.
+#' * `calculate_projection()`: Calculates the projection for ages 1-100.
 #' * `calculate_newborns()`: Calculate newborns per demographic group.
 #'
 #' @param population data frame including the starting population of each
@@ -79,10 +77,9 @@ project_population <- function(
     share_born_female = 100 / 205,
     subregional = FALSE,
     binational = TRUE) {
-
-  # browser()
   # Checks ----
-  # numeric year if not numeric
+  # TODO
+  # - numeric years
 
   # Define projection year ----
   # `pop_year` helps to identify the progress of the iteration. For the first
@@ -102,10 +99,6 @@ project_population <- function(
   }
 
   ## Progress feedback ----
-  # cli::cli_text(
-  #   "Running projection for: {.val { parameters |>",
-  #   "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
-  # )
   # Provide progress information
   cli::cli_alert_success("Year: {.val { max(pop_year) }}")
 
@@ -119,7 +112,8 @@ project_population <- function(
     mutate(year = unique(parameters$year))
 
   # Checks ----
-  # population_aged does not contain newborns
+  # TODO
+  # - population_aged does not contain newborns
 
   # Calculate the projection for ages 1-100 ----
   population_new <- parameters |>
@@ -133,7 +127,7 @@ project_population <- function(
     # use helper function to calculate projections
     calculate_projection(subregional = subregional) |>
     # bind results of year t and year t+1
-    bind_rows(population)
+    bind_rows(population |> filter(year == unique(population_prev$year)))
 
 
   # Project newborns of year t+1 ----
@@ -150,7 +144,9 @@ project_population <- function(
   # Projection result ----
   # Bind results of year t and year t+1
   population_out <- population_new |>
+    filter(year == unique(population_aged$year)) |>
     bind_rows(newborns) |>
+    bind_rows(population) |>
     # clean the data
     select(any_of(c(
       "year", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
