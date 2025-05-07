@@ -1,4 +1,9 @@
-#' Calculate newborns per demographic group.
+#' Calculate the number of newborn babies.
+#'
+#' @description
+#' Calculates the number of newborn babies based on birthrates and the female
+#' population within a pre-defined fertility age range. In a second step, the
+#' cohort component method is used to determine newborn's survival rates.
 #'
 #' @param population data frame including the starting population of each
 #'        demographic group; either the initial population or the previous
@@ -11,7 +16,9 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
-#' @param subregional
+#' @param subregional boolean, TRUE indicates that subregional migration
+#'        patterns (e.g., movement between municipalities within a canton)
+#'        are part of the projection.
 #'
 #' @return Returns a data frame with the number of newborn children 'births'
 #' structured in demographic groups.
@@ -26,16 +33,15 @@ calculate_newborns <- function(
     fert_last,
     share_born_female,
     subregional = FALSE) {
-
   # Prepare population data ----
   population_prep <- population |>
-    # females in the fertile age range are defined by `fert_first` and `fert_last`
+    #Ffemales in the fertile age range are defined by `fert_first` and `fert_last`
     filter(sex == "f", age %in% c(fert_first:fert_last)) |>
     select(any_of(c(
       "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
       "int_mothers", "births", "n_jan", "n_dec"
     ))) |>
-    # calculate shares and rates
+    # Calculate shares and rates
     mutate(
       births_int_int = 1 - int_mothers,
       share_born_female = share_born_female,
@@ -141,23 +147,26 @@ calculate_newborns <- function(
         (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
           (2 / 3) * (imm_int_n + acq_n + imm_nat_n)),
       # calculate the population balance
-      n_dec =  births - mor_n - emi_int_n - emi_nat_n - emi_sub_n +
-          acq_n + imm_int_n + imm_nat_n
+      n_dec = births - mor_n - emi_int_n - emi_nat_n - emi_sub_n +
+        acq_n + imm_int_n + imm_nat_n
     )
 
   # Redistribute subregional emigration back to all subregional units as immigration
-  if(subregional){
-    # Get total of subregional emigration
+  if (subregional) {
+    # get total of subregional emigration
     dat_emi_sub_n_total <- df_newborns_out |>
       dplyr::summarise(.by = c(year, nat, sex, age), emi_sub_n_total = sum(emi_sub_n))
 
-    # Redistribution according to provided shares for each subregion
+    # redistribution according to provided shares for each subregion
     df_newborns_out |>
       dplyr::left_join(dat_emi_sub_n_total,
-                       by = dplyr::join_by(year, nat, sex, age)) |>
-      dplyr::mutate(imm_sub_n = imm_sub * emi_sub_n_total,
-                    n_dec = n_dec + imm_sub_n)
-  } else{
+        by = dplyr::join_by(year, nat, sex, age)
+      ) |>
+      dplyr::mutate(
+        imm_sub_n = imm_sub * emi_sub_n_total,
+        n_dec = n_dec + imm_sub_n
+      )
+  } else {
     return(df_newborns_out)
   }
 }
