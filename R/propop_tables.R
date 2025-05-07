@@ -406,7 +406,10 @@ propop_tables <- function(
   # iterate across years
   df_result <- purrr::reduce(
     .x = list_parameters,
-    .f = \(population, parameters) project_population(population, parameters, subregional = subregional),
+    .f = \(population, parameters) project_population(
+      population, parameters,
+      subregional = subregional
+    ),
     .init = init_population
   ) |>
     # remove initial population's year
