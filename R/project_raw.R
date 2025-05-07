@@ -30,23 +30,24 @@
 #' people which transition into the projected next year (year + 1). Then, the
 #' absolute number of people immigrating from other cantons and other countries
 #' is added to the "surviving" population. This results in the starting
-#' population for projection the next year. Newborn children are added
+#' population for projecting the next year. Newborn children are added
 #' separately to the new starting population of each year.
 #'
 #' The starting population is clustered in 404 groups: 101 age groups times
 #' two nationalities times 2 genders. The survival rate is calculated in the
 #' function 'create_transition_matrix()' resulting in the matrix 'L'. We use the
-#' rates for mortality, emigration towards countries outside Switzerland and the
-#' rate for the acquisition of the Swiss citizenship by the foreign population
-#' to calculate survival rates. The model from the FSO also includes the rate of
-#' emigration to other cantons in the survival rate. In contrast, we include the
-#' immigration and emigration from and to other cantons by adding the migration
-#' balance (German = 'saldo') (immigration + emigration) afterwards.
+#' rates for mortality, emigration towards countries outside Switzerland,
+#' emigration to other cantons and the rate for the acquisition of the Swiss
+#' citizenship by the foreign population to calculate survival rates.
+#'
+#' For the optional distribution of the population between subregions within the
+#' canton, we add the absolute migration balance (German = 'saldo')
+#' (immigration + emigration) afterwards.
 #'
 #' Steps in this function:
 #' 1) Checks: Checking input data and parameter settings for correct formats.
 #' 2) Data preparation: Preparing vectors, for example, for the projection time
-#' frame and creation of empty vectors to be filled with data later on.
+#'    frame and creation of empty vectors to be filled with data later on.
 #' 3) Loop over years for calculating the projections
 #'    - Subsetting parameters: Depending on the selected projection year and on
 #'      the demographic unit, the parameters for mortality, fertility, acquisition
@@ -59,7 +60,8 @@
 #'      population for the next year. Migrating people are added in absolute
 #'      numbers. People that are 100 years old and older are clustered into one
 #'      age group (age = 100+). The newborn babies are added to the resulting
-#'      starting population for the next projection year.
+#'      starting population for the next projection year taking into account
+#'      their survival rates.
 #' 4) Aggregating the data: All projected years are aggregated into one data
 #'    frame. The function 'propop()', in which this function is contained,
 #'    automatically adds relevant meta data to the results.
