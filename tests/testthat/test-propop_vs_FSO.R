@@ -5,7 +5,7 @@ test_that("Projection output from propop matches FSO projection", {
   # don't run on gitlab ci
   skip_on_ci()
 
-  skip("Temporarily disabled, reactivate when STATPOP 2024 are available")
+  skip("Disabled because the FSO starting population is not publicly available")
 
   options(cli.default_handler = function(...) { })
 
@@ -24,27 +24,30 @@ test_that("Projection output from propop matches FSO projection", {
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    population = fso_population,
+    population = startpop,
     subregional = FALSE,
     binational = TRUE
   ) |>
     dplyr::select(year, spatial_unit, nat, age, sex, n_dec)
 
 
-# Combine and pre-process the data
-combined <- prepare_evaluation(
-  # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2023),
-  n_benchmark = "fso_projection_n",
-  data_projected = data_projected |> dplyr::filter(year > 2023),
-  n_projected = "n_dec"
-)
+  # Combine and pre-process the data
+  combined <- prepare_evaluation(
+    # only keep years from projected period
+    data_benchmark = data_benchmark |> dplyr::filter(year > min(year)),
+    n_benchmark = "fso_projection_n",
+    data_projected = data_projected |> dplyr::filter(year > min(year)),
+    n_projected = "n_dec"
+  )
 
-evaluation <- compute_measures(combined)
+  evaluation <- compute_measures(combined)
 
-# Fail if absolute percentage error is larger than threshold
-expect_lte(max(evaluation$ape, na.rm = TRUE), 0.05,
-           "The difference between the propop output and the fso projection
-           exceeds the expected maximum of 0.05")
+  # Fail if absolute percentage error is larger than threshold
+  expect_lte(max(abs(evaluation$error), na.rm = TRUE), 1,
+             paste0("The largest difference in number of ",
+                    "people is ",
+                    round(max(evaluation$error, na.rm = TRUE), digits = 0),
+                    ". The difference between the expected value and the observed value")
+  )
 
 })
