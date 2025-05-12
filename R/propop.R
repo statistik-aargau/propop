@@ -573,6 +573,9 @@ propop <- function(
   # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
+    "Scenario: ",
+    "{.val {unique(parameters$scen)}}")
+  cli::cli_text(
     "Year of starting population: ",
     "{.val {min(as.numeric(as.character(population$year)))}}")
   cli::cli_text(
@@ -617,7 +620,7 @@ propop <- function(
   if (binational == TRUE) {
     n_input <- parameters |>
     dplyr::select(
-      year, spatial_unit, age, sex, nat, imm_int = imm_int_n,
+      year, scen, spatial_unit, age, sex, nat, imm_int = imm_int_n,
       imm_nat = imm_nat_n
     ) |>
     dplyr::filter(year >= year_first & year <= year_last) |>
@@ -634,7 +637,7 @@ propop <- function(
   if (binational == FALSE) {
     n_input <- parameters |>
       dplyr::select(
-        year, spatial_unit, age, sex, imm_int = imm_int_n, imm_nat = imm_nat_n
+        year, scen, spatial_unit, age, sex, imm_int = imm_int_n, imm_nat = imm_nat_n
       ) |>
       dplyr::filter(year >= year_first & year <= year_last) |>
       dplyr::mutate(across(c(year:sex), as.character)) |>

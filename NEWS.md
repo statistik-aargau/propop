@@ -1,6 +1,7 @@
 # propop 1.3.0
 - Uses new scenarios published by the FSO in April 2025
 - Updated functions, package data, and documentation 
+- Added "scenario" to output in console
 
 # propop 1.2.2
 - Projections enabled beyond 2018-2050.
