@@ -331,4 +331,7 @@ ggplot(fso_propop) +
   theme_minimal()
 ```
 
-
+Furthermore, across all 404 demographic groups and 31 years, the largest 
+difference between the FSO projections and those from {propop} is just one 
+person (when using the exact same starting population, which are not publicly 
+available).
