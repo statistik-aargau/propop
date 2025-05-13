@@ -287,7 +287,7 @@ Instead of comparing the propop projection with population records, we can also
 use the evaluation function to check how close the `propop` projection comes to
 FSO's projection from the 2025 model.
 
-In the example data, the differences are extremely small (>= 1):
+In the example data, the differences are extremely small (error <= 1):
 
 ``` {r fso-comparison}
 fso_propop <- prepare_evaluation(
