@@ -72,7 +72,7 @@
 #'
 #' @section Projected population:
 #' `n_projected` is the the number of people per demographic group and year on
-#' December 31 (as projected by the FSO in the 2020 model).
+#' December 31 (as projected by the FSO in the 2025 model).
 #'
 #' @section Details about calculated variables:
 #'

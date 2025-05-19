@@ -2,7 +2,7 @@
 #'
 #' @description Core function that uses the cohort component method and matrix
 #' algebra to project population development (for more details, see
-#' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf)).
+#' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf)).
 #' The function can be used for
 #' different spatial levels (e.g., cantons, municipalities) and for one scenario
 #' at a time.
