@@ -1,3 +1,9 @@
+# Unreleased
+- The function `prepare_evaluation` now also runs with five age groups (0-19,
+20-39, 40-59, 60-79, 80 years and older). The output that is created by this 
+function can be used by the functions `compute_measures` and `aggregate_measures` 
+to evaluate projection models against a benchmark. 
+
 # propop 1.3.0
 - Uses new scenarios published by the FSO in April 2025
 - Updated functions, package data, and documentation 

@@ -29,9 +29,13 @@
 #' created with `propop::propop()`.
 #' @param n_projected numeric column containing the projected size of each
 #' demographic group.
-#' @param age_groups character, optional argument (`"age_groups_3"`) indicating
-#' if the data shall be aggregated into the predefined three age groups
-#' (0-19, 20-64, over 65 years). Using aggregated groups will lead to smaller
+#' @param age_groups character, optional argument with options `"age_groups_3"`
+#' or `"age_groups_5"`.
+#' `"age_groups_3"` indicates that the data shall be aggregated into
+#' three age groups (0-19, 20-64, over 65 years).
+#' `"age_groups_3"` indicates that the data shall be aggregated into
+#' five age groups (0-19, 20-39, 40-59, 60-79, over 80 years).
+#' Using aggregated groups will lead to smaller
 #' projection errors than using 101 age classes. Currently only one option is
 #' available for aggregating age groups. Defaults to using 101 one-year age
 #' classes.
@@ -112,8 +116,8 @@ prepare_evaluation <- function(
   )
   assertthat::assert_that(
     is.null(age_groups) ||
-      identical(age_groups, "age_groups_3"),
-    msg = "`age_groups` must be either NULL or 'age_groups_3'"
+      age_groups %in% c("age_groups_3", "age_groups_5"),
+    msg = "`age_groups` must be either NULL, 'age_groups_3' or 'age_groups_5'"
   )
   assertthat::assert_that(
     "nat" %in% names(data_benchmark),
@@ -187,6 +191,23 @@ prepare_evaluation <- function(
           age < 20 ~ "age_00_19",
           age >= 20 & age < 65 ~ "age_20_64",
           age >= 65 ~ "age_65_plus"
+        )
+      ) |>
+      group_by(year, spatial_unit, age, sex, nat) |>
+      summarise(
+        n_benchmark = sum(n_benchmark),
+        n_projected = sum(n_projected),
+        .groups = "drop"
+      )
+  } else if (isTRUE(age_groups == "age_groups_5")) {
+    df <- .data |>
+      mutate(
+        age = case_when(
+          age < 20 ~ "age_00_19",
+          age >= 20 & age < 40 ~ "age_20_39",
+          age >= 40 & age < 60 ~ "age_40_59",
+          age >= 60 & age < 80 ~ "age_60_79",
+          age >= 80 ~ "age_80_plus"
         )
       ) |>
       group_by(year, spatial_unit, age, sex, nat) |>

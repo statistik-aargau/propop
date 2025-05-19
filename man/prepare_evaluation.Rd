@@ -25,9 +25,13 @@ created with \code{propop::propop()}.}
 \item{n_projected}{numeric column containing the projected size of each
 demographic group.}
 
-\item{age_groups}{character, optional argument (\code{"age_groups_3"}) indicating
-if the data shall be aggregated into the predefined three age groups
-(0-19, 20-64, over 65 years). Using aggregated groups will lead to smaller
+\item{age_groups}{character, optional argument with options \code{"age_groups_3"}
+or \code{"age_groups_5"}.
+\code{"age_groups_3"} indicates that the data shall be aggregated into
+three age groups (0-19, 20-64, over 65 years).
+\code{"age_groups_3"} indicates that the data shall be aggregated into
+five age groups (0-19, 20-39, 40-59, 60-79, over 80 years).
+Using aggregated groups will lead to smaller
 projection errors than using 101 age classes. Currently only one option is
 available for aggregating age groups. Defaults to using 101 one-year age
 classes.}
