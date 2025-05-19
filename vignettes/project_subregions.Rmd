@@ -77,7 +77,7 @@ the data included in the package to create small, fictitious input data with
 five regions:
 
 
-**FSO parameters** for projection (after this step, the rates and numbers for the 
+**Input parameters** (after this step, the rates and numbers for the 
 subregions are still identical to those for the whole canton): 
 
 ```{r data-parameters} 
