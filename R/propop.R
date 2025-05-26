@@ -643,6 +643,7 @@ propop <- function(
     "{.val {year_last}}: ",
     "{.emph {.val {projection_results |>
     dplyr::filter(year == year_last) |>
+     dplyr::filter(scen == scenarios[1]) |>
     dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
     dplyr::pull() |> round(digits = 0)}}}",
     " (scenario ",
