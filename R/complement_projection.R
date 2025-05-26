@@ -19,7 +19,7 @@
 #' @autoglobal
 #' @noRd
 
-complement_projection <- function(skeleton, projection_raw, subregional) {
+complement_projection <- function(skeleton, projection_raw, subregional, scen) {
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -44,8 +44,15 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     msg = "`year` must only inlcude numeric values."
   )
 
+
+  # TODO ensure identical arrangement of scen & spatial_unit
+  # TODO or remove these columns from skeleton
+  # TODO or don't create them in the first place (just repeat skeleton as often as require)
+
+
   # apply skeleton
   projection_result <- skeleton |>
+    dplyr::select(-spatial_unit, -scen) |>
     dplyr::bind_cols(projection_raw) |>
     tibble::as_tibble() |>
     dplyr::rename_with(tolower)
@@ -97,7 +104,7 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
+      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
       "imm_int", "imm_nat", "acq", "mig_sub", "n_dec", "delta_n", "delta_perc"
     )))
 }

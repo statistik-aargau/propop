@@ -15,7 +15,7 @@
 #' @noRd
 
 prepare_skeleton <-
-  function(age_groups, year_first, year_last, spatial_unit) {
+  function(age_groups, year_first, year_last, spatial_unit, scenarios) {
     # check input
     assertthat::assert_that(is.numeric(age_groups),
       !is.na(age_groups),
@@ -46,7 +46,8 @@ prepare_skeleton <-
       sex = c("m", "f"),
       nat = c("ch", "int"),
       year = ((year_first - 1):year_last),
-      spatial_unit = spatial_unit
+      spatial_unit = spatial_unit,
+      scen = scenarios
     ) |>
       tibble::as_tibble()
   }

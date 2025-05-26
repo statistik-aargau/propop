@@ -282,7 +282,10 @@ project_raw <-
     ## Progress feedback
     cli::cli_text(
       "Running projection for: {.val { parameters |>",
-      "dplyr::select(spatial_unit) |> dplyr::distinct()}}"
+      "dplyr::select(spatial_unit) |> dplyr::distinct()}}",
+      " (Scenario: ",
+      "{.val { parameters |> dplyr::select(scen) |> dplyr::distinct()}}",
+      ")"
     )
 
 

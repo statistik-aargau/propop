@@ -126,8 +126,8 @@
 #' @examples
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(
-#'   parameters = fso_parameters |>
-#'   dplyr::filter(scen == "reference"),
+#'   parameters = fso_parameters,
+#'   scenarios = c("reference", "high", "low"),
 #'   year_first = 2024,
 #'   year_last = 2027,
 #'   population = fso_population,
@@ -139,6 +139,7 @@ propop <- function(
     population,
     year_first,
     year_last,
+    scenarios,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -298,11 +299,11 @@ propop <- function(
 
 
   ## Only 1 value in scenario ----
-  assertthat::assert_that(
-    n_distinct(parameters$scen) == 1,
-    msg = "The 'scen' column in the 'parameters' data frame must contain the
-    identical value in all rows (either reference, high, or low)."
-  )
+  # assertthat::assert_that(
+  #   n_distinct(parameters$scen) == 1,
+  #   msg = "The 'scen' column in the 'parameters' data frame must contain the
+  #   identical value in all rows (either reference, high, or low)."
+  # )
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
     msg = "Column `scen` is missing in parameters."
@@ -512,26 +513,56 @@ propop <- function(
   }
 
   # Run projection (for all projection units) ----
-  projection_raw <-
-    purrr::map_df(
-      .x = parameters |>
-        dplyr::select(spatial_unit) |>
-        dplyr::distinct() |>
-        dplyr::pull(),
-      .f = ~ project_raw(
-        parameters = parameters |> filter(spatial_unit == .x),
+  # Get unique spatial units from your parameters data frame:
+  spatial_units <- parameters %>%
+    distinct(spatial_unit) %>%
+    pull()
+
+  # Create all combinations of scenario and spatial_unit:
+  combo_df <- tidyr::crossing(scen = scenarios, spatial_unit = spatial_units)
+
+  # projection_raw <-
+  #   purrr::map_df(
+  #     .x = parameters |>
+  #       dplyr::select(spatial_unit) |>
+  #       dplyr::distinct() |>
+  #       dplyr::pull(),
+  #     .f = ~ project_raw(
+  #       parameters = parameters |> filter(spatial_unit == .x),
+  #       year_last = year_last,
+  #       year_first = year_first,
+  #       age_groups = age_groups,
+  #       fert_first = fert_first,
+  #       fert_last = fert_last,
+  #       share_born_female = share_born_female,
+  #       n = population |>
+  #         dplyr::filter(!!sym(spatial_unit) == .x) |>
+  #         dplyr::pull(n),
+  #       subregional = subregional
+  #     )
+  #   )
+
+  # Use pmap_dfr to iterate over both scenario and spatial_unit:
+  # TODO maybe run scenarios in alphabetical order to reduce risk of confusing levels
+  projection_raw <- purrr::pmap_dfr(
+    combo_df,
+    function(scen, spatial_unit) {
+      project_raw(
+        parameters = parameters  |>
+          filter(scen == !!scen, spatial_unit == !!spatial_unit),
         year_last = year_last,
         year_first = year_first,
         age_groups = age_groups,
         fert_first = fert_first,
         fert_last = fert_last,
         share_born_female = share_born_female,
-        n = population |>
-          dplyr::filter(!!sym(spatial_unit) == .x) |>
-          dplyr::pull(n),
-        subregional = subregional
-      )
-    )
+        n = population  |>
+          filter(.data[["spatial_unit"]] == spatial_unit) |>
+          pull(n),
+        subregional = subregional) |>
+        mutate(scen = scen, spatial_unit = spatial_unit) # Add identifiers to result
+    }
+  )
 
 
   # Prepare empty data frame with meta data ----
@@ -542,7 +573,8 @@ propop <- function(
     spatial_unit = parameters |>
       dplyr::select(spatial_unit) |>
       dplyr::distinct() |>
-      dplyr::pull()
+      dplyr::pull(),
+    scen = scenarios
   )
 
 
@@ -550,7 +582,8 @@ propop <- function(
   projection_results <- complement_projection(
     skeleton = skeleton,
     projection_raw = projection_raw,
-    subregional = subregional
+    subregional = subregional,
+    scen = scenarios
   )
 
   # Format output for case 2: No distinction between nationalities
@@ -573,7 +606,7 @@ propop <- function(
   # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
-    "Scenario: ",
+    "Scenario(s): ",
     "{.val {unique(parameters$scen)}}")
   cli::cli_text(
     "Year of starting population: ",
@@ -611,7 +644,13 @@ propop <- function(
     "{.emph {.val {projection_results |>
     dplyr::filter(year == year_last) |>
     dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}")
+    dplyr::pull() |> round(digits = 0)}}}",
+    " (scenario ",
+    "{.val {projection_results |>
+    dplyr::filter(row_number()==1) |>
+    dplyr::select(scen) |>
+    dplyr::pull() }}",
+    ")")
   cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 
