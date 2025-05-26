@@ -607,7 +607,7 @@ propop <- function(
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
     "Scenario(s): ",
-    "{.val {unique(parameters$scen)}}")
+    "{.val {unique(scenarios)}}")
   cli::cli_text(
     "Year of starting population: ",
     "{.val {min(as.numeric(as.character(population$year)))}}")
