@@ -9,6 +9,7 @@ propop(
   population,
   year_first,
   year_last,
+  scenarios,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -155,8 +156,8 @@ names, and factor levels need to match the specifications listed below under
 \examples{
 # Run projection for the sample data (whole canton of Aargau)
 propop(
-  parameters = fso_parameters |>
-  dplyr::filter(scen == "reference"),
+  parameters = fso_parameters,
+  scenarios = c("reference", "high", "low"),
   year_first = 2024,
   year_last = 2027,
   population = fso_population,

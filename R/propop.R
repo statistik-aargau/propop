@@ -639,19 +639,23 @@ propop <- function(
     "{.val {if (subregional) 'yes' else 'no'}}")
   cli::cli_rule()
   cli::cli_text(
-    "{.emph Projected} population size by ",
-    "{.val {year_last}}: ",
-    "{.emph {.val {projection_results |>
-    dplyr::filter(year == year_last) |>
-     dplyr::filter(scen == scenarios[1]) |>
-    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}",
-    " (scenario ",
-    "{.val {projection_results |>
-    dplyr::filter(row_number()==1) |>
-    dplyr::select(scen) |>
-    dplyr::pull() }}",
-    ")")
+  "{.emph Projected} population size by ",
+  "{.val {year_last}}: ")
+
+  purrr::walk(scenarios, function(scenario) {
+    pop_size <- projection_results %>%
+      filter(year == year_last, scen == scenario) %>%
+      summarise(total = sum(n_jan, na.rm = TRUE)) %>%
+      pull(total) %>%
+      round(0)
+
+    cli::cli_text(
+      "Scenario ",
+      "{.val {scenario}}",
+      ": ",
+      "{.emph {.val {pop_size}}}"
+    )
+  })
   cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 

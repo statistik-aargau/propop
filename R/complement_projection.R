@@ -73,7 +73,8 @@ complement_projection <- function(skeleton, projection_raw, subregional, scen) {
       new_age_group_100 = ifelse(age == 100, 100, NA),
       age = dplyr::case_when(age < 100 ~ age + 1, TRUE ~ age)
     ) |>
-    dplyr::mutate(n_jan = sum(n_jan), .by = c(year, nat, sex, age, spatial_unit)) |>
+    dplyr::mutate(n_jan = sum(n_jan),
+                  .by = c(year, scen, nat, sex, age, spatial_unit)) |>
     dplyr::mutate(
       # adapt age range to 0-100 years
       age = age - 1,
