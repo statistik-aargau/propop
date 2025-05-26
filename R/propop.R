@@ -650,7 +650,7 @@ propop <- function(
       round(0)
 
     cli::cli_text(
-      "Scenario ",
+      "- Scenario ",
       "{.val {scenario}}",
       ": ",
       "{.emph {.val {pop_size}}}"
