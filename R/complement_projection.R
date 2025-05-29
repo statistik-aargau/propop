@@ -11,15 +11,18 @@
 #' @param projection_raw data frame showing the projection results obtained with
 #'    `project_raw`.
 #' @param subregional boolean, TRUE indicates that subregional migration
-#'     patterns (e.g., movement between municipalities within a canton)
-#'     are part of the projection.
+#'    patterns (e.g., movement between municipalities within a canton)
+#'    are part of the projection.
 #'
 #' @returns See output described in propop::propop()
 #'
 #' @autoglobal
 #' @noRd
 
-complement_projection <- function(skeleton, projection_raw, subregional, scen) {
+complement_projection <- function(skeleton,
+                                  projection_raw,
+                                  subregional) {
+
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -44,15 +47,17 @@ complement_projection <- function(skeleton, projection_raw, subregional, scen) {
     msg = "`year` must only inlcude numeric values."
   )
 
+  assertthat::assert_that(
+    "scen" %in% names(projection_raw),
+                          msg = "Column `scen` is missing in `projection_raw`."
+  )
 
   # TODO ensure identical arrangement of scen & spatial_unit
   # TODO or remove these columns from skeleton
   # TODO or don't create them in the first place (just repeat skeleton as often as require)
 
-
   # apply skeleton
   projection_result <- skeleton |>
-    dplyr::select(-spatial_unit, -scen) |>
     dplyr::bind_cols(projection_raw) |>
     tibble::as_tibble() |>
     dplyr::rename_with(tolower)

@@ -62,6 +62,9 @@
 #'
 #' @param year_first numeric, first year to be projected.
 #' @param year_last numeric, last year to be projected.
+#' @param scenarios \bold{(optional)}, character,
+#'        projection scenario(s); must match information in `parameters`.
+#'        Defaults to values in variable `scen` in `parameters`.
 #' @param age_groups numeric, number of age classes. Creates a vector with
 #'        1-year age classes running from `0` to (`age_groups` - 1). Must
 #'        currently be set to `= 101` (FSO standard number of age groups).
@@ -90,6 +93,7 @@
 #'      demographic group, year, and spatial unit the results in the rows refer
 #'      to:
 #'      \item{year}{integer, indicating the projected years.}
+#'      \item{scen}{character, indicating the projection scenario.}
 #'      \item{spatial_unit}{factor, spatial units for which the projection
 #'            was run (e.g., canton, districts, municipalities).}
 #'      \item{age}{integer, ranging from `0`n to `100` (including those older
@@ -127,19 +131,28 @@
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(
 #'   parameters = fso_parameters,
-#'   scenarios = c("reference", "high", "low"),
 #'   year_first = 2024,
 #'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,
 #'   binational = TRUE
 #' )
+#' propop(
+#'   parameters = fso_parameters |>
+#'     dplyr::filter(scen == "reference" | scen == "high"),
+#'   year_first = 2024,
+#'   year_last = 2026,
+#'   scenarios = c("reference", "high"),
+#'   population = fso_population,
+#'   subregional = FALSE,
+#'   binational = TRUE)
+
 propop <- function(
     parameters,
     population,
     year_first,
     year_last,
-    scenarios,
+    scenarios = NULL,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -148,6 +161,17 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Check input ----
+  # Check scenarios
+  if (!is.null(scenarios)) {
+    # If user has defined scenarios manually, order them alphabetically
+    scenarios <- sort(unique(scenarios))
+  }
+  # If scenarios is empty, use all levels of scen as
+  if (is.null(scenarios)) {
+    # Get all values in scen and order them alphabetically
+    scenarios <- sort(unique(parameters$scen))
+  }
+  # Parameter data
   # Select relevant columns and reorder factors alphabetically
   parameters <- parameters |>
     select(any_of(c(
@@ -160,21 +184,6 @@ propop <- function(
       where(is.factor),
       ~ factor(., levels = sort(unique(as.character(.))))
     ))
-
-  population <- population |>
-    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n"))) |>
-    # reorder factors alphabetically
-    mutate(across(
-      where(is.factor),
-      ~ factor(., levels = sort(unique(as.character(.))))
-    ))
-
-  # Only 1 year in population
-  assertthat::assert_that(
-    length(unique(population$year)) == 1,
-    msg = paste0("The column `year` in `population` must only contain ",
-                 "one value (i.e., one year).")
-  )
 
   # All requested years available in parameters
   assertthat::assert_that(
@@ -189,6 +198,27 @@ propop <- function(
     msg = paste0("Not all requested scenarios ",
                  "are available in `parameters`.")
   )
+
+  # More in-depth testing of parameter data in project_raw
+
+
+  # Population data
+  population <- population |>
+    select(any_of(c("year", "spatial_unit", "nat", "sex", "age", "n"))) |>
+    # reorder factors alphabetically
+    mutate(across(
+      where(is.factor),
+      ~ factor(., levels = sort(unique(as.character(.))))
+    ))
+
+  # Only 1 year in population
+  assertthat::assert_that(
+    length(unique(population$year)) == 1,
+    msg = paste0("The column `year` in `population` must only contain ",
+                 "one value (i.e., one year).")
+  )
+  # More in-depth testing of parameter data in project_raw
+
 
   # Nationality
   # Case 1: Two groups in column `nat`
@@ -519,10 +549,10 @@ propop <- function(
     pull()
 
   # Create all combinations of scenario and spatial_unit:
-  combo_df <- tidyr::crossing(scen = scenarios, spatial_unit = spatial_units)
+  combo_df <- tidyr::crossing(scen = scenarios,
+                              spatial_unit = spatial_units)
 
   # Use pmap_dfr to iterate over both scenario and spatial_unit:
-  # TODO maybe run scenarios in alphabetical order to reduce risk of confusing levels
   projection_raw <- purrr::pmap_dfr(
     combo_df,
     function(scen, spatial_unit) {
@@ -536,10 +566,14 @@ propop <- function(
         fert_last = fert_last,
         share_born_female = share_born_female,
         n = population  |>
-          filter(.data[["spatial_unit"]] == spatial_unit) |>
+          filter(spatial_unit == !!spatial_unit) |>
+          # filter(.data[["spatial_unit"]] == spatial_unit) |>
           pull(n),
         subregional = subregional) |>
-        mutate(scen = scen, spatial_unit = spatial_unit) # Add identifiers to result
+        # TODO this alters the strucure of project_raw
+        # Add identifiers to result
+        dplyr::mutate(scen = scen,
+               spatial_unit = as.factor(spatial_unit))
     }
   )
 
@@ -552,16 +586,14 @@ propop <- function(
       dplyr::select(spatial_unit) |>
       dplyr::distinct() |>
       dplyr::pull(),
-    scen = scenarios
+    scenarios = scenarios
   )
-
 
   # Add meta data to raw results ----
   projection_results <- complement_projection(
     skeleton = skeleton,
     projection_raw = projection_raw,
-    subregional = subregional,
-    scen = scenarios
+    subregional = subregional
   )
 
   # Format output for case 2: No distinction between nationalities
@@ -705,7 +737,7 @@ propop <- function(
       cli::cli_text("When comparing `imm_int_n` from `parameters` with `imm_int`
                   in the results (scenario = '",
                     scenario,
-                  "'), there is an unexpected discrepancy in the
+                    "'), there is an unexpected discrepancy in the
                   number of people for at least one demographic group in at
                   least one year.")
     }

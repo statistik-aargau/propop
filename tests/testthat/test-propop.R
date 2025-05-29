@@ -441,7 +441,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
 
 
-  # Prepare snapshot for subregions -----
+  # Prepare snapshot for 5 subregions -----
 
   ## FSO parameters with fictitious subregions ----
   # fso_parameters |>
