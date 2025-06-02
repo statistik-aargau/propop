@@ -26,8 +26,8 @@ projection for a specific spatial level (e.g., canton, municipality).
 \item \code{year}, character, projection year.
 \item \code{spatial_unit}, character, ID of spatial entity (e.g., canton,
 municipality) for which to run the projections.
-\item \code{scen}, character, projection scenario, is used to subset data frames
-with multiple scenarios (r = reference, l = low growth, h = high growth).
+\item \code{scen}, character, one or several projection scenario(s). The main
+scenarios are usually "reference", "low" growth, and "high" growth.
 \item \code{nat} \bold{(optional)}, character, nationality (ch = Swiss; int =
 foreign / international).
 \item \code{sex}, character (f = female, m = male).
@@ -66,9 +66,9 @@ the one preceding the first year of the projection.
 
 \item{year_last}{numeric, last year to be projected.}
 
-\item{scenarios}{\bold{(optional)}, character,
-projection scenario(s); must match information in \code{parameters}.
-Defaults to values in variable \code{scen} in \code{parameters}.}
+\item{scenarios}{\bold{(optional)}, character, indicating which
+projection scenario(s) shall be run; must match the information in
+\code{parameters}. Defaults to the values in variable \code{scen} in \code{parameters}.}
 
 \item{age_groups}{numeric, number of age classes. Creates a vector with
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
@@ -104,7 +104,7 @@ The output includes several \bold{identifiers} that indicate to which
 demographic group, year, and spatial unit the results in the rows refer
 to:
 \item{year}{integer, indicating the projected years.}
-\item{scen}{character, indicating the projection scenario.}
+\item{scen}{character, indicating the projection scenario(s).}
 \item{spatial_unit}{factor, spatial units for which the projection
 was run (e.g., canton, districts, municipalities).}
 \item{age}{integer, ranging from \code{0}n to \code{100} (including those older

@@ -27,8 +27,8 @@
 #'    * `year`, character, projection year.
 #'    * `spatial_unit`, character, ID of spatial entity (e.g., canton,
 #'    municipality) for which to run the projections.
-#'    * `scen`, character, projection scenario, is used to subset data frames
-#'    with multiple scenarios (r = reference, l = low growth, h = high growth).
+#'    * `scen`, character, one or several projection scenario(s). The main
+#'    scenarios are usually "reference", "low" growth, and "high" growth.
 #'    * `nat` \bold{(optional)}, character, nationality (ch = Swiss; int =
 #'    foreign / international).
 #'    * `sex`, character (f = female, m = male).
@@ -62,9 +62,9 @@
 #'
 #' @param year_first numeric, first year to be projected.
 #' @param year_last numeric, last year to be projected.
-#' @param scenarios \bold{(optional)}, character,
-#'        projection scenario(s); must match information in `parameters`.
-#'        Defaults to values in variable `scen` in `parameters`.
+#' @param scenarios \bold{(optional)}, character, indicating which
+#'        projection scenario(s) shall be run; must match the information in
+#'        `parameters`. Defaults to the values in variable `scen` in `parameters`.
 #' @param age_groups numeric, number of age classes. Creates a vector with
 #'        1-year age classes running from `0` to (`age_groups` - 1). Must
 #'        currently be set to `= 101` (FSO standard number of age groups).
@@ -93,7 +93,7 @@
 #'      demographic group, year, and spatial unit the results in the rows refer
 #'      to:
 #'      \item{year}{integer, indicating the projected years.}
-#'      \item{scen}{character, indicating the projection scenario.}
+#'      \item{scen}{character, indicating the projection scenario(s).}
 #'      \item{spatial_unit}{factor, spatial units for which the projection
 #'            was run (e.g., canton, districts, municipalities).}
 #'      \item{age}{integer, ranging from `0`n to `100` (including those older
