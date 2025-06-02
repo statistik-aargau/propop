@@ -38,12 +38,11 @@ prepare_skeleton <-
       is.numeric(year_last), year_first <= year_last,
       msg = "year_first must be smaller than or equal to year_last"
     )
-    assertthat::assert_that(is.character(spatial_unit),
+    assertthat::assert_that(
       all(!is.na(spatial_unit)),
-      all(nzchar(spatial_unit)),
       msg = paste0(
-        "The argument 'spatial_unit' must be of type `character`",
-        " and cannot include any `NA` or empty elements."
+        "The argument 'spatial_unit' ",
+        "cannot include any `NA` or empty elements."
       )
     )
 
@@ -57,8 +56,9 @@ prepare_skeleton <-
       spatial_unit = spatial_unit,
       scen = scenarios
     ) |>
-      # Remove spatial_unit and scen because they will be provided
-      # by projection_raw and presence in both data frames will cause problems
+      # Remove spatial_unit and scen because they will be provided by
+      # projection_raw; presence of these variables in both data frames
+      # would cause problems
       dplyr::select(-spatial_unit, -scen) |>
       tibble::as_tibble()
   }
