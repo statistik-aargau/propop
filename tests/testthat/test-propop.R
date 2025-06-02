@@ -15,9 +15,42 @@ test_that("Simple propop test for ci", {
       subregional = FALSE,
       binational = TRUE
     )
-    ))
+  ))
 }
 )
+
+# Ensure that N_high > N_reference > N_low
+
+test_that("N_totals of scenarios are ordered plausibly", {
+
+  n_ordered <- propop(
+    parameters = fso_parameters,
+    year_first = 2024,
+    year_last = 2025,
+    population = fso_population,
+    subregional = FALSE,
+    binational = TRUE
+  ) |>
+    # Get end total per scenario
+    filter(year == 2025)  |>
+    summarise(total = sum(n_dec), .by = "scen")
+
+  n_high <- n_ordered |>
+    filter(scen == "high") |>
+    pull(total)
+
+  n_reference <- n_ordered |>
+    filter(scen == "reference") |>
+    pull(total)
+
+  n_low <- n_ordered |>
+    filter(scen == "low") |>
+    pull(total)
+
+  expect_gt(n_high, n_reference)
+  expect_gt(n_reference, n_low)
+})
+
 
 # Prepare snapshot 1 region ----
 
