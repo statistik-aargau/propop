@@ -557,8 +557,8 @@ propop <- function(
 
   # Run projection (for all projection units) ----
   # Get unique spatial units from your parameters data frame:
-  spatial_units <- parameters %>%
-    distinct(spatial_unit) %>%
+  spatial_units <- parameters |>
+    distinct(spatial_unit) |>
     pull()
 
   # Create all combinations of scenario and spatial_unit:
@@ -675,10 +675,10 @@ propop <- function(
   )
 
   purrr::walk(scenarios, function(scenario) {
-    pop_size <- projection_results %>%
-      filter(year == year_last, scen == scenario) %>%
-      summarise(total = sum(n_dec, na.rm = TRUE)) %>%
-      pull(total) %>%
+    pop_size <- projection_results |>
+      filter(year == year_last, scen == scenario) |>
+      summarise(total = sum(n_dec, na.rm = TRUE)) |>
+      pull(total) |>
       round(0)
 
     cli::cli_text(
