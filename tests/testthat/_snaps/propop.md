@@ -42,7 +42,7 @@
       2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 
       2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 
       2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 
-      2024), spatial_unit = structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+      2024), scen = structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
@@ -67,7 +67,35 @@
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
-      1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L), levels = "Aargau", class = "factor"), 
+      1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L), levels = "reference", class = "factor"), 
+          spatial_unit = structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 
+          1L, 1L, 1L, 1L, 1L, 1L), levels = "Aargau", class = "factor"), 
           age = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 
           15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
           30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 
@@ -706,26 +734,27 @@
           -7.895, -8.602, -9.677, -11.667, -13.559, -14.706, -20, -19.048, 
           -19.048, -23.077, -30, -25, -33.333, -50)), row.names = c(NA, 
       -404L), class = c("tbl_df", "tbl", "data.frame"), out.attrs = list(
-          dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L
-          ), dimnames = list(age = c("age=  0", "age=  1", "age=  2", 
-          "age=  3", "age=  4", "age=  5", "age=  6", "age=  7", "age=  8", 
-          "age=  9", "age= 10", "age= 11", "age= 12", "age= 13", "age= 14", 
-          "age= 15", "age= 16", "age= 17", "age= 18", "age= 19", "age= 20", 
-          "age= 21", "age= 22", "age= 23", "age= 24", "age= 25", "age= 26", 
-          "age= 27", "age= 28", "age= 29", "age= 30", "age= 31", "age= 32", 
-          "age= 33", "age= 34", "age= 35", "age= 36", "age= 37", "age= 38", 
-          "age= 39", "age= 40", "age= 41", "age= 42", "age= 43", "age= 44", 
-          "age= 45", "age= 46", "age= 47", "age= 48", "age= 49", "age= 50", 
-          "age= 51", "age= 52", "age= 53", "age= 54", "age= 55", "age= 56", 
-          "age= 57", "age= 58", "age= 59", "age= 60", "age= 61", "age= 62", 
-          "age= 63", "age= 64", "age= 65", "age= 66", "age= 67", "age= 68", 
-          "age= 69", "age= 70", "age= 71", "age= 72", "age= 73", "age= 74", 
-          "age= 75", "age= 76", "age= 77", "age= 78", "age= 79", "age= 80", 
-          "age= 81", "age= 82", "age= 83", "age= 84", "age= 85", "age= 86", 
-          "age= 87", "age= 88", "age= 89", "age= 90", "age= 91", "age= 92", 
-          "age= 93", "age= 94", "age= 95", "age= 96", "age= 97", "age= 98", 
-          "age= 99", "age=100"), sex = c("sex=m", "sex=f"), nat = c("nat=ch", 
-          "nat=int"), year = c("year=2023", "year=2024"), spatial_unit = "spatial_unit=Aargau")))
+          dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L, 
+          scen = 1L), dimnames = list(age = c("age=  0", "age=  1", 
+          "age=  2", "age=  3", "age=  4", "age=  5", "age=  6", "age=  7", 
+          "age=  8", "age=  9", "age= 10", "age= 11", "age= 12", "age= 13", 
+          "age= 14", "age= 15", "age= 16", "age= 17", "age= 18", "age= 19", 
+          "age= 20", "age= 21", "age= 22", "age= 23", "age= 24", "age= 25", 
+          "age= 26", "age= 27", "age= 28", "age= 29", "age= 30", "age= 31", 
+          "age= 32", "age= 33", "age= 34", "age= 35", "age= 36", "age= 37", 
+          "age= 38", "age= 39", "age= 40", "age= 41", "age= 42", "age= 43", 
+          "age= 44", "age= 45", "age= 46", "age= 47", "age= 48", "age= 49", 
+          "age= 50", "age= 51", "age= 52", "age= 53", "age= 54", "age= 55", 
+          "age= 56", "age= 57", "age= 58", "age= 59", "age= 60", "age= 61", 
+          "age= 62", "age= 63", "age= 64", "age= 65", "age= 66", "age= 67", 
+          "age= 68", "age= 69", "age= 70", "age= 71", "age= 72", "age= 73", 
+          "age= 74", "age= 75", "age= 76", "age= 77", "age= 78", "age= 79", 
+          "age= 80", "age= 81", "age= 82", "age= 83", "age= 84", "age= 85", 
+          "age= 86", "age= 87", "age= 88", "age= 89", "age= 90", "age= 91", 
+          "age= 92", "age= 93", "age= 94", "age= 95", "age= 96", "age= 97", 
+          "age= 98", "age= 99", "age=100"), sex = c("sex=m", "sex=f"
+          ), nat = c("nat=ch", "nat=int"), year = c("year=2023", "year=2024"
+          ), spatial_unit = "spatial_unit=Aargau", scen = "scen=reference")))
 
 # tests propop: 1 region vs. 5 regions
 
@@ -734,6 +763,7 @@
     Output
       tibble::tibble(
         year = rep(2024, 404L),
+        scen = factor(rep("reference", 404L)),
         spatial_unit = factor(rep("Aargau", 404L)),
         age = rep(seq(0, 100, by = 1), 4),
         sex = factor(rep(rep(c("m", "f"), 2), each = 101L), levels = c("m", "f")),
@@ -1272,7 +1302,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -1294,7 +1324,8 @@
               sex = c("sex=m", "sex=f"),
               nat = c("nat=ch", "nat=int"),
               year = c("year=2023", "year=2024"),
-              spatial_unit = "spatial_unit=Aargau"
+              spatial_unit = "spatial_unit=Aargau",
+              scen = "scen=reference"
             )
           )
         )
@@ -1306,6 +1337,7 @@
     Output
       tibble::tibble(
         year = rep(2024, 2020L),
+        scen = factor(rep("reference", 2020L)),
         spatial_unit = factor(rep(c("1", "2", "3", "4", "5"), each = 404L)),
         age = rep(seq(0, 100, by = 1), 20),
         sex = factor(rep(rep(c("m", "f"), 10), each = 101L), levels = c("m", "f")),
@@ -3638,7 +3670,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 5L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 5L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -3663,7 +3695,8 @@
               spatial_unit = c(
                 "spatial_unit=1", "spatial_unit=2", "spatial_unit=3", "spatial_unit=4",
                 "spatial_unit=5"
-              )
+              ),
+              scen = "scen=reference"
             )
           )
         )
