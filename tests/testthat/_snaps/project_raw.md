@@ -4,6 +4,8 @@
       constructive::construct(output_table)
     Output
       data.frame(
+        scen = factor(rep("reference", 808L)),
+        spatial_unit = factor(rep("Aargau", 808L)),
         N = c(
           2461, 2481, 2452, 2595, 2935, 2804, 2827, 2814, 2816, 2760, 2869, 2901, 2799,
           2812, 2847, 2872, 2759, 2823, 2705, 2781, 2767, 2764, 2724, 2683, 2637, 2859,
@@ -485,6 +487,8 @@
       constructive::construct(output_table_subregions)
     Output
       data.frame(
+        scen = factor(rep("reference", 4040L)),
+        spatial_unit = factor(rep(c("1", "2", "3", "4", "5"), each = 808L)),
         N = c(
           738, 744, 736, 778, 880, 841, 848, 844, 845, 828, 861, 870, 840, 844, 854,
           862, 828, 847, 812, 834, 830, 829, 817, 805, 791, 858, 838, 855, 864, 913,
