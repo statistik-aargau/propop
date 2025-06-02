@@ -9,8 +9,8 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
 
   one_snapshot <- get_parameters(
-    year_first = 2026,
-    year_last = 2050,
+    year_first = 2024,
+    year_last = 2028,
     spatial_units = "Aargau"
   )
   expect_snapshot(constructive::construct(one_snapshot))
@@ -27,8 +27,8 @@ test_that("get_parameters snapshots - 2 regions 2027-2028", {
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
 
   two_snapshot <- get_parameters(
-    year_first = 2027,
-    year_last = 2028,
+    year_first = 2038,
+    year_last = 2039,
     spatial_units = c("Aargau", "Zug")
   )
   expect_snapshot(constructive::construct(two_snapshot))
