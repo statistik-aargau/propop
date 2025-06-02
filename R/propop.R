@@ -63,8 +63,9 @@
 #' @param year_first numeric, first year to be projected.
 #' @param year_last numeric, last year to be projected.
 #' @param scenarios \bold{(optional)}, character, indicating which
-#'        projection scenario(s) shall be run; must match the information in
-#'        `parameters`. Defaults to the values in variable `scen` in `parameters`.
+#'        projection scenario(s) shall be run; the corresponding information
+#'        must be available in `parameters`.
+#'        Defaults to the values in variable `scen` in `parameters`.
 #' @param age_groups numeric, number of age classes. Creates a vector with
 #'        1-year age classes running from `0` to (`age_groups` - 1). Must
 #'        currently be set to `= 101` (FSO standard number of age groups).
@@ -85,7 +86,7 @@
 #'        region or subregions for which the projection shall be performed.
 #'
 #' @returns
-#' Returns a data frame that includes the number of people for each demographic
+#' Returns a \bold{data frame} that includes the number of people for each demographic
 #'      group per year (for projected years) and spatial unit. The number of
 #'      rows is the product of all years times all demographic groups times
 #'      all spatial units.

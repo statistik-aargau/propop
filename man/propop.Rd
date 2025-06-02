@@ -67,8 +67,9 @@ the one preceding the first year of the projection.
 \item{year_last}{numeric, last year to be projected.}
 
 \item{scenarios}{\bold{(optional)}, character, indicating which
-projection scenario(s) shall be run; must match the information in
-\code{parameters}. Defaults to the values in variable \code{scen} in \code{parameters}.}
+projection scenario(s) shall be run; the corresponding information
+must be available in \code{parameters}.
+Defaults to the values in variable \code{scen} in \code{parameters}.}
 
 \item{age_groups}{numeric, number of age classes. Creates a vector with
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
@@ -96,7 +97,7 @@ projection is run without distinguishing between nationalities.}
 region or subregions for which the projection shall be performed.}
 }
 \value{
-Returns a data frame that includes the number of people for each demographic
+Returns a \bold{data frame} that includes the number of people for each demographic
 group per year (for projected years) and spatial unit. The number of
 rows is the product of all years times all demographic groups times
 all spatial units.
