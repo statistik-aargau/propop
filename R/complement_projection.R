@@ -22,7 +22,6 @@
 complement_projection <- function(skeleton,
                                   projection_raw,
                                   subregional) {
-
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -50,6 +49,11 @@ complement_projection <- function(skeleton,
   assertthat::assert_that(
     "scen" %in% names(projection_raw),
                           msg = "Column `scen` is missing in `projection_raw`."
+  )
+
+  assertthat::assert_that(
+    "spatial_unit" %in% names(projection_raw),
+    msg = "Column `spatial_unit` is missing in `projection_raw`."
   )
 
   # TODO ensure identical arrangement of scen & spatial_unit

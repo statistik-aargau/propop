@@ -145,8 +145,8 @@
 #'   scenarios = c("reference", "high"),
 #'   population = fso_population,
 #'   subregional = FALSE,
-#'   binational = TRUE)
-
+#'   binational = TRUE
+#' )
 propop <- function(
     parameters,
     population,
@@ -188,15 +188,19 @@ propop <- function(
   # All requested years available in parameters
   assertthat::assert_that(
     all(year_first:year_last %in% parameters$year),
-    msg = paste0("Not all requested years (", year_first, "-", year_last,
-                 ") are available in `parameters`.")
+    msg = paste0(
+      "Not all requested years (", year_first, "-", year_last,
+      ") are available in `parameters`."
+    )
   )
 
   # All requested scenarios available in parameters
   assertthat::assert_that(
     all(scenarios %in% parameters$scen),
-    msg = paste0("Not all requested scenarios ",
-                 "are available in `parameters`.")
+    msg = paste0(
+      "Not all requested scenarios ",
+      "are available in `parameters`."
+    )
   )
 
   # More in-depth testing of parameter data in project_raw
@@ -214,8 +218,10 @@ propop <- function(
   # Only 1 year in population
   assertthat::assert_that(
     length(unique(population$year)) == 1,
-    msg = paste0("The column `year` in `population` must only contain ",
-                 "one value (i.e., one year).")
+    msg = paste0(
+      "The column `year` in `population` must only contain ",
+      "one value (i.e., one year)."
+    )
   )
   # More in-depth testing of parameter data in project_raw
 
@@ -226,12 +232,12 @@ propop <- function(
     # Check if column `nat` is present in both, `parameters` and `population`
     # Parameters
     assertthat::assert_that("nat" %in% names(parameters),
-                            msg = "Column `nat` is missing in `parameters`."
+      msg = "Column `nat` is missing in `parameters`."
     )
 
     # Population
     assertthat::assert_that("nat" %in% names(population),
-                            msg = "Column `nat` is missing in `population`."
+      msg = "Column `nat` is missing in `population`."
     )
 
 
@@ -264,40 +270,39 @@ propop <- function(
     # Parameters
     # Acquisition of Swiss citizenship in case of two nationalities
     assertthat::assert_that("acq" %in% names(parameters),
-                            msg = "Column `acq` is missing in parameters."
+      msg = "Column `acq` is missing in parameters."
     )
     # Births by international females in case of two nationalities
     assertthat::assert_that("int_mothers" %in% names(parameters),
-                            msg = paste0("Column `int_mothers` is missing in parameters.")
+      msg = paste0("Column `int_mothers` is missing in parameters.")
     )
 
     # Arrange columns
     parameters <- parameters |> arrange(nat, desc(sex), year, spatial_unit)
 
     population <- population |> arrange(nat, desc(sex), year, spatial_unit)
-
   } else if (binational == FALSE) {
     # Case 2: No distinction between nationalities
     # Check if column `nat` is absent in both, `parameters` and `population`
     # Parameters
     assertthat::assert_that(!"nat" %in% names(parameters),
-                            msg = paste0(
-                              "Argument `binational` is `FALSE` suggesting that the projection \ndoes",
-                              " not discriminate between nationalities. \nHowever, `parameters` include",
-                              " column `nat` suggesting multiple nationalities. \nPlease change argument",
-                              " `binational` or remove column `nat` from `parameters`."
-                            )
+      msg = paste0(
+        "Argument `binational` is `FALSE` suggesting that the projection \ndoes",
+        " not discriminate between nationalities. \nHowever, `parameters` include",
+        " column `nat` suggesting multiple nationalities. \nPlease change argument",
+        " `binational` or remove column `nat` from `parameters`."
+      )
     )
 
     # Population
     assertthat::assert_that(!"nat" %in% names(population),
-                            msg = paste0(
-                              "Column `nat` is present in `population` but not in `parameters`.\n",
-                              " The presence of column `nat` suggests that the projection should",
-                              " discriminate \nbetween nationalities. This conflicts with the argument",
-                              " `binational` = `FALSE`. \nPlease change argument `binational` or remove",
-                              " column `nat` from `population` data."
-                            )
+      msg = paste0(
+        "Column `nat` is present in `population` but not in `parameters`.\n",
+        " The presence of column `nat` suggests that the projection should",
+        " discriminate \nbetween nationalities. This conflicts with the argument",
+        " `binational` = `FALSE`. \nPlease change argument `binational` or remove",
+        " column `nat` from `population` data."
+      )
     )
 
     # Create required data structure for project_raw()
@@ -308,10 +313,11 @@ propop <- function(
       mutate(nat = ifelse(rep == 2, "int", "ch")) |>
       # set all values for "int" at zero
       mutate(across(any_of(
-        c("birthrate", "int_mothers", "mor", "emi_int", "emi_nat", "acq",
+        c(
+          "birthrate", "int_mothers", "mor", "emi_int", "emi_nat", "acq",
           "imm_int_n", "imm_nat_n", "mig_sub"
-        )), ~if_else(nat == "int", 0, .x))
-      ) |>
+        )
+      ), ~ if_else(nat == "int", 0, .x))) |>
       # add remaining columns `acq` and `int_mothers`
       dplyr::mutate(acq = 0, int_mothers = 0) |>
       # arrange the data
@@ -336,72 +342,72 @@ propop <- function(
 
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
-                          msg = "Column `scen` is missing in parameters."
+    msg = "Column `scen` is missing in parameters."
   )
   assertthat::assert_that("sex" %in% names(parameters),
-                          msg = "Column `sex` is missing in parameters."
+    msg = "Column `sex` is missing in parameters."
   )
   assertthat::assert_that("age" %in% names(parameters),
-                          msg = "Column `age` is missing in parameters."
+    msg = "Column `age` is missing in parameters."
   )
   assertthat::assert_that("year" %in% names(parameters),
-                          msg = "Column `year` is missing in parameters."
+    msg = "Column `year` is missing in parameters."
   )
   assertthat::assert_that("birthrate" %in% names(parameters),
-                          msg = "Column `birthrate` is missing in parameters."
+    msg = "Column `birthrate` is missing in parameters."
   )
   assertthat::assert_that("mor" %in% names(parameters),
-                          msg = "Column `mor` is missing in parameters."
+    msg = "Column `mor` is missing in parameters."
   )
   assertthat::assert_that("emi_int" %in% names(parameters),
-                          msg = "Column `emi_int` is missing in parameters."
+    msg = "Column `emi_int` is missing in parameters."
   )
   assertthat::assert_that("emi_nat" %in% names(parameters),
-                          msg = "Column `emi_nat` is missing in parameters."
+    msg = "Column `emi_nat` is missing in parameters."
   )
   assertthat::assert_that("imm_int_n" %in% names(parameters),
-                          msg = "Column `imm_int_n` is missing in parameters."
+    msg = "Column `imm_int_n` is missing in parameters."
   )
   assertthat::assert_that("imm_nat_n" %in% names(parameters),
-                          msg = "Column `imm_nat_n` is missing in parameters."
+    msg = "Column `imm_nat_n` is missing in parameters."
   )
   assertthat::assert_that("spatial_unit" %in% names(parameters),
-                          msg = paste0(
-                            "Column `spatial_unit` is missing in ",
-                            "parameters."
-                          )
+    msg = paste0(
+      "Column `spatial_unit` is missing in ",
+      "parameters."
+    )
   )
 
   ## Optional parameter when requested ----
   # Subregional migration
   if (subregional == TRUE) {
     assertthat::assert_that("mig_sub" %in% names(parameters),
-                            msg = "Column `mig_sub` is missing in parameters."
+      msg = "Column `mig_sub` is missing in parameters."
     )
   }
 
   ## Population data frame ----
   assertthat::assert_that("year" %in% names(population),
-                          msg = "Column `year` is missing in `population`."
+    msg = "Column `year` is missing in `population`."
   )
   assertthat::assert_that(!any(is.na(population$year)),
-                          msg = "Column 'year' in `population` must not
+    msg = "Column 'year' in `population` must not
                           include any missing values (NA)."
   )
   assertthat::assert_that("spatial_unit" %in% names(population),
-                          msg = paste0(
-                            "Column `spatial_unit` is missing ",
-                            "in population."
-                          )
+    msg = paste0(
+      "Column `spatial_unit` is missing ",
+      "in population."
+    )
   )
   assertthat::assert_that(is.character(population$spatial_unit),
-                          !any(is.na(population$spatial_unit)),
-                          msg = paste0(
-                            "Column 'spatial_unit' in ",
-                            "`population` must be of type ",
-                            "`character`. Missing values (NA) are ",
-                            "not allowed."
-                          )
+    !any(is.na(population$spatial_unit)),
+    msg = paste0(
+      "Column 'spatial_unit' in ",
+      "`population` must be of type ",
+      "`character`. Missing values (NA) are ",
+      "not allowed."
+    )
   )
 
   ## Equivalence of spatial_unit in `parameters` and `population` ----
@@ -418,35 +424,35 @@ propop <- function(
   )
 
   assertthat::assert_that("sex" %in% names(population),
-                          msg = "Column `sex` is missing in `population`"
+    msg = "Column `sex` is missing in `population`"
   )
   assertthat::assert_that(all(population$sex %in% c("f", "m")),
-                          msg = paste0(
-                            "Column `sex` in `population` can",
-                            " only include the values `f` and `m`.",
-                            " Missing values (NA) are not allowed."
-                          )
+    msg = paste0(
+      "Column `sex` in `population` can",
+      " only include the values `f` and `m`.",
+      " Missing values (NA) are not allowed."
+    )
   )
   assertthat::assert_that("age" %in% names(population),
-                          msg = "Column `age` is missing in `population`"
+    msg = "Column `age` is missing in `population`"
   )
   assertthat::assert_that(!any(is.na(population$age)),
-                          msg = paste0(
-                            "Column 'age' in `population` must be ",
-                            "numeric. Missing values (NA) are not",
-                            " allowed."
-                          )
+    msg = paste0(
+      "Column 'age' in `population` must be ",
+      "numeric. Missing values (NA) are not",
+      " allowed."
+    )
   )
   assertthat::assert_that("n" %in% names(population),
-                          msg = "Column `n` is missing in `population`"
+    msg = "Column `n` is missing in `population`"
   )
   assertthat::assert_that(is.numeric(population$n),
-                          !any(is.na(population$n)),
-                          msg = paste0(
-                            "Column 'n' in `population` must be ",
-                            "numeric. Missing values (NA) are not",
-                            " allowed."
-                          )
+    !any(is.na(population$n)),
+    msg = paste0(
+      "Column 'n' in `population` must be ",
+      "numeric. Missing values (NA) are not",
+      " allowed."
+    )
   )
 
 
@@ -458,53 +464,53 @@ propop <- function(
   fert_last <- vctrs::vec_cast(fert_last, integer())
 
   assertthat::assert_that(is.integer(year_first),
-                          is.integer(year_last), year_first <= year_last,
-                          msg = paste0(
-                            "year_first must be smaller than or",
-                            "equal to year_last"
-                          )
+    is.integer(year_last), year_first <= year_last,
+    msg = paste0(
+      "year_first must be smaller than or",
+      "equal to year_last"
+    )
   )
   assertthat::assert_that(is.vector(age_groups),
-                          all(sapply(age_groups, is.numeric)),
-                          all(!is.na(age_groups)),
-                          msg = paste0(
-                            "The argument 'age_groups' must be a vector ",
-                            "containing only numeric values and no `NA` values."
-                          )
+    all(sapply(age_groups, is.numeric)),
+    all(!is.na(age_groups)),
+    msg = paste0(
+      "The argument 'age_groups' must be a vector ",
+      "containing only numeric values and no `NA` values."
+    )
   )
   assertthat::assert_that(is.integer(fert_first),
-                          msg = paste0(
-                            "The argument 'fert_first' must be an integer or ",
-                            "a numeric value without decimals"
-                          )
+    msg = paste0(
+      "The argument 'fert_first' must be an integer or ",
+      "a numeric value without decimals"
+    )
   )
   assertthat::assert_that(is.integer(fert_last),
-                          msg = paste0(
-                            "The argument 'fert_last' must be an integer or a ",
-                            "numeric value without decimals"
-                          )
+    msg = paste0(
+      "The argument 'fert_last' must be an integer or a ",
+      "numeric value without decimals"
+    )
   )
   assertthat::assert_that(is.integer(fert_first),
-                          is.integer(fert_last), fert_first <= fert_last,
-                          msg = paste0(
-                            "fert_first must be smaller than or ",
-                            "equal to fert_last"
-                          )
+    is.integer(fert_last), fert_first <= fert_last,
+    msg = paste0(
+      "fert_first must be smaller than or ",
+      "equal to fert_last"
+    )
   )
   assertthat::assert_that(is.numeric(share_born_female),
-                          msg = "The argument 'share_born_female' must be numeric."
+    msg = "The argument 'share_born_female' must be numeric."
   )
   assertthat::assert_that(is.logical(subregional),
-                          msg = paste0(
-                            "The argument 'subregional' must ",
-                            "either be `TRUE` or `FALSE`."
-                          )
+    msg = paste0(
+      "The argument 'subregional' must ",
+      "either be `TRUE` or `FALSE`."
+    )
   )
   assertthat::assert_that(is.character(spatial_unit),
-                          msg = paste0(
-                            "The argument 'spatial_unit' must be ",
-                            "of type `character`."
-                          )
+    msg = paste0(
+      "The argument 'spatial_unit' must be ",
+      "of type `character`."
+    )
   )
 
   ## Feedback if non-standard values are used ----
@@ -549,15 +555,17 @@ propop <- function(
     pull()
 
   # Create all combinations of scenario and spatial_unit:
-  combo_df <- tidyr::crossing(scen = scenarios,
-                              spatial_unit = spatial_units)
+  combo_df <- tidyr::crossing(
+    scen = scenarios,
+    spatial_unit = spatial_units
+  )
 
   # Use pmap_dfr to iterate over both scenario and spatial_unit:
   projection_raw <- purrr::pmap_dfr(
     combo_df,
     function(scen, spatial_unit) {
       project_raw(
-        parameters = parameters  |>
+        parameters = parameters |>
           filter(scen == !!scen, spatial_unit == !!spatial_unit),
         year_last = year_last,
         year_first = year_first,
@@ -565,15 +573,12 @@ propop <- function(
         fert_first = fert_first,
         fert_last = fert_last,
         share_born_female = share_born_female,
-        n = population  |>
+        n = population |>
           filter(spatial_unit == !!spatial_unit) |>
           # filter(.data[["spatial_unit"]] == spatial_unit) |>
           pull(n),
-        subregional = subregional) |>
-        # TODO this alters the strucure of project_raw
-        # Add identifiers to result
-        dplyr::mutate(scen = scen,
-               spatial_unit = as.factor(spatial_unit))
+        subregional = subregional
+      )
     }
   )
 
@@ -603,7 +608,7 @@ propop <- function(
     # remove the `nat` and `acq`-columns
     projection_results <- projection_results |>
       dplyr::filter(nat != "int") |>
-      dplyr::select(-any_of(c("nat" , "acq")))
+      dplyr::select(-any_of(c("nat", "acq")))
   }
 
   # Format output if subregional == FALSE
@@ -617,40 +622,50 @@ propop <- function(
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
     "Scenario(s): ",
-    "{.val {unique(scenarios)}}")
+    "{.val {unique(scenarios)}}"
+  )
   cli::cli_text(
     "Year of starting population: ",
-    "{.val {min(as.numeric(as.character(population$year)))}}")
+    "{.val {min(as.numeric(as.character(population$year)))}}"
+  )
   cli::cli_text(
     "Number of age groups: ",
-    "{.val {age_groups}}")
+    "{.val {age_groups}}"
+  )
   cli::cli_text(
     "Fertile period: ",
     "{.val {fert_first}}",
     "-",
-    "{.val {fert_last}}")
+    "{.val {fert_last}}"
+  )
   cli::cli_text(
     "Share of female newborns: ",
-    "{.val {round(share_born_female, digits = 3)}}")
+    "{.val {round(share_born_female, digits = 3)}}"
+  )
   cli::cli_text(
     "Size of starting population: ",
     "{.val {population |> dplyr:: summarise(sum(n, na.rm = TRUE)) |>
-    dplyr::pull()}}")
+    dplyr::pull()}}"
+  )
   cli::cli_text(
     "Projection period: ",
     "{.val {year_first}}",
     "-",
-    "{.val {year_last}}")
+    "{.val {year_last}}"
+  )
   cli::cli_text(
     "Nationality-specific projection: ",
-    "{.val {if (binational) 'yes' else 'no'}}")
+    "{.val {if (binational) 'yes' else 'no'}}"
+  )
   cli::cli_text(
     "Subregional migration: ",
-    "{.val {if (subregional) 'yes' else 'no'}}")
+    "{.val {if (subregional) 'yes' else 'no'}}"
+  )
   cli::cli_rule()
   cli::cli_text(
     "{.emph Projected} population size by ",
-    "{.val {year_last}}: ")
+    "{.val {year_last}}: "
+  )
 
   purrr::walk(scenarios, function(scenario) {
     pop_size <- projection_results %>%
@@ -678,7 +693,8 @@ propop <- function(
       n_input <- parameters |>
         filter(scen == scenario) |>
         dplyr::select(
-          year, scen, spatial_unit, age, sex, nat, imm_int = imm_int_n,
+          year, scen, spatial_unit, age, sex, nat,
+          imm_int = imm_int_n,
           imm_nat = imm_nat_n
         ) |>
         dplyr::filter(year >= year_first & year <= year_last) |>
@@ -698,7 +714,6 @@ propop <- function(
       #   mutate(imm_nat = imm_nat + 100)
       # n_input <- n_input |>
       #   mutate(imm_int = imm_int + 50)
-
     }
 
     ## If there is one nationality
@@ -707,7 +722,8 @@ propop <- function(
       n_input <- parameters |>
         filter(scen == scenario) |>
         dplyr::select(
-          year, scen, spatial_unit, age, sex, imm_int = imm_int_n, imm_nat = imm_nat_n
+          year, scen, spatial_unit, age, sex,
+          imm_int = imm_int_n, imm_nat = imm_nat_n
         ) |>
         dplyr::filter(year >= year_first & year <= year_last) |>
         dplyr::mutate(across(c(year:sex), as.character)) |>
@@ -716,8 +732,10 @@ propop <- function(
       ### Prepare results for comparison
       n_output <- projection_results |>
         filter(scen == scenario) |>
-        dplyr::select(year, spatial_unit, age, sex,
-                      imm_int, imm_nat) |>
+        dplyr::select(
+          year, spatial_unit, age, sex,
+          imm_int, imm_nat
+        ) |>
         dplyr::mutate(across(c(year:sex), as.character)) |>
         arrange(year, spatial_unit, sex, age)
       # TODO use next lines in unit test (expect fail)
@@ -726,30 +744,32 @@ propop <- function(
       #   mutate(imm_nat = imm_nat + 100)
       # n_input <- n_input |>
       #   mutate(imm_int = imm_int + 50)
-
-
     }
 
 
     # Feedback if input doesn't match output
     if (!isTRUE(all.equal(n_input$imm_int, n_output$imm_int))) {
       cli::cli_text(cli::col_red("Warning message:"))
-      cli::cli_text("When comparing `imm_int_n` from `parameters` with `imm_int`
+      cli::cli_text(
+        "When comparing `imm_int_n` from `parameters` with `imm_int`
                   in the results (scenario = '",
-                    scenario,
-                    "'), there is an unexpected discrepancy in the
+        scenario,
+        "'), there is an unexpected discrepancy in the
                   number of people for at least one demographic group in at
-                  least one year.")
+                  least one year."
+      )
     }
 
     if (!isTRUE(all.equal(n_input$imm_nat, n_output$imm_nat))) {
       cli::cli_text(cli::col_red("Warning message:"))
-      cli::cli_text("When comparing `imm_nat_n` from `parameters` with `imm_nat`
+      cli::cli_text(
+        "When comparing `imm_nat_n` from `parameters` with `imm_nat`
                   in the results (scenario = '",
-                    scenario,
-                    "'), there is an unexpected discrepancy in the
+        scenario,
+        "'), there is an unexpected discrepancy in the
                   number of people for at least one demographic group in at
-                  least one year.")
+                  least one year."
+      )
     }
   }
 

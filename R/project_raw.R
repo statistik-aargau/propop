@@ -376,6 +376,12 @@ project_raw <-
     # Birth
     BIRTHS <- empty_vector_NA
 
+    # Extract scenario and spatial unit
+    # Scenario
+    scen_vec <- rep(unique(parameters$scen), length_pop_vec)
+    # Spatial unit
+    spatial_unit_vec <- rep(unique(parameters$spatial_unit), length_pop_vec)
+
 
     ## Loop over years ----
     for (i in seq_len(proj_length)) {
@@ -1267,6 +1273,10 @@ project_raw <-
 
     ## Final data set ----
     df <- data.frame(
+      # scenario
+      scen = scen_vec,
+      # spatial unit
+      spatial_unit = spatial_unit_vec,
       # pop size
       N = n,
       # number of births
