@@ -5,6 +5,7 @@
     Output
       tibble::tibble(
         year = rep(2025, 202L),
+        scen = factor(rep("reference", 202L)),
         spatial_unit = factor(rep("Aargau", 202L)),
         age = rep(seq(0, 100, by = 1), 2),
         sex = factor(rep(c("m", "f"), each = 101L), levels = c("m", "f")),
@@ -263,7 +264,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -285,7 +286,8 @@
               sex = c("sex=m", "sex=f"),
               nat = c("nat=ch", "nat=int"),
               year = c("year=2024", "year=2025"),
-              spatial_unit = "spatial_unit=Aargau"
+              spatial_unit = "spatial_unit=Aargau",
+              scen = "scen=reference"
             )
           )
         )
@@ -297,6 +299,7 @@
     Output
       tibble::tibble(
         year = rep(2025, 202L),
+        scen = factor(rep("reference", 202L)),
         spatial_unit = factor(rep("Aargau", 202L)),
         age = rep(seq(0, 100, by = 1), 2),
         sex = factor(rep(c("m", "f"), each = 101L), levels = c("m", "f")),
@@ -546,7 +549,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 1L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -568,7 +571,8 @@
               sex = c("sex=m", "sex=f"),
               nat = c("nat=ch", "nat=int"),
               year = c("year=2024", "year=2025"),
-              spatial_unit = "spatial_unit=Aargau"
+              spatial_unit = "spatial_unit=Aargau",
+              scen = "scen=reference"
             )
           )
         )
@@ -580,6 +584,7 @@
     Output
       tibble::tibble(
         year = rep(2025, 1010L),
+        scen = factor(rep("reference", 1010L)),
         spatial_unit = factor(rep(c("1", "2", "3", "4", "5"), each = 202L)),
         age = rep(seq(0, 100, by = 1), 10),
         sex = factor(rep(rep(c("m", "f"), 5), each = 101L), levels = c("m", "f")),
@@ -1652,7 +1657,7 @@
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 5L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 2L, spatial_unit = 5L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -1677,7 +1682,8 @@
               spatial_unit = c(
                 "spatial_unit=1", "spatial_unit=2", "spatial_unit=3", "spatial_unit=4",
                 "spatial_unit=5"
-              )
+              ),
+              scen = "scen=reference"
             )
           )
         )
