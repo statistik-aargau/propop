@@ -16,13 +16,14 @@ utils::globalVariables(c(
   "nat", # <calculate_shares>
   "sex", # <calculate_shares>
   "n_sum", # <calculate_shares>
-  "spatial_unit", # <complement_projection>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>
   "year", # <complement_projection>
+  "scen", # <complement_projection>
   "nat", # <complement_projection>
   "sex", # <complement_projection>
+  "spatial_unit", # <complement_projection>
   "new_age_group_100", # <complement_projection>
   "acq", # <complement_projection>
   "births", # <complement_projection>

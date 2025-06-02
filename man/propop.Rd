@@ -9,7 +9,7 @@ propop(
   population,
   year_first,
   year_last,
-  scenarios,
+  scenarios = NULL,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -66,6 +66,10 @@ the one preceding the first year of the projection.
 
 \item{year_last}{numeric, last year to be projected.}
 
+\item{scenarios}{\bold{(optional)}, character,
+projection scenario(s); must match information in \code{parameters}.
+Defaults to values in variable \code{scen} in \code{parameters}.}
+
 \item{age_groups}{numeric, number of age classes. Creates a vector with
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
 currently be set to \verb{= 101} (FSO standard number of age groups).}
@@ -100,6 +104,7 @@ The output includes several \bold{identifiers} that indicate to which
 demographic group, year, and spatial unit the results in the rows refer
 to:
 \item{year}{integer, indicating the projected years.}
+\item{scen}{character, indicating the projection scenario.}
 \item{spatial_unit}{factor, spatial units for which the projection
 was run (e.g., canton, districts, municipalities).}
 \item{age}{integer, ranging from \code{0}n to \code{100} (including those older
@@ -157,9 +162,18 @@ names, and factor levels need to match the specifications listed below under
 # Run projection for the sample data (whole canton of Aargau)
 propop(
   parameters = fso_parameters,
-  scenarios = c("reference", "high", "low"),
   year_first = 2024,
   year_last = 2027,
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
+)
+propop(
+  parameters = fso_parameters |>
+    dplyr::filter(scen == "reference" | scen == "high"),
+  year_first = 2024,
+  year_last = 2026,
+  scenarios = c("reference", "high"),
   population = fso_population,
   subregional = FALSE,
   binational = TRUE
