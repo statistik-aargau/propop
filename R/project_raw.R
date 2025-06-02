@@ -1274,9 +1274,9 @@ project_raw <-
     ## Final data set ----
     df <- data.frame(
       # scenario
-      scen = scen_vec,
+      scen = as.factor(scen_vec),
       # spatial unit
-      spatial_unit = spatial_unit_vec,
+      spatial_unit = as.factor(spatial_unit_vec),
       # pop size
       N = n,
       # number of births

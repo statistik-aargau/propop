@@ -56,6 +56,17 @@ complement_projection <- function(skeleton,
     msg = "Column `spatial_unit` is missing in `projection_raw`."
   )
 
+  assertthat::assert_that(
+    is.factor(projection_raw$scen),
+    msg = "Column `scen` in `projection_raw` must be a factor."
+  )
+
+  assertthat::assert_that(
+    is.factor(projection_raw$spatial_unit),
+    msg = "Column `spatial_unit` in `projection_raw` must be a factor."
+  )
+
+
   # TODO ensure identical arrangement of scen & spatial_unit
   # TODO or remove these columns from skeleton
   # TODO or don't create them in the first place (just repeat skeleton as often as require)

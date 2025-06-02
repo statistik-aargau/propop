@@ -62,8 +62,8 @@ test_that("snapshot test complement_projection()", {
   #   constructive::construct()
 
   raw_df <- data.frame(
-    scen = rep("reference", 808L),
-    spatial_unit = rep("Aargau", 808L),
+    scen = factor(rep("reference", 808L)),
+    spatial_unit = factor(rep("Aargau", 808L)),
     N = c(
       2371, 2542, 2891, 2766, 2794, 2782, 2787, 2726, 2837, 2866, 2760, 2766, 2799,
       2823, 2707, 2768, 2660, 2744, 2759, 2767, 2730, 2686, 2639, 2872, 2812, 2874,
