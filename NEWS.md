@@ -1,3 +1,5 @@
+# propop 1.4.0
+
 # Unreleased
 - `propop::propop()` can now perform multiple projection scenarios 
 in a single run. 
