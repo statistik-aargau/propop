@@ -15,6 +15,8 @@
 #'
 #' @inheritSection get_parameters Parameters
 #'
+#' @inheritSection get_parameters Projected population
+#'
 #' @inheritSection get_parameters Details about calculated variables
 #'
 #' @name fso_parameters

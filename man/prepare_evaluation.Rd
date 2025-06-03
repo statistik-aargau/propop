@@ -14,7 +14,7 @@ prepare_evaluation(
 }
 \arguments{
 \item{data_benchmark}{data frame containing benchmark data (e.g., actual /
-official population records obtained with \code{propop::get_population()}).}
+official population records; can be obtained with \code{propop::get_population()}).}
 
 \item{n_benchmark}{numeric column containing the benchmark population of each
 demographic group.}
@@ -41,7 +41,7 @@ from the projection. Each row contains a unique combination of year, spatial
 unit, and demographic group.
 }
 \description{
-Takes population projections and benchmark data (typically population records)
+Takes population projections and benchmark data (e.g., population records)
 and prepares a combined data frame to evaluate the performance of the
 projection. For more details on usage, see
 \code{vignette("evaluate", package = "propop")}.
@@ -52,10 +52,10 @@ Both input data frames must contain the following variables for the
 \bold{same range of years}:
 \describe{
 \item{year}{character, year in which the population was recorded.}
-\item{spatial_unit}{character, indicating the spatial entities (e.g.,
-cantons, districts, municipalities).}
-\item{nat}{character, ch = Swiss, int = foreign / international.}
-\item{sex}{character, f = female, m = male.}
+\item{spatial_unit}{character, indicating the projected spatial entities
+(e.g., cantons, districts, municipalities).}
+\item{nat}{character, \code{ch} = Swiss, \code{int} = foreign / international.}
+\item{sex}{character, \code{f} = female, \code{m} = male.}
 \item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
 (including those older than 100).}
 \item{n}{numeric, number of people per year, spatial entity, and

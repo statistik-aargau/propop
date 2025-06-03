@@ -75,6 +75,12 @@ born to non-Swiss mothers
 }
 }
 
+\section{Projected population}{
+
+\code{n_projected} is the number of people per demographic group and year on
+December 31 (as projected by the FSO in the 2025 model).
+}
+
 \section{Details about calculated variables}{
 
 

@@ -28,7 +28,7 @@ records in population registry) or a base model (e.g., when testing alternative
 models or when comparing against the official FSO forecast). 
 
 Evaluations can be carried out individually **per observation unit** or like a
-summary statistics **aggregated across all observations** (e.g., all years, 
+summary statistics **aggregated across observations** (e.g., all years, 
 demographic groups, spatial units).
 
 ## Get the data
@@ -53,7 +53,8 @@ data_benchmark <- get_population(
 ```
 
 Get the parameters for the projection (note that these parameters aren't available
-anymore; i.e., this code will fail if you try it for the year 2019-2050):
+anymore; i.e., this code will fail from 2025 onwards if you try it for the years 
+2019-2050):
 
 ``` {r get-parameters, message = FALSE, warning=FALSE, results='hide', eval = FALSE}
 data_parameters <- get_parameters(
@@ -67,10 +68,10 @@ Run the population projection for 2019-2022:
 
 ``` {r project-canton, eval = FALSE}
 data_projected <- propop(
-  parameters = data_parameters |>
-    dplyr::filter(scen == "reference"),
+  parameters = data_parameters,
   year_first = 2019,
   year_last = 2050,
+  scenarios = "reference",
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -287,15 +288,30 @@ Instead of comparing the propop projection with population records, we can also
 use the evaluation function to check how close the `propop` projection comes to
 FSO's projection from the 2025 model.
 
-In the example data, the differences are extremely small (error <= 1):
+``` {r project-canton-2025}
+projection_2025 <- propop(
+  parameters = fso_parameters,
+  year_first = 2024,
+  year_last = 2055,
+  scenarios = "reference",
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  # population records from 2018 as starting point
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
+)
+```
 
 ``` {r fso-comparison}
 fso_propop <- prepare_evaluation(
-  data_benchmark = data_parameters |>
+  data_benchmark = fso_parameters |>
     dplyr::filter(scen == "reference" & year > 2023) |>
     dplyr::mutate(n = fso_projection_n),
   n_benchmark = "n",
-  data_projected = data_projected |>
+  data_projected = projection_2025 |>
     dplyr::filter(year > 2023),
   age_groups = "age_groups_3",
   n_projected = "n_dec"
@@ -327,7 +343,8 @@ add_percent <- function(x) {
 }
 
 ggplot(fso_propop) +
-  geom_jitter(aes(x = year, y = pe), size = 0.7) +
+  geom_jitter(aes(x = year, y = pe, color = age), size = 0.8) +
+  scale_color_manual(values = c("age_00_19" = "#ffa81f", "age_20_64" = "#96D4FF", "age_65_plus" = "#A05388")) +
   labs(
     title = "Differences between FSO and propop projections for each demographic group (2024-2055)",
     x = "Year",
@@ -337,7 +354,13 @@ ggplot(fso_propop) +
   theme_minimal()
 ```
 
-Furthermore, across all 404 demographic groups and 31 years, the largest 
-difference between the FSO projections and those from {propop} is just one 
-person (when using the exact same starting population, which are not publicly 
-available).
+In the example data, the differences are as much as 30 person per demographic 
+group. The main reason for these differences is that FSO uses a different starting 
+population, which mainly differs for newborns and old people.
+
+When using the exact same starting population, which is not publicly available, 
+the largest difference between the FSO projections and those from {propop} is 
+just one person across all 404 demographic groups and 31 years. 
+
+
+
