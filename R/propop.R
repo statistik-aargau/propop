@@ -334,7 +334,7 @@ propop <- function(
       select(any_of(c(
         "nat", "sex", "age", "year", "scen", "birthrate", "int_mothers",
         "mor", "emi_int", "emi_nat", "acq", "imm_int_n", "imm_nat_n",
-        "mig_sub", "spatial_unit"
+        "mig_sub", "spatial_unit", "scen"
       ))) |>
       arrange(nat, desc(sex), year, spatial_unit)
 
