@@ -9,6 +9,7 @@ propop(
   population,
   year_first,
   year_last,
+  scenarios = NULL,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -25,8 +26,8 @@ projection for a specific spatial level (e.g., canton, municipality).
 \item \code{year}, character, projection year.
 \item \code{spatial_unit}, character, ID of spatial entity (e.g., canton,
 municipality) for which to run the projections.
-\item \code{scen}, character, projection scenario, is used to subset data frames
-with multiple scenarios (r = reference, l = low growth, h = high growth).
+\item \code{scen}, character, one or several projection scenario(s). The main
+scenarios are usually "reference", "low" growth, and "high" growth.
 \item \code{nat} \bold{(optional)}, character, nationality (ch = Swiss; int =
 foreign / international).
 \item \code{sex}, character (f = female, m = male).
@@ -65,6 +66,11 @@ the one preceding the first year of the projection.
 
 \item{year_last}{numeric, last year to be projected.}
 
+\item{scenarios}{\bold{(optional)}, character, indicating which
+projection scenario(s) shall be run; the corresponding information
+must be available in \code{parameters}.
+Defaults to the values in variable \code{scen} in \code{parameters}.}
+
 \item{age_groups}{numeric, number of age classes. Creates a vector with
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
 currently be set to \verb{= 101} (FSO standard number of age groups).}
@@ -91,7 +97,7 @@ projection is run without distinguishing between nationalities.}
 region or subregions for which the projection shall be performed.}
 }
 \value{
-Returns a data frame that includes the number of people for each demographic
+Returns a \bold{data frame} that includes the number of people for each demographic
 group per year (for projected years) and spatial unit. The number of
 rows is the product of all years times all demographic groups times
 all spatial units.
@@ -99,6 +105,7 @@ The output includes several \bold{identifiers} that indicate to which
 demographic group, year, and spatial unit the results in the rows refer
 to:
 \item{year}{integer, indicating the projected years.}
+\item{scen}{character, indicating the projection scenario(s).}
 \item{spatial_unit}{factor, spatial units for which the projection
 was run (e.g., canton, districts, municipalities).}
 \item{age}{integer, ranging from \code{0}n to \code{100} (including those older
@@ -155,10 +162,19 @@ names, and factor levels need to match the specifications listed below under
 \examples{
 # Run projection for the sample data (whole canton of Aargau)
 propop(
-  parameters = fso_parameters |>
-  dplyr::filter(scen == "reference"),
+  parameters = fso_parameters,
   year_first = 2024,
   year_last = 2027,
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
+)
+propop(
+  parameters = fso_parameters |>
+    dplyr::filter(scen == "reference" | scen == "high"),
+  year_first = 2024,
+  year_last = 2026,
+  scenarios = c("reference", "high"),
   population = fso_population,
   subregional = FALSE,
   binational = TRUE

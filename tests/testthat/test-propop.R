@@ -15,9 +15,42 @@ test_that("Simple propop test for ci", {
       subregional = FALSE,
       binational = TRUE
     )
-    ))
+  ))
 }
 )
+
+# Ensure that N_high > N_reference > N_low
+
+test_that("N_totals of scenarios are ordered plausibly", {
+
+  n_ordered <- propop(
+    parameters = fso_parameters,
+    year_first = 2024,
+    year_last = 2025,
+    population = fso_population,
+    subregional = FALSE,
+    binational = TRUE
+  ) |>
+    # Get end total per scenario
+    filter(year == 2025)  |>
+    summarise(total = sum(n_dec), .by = "scen")
+
+  n_high <- n_ordered |>
+    filter(scen == "high") |>
+    pull(total)
+
+  n_reference <- n_ordered |>
+    filter(scen == "reference") |>
+    pull(total)
+
+  n_low <- n_ordered |>
+    filter(scen == "low") |>
+    pull(total)
+
+  expect_gt(n_high, n_reference)
+  expect_gt(n_reference, n_low)
+})
+
 
 # Prepare snapshot 1 region ----
 
@@ -436,12 +469,20 @@ test_that("tests propop: 1 region vs. 5 regions", {
     subregional = FALSE
   )
 
+  # Check if components add up
+  balance_check <- check_balance(output_propop_1r)
+
+  expect_equal(balance_check$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check$missings, 0, info =
+                 "There are missings in at least one row")
+
   # Run snapshot 1 region ----
   expect_snapshot(constructive::construct(output_propop_1r))
 
 
 
-  # Prepare snapshot for subregions -----
+  # Prepare snapshot for 5 subregions -----
 
   ## FSO parameters with fictitious subregions ----
   # fso_parameters |>
@@ -1080,6 +1121,13 @@ test_that("tests propop: 1 region vs. 5 regions", {
     subregional = TRUE
   )
 
+  # Check if components add up
+  balance_check <- check_balance(output_propop_5r)
+
+  expect_equal(balance_check$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check$missings, 0, info =
+                 "There are missings in at least one row")
 
   # run snapshot 5 subregions ----
   expect_snapshot(constructive::construct(output_propop_5r))
@@ -1098,6 +1146,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
     binational = TRUE,
     subregional = FALSE
   )
+
+  # Check if components add up
+  balance_check <- check_balance(output_propop_5r_F)
+
+  expect_equal(balance_check$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check$missings, 0, info =
+                 "There are missings in at least one row")
 
   # Remove additional column to enable fair comparison
   output_propop_5r_T <- output_propop_5r |>
@@ -1119,11 +1175,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
     summarise(n = sum(n), .by = c(year, nat, sex, age)) |>
     arrange(year, nat, sex, age)
 
-
-
   # run equal starting populations ----
   expect_equal(compare_pop1r, compare_pop5r)
-
 
   ### parameters should be identical in both versions
   compare_params_1r <- parameters_short_1r |>

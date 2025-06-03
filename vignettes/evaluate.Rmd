@@ -314,6 +314,12 @@ fso_propop |>
 ```
 
 ```{r fig.width = 9, fig.height = 7, echo = FALSE}
+#| fig.alt: >
+#|   Time series scatterplot with time on x-axis. y-axis shows difference
+#|   between FSO projection and result from propop projection for three 
+#|   age classes (0-19 years, 20-64 years, 65 years and older).
+#|   The largest difference is smaller than 0.002%.
+
 library(ggplot2)
 
 add_percent <- function(x) {

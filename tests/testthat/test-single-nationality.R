@@ -210,7 +210,6 @@ test_that("propop single nation fails if 1 level is missing in `nat`", {
     ),
   )
 
-
   ## Prepare starting population ----
 
   ### Population = CH ----
@@ -748,6 +747,14 @@ test_that("propop single nation projection with 1 region", {
 
   #### Tests ----
 
+  ### Check if components add up 1
+  balance_check_1 <- check_balance(sub_F_binat_F_CH)
+
+  expect_equal(balance_check_1$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check_1$missings, 0, info =
+                 "There are missings in at least one row")
+
   ### Should match snapshot data
   expect_snapshot(constructive::construct(sub_F_binat_F_CH))
 
@@ -776,6 +783,15 @@ test_that("propop single nation projection with 1 region", {
   )
 
   #### Tests ----
+
+  ### Check if components add up 2
+  balance_check_2 <- check_balance(sub_F_binat_F_INT)
+
+  expect_equal(balance_check_2$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check_2$missings, 0, info =
+                 "There are missings in at least one row")
+
   ### Should match snapshot data
   expect_snapshot(constructive::construct(sub_F_binat_F_INT))
 
@@ -1188,6 +1204,15 @@ test_that("propop single nation projection with 5 regions", {
   )
 
   ## Tests ----
+
+  ### Check if components add up 3
+  balance_check_3 <- check_balance(sub_T_binat_F_CH)
+
+  expect_equal(balance_check_3$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check_3$missings, 0, info =
+                 "There are missings in at least one row")
+
 
   ### Should match snapshot data
   expect_snapshot(constructive::construct(sub_T_binat_F_CH))

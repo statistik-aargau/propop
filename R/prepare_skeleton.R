@@ -2,20 +2,27 @@
 #'
 #' @description
 #' Create empty data frame (skeleton) containing information about demographic
-#' groups, years, and spatial levels.
+#' groups, years, spatial levels, and scenarios.
 #'
 #' @param age_groups numeric,  number of 1-year age classes (typically 101).
 #' @param year_first integer, indicating the first year of the projection period.
 #'    The results will also include the starting population.
 #' @param year_last integer, indicating the last year of the projection period.
-#' @param spatial_unit character vector, at least one region
+#' @param spatial_unit character vector, at least one region.
+#' @param scenarios character vector, indicating the names of all projection
+#'    scenarios. Defaults to `scenarios`, which corresponds to the unique values
+#'    provided to `propop::propop()` via `parameters$scen`.
 #'
 #' @return Empty data frame including all combinations of the input variables.
 #'
 #' @noRd
 
 prepare_skeleton <-
-  function(age_groups, year_first, year_last, spatial_unit) {
+  function(age_groups,
+           year_first,
+           year_last,
+           spatial_unit,
+           scenarios) {
     # check input
     assertthat::assert_that(is.numeric(age_groups),
       !is.na(age_groups),
@@ -31,12 +38,11 @@ prepare_skeleton <-
       is.numeric(year_last), year_first <= year_last,
       msg = "year_first must be smaller than or equal to year_last"
     )
-    assertthat::assert_that(is.character(spatial_unit),
+    assertthat::assert_that(
       all(!is.na(spatial_unit)),
-      all(nzchar(spatial_unit)),
       msg = paste0(
-        "The argument 'spatial_unit' must be of type `character`",
-        " and cannot include any `NA` or empty elements."
+        "The argument 'spatial_unit' ",
+        "cannot include any `NA` or empty elements."
       )
     )
 
@@ -46,7 +52,13 @@ prepare_skeleton <-
       sex = c("m", "f"),
       nat = c("ch", "int"),
       year = ((year_first - 1):year_last),
-      spatial_unit = spatial_unit
+      # Include spatial_unit and scen to ensure sufficient number of rows
+      spatial_unit = spatial_unit,
+      scen = scenarios
     ) |>
+      # Remove spatial_unit and scen because they will be provided by
+      # projection_raw; presence of these variables in both data frames
+      # would cause problems
+      dplyr::select(-spatial_unit, -scen) |>
       tibble::as_tibble()
   }

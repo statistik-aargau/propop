@@ -8,11 +8,10 @@
         sex = factor(rep(rep(c("m", "f"), 8), each = 101L), levels = c("m", "f")),
         nat = factor(rep(rep(c("ch", "int"), 4), each = 202L)),
         year = rep(2024:2027, each = 404L),
-        spatial_unit = factor(rep("Canton", 1616L)),
       ) |>
         structure(
           out.attrs = list(
-            dim = c(age = 101L, sex = 2L, nat = 2L, year = 4L, spatial_unit = 1L),
+            dim = c(age = 101L, sex = 2L, nat = 2L, year = 4L, spatial_unit = 1L, scen = 1L),
             dimnames = list(
               age = c(
                 "age=  0", "age=  1", "age=  2", "age=  3", "age=  4", "age=  5", "age=  6",
@@ -34,7 +33,8 @@
               sex = c("sex=m", "sex=f"),
               nat = c("nat=ch", "nat=int"),
               year = c("year=2024", "year=2025", "year=2026", "year=2027"),
-              spatial_unit = "spatial_unit=Canton"
+              spatial_unit = "spatial_unit=Canton",
+              scen = "scen=reference"
             )
           )
         )

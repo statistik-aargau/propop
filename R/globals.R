@@ -16,10 +16,22 @@ utils::globalVariables(c(
   "nat", # <calculate_shares>
   "sex", # <calculate_shares>
   "n_sum", # <calculate_shares>
+  "n_jan", # <check_balance>
+  "births", # <check_balance>
+  "mor", # <check_balance>
+  "emi_int", # <check_balance>
+  "emi_nat", # <check_balance>
+  "imm_int", # <check_balance>
+  "imm_nat", # <check_balance>
+  "pop_balance", # <check_balance>
+  "acq", # <check_balance>
+  "mig_sub", # <check_balance>
+  "n_dec", # <check_balance>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>
   "year", # <complement_projection>
+  "scen", # <complement_projection>
   "nat", # <complement_projection>
   "sex", # <complement_projection>
   "spatial_unit", # <complement_projection>
@@ -96,5 +108,16 @@ utils::globalVariables(c(
   "sex", # <project_raw>
   "nat", # <project_raw>
   "value", # <project_raw>
+  "nat", # <propop>
+  "sex", # <propop>
+  "year", # <propop>
+  "age", # <propop>
+  "scen", # <propop>
+  "n_dec", # <propop>
+  "total", # <propop>
+  "imm_int_n", # <propop>
+  "imm_nat_n", # <propop>
+  "imm_int", # <propop>
+  "imm_nat", # <propop>
   NULL
 ))
