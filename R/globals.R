@@ -23,9 +23,10 @@ utils::globalVariables(c(
   "emi_nat", # <check_balance>
   "imm_int", # <check_balance>
   "imm_nat", # <check_balance>
-  "acq", # <check_balance>
-  "n_dec", # <check_balance>
   "pop_balance", # <check_balance>
+  "acq", # <check_balance>
+  "mig_sub", # <check_balance>
+  "n_dec", # <check_balance>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>
