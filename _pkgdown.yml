@@ -44,6 +44,7 @@ reference:
   desc: >
     Functions to evaluate projection results
   contents:
+  - check_balance
   - prepare_evaluation
   - compute_measures
   - aggregate_measures
