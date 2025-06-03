@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   evaluate: evaluate.html
   prepare_data: prepare_data.html
   project_single_region: project_single_region.html
   project_subregions: project_subregions.html
-last_built: 2025-05-20T05:48Z
+last_built: 2025-06-03T11:49Z
 urls:
   reference: https://statistik-aargau.github.io/propop/reference
   article: https://statistik-aargau.github.io/propop/articles

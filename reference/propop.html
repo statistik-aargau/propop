@@ -53,7 +53,7 @@ parameters:'><meta property="og:image" content="https://statistik-aargau.github.
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,6 +112,7 @@ names, and factor levels need to match the specifications listed below under
 <span>  <span class="va">population</span>,</span>
 <span>  <span class="va">year_first</span>,</span>
 <span>  <span class="va">year_last</span>,</span>
+<span>  scenarios <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
@@ -131,8 +132,8 @@ names, and factor levels need to match the specifications listed below under
 projection for a specific spatial level (e.g., canton, municipality).</p><ul><li><p><code>year</code>, character, projection year.</p></li>
 <li><p><code>spatial_unit</code>, character, ID of spatial entity (e.g., canton,
 municipality) for which to run the projections.</p></li>
-<li><p><code>scen</code>, character, projection scenario, is used to subset data frames
-with multiple scenarios (r = reference, l = low growth, h = high growth).</p></li>
+<li><p><code>scen</code>, character, one or several projection scenario(s). The main
+scenarios are usually "reference", "low" growth, and "high" growth.</p></li>
 <li><p><code>nat</code> <b>(optional)</b>, character, nationality (ch = Swiss; int =
 foreign / international).</p></li>
 <li><p><code>sex</code>, character (f = female, m = male).</p></li>
@@ -176,6 +177,13 @@ the one preceding the first year of the projection.</p><ul><li><p><code>year</co
 <dd><p>numeric, last year to be projected.</p></dd>
 
 
+<dt id="arg-scenarios">scenarios<a class="anchor" aria-label="anchor" href="#arg-scenarios"></a></dt>
+<dd><p><b>(optional)</b>, character, indicating which
+projection scenario(s) shall be run; the corresponding information
+must be available in <code>parameters</code>.
+Defaults to the values in variable <code>scen</code> in <code>parameters</code>.</p></dd>
+
+
 <dt id="arg-age-groups">age_groups<a class="anchor" aria-label="anchor" href="#arg-age-groups"></a></dt>
 <dd><p>numeric, number of age classes. Creates a vector with
 1-year age classes running from <code>0</code> to (<code>age_groups</code> - 1). Must
@@ -217,7 +225,7 @@ region or subregions for which the projection shall be performed.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns a data frame that includes the number of people for each demographic
+    <p>Returns a <b>data frame</b> that includes the number of people for each demographic
 group per year (for projected years) and spatial unit. The number of
 rows is the product of all years times all demographic groups times
 all spatial units.
@@ -226,6 +234,9 @@ demographic group, year, and spatial unit the results in the rows refer
 to:</p>
 <dl><dt>year</dt>
 <dd><p>integer, indicating the projected years.</p></dd>
+
+<dt>scen</dt>
+<dd><p>character, indicating the projection scenario(s).</p></dd>
 
 <dt>spatial_unit</dt>
 <dd><p>factor, spatial units for which the projection
@@ -293,22 +304,31 @@ from other cantons.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Run projection for the sample data (whole canton of Aargau)</span></span></span>
 <span class="r-in"><span><span class="fu">propop</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  parameters <span class="op">=</span> <span class="va">fso_parameters</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="va">fso_parameters</span>,</span></span>
 <span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span></span>
 <span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2027</span>,</span></span>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="va">fso_population</span>,</span></span>
 <span class="r-in"><span>  subregional <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  binational <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">high</span>)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2024</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2027</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">low</span>)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2024</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2027</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">reference</span>)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2024</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2027</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Scenario: <span style="color: #0000BB;">"reference"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scenario(s): <span style="color: #0000BB;">"high"</span>, <span style="color: #0000BB;">"low"</span>, and <span style="color: #0000BB;">"reference"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Year of starting population: <span style="color: #0000BB;">2023</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of age groups: <span style="color: #0000BB;">101</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fertile period: <span style="color: #0000BB;">16</span>-<span style="color: #0000BB;">50</span></span>
@@ -318,22 +338,75 @@ from other cantons.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Nationality-specific projection: <span style="color: #0000BB;">"yes"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Subregional migration: <span style="color: #0000BB;">"no"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">Projected</span> population size by <span style="color: #0000BB;">2027</span>: <span style="color: #0000BB; font-style: italic;">751159</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">Projected</span> population size by <span style="color: #0000BB;">2027</span>:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> - Scenario <span style="color: #0000BB;">"high"</span>: <span style="color: #0000BB; font-style: italic;">768888</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> - Scenario <span style="color: #0000BB;">"low"</span>: <span style="color: #0000BB; font-style: italic;">748703</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> - Scenario <span style="color: #0000BB;">"reference"</span>: <span style="color: #0000BB; font-style: italic;">758993</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ════════════════════════════════════════════════════════════════════════════════</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,616 × 16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     year spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>024 Aargau           0 m     ch        0  <span style="text-decoration: underline;">2</span>463. 9.00     3.00    21.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>024 Aargau           1 m     ch     <span style="text-decoration: underline;">2</span>371     0  1.00    11.0     49.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>024 Aargau           2 m     ch     <span style="text-decoration: underline;">2</span>542     0  0.997   11.0     56.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>024 Aargau           3 m     ch     <span style="text-decoration: underline;">2</span>891     0  0.983   12.0     54.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>024 Aargau           4 m     ch     <span style="text-decoration: underline;">2</span>766     0  0       11.0     44.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>024 Aargau           5 m     ch     <span style="text-decoration: underline;">2</span>794     0  0       10.0     38.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>024 Aargau           6 m     ch     <span style="text-decoration: underline;">2</span>782     0  0       10.0     33.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>024 Aargau           7 m     ch     <span style="text-decoration: underline;">2</span>787     0  0        9.00    29.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>024 Aargau           8 m     ch     <span style="text-decoration: underline;">2</span>726     0  0        8.00    24.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>024 Aargau           9 m     ch     <span style="text-decoration: underline;">2</span>837     0  0        8.00    22.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,606 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4,848 × 17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     year scen  spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           0 m     ch        0  <span style="text-decoration: underline;">2</span>633. 9.00     6.00    21.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           1 m     ch     <span style="text-decoration: underline;">2</span>371     0  1.00    13.0     49.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           2 m     ch     <span style="text-decoration: underline;">2</span>542     0  0.998   13.0     56.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           3 m     ch     <span style="text-decoration: underline;">2</span>891     0  0.983   14.0     54.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           4 m     ch     <span style="text-decoration: underline;">2</span>766     0  0       13.0     44.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           5 m     ch     <span style="text-decoration: underline;">2</span>794     0  0       12.0     38.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           6 m     ch     <span style="text-decoration: underline;">2</span>782     0  0       11.0     33.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           7 m     ch     <span style="text-decoration: underline;">2</span>787     0  0       10.0     29.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           8 m     ch     <span style="text-decoration: underline;">2</span>726     0  0        9.00    24.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           9 m     ch     <span style="text-decoration: underline;">2</span>837     0  0        9.00    22.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4,838 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: imm_int &lt;dbl&gt;, imm_nat &lt;dbl&gt;, acq &lt;dbl&gt;, n_dec &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   delta_n &lt;dbl&gt;, delta_perc &lt;dbl&gt;</span></span>
+<span class="r-in"><span><span class="fu">propop</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="va">fso_parameters</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span> <span class="op">|</span> <span class="va">scen</span> <span class="op">==</span> <span class="st">"high"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span></span>
+<span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span></span>
+<span class="r-in"><span>  scenarios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"reference"</span>, <span class="st">"high"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  population <span class="op">=</span> <span class="va">fso_population</span>,</span></span>
+<span class="r-in"><span>  subregional <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  binational <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">high</span>)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2024</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">reference</span>)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2024</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scenario(s): <span style="color: #0000BB;">"high"</span> and <span style="color: #0000BB;">"reference"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Year of starting population: <span style="color: #0000BB;">2023</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of age groups: <span style="color: #0000BB;">101</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Fertile period: <span style="color: #0000BB;">16</span>-<span style="color: #0000BB;">50</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Share of female newborns: <span style="color: #0000BB;">0.488</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Size of starting population: <span style="color: #0000BB;">726894</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Projection period: <span style="color: #0000BB;">2024</span>-<span style="color: #0000BB;">2026</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Nationality-specific projection: <span style="color: #0000BB;">"yes"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Subregional migration: <span style="color: #0000BB;">"no"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">Projected</span> population size by <span style="color: #0000BB;">2026</span>:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> - Scenario <span style="color: #0000BB;">"high"</span>: <span style="color: #0000BB; font-style: italic;">758421</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> - Scenario <span style="color: #0000BB;">"reference"</span>: <span style="color: #0000BB; font-style: italic;">751159</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ════════════════════════════════════════════════════════════════════════════════</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,424 × 17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     year scen  spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           0 m     ch        0  <span style="text-decoration: underline;">2</span>633. 9.00     6.00    21.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           1 m     ch     <span style="text-decoration: underline;">2</span>371     0  1.00    13.0     49.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           2 m     ch     <span style="text-decoration: underline;">2</span>542     0  0.998   13.0     56.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           3 m     ch     <span style="text-decoration: underline;">2</span>891     0  0.983   14.0     54.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           4 m     ch     <span style="text-decoration: underline;">2</span>766     0  0       13.0     44.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           5 m     ch     <span style="text-decoration: underline;">2</span>794     0  0       12.0     38.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           6 m     ch     <span style="text-decoration: underline;">2</span>782     0  0       11.0     33.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           7 m     ch     <span style="text-decoration: underline;">2</span>787     0  0       10.0     29.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           8 m     ch     <span style="text-decoration: underline;">2</span>726     0  0        9.00    24.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>024 high  Aargau           9 m     ch     <span style="text-decoration: underline;">2</span>837     0  0        9.00    22.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,414 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: imm_int &lt;dbl&gt;, imm_nat &lt;dbl&gt;, acq &lt;dbl&gt;, n_dec &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   delta_n &lt;dbl&gt;, delta_perc &lt;dbl&gt;</span></span>
 </code></pre></div>
@@ -347,7 +420,7 @@ from other cantons.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
