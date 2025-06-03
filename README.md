@@ -52,7 +52,7 @@ devtools::install_github("statistik-aargau/propop")
 
 The package includes four vignettes.  
 
-- Vignette 1 demonstrates 
+- Vignette 1 shows how to 
 [prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
 the FSO population data and parameters. (Users can of course use their own data 
 and parameters).
@@ -72,9 +72,6 @@ and two genders.
 - The FSO projections are only published in five-year intervals, the most recent 
 ones being based on population records from 2023. `propop` enables you to run 
 projections with more recent population records.
-- The FSO uses additional *ex-post* adjustments to ensure that all the sums 
-involving different cantons add up, which leads to some differences
-between the projections from the FSO and `propop`. 
 - This package was developed for use with *FSO parameters* (e.g., mortality rate,
 or emigration rate). Most parameters are only available for cantons and the 
 whole of Switzerland. If you wish to run projections at smaller scales (e.g., 
@@ -90,6 +87,9 @@ using this feature, users must adjust or calculate the required parameters ([see
 - Custom parameters (e.g., consideration of sub-cantonal spatial entities, 
 adjustments to reflect regional differences, or addition of subregional migration 
 parameter) can be passed through the `parameters` object to `propop::propop()`. 
+- The FSO uses additional *ex-post* adjustments to ensure that all the sums 
+involving different cantons add up, which leads to some differences
+between the projections from the FSO and `propop`. 
 - There are also *possible future features* that could increase the accuracy of 
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
