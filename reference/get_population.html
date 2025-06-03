@@ -120,7 +120,8 @@ defaults to <code>px-x-0102010000_101</code>.</p></dd>
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
 <dd><p>numeric, year for which the population records are to
 be downloaded. This usually is the starting population. To download
-longer time periods, use <code>year</code> to indicate the onset of the period.</p></dd>
+longer time periods, use <code>year</code> to indicate the first year of the
+period.</p></dd>
 
 
 <dt id="arg-year-last">year_last<a class="anchor" aria-label="anchor" href="#arg-year-last"></a></dt>
@@ -130,8 +131,8 @@ time period for which data will be downloaded.</p></dd>
 
 <dt id="arg-spatial-units">spatial_units<a class="anchor" aria-label="anchor" href="#arg-spatial-units"></a></dt>
 <dd><p>character vector, indicating at least one spatial
-entity for which the projection will be run. Typically a canton, districts,
-or municipalities.</p></dd>
+entity for which the projection will be run. Typically a canton, several
+districts or municipalities.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -147,13 +148,13 @@ returned data frame:</p><dl><dt>year</dt>
 cantons, districts, municipalities).</p></dd>
 
 <dt>nat</dt>
-<dd><p>character, ch = Swiss, int = foreign / international.</p></dd>
+<dd><p>character, <code>ch</code> = Swiss, <code>int</code> = foreign / international.</p></dd>
 
 <dt>sex</dt>
-<dd><p>character f = female, m = male.</p></dd>
+<dd><p>character <code>f</code> = female, <code>m</code> = male.</p></dd>
 
 <dt>age</dt>
-<dd><p>numeric, 101 one-year age classes, ranging from 0 to 100
+<dd><p>numeric, 101 one-year age classes, ranging from <code>0</code> to <code>100</code>
 (including those older than 100).</p></dd>
 
 <dt>n</dt>

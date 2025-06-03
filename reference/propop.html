@@ -9,13 +9,15 @@ these data from the Swiss Federal Statistical Office (FSO). For instructions
 on how to download this information from
 STAT-TAB,
 see vignette("prepare_data", package = "propop").
-For more details on how to use this function to project the population
-development on the level of a canton, see
-vignette("project_single_region", package = "propop").
 The projection parameters need to be passed to propop::propop() as a
 single data frame (with the parameters as columns). The column types,
 names, and factor levels need to match the specifications listed below under
-parameters:'><meta property="og:description" content='Wrapper function to project population development using the cohort
+parameters.
+If nothing else is indicated in argument scenarios, propop() runs and
+returns all scenarios provided via parameters.
+For more details on how to use this function to project the population
+development on the level of a canton, see
+vignette("project_single_region", package = "propop").'><meta property="og:description" content='Wrapper function to project population development using the cohort
 component method (see e.g., here
 and here
 for more details). This function calls project_raw.R, which uses matrix
@@ -25,13 +27,15 @@ these data from the Swiss Federal Statistical Office (FSO). For instructions
 on how to download this information from
 STAT-TAB,
 see vignette("prepare_data", package = "propop").
-For more details on how to use this function to project the population
-development on the level of a canton, see
-vignette("project_single_region", package = "propop").
 The projection parameters need to be passed to propop::propop() as a
 single data frame (with the parameters as columns). The column types,
 names, and factor levels need to match the specifications listed below under
-parameters:'><meta property="og:image" content="https://statistik-aargau.github.io/propop/logo.png"></head><body><p>
+parameters.
+If nothing else is indicated in argument scenarios, propop() runs and
+returns all scenarios provided via parameters.
+For more details on how to use this function to project the population
+development on the level of a canton, see
+vignette("project_single_region", package = "propop").'><meta property="og:image" content="https://statistik-aargau.github.io/propop/logo.png"></head><body><p>
 
 
 
@@ -96,13 +100,15 @@ these data from the Swiss Federal Statistical Office (FSO). For instructions
 on how to download this information from
 <a href="https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html" class="external-link">STAT-TAB</a>,
 see <code><a href="../articles/prepare_data.html">vignette("prepare_data", package = "propop")</a></code>.</p>
-<p>For more details on how to use this function to project the population
-development on the level of a canton, see
-<code><a href="../articles/project_single_region.html">vignette("project_single_region", package = "propop")</a></code>.</p>
 <p>The projection parameters need to be passed to <code>propop::propop()</code> as a
 <b>single data frame</b> (with the parameters as columns). The column types,
 names, and factor levels need to match the specifications listed below under
-<code>parameters</code>:</p>
+<code>parameters</code>.</p>
+<p>If nothing else is indicated in argument <code>scenarios</code>, <code>propop()</code> runs and
+returns all <strong>scenarios</strong> provided via <code>parameters</code>.</p>
+<p>For more details on how to use this function to project the population
+development on the level of a canton, see
+<code><a href="../articles/project_single_region.html">vignette("project_single_region", package = "propop")</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -134,20 +140,23 @@ projection for a specific spatial level (e.g., canton, municipality).</p><ul><li
 municipality) for which to run the projections.</p></li>
 <li><p><code>scen</code>, character, one or several projection scenario(s). The main
 scenarios are usually "reference", "low" growth, and "high" growth.</p></li>
-<li><p><code>nat</code> <b>(optional)</b>, character, nationality (ch = Swiss; int =
-foreign / international).</p></li>
-<li><p><code>sex</code>, character (f = female, m = male).</p></li>
+<li><p><code>nat</code>, character, nationality (<code>ch</code> = Swiss; <code>int</code> =
+foreign / international).
+Required if binational = <code>TRUE</code>.</p></li>
+<li><p><code>sex</code>, character (<code>f</code> = female, <code>m</code> = male).</p></li>
 <li><p><code>age</code>, numeric, typically ranging from 0 to 100 (incl. &gt;100).</p></li>
 <li><p><code>birthrate</code>, numeric, number of births per mother</p></li>
-<li><p><code>int_mothers</code> <b>(optional)</b>, numeric, proportion of children with
-Swiss nationality born to non-Swiss mothers.</p></li>
+<li><p><code>int_mothers</code>, numeric, proportion of children with
+Swiss nationality born to non-Swiss mothers.
+Required if binational = <code>TRUE</code>.</p></li>
 <li><p><code>mor</code>, numeric, prospective mortality rate (probability of death).</p></li>
-<li><p><code>acq</code> <b>(optional)</b>, numeric, rate of acquisition of Swiss citizenship.</p></li>
-<li><p><code>emi_int</code>, numeric, rate of people emigrating abroad.
+<li><p><code>acq</code>, numeric, rate of acquisition of Swiss citizenship.
+Required if binational = <code>TRUE</code>.</p></li>
+<li><p><code>emi_int</code>, numeric, rate of people emigrating abroad
 (number of immigrants - number of emigrants).</p></li>
-<li><p><code>emi_nat</code>: rate of people emigrating to other cantons.</p></li>
+<li><p><code>emi_nat</code>, rate of people emigrating to other cantons.</p></li>
 <li><p><code>imm_int_n</code>, numeric, number of people immigrating from abroad.</p></li>
-<li><p><code>imm_nat_n</code>: numeric, number of people immigrating from other cantons.</p></li>
+<li><p><code>imm_nat_n</code>, numeric, number of people immigrating from other cantons.</p></li>
 <li><p><code>mig_sub</code> <b>(optional)</b>, numeric, net migration per subregion; this
 is the migration from / to other subregions (e.g., municipalities,
 districts) within the main superordinate projection unit (e.g., a canton).
@@ -208,13 +217,13 @@ currently be set to <code>= 101</code> (FSO standard number of age groups).</p><
 <dt id="arg-subregional">subregional<a class="anchor" aria-label="anchor" href="#arg-subregional"></a></dt>
 <dd><p>boolean, <code>TRUE</code> indicates that subregional migration
 patterns (e.g., movement between municipalities within a canton)
-are part of the projection. Requires input (parameters and population)
-on the level of subregions.</p></dd>
+are part of the projection. Requires input on the level of subregions
+(in <code>parameters</code> and <code>population</code>).</p></dd>
 
 
 <dt id="arg-binational">binational<a class="anchor" aria-label="anchor" href="#arg-binational"></a></dt>
 <dd><p>boolean, <code>TRUE</code> indicates that projections discriminate
-between two groups of nationalities. <code>FALSE</code> indicates that only one
+between two groups of nationalities. <code>FALSE</code> indicates that the
 projection is run without distinguishing between nationalities.</p></dd>
 
 
@@ -225,33 +234,33 @@ region or subregions for which the projection shall be performed.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns a <b>data frame</b> that includes the number of people for each demographic
-group per year (for projected years) and spatial unit. The number of
-rows is the product of all years times all demographic groups times
-all spatial units.
+    <p>Returns a <b>data frame</b> that includes the number of people for each
+demographic group per year (for projected years) and spatial unit.
+The number of rows is the product of all scenarios times all years
+times all demographic groups times all spatial units.
 The output includes several <b>identifiers</b> that indicate to which
-demographic group, year, and spatial unit the results in the rows refer
-to:</p>
+scenario, demographic group, year, and spatial unit the results in the
+rows refer to:</p>
 <dl><dt>year</dt>
 <dd><p>integer, indicating the projected years.</p></dd>
 
 <dt>scen</dt>
-<dd><p>character, indicating the projection scenario(s).</p></dd>
+<dd><p>character, indicating the projected scenario(s).</p></dd>
 
 <dt>spatial_unit</dt>
 <dd><p>factor, spatial units for which the projection
 was run (e.g., canton, districts, municipalities).</p></dd>
 
 <dt>age</dt>
-<dd><p>integer, ranging from <code>0</code>n to <code>100</code> (including those older
-than 100).</p></dd>
+<dd><p>integer, ranging from <code>0</code>n to <code>100</code> years (including those
+older than 100).</p></dd>
 
 <dt>sex</dt>
-<dd><p>factor, female (f) and male (m).</p></dd>
+<dd><p>factor, female (<code>f</code>) and male (<code>m</code>).</p></dd>
 
 <dt>nat</dt>
-<dd><p>factor, indicates if the nationality is Swiss (ch) or
-international / foreign (int). This variable is only returned if
+<dd><p>factor, indicates if the nationality is Swiss (<code>ch</code>) or
+international / foreign (<code>int</code>). This variable is only returned if
 <code>binational = TRUE</code>.</p></dd>
 
 </dl><p>The output also includes columns related to the <b>size and change
@@ -296,7 +305,8 @@ from other countries.</p></dd>
 from other cantons.</p></dd>
 
 <dt>acq</dt>
-<dd><p>numeric, number of people who acquire Swiss citizenship.</p></dd>
+<dd><p>numeric, number of people who acquire Swiss citizenship
+(only returned if  <code>binational = TRUE</code>.)</p></dd>
 
 </dl></div>
 
