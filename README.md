@@ -106,8 +106,7 @@ To run `propop::propop()` with the example data included in the package
 ``` r
 library(propop)
 projection_canton_2030 <- propop(
-parameters = fso_parameters |> 
-dplyr::filter(scen == "reference"),
+parameters = fso_parameters,
 year_first = 2024,
 year_last = 2030,
 population = fso_population,
