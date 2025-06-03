@@ -295,10 +295,10 @@ immigration (<code>imm_int_n_distr</code> and
 <p>Now we can run the projection:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/propop.html">propop</a></span><span class="op">(</span></span>
-<span>  parameters <span class="op">=</span> <span class="va">parameters_sub_size_clean</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span>
+<span>  parameters <span class="op">=</span> <span class="va">parameters_sub_size_clean</span>, </span>
 <span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
+<span>  scenarios <span class="op">=</span> <span class="st">"reference"</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
@@ -579,10 +579,10 @@ subregions is identical with the number of people in the larger unit
 <p>Now everything is ready to run the projection:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/propop.html">propop</a></span><span class="op">(</span></span>
-<span>  parameters <span class="op">=</span> <span class="va">fso_parameters_sub_distr_hist</span><span class="op">|&gt;</span> </span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span>
+<span>  parameters <span class="op">=</span> <span class="va">fso_parameters_sub_distr_hist</span>,</span>
 <span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
+<span>  scenarios <span class="op">=</span> <span class="st">"reference"</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
@@ -698,10 +698,10 @@ in the section “Distribution of people according to past migration”.</p>
 <code><a href="../reference/propop.html">propop::propop()</a></code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/propop.html">propop</a></span><span class="op">(</span></span>
-<span>  parameters <span class="op">=</span> <span class="va">parameters_sub_mig</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span>
+<span>  parameters <span class="op">=</span> <span class="va">parameters_sub_mig</span>,</span>
 <span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
+<span>  scenarios <span class="op">=</span> <span class="st">"reference"</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
