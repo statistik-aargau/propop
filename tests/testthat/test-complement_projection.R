@@ -544,4 +544,17 @@ test_that("snapshot test complement_projection()", {
 
   # run tests
   expect_snapshot(constructive::construct(output_table))
+
+  # Check if components add up
+  balance_check <- check_balance(output_table)
+
+  expect_equal(balance_check$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check$missings, 0, info =
+                 "There are missings in at least one row")
+
+
 })
+
+
+
