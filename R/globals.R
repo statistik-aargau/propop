@@ -16,6 +16,16 @@ utils::globalVariables(c(
   "nat", # <calculate_shares>
   "sex", # <calculate_shares>
   "n_sum", # <calculate_shares>
+  "n_jan", # <check_balance>
+  "births", # <check_balance>
+  "mor", # <check_balance>
+  "emi_int", # <check_balance>
+  "emi_nat", # <check_balance>
+  "imm_int", # <check_balance>
+  "imm_nat", # <check_balance>
+  "acq", # <check_balance>
+  "n_dec", # <check_balance>
+  "pop_balance", # <check_balance>
   "mig_sub", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>

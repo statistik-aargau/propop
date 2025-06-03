@@ -1,6 +1,9 @@
 # Unreleased
 - `propop::propop()` can now perform multiple projection scenarios 
 in a single run. 
+- New function `check_balance` to check population equation for each row in 
+the output of `propop::propop()` (population at the beginning of the year 
+plus components must be equal to the population at the end of the year).
 - The function `prepare_evaluation` now also runs with five age groups (0-19,
 20-39, 40-59, 60-79, 80 years and older). The output that is created by this 
 function can be used by the functions `compute_measures` and `aggregate_measures` 
