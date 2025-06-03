@@ -128,6 +128,8 @@
 #'
 #' @export
 #'
+#' @autoglobal
+#'
 #' @examples
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(

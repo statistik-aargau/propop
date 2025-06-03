@@ -107,5 +107,16 @@ utils::globalVariables(c(
   "sex", # <project_raw>
   "nat", # <project_raw>
   "value", # <project_raw>
+  "nat", # <propop>
+  "sex", # <propop>
+  "year", # <propop>
+  "age", # <propop>
+  "scen", # <propop>
+  "n_dec", # <propop>
+  "total", # <propop>
+  "imm_int_n", # <propop>
+  "imm_nat_n", # <propop>
+  "imm_int", # <propop>
+  "imm_nat", # <propop>
   NULL
 ))
