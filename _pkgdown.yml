@@ -28,7 +28,7 @@ navbar:
 reference:
 - examples: FALSE
 - lazy: TRUE
-- title: "Get and prepare data"
+- title: "Prepare data"
   desc: >
     Functions for downloading and preparing data
   contents:

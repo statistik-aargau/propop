@@ -1,9 +1,9 @@
 #' Check if population equation components add up within one year
 #'
-#' Function to check integrity of components in `propop::propop()` output.
-#' Takes population at the beginning of the year (`n_jan`), adds all components
-#' (births - mor - emi_int - emi_nat + imm_int + imm_nat + acq) and checks if
-#' the sum is equal to the population at the end of the year (`n_dec`).
+#' Function to check if the components in the `propop::propop()` output add up.
+#' Takes the population at the beginning of the year (`n_jan`), adds all
+#' components (births - mor - emi_int - emi_nat + imm_int + imm_nat + acq) and
+#' checks if the sum is equal to the population at the end of the year (`n_dec`).
 #'
 #' @param data data frame containing population projections; can be
 #' created with `propop::propop()`.
@@ -14,17 +14,15 @@
 #' @autoglobal
 #'
 #' @examples
-#' \dontrun{
-#' projection_canton_2030 <- propop(
-#' parameters = fso_parameters,
-#' year_first = 2025,
-#' year_last = 2035,
-#' population = fso_population,
-#' subregional = FALSE,
-#' binational = TRUE
-#' )
-#' check_balance(projection_canton_2030)
-#' }
+#' propop(
+#'   parameters = fso_parameters,
+#'   year_first = 2024,
+#'   year_last = 2027,
+#'   population = fso_population,
+#'   subregional = FALSE,
+#'   binational = TRUE
+#' ) |>
+#'   check_balance()
 
 check_balance <- function(data){
   df_check <- data |>

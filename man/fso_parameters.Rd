@@ -38,8 +38,6 @@ the following demographic variables:
 \item \code{sex}: f = female, m = male.
 \item \code{age}: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).
-\item \code{start_n}: numeric, number of people in the corresponding demographic
-group on 1st of January.
 }
 }
 
@@ -47,6 +45,8 @@ group on 1st of January.
 
 The following parameters are included in the returned data frame:
 \itemize{
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
 \item \code{spatial_unit}: character, indicating the user requested spatial

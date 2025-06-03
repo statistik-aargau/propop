@@ -75,7 +75,15 @@ the FSO. They are calculated within this function.
 
 To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
-\code{vignette("prepare_data", package = "propop")}.
+\code{vignette("prepare_data", package = "propop")}. Inspecting the column
+'valueTexts' in the following package data may also help:
+\itemize{
+\item data('stattab_101_snap')
+\item data('stattab_102_snap')
+\item data('stattab_103_snap')
+\item data('stattab_106_snap')
+\item data('stattab_109_snap')
+}
 
 Changes to the API interface may break this function. If problems occur,
 we recommend following the step-by-step procedure described in
@@ -90,8 +98,6 @@ the following demographic variables:
 \item \code{sex}: f = female, m = male.
 \item \code{age}: 101 one-year age classes, ranging from 0 to 100 (including those
 older than 100).
-\item \code{start_n}: numeric, number of people in the corresponding demographic
-group on 1st of January.
 }
 }
 
@@ -99,6 +105,8 @@ group on 1st of January.
 
 The following parameters are included in the returned data frame:
 \itemize{
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
 \item \code{spatial_unit}: character, indicating the user requested spatial
@@ -129,7 +137,7 @@ born to non-Swiss mothers
 
 \section{Projected population}{
 
-\code{n_projected} is the the number of people per demographic group and year on
+\code{n_projected} is the number of people per demographic group and year on
 December 31 (as projected by the FSO in the 2025 model).
 }
 

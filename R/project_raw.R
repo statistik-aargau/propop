@@ -114,7 +114,10 @@
 #'      projected years. The number of rows corresponds to the product of years
 #'      and demographic groups (e.g., nationality (2) X sex (2) X age groups (101) = 404).
 #'      Variables included in the output:
-#'      \item{n}{number of people per demographic group.}
+#'      \item{scen}{projected scenarios.}
+#'      \item{spatial_unit}{spatial unit for which the projection was run
+#'      (e.g., canton, district, municipality).}
+#'      \item{N}{number of people per demographic group.}
 #'      \item{IMM_INT}{number of immigrants from other countries.}
 #'      \item{MIG_NAT}{number of people migrating from / to other superordinate
 #'      spatial units (typically cantons).}

@@ -21,14 +21,15 @@ defaults to \verb{px-x-0102010000_101}.}
 
 \item{year}{numeric, year for which the population records are to
 be downloaded. This usually is the starting population. To download
-longer time periods, use \code{year} to indicate the onset of the period.}
+longer time periods, use \code{year} to indicate the first year of the
+period.}
 
 \item{year_last}{numeric \bold{(optional)}; specifies the final year of the
 time period for which data will be downloaded.}
 
 \item{spatial_units}{character vector, indicating at least one spatial
-entity for which the projection will be run. Typically a canton, districts,
-or municipalities.}
+entity for which the projection will be run. Typically a canton, several
+districts or municipalities.}
 }
 \value{
 A data frame. For each of the four demographic groups (female / male,
@@ -39,9 +40,9 @@ returned data frame:
 \item{year}{numeric, year in which the population was recorded.}
 \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 cantons, districts, municipalities).}
-\item{nat}{character, ch = Swiss, int = foreign / international.}
-\item{sex}{character f = female, m = male.}
-\item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
+\item{nat}{character, \code{ch} = Swiss, \code{int} = foreign / international.}
+\item{sex}{character \code{f} = female, \code{m} = male.}
+\item{age}{numeric, 101 one-year age classes, ranging from \code{0} to \code{100}
 (including those older than 100).}
 \item{n}{numeric, number of people per year, spatial entity, and
 demographic group.}

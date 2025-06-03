@@ -14,21 +14,19 @@ created with \code{propop::propop()}.}
 data frame containing summary statistics.
 }
 \description{
-Function to check integrity of components in \code{propop::propop()} output.
-Takes population at the beginning of the year (\code{n_jan}), adds all components
-(births - mor - emi_int - emi_nat + imm_int + imm_nat + acq) and checks if
-the sum is equal to the population at the end of the year (\code{n_dec}).
+Function to check if the components in the \code{propop::propop()} output add up.
+Takes the population at the beginning of the year (\code{n_jan}), adds all
+components (births - mor - emi_int - emi_nat + imm_int + imm_nat + acq) and
+checks if the sum is equal to the population at the end of the year (\code{n_dec}).
 }
 \examples{
-\dontrun{
-projection_canton_2030 <- propop(
-parameters = fso_parameters,
-year_first = 2025,
-year_last = 2035,
-population = fso_population,
-subregional = FALSE,
-binational = TRUE
-)
-check_balance(projection_canton_2030)
-}
+propop(
+  parameters = fso_parameters,
+  year_first = 2024,
+  year_last = 2027,
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
+) |>
+  check_balance()
 }

@@ -1,7 +1,7 @@
 #' Prepare data for evaluation
 #'
 #' @description
-#' Takes population projections and benchmark data (typically population records)
+#' Takes population projections and benchmark data (e.g., population records)
 #' and prepares a combined data frame to evaluate the performance of the
 #' projection. For more details on usage, see
 #' \code{vignette("evaluate", package = "propop")}.
@@ -11,10 +11,10 @@
 #' \bold{same range of years}:
 #' \describe{
 #'   \item{year}{character, year in which the population was recorded.}
-#'   \item{spatial_unit}{character, indicating the spatial entities (e.g.,
-#'   cantons, districts, municipalities).}
-#'   \item{nat}{character, ch = Swiss, int = foreign / international.}
-#'   \item{sex}{character, f = female, m = male.}
+#'   \item{spatial_unit}{character, indicating the projected spatial entities
+#'   (e.g., cantons, districts, municipalities).}
+#'   \item{nat}{character, `ch` = Swiss, `int` = foreign / international.}
+#'   \item{sex}{character, `f` = female, `m` = male.}
 #'   \item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
 #'   (including those older than 100).}
 #'   \item{n}{numeric, number of people per year, spatial entity, and
@@ -22,7 +22,7 @@
 #' }
 #'
 #' @param data_benchmark data frame containing benchmark data (e.g., actual /
-#' official population records obtained with `propop::get_population()`).
+#' official population records; can be obtained with `propop::get_population()`).
 #' @param n_benchmark numeric column containing the benchmark population of each
 #' demographic group.
 #' @param data_projected data frame containing population projections; can be
@@ -36,7 +36,7 @@
 #' The option `"age_groups_5"` groups the data into
 #' five age ranges (0-19, 20-39, 40-59, 60-79, 80 years and older).
 #' Using aggregated groups will lead to smaller
-#' projection errors than using 101 age classes. 
+#' projection errors than using 101 age classes.
 #' Defaults to using 101 one-year age classes if no option is chosen.
 #'
 #' @return Returns a data frame with the number of people from the benchmark and

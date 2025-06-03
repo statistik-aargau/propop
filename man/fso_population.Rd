@@ -25,9 +25,9 @@ returned data frame:
 \item{year}{numeric, year in which the population was recorded.}
 \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 cantons, districts, municipalities).}
-\item{nat}{character, ch = Swiss, int = foreign / international.}
-\item{sex}{character f = female, m = male.}
-\item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
+\item{nat}{character, \code{ch} = Swiss, \code{int} = foreign / international.}
+\item{sex}{character \code{f} = female, \code{m} = male.}
+\item{age}{numeric, 101 one-year age classes, ranging from \code{0} to \code{100}
 (including those older than 100).}
 \item{n}{numeric, number of people per year, spatial entity, and
 demographic group.}

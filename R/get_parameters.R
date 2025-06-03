@@ -18,7 +18,13 @@
 #'
 #' To get projection parameters, you must use the spelling defined in the
 #' corresponding FSO table. See
-#' \code{vignette("prepare_data", package = "propop")}.
+#' \code{vignette("prepare_data", package = "propop")}. Inspecting the column
+#' 'valueTexts' in the following package data may also help:
+#'    * data('stattab_101_snap')
+#'    * data('stattab_102_snap')
+#'    * data('stattab_103_snap')
+#'    * data('stattab_106_snap')
+#'    * data('stattab_109_snap')
 #'
 #' Changes to the API interface may break this function. If problems occur,
 #' we recommend following the step-by-step procedure described in
@@ -38,11 +44,11 @@
 #'   * `sex`: f = female, m = male.
 #'   * `age`: 101 one-year age classes, ranging from 0 to 100 (including those
 #'   older than 100).
-#'   * `start_n`: numeric, number of people in the corresponding demographic
-#'   group on 1st of January.
 #'
 #' @section Parameters:
 #' The following parameters are included in the returned data frame:
+#'    * `start_n`: numeric, number of people in the corresponding demographic
+#'      group on 1st of January.
 #'    * `year`: numeric, year of projection.
 #'    * `scen`: character, projection scenario.
 #'    * `spatial_unit`: character, indicating the user requested spatial
@@ -71,7 +77,7 @@
 
 #'
 #' @section Projected population:
-#' `n_projected` is the the number of people per demographic group and year on
+#' `n_projected` is the number of people per demographic group and year on
 #' December 31 (as projected by the FSO in the 2025 model).
 #'
 #' @section Details about calculated variables:
@@ -887,13 +893,13 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     )
 
   # Feedback if years are outside current FSO projection period----
-  if (year_first < 2025 |
+  if (year_first < 2024 |
       year_first > 2055 |
-      year_last < 2025 |
+      year_last < 2024 |
       year_last > 2055) {
     cli::cli_text(cli::col_red("Warning message:"))
     cli::cli_text("`year_first` or `year_last` is outside FSO's current
-                    projection period (2025-2055).")
+                    projection period (2024-2055).")
     cli::cli_alert_info("You might want to double-check your input variables.")
   }
 
