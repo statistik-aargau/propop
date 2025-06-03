@@ -1132,6 +1132,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
     subregional = FALSE
   )
 
+    # Check if components add up
+  balance_check <- check_balance(output_propop_5r_F)
+
+  expect_equal(balance_check$nonzeros, 0, info =
+                 "The components don't add up in at least one row")
+  expect_equal(balance_check$missings, 0, info =
+                 "There are missings in at least one row")
+
   # Remove additional column to enable fair comparison
   output_propop_5r_T <- output_propop_5r |>
     dplyr::select(-mig_sub)
