@@ -106,7 +106,7 @@
 </h2>
 <p>The package includes four vignettes.</p>
 <ul>
-<li>Vignette 1 demonstrates <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters).</li>
+<li>Vignette 1 shows how to <a href="https://statistik-aargau.github.io/propop/articles/prepare_data.html">prepare</a> the FSO population data and parameters. (Users can of course use their own data and parameters).</li>
 <li>Vignette 2 illustrates how to run <a href="https://statistik-aargau.github.io/propop/articles/project_single_region.html">population projections for a single region</a>.</li>
 <li>Vignette 3 illustrates how to pepare and run <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">population projections for subregions</a>.</li>
 <li>Vignette 4 shows <a href="https://statistik-aargau.github.io/propop/articles/evaluate.html">how to evaluate projections</a> against benchmarks.</li>
@@ -122,13 +122,13 @@
 <li>However, <code><a href="reference/propop.html">propop::propop()</a></code> currently requires <em>1-year age classes</em> (0-100+) and two genders.<br>
 </li>
 <li>The FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2023. <code>propop</code> enables you to run projections with more recent population records.</li>
-<li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>.</li>
 <li>This package was developed for use with <em>FSO parameters</em> (e.g., mortality rate, or emigration rate). Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection. <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">This vignette</a> includes tips of how to prepare your input data.<br>
 </li>
 <li>Similarly, if you wish to adjust parameters (e.g., mortality rates that vary between subregions), you need to prepare the parameters accordingly.</li>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code>offers the possibility to account for varying subregional migration patterns and migration between subregions. However, before using this feature, users must adjust or calculate the required parameters (<a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">see this vignette</a>).</li>
 <li>Custom parameters (e.g., consideration of sub-cantonal spatial entities, adjustments to reflect regional differences, or addition of subregional migration parameter) can be passed through the <code>parameters</code> object to <code><a href="reference/propop.html">propop::propop()</a></code>.</li>
+<li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>.</li>
 <li>There are also <em>possible future features</em> that could increase the accuracy of the projections. For example, considering the attractiveness of municipalities or planned housing developments could help to better explain why population growth varies between municipalities.</li>
 </ul>
 <p><strong>If you are interested in contributing to these or other developments, please get in touch with the package maintainer.</strong></p>
