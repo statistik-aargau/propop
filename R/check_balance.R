@@ -56,5 +56,5 @@ check_balance <- function(data){
   }
 
 
-  # return(summary)
+  invisible(summary)
 }
