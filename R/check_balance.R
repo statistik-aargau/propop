@@ -32,8 +32,7 @@ check_balance <- function(data){
         pop_balance + acq else pop_balance,
       pop_balance = if ("mig_sub" %in% names(data))
         pop_balance + mig_sub else pop_balance,
-      # pop_balance = n_jan + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
-      diff = n_dec - pop_balance
+      diff = round(n_dec - pop_balance, 0)
     )
   summary <- df_check |>
     dplyr::summarize(
