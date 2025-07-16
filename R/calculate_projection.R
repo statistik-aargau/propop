@@ -27,7 +27,15 @@ calculate_projection <- function(.data, subregional = FALSE) {
       # acquisition of the Swiss citizenship
       acq_n = n_jan * (acq * (1 - (mor / 2))),
       # subtract new Swiss citizens from the international population
-      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2 * 100), -acq_n),
+      acq_n = ifelse(
+        nat == "ch",
+        dplyr::lead(
+          acq_n,
+          n = 2 * 100,
+          order_by = c(spatial_unit, scen, sex, age)
+        ),
+        -acq_n
+      ),
       # mortality (deaths)
       mor_n = n_jan - (n_jan * (1 - mor)),
       # calculate the population balance

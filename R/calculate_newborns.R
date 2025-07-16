@@ -141,7 +141,15 @@ calculate_newborns <- function(
       # acquisition of the Swiss citizenship
       acq_n = births * acq,
       # subtract new Swiss citizens from the international population
-      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2), -acq_n),
+      acq_n = ifelse(
+        nat == "ch",
+        dplyr::lead(
+          acq_n,
+          n = 2,
+          order_by = c(spatial_unit, scen, sex, age)
+        ),
+        -acq_n
+      ),
       # mortality (deaths)
       mor_n = mor *
         (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
