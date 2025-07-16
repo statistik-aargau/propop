@@ -32,7 +32,7 @@ calculate_projection <- function(.data, subregional = FALSE) {
         dplyr::lead(
           acq_n,
           n = 2 * 100,
-          order_by = c(spatial_unit, scen, sex, age)
+          order_by = c(sex, age, nat)
         ),
         -acq_n
       ),

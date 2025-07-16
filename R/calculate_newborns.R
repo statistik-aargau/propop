@@ -146,7 +146,7 @@ calculate_newborns <- function(
         dplyr::lead(
           acq_n,
           n = 2,
-          order_by = c(spatial_unit, scen, sex, age)
+          order_by = c(sex, nat)
         ),
         -acq_n
       ),
