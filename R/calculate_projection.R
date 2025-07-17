@@ -15,7 +15,7 @@
 calculate_projection <- function(.data, subregional = FALSE) {
   df_out <- .data |>
     mutate(
-      .by = spatial_unit,
+      .by = c(year, spatial_unit, scen, sex, age),
       # placeholder for newborns (those will be calculated later)
       births = 0,
       # international emigration
@@ -27,15 +27,7 @@ calculate_projection <- function(.data, subregional = FALSE) {
       # acquisition of the Swiss citizenship
       acq_n = n_jan * (acq * (1 - (mor / 2))),
       # subtract new Swiss citizens from the international population
-      acq_n = ifelse(
-        nat == "ch",
-        dplyr::lead(
-          acq_n,
-          n = 2 * 100,
-          order_by = c(sex, age, nat)
-        ),
-        -acq_n
-      ),
+      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, order_by = nat), -acq_n),
       # mortality (deaths)
       mor_n = n_jan - (n_jan * (1 - mor)),
       # calculate the population balance
