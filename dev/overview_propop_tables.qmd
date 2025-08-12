@@ -101,7 +101,7 @@ We use STAT-TAB data as described in the [vignette for projecting a single regio
 system.time({
   result_tables <- propop::propop_tables(
     parameters = fso_parameters,
-    year_first = 2019,
+    year_first = 2024,
     year_last = 2030,
     population = fso_population,
     subregional = FALSE,
@@ -113,7 +113,7 @@ system.time({
 system.time({
   result_matrices <- propop::propop(
     parameters = fso_parameters,
-    year_first = 2019,
+    year_first = 2024,
     year_last = 2030,
     population = fso_population,
     subregional = FALSE,
@@ -205,7 +205,7 @@ compare_models |>
   ) +
   labs(
     title = "Differences between propop_tables() and propop() (benchmark)",
-    subtitle = "by projected year and age group across the Canton of Aargau (2019-2030)",
+    subtitle = "by projected year and age group across the Canton of Aargau (2024-2030)",
     x = "Year",
     y = "Mean difference in percent"
   ) +
@@ -325,7 +325,7 @@ system.time({
   result_tables <- propop::propop_tables(
     parameters = parameters_sub_mig |> 
       mutate(emi_sub = 0, imm_sub = 0),
-    year_first = 2019,
+    year_first = 2024,
     year_last = 2030,
     population = df_population_sub,
     subregional = TRUE,
@@ -337,7 +337,7 @@ system.time({
 system.time({
   result_matrices <- propop::propop(
     parameters = parameters_sub_mig,
-    year_first = 2019,
+    year_first = 2024,
     year_last = 2030,
     population = df_population_sub,
     subregional = TRUE,
