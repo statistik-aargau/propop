@@ -12,36 +12,42 @@
 #' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
 #' see \code{vignette("prepare_data", package = "propop")}.
 #'
-#' For more details on how to use this function to project the population
-#' development on the level of a canton, see
-#' \code{vignette("project_single_region", package = "propop")}.
-#'
 #' The projection parameters need to be passed to `propop::propop()` as a
 #' \bold{single data frame} (with the parameters as columns). The column types,
 #' names, and factor levels need to match the specifications listed below under
-#' `parameters`:
+#' `parameters`.
+#'
+#' If nothing else is indicated in argument `scenarios`, `propop()` runs and
+#' returns all **scenarios** provided via `parameters`.
+#'
+#' For more details on how to use this function to project the population
+#' development on the level of a canton, see
+#' \code{vignette("project_single_region", package = "propop")}.
 #'
 #' @param parameters data frame containing the FSO rates and numbers to run the
 #' projection for a specific spatial level (e.g., canton, municipality).
 #'    * `year`, character, projection year.
 #'    * `spatial_unit`, character, ID of spatial entity (e.g., canton,
 #'    municipality) for which to run the projections.
-#'    * `scen`, character, projection scenario, is used to subset data frames
-#'    with multiple scenarios (r = reference, l = low growth, h = high growth).
-#'    * `nat` \bold{(optional)}, character, nationality (ch = Swiss; int =
+#'    * `scen`, character, one or several projection scenario(s). The main
+#'    scenarios are usually "reference", "low" growth, and "high" growth.
+#'    * `nat`, character, nationality (`ch` = Swiss; `int` =
 #'    foreign / international).
-#'    * `sex`, character (f = female, m = male).
+#'    Required if binational = `TRUE`.
+#'    * `sex`, character (`f` = female, `m` = male).
 #'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
 #'    * `birthrate`, numeric, number of births per mother
-#'    * `int_mothers` \bold{(optional)}, numeric, proportion of children with
+#'    * `int_mothers`, numeric, proportion of children with
 #'    Swiss nationality born to non-Swiss mothers.
+#'    Required if binational = `TRUE`.
 #'    * `mor`, numeric, prospective mortality rate (probability of death).
-#'    * `acq` \bold{(optional)}, numeric, rate of acquisition of Swiss citizenship.
-#'    * `emi_int`, numeric, rate of people emigrating abroad.
+#'    * `acq`, numeric, rate of acquisition of Swiss citizenship.
+#'    Required if binational = `TRUE`.
+#'    * `emi_int`, numeric, rate of people emigrating abroad
 #'    (number of immigrants - number of emigrants).
-#'    * `emi_nat`: rate of people emigrating to other cantons.
+#'    * `emi_nat`, rate of people emigrating to other cantons.
 #'    * `imm_int_n`, numeric, number of people immigrating from abroad.
-#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons.
+#'    * `imm_nat_n`, numeric, number of people immigrating from other cantons.
 #'    * `mig_sub` \bold{(optional)}, numeric, net migration per subregion; this
 #'    is the migration from / to other subregions (e.g., municipalities,
 #'    districts) within the main superordinate projection unit (e.g., a canton).
@@ -61,6 +67,10 @@
 #'
 #' @param year_first numeric, first year to be projected.
 #' @param year_last numeric, last year to be projected.
+#' @param scenarios \bold{(optional)}, character, indicating which
+#'        projection scenario(s) shall be run; the corresponding information
+#'        must be available in `parameters`.
+#'        Defaults to the values in variable `scen` in `parameters`.
 #' @param age_groups numeric, number of age classes. Creates a vector with
 #'        1-year age classes running from `0` to (`age_groups` - 1). Must
 #'        currently be set to `= 101` (FSO standard number of age groups).
@@ -72,22 +82,69 @@
 #'        100 / 205 (FSO standard value).
 #' @param subregional boolean, `TRUE` indicates that subregional migration
 #'        patterns (e.g., movement between municipalities within a canton)
-#'        are part of the projection. Requires input (parameters and population)
-#'        on the level of subregions.
+#'        are part of the projection. Requires input on the level of subregions
+#'        (in `parameters` and `population`).
 #' @param binational boolean, `TRUE` indicates that projections discriminate
-#'        between two groups of nationalities. `FALSE` indicates that only one
+#'        between two groups of nationalities. `FALSE` indicates that the
 #'        projection is run without distinguishing between nationalities.
 #' @param spatial_unit character, name of variable containing the names of the
 #'        region or subregions for which the projection shall be performed.
 #'
+#' @returns
+#' Returns a \bold{data frame} that includes the number of people for each
+#'      demographic group per year (for projected years) and spatial unit.
+#'      The number of rows is the product of all scenarios times all years
+#'      times all demographic groups times all spatial units.
+#'      The output includes several \bold{identifiers} that indicate to which
+#'      scenario, demographic group, year, and spatial unit the results in the
+#'      rows refer to:
+#'      \item{year}{integer, indicating the projected years.}
+#'      \item{scen}{character, indicating the projected scenario(s).}
+#'      \item{spatial_unit}{factor, spatial units for which the projection
+#'            was run (e.g., canton, districts, municipalities).}
+#'      \item{age}{integer, ranging from `0`n to `100` years (including those
+#'      older than 100).}
+#'      \item{sex}{factor, female (`f`) and male (`m`).}
+#'      \item{nat}{factor, indicates if the nationality is Swiss (`ch`) or
+#'      international / foreign (`int`). This variable is only returned if
+#'      `binational = TRUE`.}
+#'      The output also includes columns related to the \bold{size and change
+#'      of the population:}
+#'      \item{n_jan}{numric, start-of-year population per demographic group.}
+#'      \item{n_dec}{numeric, end-of-year population per demographic group.}
+#'      \item{delta_n}{numeric, population change per demographic group from
+#'      the start to the end of the year in \emph{absolute numbers}.}
+#'      \item{delta_perc}{numeric, population change per demographic group from
+#'      the start to the end of the year in \emph{percentages}.}
+#'      The \bold{components} that are used to project the development of the
+#'      population are also included in the output:
+#'      \item{births}{numeric, number of births (non-zero values are only
+#'      available for age = 0).}
+#'      \item{mor}{numeric, number of deaths.}
+#'      \item{emi_int}{numeric, number of people who emigrate
+#'      to other countries.}
+#'      \item{emi_nat}{numeric, number of people who emigrate
+#'      to other cantons.}
+#'      \item{imm_int}{numeric, number of people who immigrate
+#'      from other countries.}
+#'      \item{imm_nat}{numeric, number of people who immigrate
+#'      from other cantons.}
+#'      \item{acq}{numeric, number of people who acquire Swiss citizenship
+#'      (only returned if  `binational = TRUE`.)}
+#'
 #' @export
+#'
 #' @autoglobal
-
+#'
+#' @examples
+#' TODO
+#'
 propop_tables <- function(
     parameters,
     population,
     year_first,
     year_last,
+    scenarios = NULL,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -109,6 +166,25 @@ propop_tables <- function(
     select(any_of(c("year", "spatial_unit", "scen", "nat", "sex", "age", "n")))
 
   # Check input ----
+  # Check scenarios
+  if (!is.null(scenarios)) {
+    # If user has defined scenarios manually, order them alphabetically
+    scenarios <- sort(unique(scenarios))
+  }
+  # If scenarios is empty, use all levels of scen as
+  if (is.null(scenarios)) {
+    # Get all values in scen and order them alphabetically
+    scenarios <- sort(unique(parameters$scen))
+  }
+  # All requested scenarios available in parameters
+  assertthat::assert_that(
+    all(scenarios %in% parameters$scen),
+    msg = paste0(
+      "Not all requested scenarios ",
+      "are available in `parameters`."
+    )
+  )
+
   ## Function arguments ----
   # Convert input in years to integer, results in error if not possible
   year_first <- vctrs::vec_cast(year_first, integer())
