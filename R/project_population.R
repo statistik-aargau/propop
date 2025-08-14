@@ -149,7 +149,7 @@ project_population <- function(
     bind_rows(population) |>
     # clean the data
     select(any_of(c(
-      "year", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
+      "year", "scen", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
       "mor_n", "emi_int_n", "emi_nat_n", "emi_sub_n", "imm_int_n", "imm_nat_n",
       "imm_sub_n", "acq_n", "n_dec"
     ))) |>
@@ -157,7 +157,7 @@ project_population <- function(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
-    arrange(spatial_unit, year, age, nat, desc(sex))
+    arrange(spatial_unit, year, scen, age, nat, desc(sex))
 
   return(population_out)
 }

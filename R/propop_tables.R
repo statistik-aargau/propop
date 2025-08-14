@@ -370,15 +370,8 @@ propop_tables <- function(
       mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
       # arrange the data
       select(year, spatial_unit, nat, sex, age, n) |>
-      arrange(nat, desc(sex), year, spatial_unit)
+      arrange(nat, desc(sex), year, scen, spatial_unit)
   }
-
-  ## Only 1 value in scenario ----
-  assertthat::assert_that(
-    n_distinct(parameters$scen) == 1,
-    msg = "The 'scen' column in the 'parameters' data frame must contain the
-    identical value in all rows (either reference, high, or low)."
-  )
 
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
@@ -551,8 +544,13 @@ propop_tables <- function(
   # Rename n to n_dec in the initial population
   init_population <- population |> rename(n_dec = n)
 
-  # Split parameters into a list by year to iterate across
-  list_parameters <- split(parameters, parameters$year)
+  # Split parameters by scenario
+  list_parameters_scen <- split(parameters, parameters$scen)
+
+  list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+
+  # Split parameters for each scenario into a list by year to iterate across
+  list_parameters <- split(parameters_scen, parameters_scen$year)
 
   # Run projection ----
   # iterate across years
@@ -566,6 +564,10 @@ propop_tables <- function(
   ) |>
     # remove initial population's year
     filter(year != unique(init_population$year))
+  })
+
+  # Combine all groups back into one data frame
+  df_result <- do.call(rbind, list_out)
 
   # Format output ----
   # No distinction between nationalities (binational = FALSE)
