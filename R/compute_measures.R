@@ -81,12 +81,6 @@ compute_measures <- function(combined, weight_groups = NULL) {
   assertthat::assert_that("year" %in% names(combined),
     msg = "column `year` is missing in combined"
   )
-  assertthat::assert_that("spatial_unit" %in% names(combined),
-    msg = "column `spatial_unit` is missing in combined"
-  )
-  assertthat::assert_that("nat" %in% names(combined),
-    msg = "column `nat` is missing in combined"
-  )
   assertthat::assert_that("sex" %in% names(combined),
     msg = "column `sex` is missing in combined"
   )
