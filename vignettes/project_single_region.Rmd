@@ -38,38 +38,43 @@ To run the function, you need the following input:
 
 -   a data frame with the **starting population**, that is, the most up-to-date
 number of people for each demographic group before the first projection year; to
-illustrate, the example population data in `propop` are from 31. December 2018 
-and the first projection year is 2019.
+illustrate, the example population data in `propop` are from 31. December 2023.
 
 -   a data frame containing model **parameters**, that is, information about how
-key demographic variables such as mortality are expected to develop in the future;
+key demographic variables such as mortality are expected to develop in the 
+future; these are available for 2024-2055.
 
 -   some global arguments which do not change over time or across demographic 
-groups (e.g., proportion of female to male newborns).
+groups (e.g., proportion of female to male newborns). `propop` uses FSO's
+standard values as default option for these arguments.
 
 Importantly, the two data frames' structure (number, names, type of columns) must
 correspond exactly to the **specifications** shown in [this vignette](prepare_data.html). 
 Among other things, it is **mandatory** to provide two levels for sex. Nationality
 can have either one or two levels. The function requires 1-year age groups 
-ranging from 0 to 100 (incl. those who are older).   
+ranging from 0 to 100 years (incl. those who are older).   
 
 # Projections for a single region
 
 The package `propop` includes the population data from the canton of Aargau from 
-2018 and the FSO parameters from the [population development scenarios 2020](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html). 
+2023 and the FSO parameters from the [population development scenarios 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html). 
 Using these resources, we can project the population for the canton as a whole 
-for 1-year age groups for the period 2019-2030. 
+for 1-year age groups for the period 2024-2055. 
 
 The start and end of women's fertile period, the proportion of babies born as 
-female, and the share of babies born by mothers who are not Swiss are stable 
-parameters that are defined in `propop::project_raw()` and passed to 
-`propop::propop()`.
+female, and the share of babies born by mothers who are not Swiss are defined in 
+`propop::project_raw()` and passed to `propop::propop()`. We use FSO's standard
+values as default for these arguments.
+
+If the argument `scenarios` is not specified, `propop::propop()` returns a 
+projection for all scenarios available in `parameters`.
 \
 
 ``` {r project-canton}
 projection_canton_2030 <- propop(
   parameters = fso_parameters,
-  year_first = 2019,
+  scenarios = "reference",
+  year_first = 2024,
   year_last = 2030,
   population = fso_population,
   subregional = FALSE,
@@ -111,21 +116,21 @@ nationality.
 
 # No distinction between nationalities
 
-As of version 0.2.0 it is possible to run projections without distinguishing 
+As of version 0.2.0, it is possible to run projections without distinguishing 
 between Swiss and non-Swiss nationals. The simplest way to achieve this is to 
 provide population data and parameters without the nationality-specific columns 
 (remove `nat`, `acq`, `births_int_ch`).
 
 Let's adapt the input files accordingly. To keep things simple, we run the 
-projection for only one of the two nationalities. It goes without saying that 
+projection for **non-Swiss nationals**. It goes without saying that 
 using `propop::propop()` like this in real settings requires more preparation 
-(e.g., determining a single value for the joint population when parameters differ between Swiss and 
-non-Swiss people).
+(e.g., determining a single value for the joint population when parameters 
+differ between Swiss and non-Swiss people).
 
 ``` {r prepare-single-nationality}
 fso_parameters_int <- fso_parameters |>
-  # drop Swiss people
-    dplyr::filter(nat == "int") |>
+  # drop Swiss people, keep reference scenario
+    dplyr::filter(nat == "int" & scen == "reference") |>
   #   remove `nat`, `acq` and `births_int_ch` from `parameters`
     dplyr::select(-c(nat, acq, int_mothers))
 
@@ -141,7 +146,8 @@ When calling `propop::propop()`, you need to set `binational = FALSE`.
 ``` {r project-int}
 projection_int <- propop(
   parameters = fso_parameters_int,
-  year_first = 2019,
+  scenarios = "reference",
+  year_first = 2024,
   year_last = 2030,
   population = fso_population_int,
   subregional = FALSE,

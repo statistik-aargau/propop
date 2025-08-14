@@ -1,3 +1,22 @@
+# propop 1.4.0
+- `propop::propop()` can now perform multiple projection scenarios in a 
+single run. 
+- New function `check_balance` to check population equation for each row in 
+the output of `propop::propop()` (population at the beginning of the year 
+plus components must be equal to the population at the end of the year).
+- The function `prepare_evaluation` has an additional set of age groups (0-19,
+20-39, 40-59, 60-79, 80 years and older). The output that is created by this 
+function can be used by `compute_measures` and `aggregate_measures` 
+to evaluate projection models against a benchmark. 
+
+# propop 1.3.0
+- Uses new scenarios published by the FSO in April 2025
+- Updated functions, package data, and documentation 
+- Added "scenario" to output in console
+
+# propop 1.2.2
+- Projections enabled beyond 2018-2050.
+
 # propop 1.2.1
 - `get_population`: Using clearer, more intuitive name for argument to specify
 start year; less typing for users; 

@@ -4,7 +4,7 @@
       constructive::construct(combined_snapshot)
     Output
       tibble::tibble(
-        year = rep(2019, 404L),
+        year = rep(2019L, 404L),
         spatial_unit = rep("Aargau", 404L),
         nat = rep(c("ch", "int"), each = 202L),
         sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -79,12 +79,33 @@
       constructive::construct(combined_grouped_snapshot)
     Output
       tibble::tibble(
-        year = rep(2019, 12L),
+        year = rep(2019L, 12L),
         spatial_unit = rep("Aargau", 12L),
         age = rep(c("age_00_19", "age_20_64", "age_65_plus"), each = 4L),
         sex = rep(rep(c("f", "m"), 3), each = 2L),
         nat = rep(c("ch", "int"), 6),
         n_benchmark = c(49279, 17818, 52389, 19323, 151860, 56115, 149279, 66770, 59729, 6311, 49814, 7158),
         n_projected = c(49129, 18118, 52076, 19566, 151781, 56380, 149263, 67029, 59847, 6332, 49992, 7239),
+      )
+
+---
+
+    Code
+      constructive::construct(combined_grouped_snapshot_5)
+    Output
+      tibble::tibble(
+        year = rep(2019L, 20L),
+        spatial_unit = rep("Aargau", 20L),
+        age = rep(c("age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_plus"), each = 4L),
+        sex = rep(rep(c("f", "m"), 5), each = 2L),
+        nat = rep(c("ch", "int"), 10),
+        n_benchmark = c(
+          49279, 17818, 52389, 19323, 59412, 27663, 60110, 31427, 73849, 25315, 71395,
+          31307, 60578, 8104, 56217, 9838, 17750, 1344, 11371, 1356
+        ),
+        n_projected = c(
+          49129, 18118, 52076, 19566, 59375, 27716, 60137, 31512, 73799, 25491, 71335,
+          31409, 60679, 8158, 56294, 9982, 17775, 1347, 11489, 1365
+        ),
       )
 

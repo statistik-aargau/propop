@@ -9,6 +9,7 @@ propop(
   population,
   year_first,
   year_last,
+  scenarios = NULL,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
@@ -25,22 +26,25 @@ projection for a specific spatial level (e.g., canton, municipality).
 \item \code{year}, character, projection year.
 \item \code{spatial_unit}, character, ID of spatial entity (e.g., canton,
 municipality) for which to run the projections.
-\item \code{scen}, character, projection scenario, is used to subset data frames
-with multiple scenarios (r = reference, l = low growth, h = high growth).
-\item \code{nat} \bold{(optional)}, character, nationality (ch = Swiss; int =
+\item \code{scen}, character, one or several projection scenario(s). The main
+scenarios are usually "reference", "low" growth, and "high" growth.
+\item \code{nat}, character, nationality (\code{ch} = Swiss; \code{int} =
 foreign / international).
-\item \code{sex}, character (f = female, m = male).
+Required if binational = \code{TRUE}.
+\item \code{sex}, character (\code{f} = female, \code{m} = male).
 \item \code{age}, numeric, typically ranging from 0 to 100 (incl. >100).
 \item \code{birthrate}, numeric, number of births per mother
-\item \code{int_mothers} \bold{(optional)}, numeric, proportion of children with
+\item \code{int_mothers}, numeric, proportion of children with
 Swiss nationality born to non-Swiss mothers.
+Required if binational = \code{TRUE}.
 \item \code{mor}, numeric, prospective mortality rate (probability of death).
-\item \code{acq} \bold{(optional)}, numeric, rate of acquisition of Swiss citizenship.
-\item \code{emi_int}, numeric, rate of people emigrating abroad.
+\item \code{acq}, numeric, rate of acquisition of Swiss citizenship.
+Required if binational = \code{TRUE}.
+\item \code{emi_int}, numeric, rate of people emigrating abroad
 (number of immigrants - number of emigrants).
-\item \code{emi_nat}: rate of people emigrating to other cantons.
+\item \code{emi_nat}, rate of people emigrating to other cantons.
 \item \code{imm_int_n}, numeric, number of people immigrating from abroad.
-\item \code{imm_nat_n}: numeric, number of people immigrating from other cantons.
+\item \code{imm_nat_n}, numeric, number of people immigrating from other cantons.
 \item \code{mig_sub} \bold{(optional)}, numeric, net migration per subregion; this
 is the migration from / to other subregions (e.g., municipalities,
 districts) within the main superordinate projection unit (e.g., a canton).
@@ -65,6 +69,11 @@ the one preceding the first year of the projection.
 
 \item{year_last}{numeric, last year to be projected.}
 
+\item{scenarios}{\bold{(optional)}, character, indicating which
+projection scenario(s) shall be run; the corresponding information
+must be available in \code{parameters}.
+Defaults to the values in variable \code{scen} in \code{parameters}.}
+
 \item{age_groups}{numeric, number of age classes. Creates a vector with
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
 currently be set to \verb{= 101} (FSO standard number of age groups).}
@@ -80,32 +89,33 @@ currently be set to \verb{= 101} (FSO standard number of age groups).}
 
 \item{subregional}{boolean, \code{TRUE} indicates that subregional migration
 patterns (e.g., movement between municipalities within a canton)
-are part of the projection. Requires input (parameters and population)
-on the level of subregions.}
+are part of the projection. Requires input on the level of subregions
+(in \code{parameters} and \code{population}).}
 
 \item{binational}{boolean, \code{TRUE} indicates that projections discriminate
-between two groups of nationalities. \code{FALSE} indicates that only one
+between two groups of nationalities. \code{FALSE} indicates that the
 projection is run without distinguishing between nationalities.}
 
 \item{spatial_unit}{character, name of variable containing the names of the
 region or subregions for which the projection shall be performed.}
 }
 \value{
-Returns a data frame that includes the number of people for each demographic
-group per year (for projected years) and spatial unit. The number of
-rows is the product of all years times all demographic groups times
-all spatial units.
+Returns a \bold{data frame} that includes the number of people for each
+demographic group per year (for projected years) and spatial unit.
+The number of rows is the product of all scenarios times all years
+times all demographic groups times all spatial units.
 The output includes several \bold{identifiers} that indicate to which
-demographic group, year, and spatial unit the results in the rows refer
-to:
+scenario, demographic group, year, and spatial unit the results in the
+rows refer to:
 \item{year}{integer, indicating the projected years.}
+\item{scen}{character, indicating the projected scenario(s).}
 \item{spatial_unit}{factor, spatial units for which the projection
 was run (e.g., canton, districts, municipalities).}
-\item{age}{integer, ranging from \code{0}n to \code{100} (including those older
-than 100).}
-\item{sex}{factor, female (f) and male (m).}
-\item{nat}{factor, indicates if the nationality is Swiss (ch) or
-international / foreign (int). This variable is only returned if
+\item{age}{integer, ranging from \code{0}n to \code{100} years (including those
+older than 100).}
+\item{sex}{factor, female (\code{f}) and male (\code{m}).}
+\item{nat}{factor, indicates if the nationality is Swiss (\code{ch}) or
+international / foreign (\code{int}). This variable is only returned if
 \code{binational = TRUE}.}
 The output also includes columns related to the \bold{size and change
 of the population:}
@@ -128,12 +138,15 @@ to other cantons.}
 from other countries.}
 \item{imm_nat}{numeric, number of people who immigrate
 from other cantons.}
-\item{acq}{numeric, number of people who acquire Swiss citizenship.}
+\item{acq}{numeric, number of people who acquire Swiss citizenship
+(only returned if  \code{binational = TRUE}.)}
 }
 \description{
 Wrapper function to project population development using the cohort
-component method (see e.g., \href{https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf}{here}
-for more details).
+component method (see e.g., \href{https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf}{here}
+and \href{https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios\%20cant.pdf}{here}
+for more details). This function calls \code{project_raw.R}, which uses matrix
+algebra to implement the demographic balancing equations.
 
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
@@ -141,21 +154,34 @@ on how to download this information from
 \href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},
 see \code{vignette("prepare_data", package = "propop")}.
 
-For more details on how to use this function to project the population
-development on the level of a canton, see
-\code{vignette("run_projections", package = "propop")}.
-
 The projection parameters need to be passed to \code{propop::propop()} as a
 \bold{single data frame} (with the parameters as columns). The column types,
 names, and factor levels need to match the specifications listed below under
-\code{parameters}:
+\code{parameters}.
+
+If nothing else is indicated in argument \code{scenarios}, \code{propop()} runs and
+returns all \strong{scenarios} provided via \code{parameters}.
+
+For more details on how to use this function to project the population
+development on the level of a canton, see
+\code{vignette("project_single_region", package = "propop")}.
 }
 \examples{
 # Run projection for the sample data (whole canton of Aargau)
 propop(
   parameters = fso_parameters,
-  year_first = 2019,
-  year_last = 2022,
+  year_first = 2024,
+  year_last = 2027,
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
+)
+propop(
+  parameters = fso_parameters |>
+    dplyr::filter(scen == "reference" | scen == "high"),
+  year_first = 2024,
+  year_last = 2026,
+  scenarios = c("reference", "high"),
   population = fso_population,
   subregional = FALSE,
   binational = TRUE

@@ -13,14 +13,16 @@
 
 The goal of `propop` is to create population projections using the **cohort 
 component method** (see e.g., 
-[Preston, Guillot, and Heuveline, 2000](https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512); [Statistik Aargau, 2020a](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-technischer-begleitbericht.pdf); 
-[Statistik Aargau, 2020b](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektionen-2020-hauptbericht-v2.pdf)). 
+[Preston, Guillot, and Heuveline, 2000](https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512); 
+[Statistik Aargau, 2025a](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf); 
+[Statistik Aargau, 2025b](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprohektion-hauptbericht-2025.pdf)). 
+For a breakdown of the components, see [this vignette](https://statistik-aargau.github.io/propop/articles/project_single_region.html).
 
-The package was developed for use with 
-[population data](https://www.pxweb.bfs.admin.ch/pxweb) 
-and [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
+The package was developed for use with [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
 from the Swiss Federal Statistical Office (FSO). The current scenarios are 
-available for the years 2025-2055. 
+available for the years 2024-2055. As starting population, you can either use
+[population data from the FSO](https://www.pxweb.bfs.admin.ch/pxweb) or your own
+population data.
 
 `propop` uses the same matrix calculation method as the FSO 
 ([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf); only available in French) 
@@ -50,7 +52,7 @@ devtools::install_github("statistik-aargau/propop")
 
 The package includes four vignettes.  
 
-- Vignette 1 demonstrates 
+- Vignette 1 shows how to 
 [prepare](https://statistik-aargau.github.io/propop/articles/prepare_data.html) 
 the FSO population data and parameters. (Users can of course use their own data 
 and parameters).
@@ -59,21 +61,17 @@ and parameters).
 - Vignette 3 illustrates how to pepare and run 
 [population projections for subregions](https://statistik-aargau.github.io/propop/articles/project_subregions.html).
 - Vignette 4 shows 
-[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html),
-for example against benchmarks.
+[how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html) against benchmarks.
 
 ## Features, limitations, future plans
 
-- Currently, `propop::propop()` only works with *1-year age classes* (0-100+) 
-and two genders.     
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
-- The FSO uses additional *ex-post* adjustments to ensure that all the sums 
-involving different cantons add up, which leads to some differences
-between the projections from the FSO and `propop`. Moreover, the FSO projections
-are only published in five-year intervals, the most recent ones being based on 
-population records from 2023. `propop` enables you to run projections with more
-recent population records.
+- However, `propop::propop()` currently requires *1-year age classes* (0-100+) 
+and two genders.     
+- The FSO projections are only published in five-year intervals, the most recent 
+ones being based on population records from 2023. `propop` enables you to run 
+projections with more recent population records.
 - This package was developed for use with *FSO parameters* (e.g., mortality rate,
 or emigration rate). Most parameters are only available for cantons and the 
 whole of Switzerland. If you wish to run projections at smaller scales (e.g., 
@@ -89,6 +87,9 @@ using this feature, users must adjust or calculate the required parameters ([see
 - Custom parameters (e.g., consideration of sub-cantonal spatial entities, 
 adjustments to reflect regional differences, or addition of subregional migration 
 parameter) can be passed through the `parameters` object to `propop::propop()`. 
+- The FSO uses additional *ex-post* adjustments to ensure that all the sums 
+involving different cantons add up, which leads to some differences
+between the projections from the FSO and `propop`. 
 - There are also *possible future features* that could increase the accuracy of 
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
@@ -100,13 +101,13 @@ get in touch with the package maintainer.**
 ## Quick example
 
 To run `propop::propop()` with the example data included in the package 
-(canton of Aargau) for the period 2019-2030, use the following code:
+(canton of Aargau), use the following code:
 
 ``` r
 library(propop)
 projection_canton_2030 <- propop(
 parameters = fso_parameters,
-year_first = 2019,
+year_first = 2024,
 year_last = 2030,
 population = fso_population,
 subregional = FALSE,

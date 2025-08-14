@@ -1,7 +1,7 @@
 #' Compute evaluation measures
 #'
-#' Uses the differences between a benchmark and the results from a projection
-#' to compute performance measures.
+#' Uses the differences between the results from a projection and
+#' a benchmark to compute performance measures.
 #'
 #' The input is a data frame created with `propop::prepare_evaluation()`.
 #' It includes a benchmark (typically the observed population records, i.e.,

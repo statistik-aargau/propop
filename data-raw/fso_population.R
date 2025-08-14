@@ -1,13 +1,13 @@
 #' Population data from the Federal Statistical Office
 #'
-#' @description Population from the canton of Aargau in 2018.
+#' @description Population from the canton of Aargau.
 #'
 #' Update description in folder propop/R/
 
 
+# Default way to create data, contingent on STATPOP availability
 fso_population <- get_population(
-  year_first = 2018,
-  year_last = 2018,
+  year = 2023,
   spatial_units = c("- Aargau")
 )
 

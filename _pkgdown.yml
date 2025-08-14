@@ -28,7 +28,7 @@ navbar:
 reference:
 - examples: FALSE
 - lazy: TRUE
-- title: "Get and prepare data"
+- title: "Prepare data"
   desc: >
     Functions for downloading and preparing data
   contents:
@@ -44,6 +44,7 @@ reference:
   desc: >
     Functions to evaluate projection results
   contents:
+  - check_balance
   - prepare_evaluation
   - compute_measures
   - aggregate_measures

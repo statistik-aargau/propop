@@ -1,9 +1,17 @@
-name: Pkgdown
-
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
+  push:
+    branches: [main, master]
+  pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
-    branches:
-      - main
+
+name: pkgdown.yaml
+
+permissions: read-all
+
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
@@ -16,12 +24,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-
-      - uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: r-lib/actions/setup-pandoc@v2
 

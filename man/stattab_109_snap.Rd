@@ -5,7 +5,7 @@
 \alias{stattab_109_snap}
 \title{Snapshot of STAT-TAB px 109}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 174 rows and 6 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 175 rows and 6 columns.
 }
 \source{
 Data obtained from the Swiss Federal Statistical Office (FSO):

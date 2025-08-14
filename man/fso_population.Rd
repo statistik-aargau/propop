@@ -7,7 +7,7 @@
 \format{
 The example population records include the number of people of each
 demographic group (nationality (2) X sex (2) X age classes (101)) for the
-canton of Aargau in 2018.
+canton of Aargau in 2023.
 }
 \source{
 Federal Statistical Office:
@@ -25,18 +25,21 @@ returned data frame:
 \item{year}{numeric, year in which the population was recorded.}
 \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 cantons, districts, municipalities).}
-\item{nat}{character, ch = Swiss, int = foreign / international.}
-\item{sex}{character f = female, m = male.}
-\item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
+\item{nat}{character, \code{ch} = Swiss, \code{int} = foreign / international.}
+\item{sex}{character \code{f} = female, \code{m} = male.}
+\item{age}{numeric, 101 one-year age classes, ranging from \code{0} to \code{100}
 (including those older than 100).}
 \item{n}{numeric, number of people per year, spatial entity, and
 demographic group.}
 }
 }
 \description{
-Data frame containing the starting population required to
+Example data frame containing the starting population required to
 project the development of four demographic groups for a selected
-canton (Aargau). The data from 2018 were obtained from the
-\href{https://www.bfs.admin.ch/bfs/en/home.html}{Federal Statistical Office (FSO)}.
+canton (Aargau). Population data can be downloaded from the FSO using
+the \code{get_population}.
+
+At the time of the release of \code{{propop}} v1.3 in May 2025, the most recent
+data available via \code{get_population} are from 2023.
 }
 \keyword{datasets}

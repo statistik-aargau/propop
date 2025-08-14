@@ -66,15 +66,24 @@ the Federal Statistical Office (FSO). The parameters are only available
 on the level of cantons. For smaller-scale projections, the parameters must
 be scaled down.
 In addition to the parameters, the function also returns the projected
-population (i.e., number of people estimated in the FSO model released in 2020).
+population (i.e., number of people estimated in the FSO model released in 2025).
 All parameters and projections are from the
-\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2020}.
+\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{FSO model published in 2025}.
+The parameters are available for the years 2024-2055.
 The variables \code{int_mothers} and \code{mig_nat_n} are not directly available from
 the FSO. They are calculated within this function.
 
 To get projection parameters, you must use the spelling defined in the
 corresponding FSO table. See
-\code{vignette("prepare_data", package = "propop")}.
+\code{vignette("prepare_data", package = "propop")}. Inspecting the column
+'valueTexts' in the following package data may also help:
+\itemize{
+\item data('stattab_101_snap')
+\item data('stattab_102_snap')
+\item data('stattab_103_snap')
+\item data('stattab_106_snap')
+\item data('stattab_109_snap')
+}
 
 Changes to the API interface may break this function. If problems occur,
 we recommend following the step-by-step procedure described in
@@ -96,8 +105,12 @@ older than 100).
 
 The following parameters are included in the returned data frame:
 \itemize{
+\item \code{start_n}: numeric, number of people in the corresponding demographic
+group on 1st of January.
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
+\item \code{spatial_unit}: character, indicating the user requested spatial
+unit(s).
 \item \code{birthrate}: numeric, total number of live human births per 1,000
 inhabitants.
 (formerly \code{birth_rate}).
@@ -119,15 +132,13 @@ born to non-Swiss mothers
 \item \code{mig_nat_n}: numeric, national / inter-cantonal net migration
 (number of immigrants minus number of emigrants).
 (formerly \code{mig_ch}, will soon be obsolete and removed).
-\item \code{spatial_unit}: character, indicating the user requested spatial
-unit(s).
 }
 }
 
 \section{Projected population}{
 
-\code{n_projected} is the the number of people per demographic group and year on
-December 31 (as projected by the FSO in the 2020 model).
+\code{n_projected} is the number of people per demographic group and year on
+December 31 (as projected by the FSO in the 2025 model).
 }
 
 \section{Details about calculated variables}{
@@ -145,13 +156,13 @@ cantons and the emigration to other cantons.
 \dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
 one_canton <- get_parameters(
-  year_first = 2025,
-  year_last = 2050,
+  year_first = 2024,
+  year_last = 2055,
   spatial_units = "Aargau"
 )
 two_cantons_4years <- get_parameters(
-  year_first = 2018,
-  year_last = 2021,
+  year_first = 2025,
+  year_last = 2028,
   spatial_units = c("Aargau", "Zug")
 )
 }

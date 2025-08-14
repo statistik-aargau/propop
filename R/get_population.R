@@ -4,8 +4,10 @@
 #' Users who do not have the required population data can use this convenience
 #' function to get the mandatory starting population for
 #' `propop::propop()` from the Federal Statistical Office (FSO). The function
-#' can also be used to obtain the population records for several years (e.g., for model
-#' performance evaluations).
+#' can also be used to obtain the population records for several years
+#' (e.g., for model performance evaluations). This function can be used to
+#' obtain data at various spatial levels (e.g., cantons, municipalities).
+#' The most recent data are usually about 6 to 18 months old.
 #'
 #' To get the population data, you must use the **spelling** defined in the
 #' corresponding FSO table (STATTAB cube
@@ -19,12 +21,13 @@
 #'        defaults to `px-x-0102010000_101`.
 #' @param year numeric, year for which the population records are to
 #'        be downloaded. This usually is the starting population. To download
-#'        longer time periods, use `year` to indicate the onset of the period.
+#'        longer time periods, use `year` to indicate the first year of the
+#'        period.
 #' @param year_last numeric \bold{(optional)}; specifies the final year of the
 #'        time period for which data will be downloaded.
 #' @param spatial_units character vector, indicating at least one spatial
-#' entity for which the projection will be run. Typically a canton, districts,
-#' or municipalities.
+#'        entity for which the projection will be run. Typically a canton, several
+#'        districts or municipalities.
 #'
 #' @return A data frame. For each of the four demographic groups (female / male,
 #' Swiss / foreign nationals), there are 101 age classes, resulting in a total
@@ -34,9 +37,9 @@
 #'   \item{year}{numeric, year in which the population was recorded.}
 #'   \item{spatial_unit}{character, indicating the spatial entities (e.g.,
 #'   cantons, districts, municipalities).}
-#'   \item{nat}{character, ch = Swiss, int = foreign / international.}
-#'   \item{sex}{character f = female, m = male.}
-#'   \item{age}{numeric, 101 one-year age classes, ranging from 0 to 100
+#'   \item{nat}{character, `ch` = Swiss, `int` = foreign / international.}
+#'   \item{sex}{character `f` = female, `m` = male.}
+#'   \item{age}{numeric, 101 one-year age classes, ranging from `0` to `100`
 #'   (including those older than 100).}
 #'   \item{n}{numeric, number of people per year, spatial entity, and
 #'   demographic group.}
@@ -53,12 +56,12 @@
 #' \dontrun{
 #' get_population(
 #'   number_fso = "px-x-0102010000_101",
-#'   year = 2018,
-#'   year_last = 2019,
+#'   year = 2020,
+#'   year_last = 2023,
 #'   spatial_units = "- Aargau"
 #' )
 #' get_population(
-#'   year = 2018,
+#'   year = 2023,
 #'   spatial_units = c("- Aargau", "......0301 Aarberg")
 #' )
 #' }
@@ -77,18 +80,23 @@ get_population <- function(number_fso = "px-x-0102010000_101",
   year <- vctrs::vec_cast(year, integer())
   year_last <- vctrs::vec_cast(year_last, integer())
 
-  # get last year (most recent possible population record)
+  # To avoid impossible requests, ensure the latest year requested is last year
+  # or older
   current_year <- (as.numeric(format(Sys.Date(), "%Y")))
   assertthat::assert_that(is.integer(year),
-    year >= 2018 && year < current_year,
+    year >= 2010 && year < current_year,
     msg = paste0(
-      "`year` must be an integer or a numeric value without decimals"
+      "`year` is beyond the available records (2010 to ",
+      current_year-2, " / ",
+      current_year-1, ")."
     )
   )
   assertthat::assert_that(is.integer(year_last),
-    year_last >= 2018 && year_last < current_year,
+    year_last >= 2010 && year_last < current_year,
     msg = paste0(
-      "`year_last` must be an integer or a numeric value without decimals"
+      "`year_last` is beyond the available records (2010 to ",
+      current_year-2, " / ",
+      current_year-1, ")."
     )
   )
   assertthat::assert_that(is.integer(year),

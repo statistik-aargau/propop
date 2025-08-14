@@ -11,8 +11,8 @@
 #' @param projection_raw data frame showing the projection results obtained with
 #'    `project_raw`.
 #' @param subregional boolean, TRUE indicates that subregional migration
-#'     patterns (e.g., movement between municipalities within a canton)
-#'     are part of the projection.
+#'    patterns (e.g., movement between municipalities within a canton)
+#'    are part of the projection.
 #'
 #' @return data frame containing:
 #'    * five identifiers (age, sex, optionally: nationality, year,
@@ -32,7 +32,9 @@
 #' @autoglobal
 #' @noRd
 
-complement_projection <- function(skeleton, projection_raw, subregional) {
+complement_projection <- function(skeleton,
+                                  projection_raw,
+                                  subregional) {
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -57,6 +59,31 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     msg = "`year` must only inlcude numeric values."
   )
 
+  assertthat::assert_that(
+    "scen" %in% names(projection_raw),
+                          msg = "Column `scen` is missing in `projection_raw`."
+  )
+
+  assertthat::assert_that(
+    "spatial_unit" %in% names(projection_raw),
+    msg = "Column `spatial_unit` is missing in `projection_raw`."
+  )
+
+  assertthat::assert_that(
+    is.factor(projection_raw$scen),
+    msg = "Column `scen` in `projection_raw` must be a factor."
+  )
+
+  assertthat::assert_that(
+    is.factor(projection_raw$spatial_unit),
+    msg = "Column `spatial_unit` in `projection_raw` must be a factor."
+  )
+
+
+  # TODO ensure identical arrangement of scen & spatial_unit
+  # TODO or remove these columns from skeleton
+  # TODO or don't create them in the first place (just repeat skeleton as often as require)
+
   # apply skeleton
   projection_result <- skeleton |>
     dplyr::bind_cols(projection_raw) |>
@@ -79,7 +106,8 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
       new_age_group_100 = ifelse(age == 100, 100, NA),
       age = dplyr::case_when(age < 100 ~ age + 1, TRUE ~ age)
     ) |>
-    dplyr::mutate(n_jan = sum(n_jan), .by = c(year, nat, sex, age, spatial_unit)) |>
+    dplyr::mutate(n_jan = sum(n_jan),
+                  .by = c(year, scen, nat, sex, age, spatial_unit)) |>
     dplyr::mutate(
       # adapt age range to 0-100 years
       age = age - 1,
@@ -110,7 +138,7 @@ complement_projection <- function(skeleton, projection_raw, subregional) {
     dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
+      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
       "imm_int", "imm_nat", "acq", "mig_sub", "n_dec", "delta_n", "delta_perc"
     )))
 }

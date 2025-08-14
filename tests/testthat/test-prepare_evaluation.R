@@ -1245,4 +1245,27 @@ test_that("prepare_evaluation snapshots", {
 
   expect_snapshot(constructive::construct(combined_grouped_snapshot))
 
+  combined_grouped_snapshot_5 <- prepare_evaluation(
+    data_benchmark = data_benchmark_2019,
+    n_benchmark = "n",
+    data_projected = data_projected,
+    age_groups = "age_groups_5",
+    n_projected = "n_dec"
+  )
+
+  expect_snapshot(constructive::construct(combined_grouped_snapshot_5))
+
+  # population size must be equal
+  check_n_3 <- combined_grouped_snapshot |>
+    summarise(n_check1 = sum(n_benchmark),
+              n_check2 = sum(n_projected),
+              .by = c(year))
+
+  check_n_5 <- combined_grouped_snapshot_5 |>
+    summarise(n_check1 = sum(n_benchmark),
+              n_check2 = sum(n_projected),
+              .by = c(year))
+
+  expect_identical(check_n_3, check_n_5)
+
 })

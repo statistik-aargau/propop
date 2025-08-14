@@ -13,6 +13,7 @@ The purpose of this package is to project the development of the population at d
 Useful links:
 \itemize{
   \item \url{https://statistik-aargau.github.io/propop}
+  \item \url{https://statistik-aargau.github.io/propop/}
   \item Report bugs at \url{https://github.com/statistik-aargau/propop}
 }
 
@@ -33,6 +34,7 @@ Other contributors:
   \item Andrea Plüss \email{andrea.pluess@ag.ch} [contributor]
   \item Nadine Herrmann [contributor]
   \item Lutz Benson [contributor]
+  \item Thomas Knecht [contributor]
   \item Eric Meyer [contributor]
   \item Thomas Knecht [contributor]
   \item Statistik Aargau [funder, copyright holder]
