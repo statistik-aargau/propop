@@ -101,6 +101,7 @@ We use STAT-TAB data as described in the [vignette for projecting a single regio
 system.time({
   result_tables <- propop::propop_tables(
     parameters = fso_parameters,
+    # scenarios = "reference",
     year_first = 2024,
     year_last = 2030,
     population = fso_population,
@@ -149,7 +150,7 @@ compare_models <- result_matrices |>
         names_to = "variable",
         values_to = "n_tables"
       ),
-    by = join_by(year, spatial_unit, age, sex, nat, variable)
+    by = join_by(year, scen, spatial_unit, age, sex, nat, variable)
   ) |>
   # create age groups
   mutate(
@@ -164,7 +165,7 @@ compare_models <- result_matrices |>
   summarize(
     n_matrix = sum(n_matrix, na.rm = TRUE),
     n_tables = sum(n_tables, na.rm = TRUE),
-    .by = c(year, spatial_unit, variable, age_groups)
+    .by = c(year, scen, spatial_unit, variable, age_groups)
   ) |>
   # compute evaluation
   mutate(
@@ -194,7 +195,7 @@ compare_models |>
     ),
   ) |>
   ggplot2::ggplot(
-    ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups)
+    ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
   ) +
   geom_hline(yintercept = 0, linewidth = 0.3) +
   geom_point() +
@@ -223,7 +224,7 @@ compare_models |>
     legend.text = element_text(size = 9),
     legend.title = element_blank()
   ) +
-  ggplot2::facet_wrap(~variable)
+  ggplot2::facet_wrap(~ variable)
 ```
 
 
@@ -322,7 +323,7 @@ parameters_sub_mig <- fso_parameters_sub |>
 ```{r eval = FALSE, message = FALSE, warning = FALSE, result = FALSE}
 # Run propop with tables (new feature)
 system.time({
-  result_tables <- propop::propop_tables(
+  result_tables_sub <- propop::propop_tables(
     parameters = parameters_sub_mig |> 
       mutate(emi_sub = 0, imm_sub = 0),
     year_first = 2024,
@@ -335,7 +336,7 @@ system.time({
 
 # Run propop with matrices (original)
 system.time({
-  result_matrices <- propop::propop(
+  result_matrices_sub <- propop::propop(
     parameters = parameters_sub_mig,
     year_first = 2024,
     year_last = 2030,
@@ -346,6 +347,107 @@ system.time({
 })
 ```
 
+```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
+# Compare results
+compare_models_sub <- result_matrices_sub |>
+  arrange(year, nat, sex, age) |>
+  select(year:nat, births:n_dec) |>
+  mutate(acq = case_when(nat == "int" ~ NA, .default = acq)) |>
+  tidyr::pivot_longer(
+    cols = -c(year:nat),
+    names_to = "variable",
+    values_to = "n_matrix"
+  ) |>
+  # join results
+  left_join(
+    result_tables_sub |>
+      mutate(acq_n = case_when(nat == "int" ~ NA, .default = acq_n)) |>
+      select(
+        year:births,
+        mor = mor_n, emi_int = emi_int_n, emi_nat = emi_nat_n,
+        imm_int = imm_int_n, imm_nat = imm_nat_n, acq = acq_n, n_dec
+      ) |>
+      pivot_longer(
+        cols = -c(year:age),
+        names_to = "variable",
+        values_to = "n_tables"
+      ),
+    by = join_by(year, scen, spatial_unit, age, sex, nat, variable)
+  ) |>
+  # create age groups
+  mutate(
+    age_groups = case_when(
+      age < 20 ~ "age_00_19",
+      age >= 20 & age < 40 ~ "age_20_39",
+      age >= 40 & age < 60 ~ "age_40_59",
+      age >= 60 & age < 80 ~ "age_60_79",
+      age >= 80 ~ "age_80_plus"
+    )
+  ) |>
+  summarize(
+    n_matrix = sum(n_matrix, na.rm = TRUE),
+    n_tables = sum(n_tables, na.rm = TRUE),
+    .by = c(year, scen, spatial_unit, variable, age_groups)
+  ) |>
+  # compute evaluation
+  mutate(
+    error = n_matrix - n_tables,
+    pe = (error / n_matrix) * 100,
+    ape = (abs(error) / n_matrix) * 100
+  )
+```
+
+```{r plot, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+# Plot each projection component
+compare_models_sub |>
+  mutate(
+    pe = case_when((variable == "births" & error == 0) ~ 0, .default = pe),
+    variable = factor(
+      variable,
+      levels = c(
+        "n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat",
+        "acq", "mor"
+      ),
+      labels = c(
+        "total n", "births", "international immigration",
+        "intercantonal immigration", "international emigration",
+        "intercantonal emigration", "acquisition of CH citizenship",
+        "deaths"
+      )
+    ),
+  ) |>
+  ggplot2::ggplot(
+    ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
+  ) +
+  geom_hline(yintercept = 0, linewidth = 0.3) +
+  geom_point() +
+  scale_y_continuous(
+    labels = add_percent,
+    limits = c(-1, 5),
+    breaks = c(-1, 0, 1, 3, 5)
+  ) +
+  labs(
+    title = "Differences between propop_tables() and propop() (benchmark)",
+    subtitle = "by projected year and age group across the Canton of Aargau (2024-2030)",
+    x = "Year",
+    y = "Mean difference in percent"
+  ) +
+  scale_color_manual(values = rev(c("#007AB8", "#ffa81f", "#A05388", "#ffe562", "#96D4FF"))) +
+  scale_shape_manual(values = c(1, 4, 6)) +
+  scale_x_continuous(breaks = c(2020, 2025, 2030)) +
+  theme_bw() +
+  theme(
+    legend.position = "right",
+    plot.title = element_markdown(size = 14),
+    axis.title.y = element_text(size = 9),
+    axis.title.x = element_text(size = 9),
+    axis.text.x = element_text(size = 9),
+    axis.text.y = element_text(size = 9),
+    legend.text = element_text(size = 9),
+    legend.title = element_blank()
+  ) +
+  ggplot2::facet_wrap(~ variable + spatial_unit)
+```
 
 # Next steps
 
