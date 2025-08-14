@@ -568,6 +568,9 @@ propop_tables <- function(
   # Combine all groups back into one data frame
   df_result <- do.call(rbind, list_out)
 
+  # Remove row names
+  rownames(result_tables) <- NULL
+
   # Format output ----
   # No distinction between nationalities (binational = FALSE)
   if (binational == FALSE) {
