@@ -548,22 +548,21 @@ propop_tables <- function(
   list_parameters_scen <- split(parameters, parameters$scen)
 
   list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+    # Split parameters for each scenario into a list by year to iterate across
+    list_parameters <- split(parameters_scen, parameters_scen$year)
 
-  # Split parameters for each scenario into a list by year to iterate across
-  list_parameters <- split(parameters_scen, parameters_scen$year)
-
-  # Run projection ----
-  # iterate across years
-  df_result <- purrr::reduce(
-    .x = list_parameters,
-    .f = \(population, parameters) project_population(
-      population, parameters,
-      subregional = subregional
-    ),
-    .init = init_population
-  ) |>
-    # remove initial population's year
-    filter(year != unique(init_population$year))
+    # Run projection ----
+    # iterate across years
+    df_result <- purrr::reduce(
+      .x = list_parameters,
+      .f = \(population, parameters) project_population(
+        population, parameters,
+        subregional = subregional
+      ),
+      .init = init_population
+    ) |>
+      # remove initial population's year
+      filter(year != unique(init_population$year))
   })
 
   # Combine all groups back into one data frame
