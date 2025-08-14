@@ -892,11 +892,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       -c(Kanton, emi_n)
     )
 
-
-  # TODO
-  # Implement a consistent arrangement for the identifier-columns throughout input and output tables:
-  # year - spatial unit - scen - nat - sex - age
-
   # Feedback if years are outside current FSO projection period----
   if (year_first < 2024 |
       year_first > 2055 |

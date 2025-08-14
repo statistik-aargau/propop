@@ -14,20 +14,7 @@
 #'    patterns (e.g., movement between municipalities within a canton)
 #'    are part of the projection.
 #'
-#' @return data frame containing:
-#'    * five identifiers (age, sex, optionally: nationality, year,
-#'      spatial levels). These indicate to which demographic group and year the
-#'      results in the rows refer to.
-#'    * absolute population per demographic group and year (n).
-#'    * projection components that form the population of the next year.
-#'    * population balance (n_1) of the next projected year. The formula
-#'      sums up the components like so:
-#'      n_1 = n + births - deaths - international emigrants -
-#'      intercantonal emigrants + international immigrants +
-#'      intercantonal immigrants + naturalized citizens
-#'      (+ optionally: subregional migrants).
-#'    * annual population change per demographic group in absolute numbers
-#'      (delta_n) and as percentages (delta_perc).
+#' @returns See output described in propop::propop()
 #'
 #' @autoglobal
 #' @noRd
