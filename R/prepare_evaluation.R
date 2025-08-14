@@ -119,6 +119,10 @@ prepare_evaluation <- function(
     msg = "`age_groups` must be either NULL, 'age_groups_3' or 'age_groups_5'"
   )
   assertthat::assert_that(
+    "nat" %in% names(data_benchmark),
+    msg = "column `nat` is missing in data_benchmark"
+  )
+  assertthat::assert_that(
     "sex" %in% names(data_benchmark),
     msg = "column `sex` is missing in data_benchmark"
   )
@@ -129,6 +133,10 @@ prepare_evaluation <- function(
   assertthat::assert_that(
     "year" %in% names(data_benchmark),
     msg = "column `year` is missing in data_benchmark"
+  )
+  assertthat::assert_that(
+    "spatial_unit" %in% names(data_benchmark),
+    msg = "column `spatial_unit` is missing in data_benchmark"
   )
   assertthat::assert_that(
     "n_benchmark" %in% names(data_benchmark),
@@ -164,25 +172,14 @@ prepare_evaluation <- function(
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
     dplyr::mutate(n_projected = round(n_projected, digits = 0)) |>
-    dplyr::select(any_of(c(
-      "year", "spatial_unit", "age", "sex", "nat", "n_projected")
-    ))
-
-  # Columns to join
-  columns_join_prep = data_projected_clean |>
-    dplyr::select(any_of(c(
-      "year", "spatial_unit", "age", "sex", "nat")
-    ))
-
-  columns_join <- as.character(colnames(columns_join_prep))
+    dplyr::select(year, spatial_unit, age, sex, nat, n_projected)
 
   ## Combine data ----
   .data <- data_benchmark |>
     dplyr::full_join(
       data_projected_clean,
-      by = columns_join
+      by = c("year", "spatial_unit", "age", "sex", "nat")
     )
-
 
 
   ## Summarize age groups if applicable ----

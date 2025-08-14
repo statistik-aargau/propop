@@ -45,10 +45,6 @@ Authors@R: c(
       role = "ctb"
     ),
     person(
-      "Thomas", "Knecht",
-      role = "ctb"
-    ),
-    person(
     "Statistik", "Aargau",
     role = c("fnd", "cph")
     )
@@ -61,7 +57,7 @@ URL: https://statistik-aargau.github.io/propop, https://statistik-aargau.github.
 BugReports: https://github.com/statistik-aargau/propop
 License: GPL (>= 3)
 Depends: 
-    R (>= 3.5.0)
+    R (>= 2.10)
 Imports: 
     assertthat,
     BFS,
@@ -82,9 +78,7 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vctrs,
-    purrr,
-    rlang
+    vctrs
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

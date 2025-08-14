@@ -286,9 +286,4 @@ get_population <- function(number_fso = "px-x-0102010000_101",
       age = as.numeric(stringr::str_extract(age, "\\d+"))
     ) |>
     dplyr::rename(spatial_unit = Kanton)
-
-  # TODO
-  # Implement a consistent arrangement for the identifier-columns throughout input and output tables:
-  # year - spatial unit - scen - nat - sex - age
-
 }

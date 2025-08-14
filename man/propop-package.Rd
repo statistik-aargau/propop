@@ -36,7 +36,6 @@ Other contributors:
   \item Lutz Benson [contributor]
   \item Thomas Knecht [contributor]
   \item Eric Meyer [contributor]
-  \item Thomas Knecht [contributor]
   \item Statistik Aargau [funder, copyright holder]
 }
 
