@@ -78,8 +78,74 @@ project_population <- function(
     subregional = FALSE,
     binational = TRUE) {
   # Checks ----
-  # TODO
-  # - numeric years
+  ## Mandatory parameters ----
+  assertthat::assert_that("scen" %in% names(parameters),
+    msg = "Column `scen` is missing in parameters."
+  )
+  assertthat::assert_that("sex" %in% names(parameters),
+    msg = "Column `sex` is missing in parameters."
+  )
+  assertthat::assert_that("age" %in% names(parameters),
+    msg = "Column `age` is missing in parameters."
+  )
+  assertthat::assert_that("year" %in% names(parameters),
+    msg = "Column `year` is missing in parameters."
+  )
+  assertthat::assert_that("birthrate" %in% names(parameters),
+    msg = "Column `birthrate` is missing in parameters."
+  )
+  assertthat::assert_that("mor" %in% names(parameters),
+    msg = "Column `mor` is missing in parameters."
+  )
+  assertthat::assert_that("emi_int" %in% names(parameters),
+    msg = "Column `emi_int` is missing in parameters."
+  )
+  assertthat::assert_that("emi_nat" %in% names(parameters),
+    msg = "Column `emi_nat` is missing in parameters."
+  )
+  assertthat::assert_that("imm_int_n" %in% names(parameters),
+    msg = "Column `imm_int_n` is missing in parameters."
+  )
+  assertthat::assert_that("imm_nat_n" %in% names(parameters),
+    msg = "Column `imm_nat_n` is missing in parameters."
+  )
+  assertthat::assert_that("spatial_unit" %in% names(parameters),
+    msg = paste0("Column `spatial_unit` is missing in parameters.")
+  )
+
+  ## Optional parameter when requested ----
+  # Subregional migration
+  if (!is.null(subregional) && subregional == "net") {
+    assertthat::assert_that("mig_sub" %in% names(parameters),
+      msg = "Column `mig_sub` is missing in parameters."
+    )
+  } else if (!is.null(subregional) && subregional == "rate") {
+    assertthat::assert_that("emi_sub" %in% names(parameters),
+      msg = "Column `emi_sub` is missing in parameters."
+    )
+    assertthat::assert_that("imm_sub" %in% names(parameters),
+      msg = "Column `imm_sub` is missing in parameters."
+    )
+  } else {
+    parameters <- parameters
+  }
+
+  ## Population data frame ----
+  assertthat::assert_that("year" %in% names(population),
+    msg = "Column `year` is missing in `population`."
+  )
+  assertthat::assert_that(!any(is.na(population$year)),
+    msg = "Column 'year' in `population` must not include any missing values (NA)."
+  )
+
+  ## Check other arguments ----
+  # convert input in years to integer, results in error if not possible
+  population$year <- vctrs::vec_cast(population$year, integer())
+  parameters$year <- vctrs::vec_cast(parameters$year, integer())
+  assertthat::assert_that(is.integer(population$year),
+    msg = "The variable 'year' must be numeric in 'population'.")
+  assertthat::assert_that(is.integer(parameters$year),
+    msg = "The variable 'year' must be numeric in 'parameters'.")
 
   # Define projection year ----
   # `pop_year` helps to identify the progress of the iteration. For the first
@@ -110,10 +176,6 @@ project_population <- function(
     advance_population() |>
     # adapt projection year to year in parameters
     mutate(year = unique(parameters$year))
-
-  # Checks ----
-  # TODO
-  # - population_aged does not contain newborns
 
   # Calculate the projection for ages 1-100 ----
   population_new <- parameters |>

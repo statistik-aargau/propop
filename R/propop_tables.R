@@ -229,12 +229,6 @@ propop_tables <- function(
   assertthat::assert_that(is.numeric(share_born_female),
     msg = "The argument 'share_born_female' must be numeric."
   )
-  # assertthat::assert_that(is.logical(subregional),
-  #   msg = paste0(
-  #     "The argument 'subregional' must ",
-  #     "either be `TRUE` or `FALSE`."
-  #   )
-  # )
   assertthat::assert_that(is.character(spatial_unit),
     msg = paste0(
       "The argument 'spatial_unit' must be ",
@@ -426,9 +420,6 @@ propop_tables <- function(
     )
   } else {
     parameters <- parameters
-    # parameters <- parameters |>
-    #   # set subregional to null
-    #   mutate(emi_sub = 0, imm_sub = 0, mig_sub = 0)
   }
 
   ## Population data frame ----
@@ -535,11 +526,6 @@ propop_tables <- function(
     cli::cli_rule()
   }
 
-  ## Progress feedback ----
-  cli::cli_text(
-    "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
-    "pull() |> paste(collapse = ", ")}}"
-  )
   # Prepare projection ----
   # Projection period
   proj_years <- year_first:year_last
@@ -552,6 +538,17 @@ propop_tables <- function(
   list_parameters_scen <- split(parameters, parameters$scen)
 
   list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+
+    ## Progress feedback ----
+    cli::cli_text(
+      "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
+      "pull() |> paste(collapse = ", ")}}",
+      " (Scenarios: ",
+      "{.val { parameters |> dplyr::select(scen) |>",
+      "dplyr::mutate(scen = as.character(scen)) |>  dplyr::distinct()}}",
+      ")"
+    )
+
     # Split parameters for each scenario into a list by year to iterate across
     list_parameters <- split(parameters_scen, parameters_scen$year)
 
@@ -567,6 +564,7 @@ propop_tables <- function(
     ) |>
       # remove initial population's year
       filter(year != unique(init_population$year))
+
   })
 
   # Combine all groups back into one data frame
@@ -584,13 +582,6 @@ propop_tables <- function(
       dplyr::filter(nat != "int") |>
       dplyr::select(-any_of(c("nat", "acq")))
   }
-
-  # Only one spatial_unit (subregional = FALSE)
-  # if (is.null(subregional)) {
-  #   # remove the `mig_sub`column (otherwise is filled with zeros if present)
-  #   df_result <- df_result |>
-  #     dplyr::select(-any_of(c("emi_sub_n", "imm_sub_n", "mig_sub")))
-  # }
 
   # Feedback about arguments used ----
   cli::cli_h1("Settings used for the projection")

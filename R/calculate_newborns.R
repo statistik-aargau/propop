@@ -117,12 +117,7 @@ calculate_newborns <- function(
   df_newborns_out <- df_newborns_aggregated |>
     # complement data
     mutate(
-      # year = max(unique(population_prep$year)),
       age = 0,
-      # scen = unique(population_prep$scen[!is.na(population_prep$scen)]),
-      # spatial_unit =
-      #   unique(population_prep$spatial_unit[!is.na(population_prep$spatial_unit)]),
-      # n_dec = 0
     ) |>
     select(year, scen, nat, sex, age, spatial_unit, births) |>
     # add info from parameters

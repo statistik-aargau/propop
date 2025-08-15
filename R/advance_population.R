@@ -10,6 +10,8 @@
 #' The data frame only includes one year, usually the one preceding the first
 #' projected year.
 #'    * `year` numeric
+#'    * `scen`, character, one or several projection scenario(s). The main
+#'       scenarios are usually "reference", "low" growth, and "high" growth.
 #'    * `spatial_unit` character.
 #'    * `nat` character.
 #'    * `sex` character.
