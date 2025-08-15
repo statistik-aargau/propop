@@ -20,6 +20,7 @@ utils::globalVariables(c(
   "n_jan", # <calculate_newborns>
   "n_dec", # <calculate_newborns>
   "year", # <calculate_newborns>
+  "scen", # <calculate_newborns>
   "spatial_unit", # <calculate_newborns>
   "ch_m", # <calculate_newborns>
   "ch_f", # <calculate_newborns>
@@ -30,7 +31,6 @@ utils::globalVariables(c(
   "nat", # <calculate_newborns>
   "emi_int", # <calculate_newborns>
   "emi_nat", # <calculate_newborns>
-  "emi_sub", # <calculate_newborns>
   "acq", # <calculate_newborns>
   "acq_n", # <calculate_newborns>
   "mor", # <calculate_newborns>
@@ -39,31 +39,36 @@ utils::globalVariables(c(
   "mor_n", # <calculate_newborns>
   "emi_int_n", # <calculate_newborns>
   "emi_nat_n", # <calculate_newborns>
+  "mig_sub", # <calculate_newborns>
+  "emi_sub", # <calculate_newborns>
   "emi_sub_n", # <calculate_newborns>
   "imm_sub", # <calculate_newborns>
   "emi_sub_n_total", # <calculate_newborns>
   "imm_sub_n", # <calculate_newborns>
+  "year", # <calculate_projection>
+  "scen", # <calculate_projection>
   "spatial_unit", # <calculate_projection>
+  "sex", # <calculate_projection>
+  "age", # <calculate_projection>
   "n_jan", # <calculate_projection>
   "emi_int", # <calculate_projection>
   "mor", # <calculate_projection>
   "emi_nat", # <calculate_projection>
-  "emi_sub", # <calculate_projection>
   "acq", # <calculate_projection>
   "nat", # <calculate_projection>
   "acq_n", # <calculate_projection>
+  "births", # <calculate_projection>
   "mor_n", # <calculate_projection>
   "emi_int_n", # <calculate_projection>
   "emi_nat_n", # <calculate_projection>
-  "emi_sub_n", # <calculate_projection>
   "imm_int_n", # <calculate_projection>
   "imm_nat_n", # <calculate_projection>
-  "year", # <calculate_projection>
-  "sex", # <calculate_projection>
-  "age", # <calculate_projection>
+  "n_dec", # <calculate_projection>
+  "mig_sub", # <calculate_projection>
+  "emi_sub", # <calculate_projection>
+  "emi_sub_n", # <calculate_projection>
   "imm_sub", # <calculate_projection>
   "emi_sub_n_total", # <calculate_projection>
-  "n_dec", # <calculate_projection>
   "imm_sub_n", # <calculate_projection>
   "age", # <calculate_shares>
   "sum_5", # <calculate_shares>
@@ -164,6 +169,7 @@ utils::globalVariables(c(
   "sex", # <project_population>
   "nat", # <project_population>
   "spatial_unit", # <project_population>
+  "scen", # <project_population>
   "year", # <project_raw>
   "age", # <project_raw>
   "parameter", # <project_raw>
@@ -181,5 +187,10 @@ utils::globalVariables(c(
   "imm_nat_n", # <propop>
   "imm_int", # <propop>
   "imm_nat", # <propop>
+  "nat", # <propop_tables>
+  "sex", # <propop_tables>
+  "year", # <propop_tables>
+  "age", # <propop_tables>
+  "scen", # <propop_tables>
   NULL
 ))

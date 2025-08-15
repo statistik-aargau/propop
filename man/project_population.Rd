@@ -79,15 +79,13 @@ from other cantons.}
 }
 \description{
 This function is applied within the wrapper function \code{propop_tables()}
-to iterate across years. An example is currently in development;
-see script: dev/run_propop_tables.R
+to iterate across years and spatial units.
 
 The calculations involve three helper functions:
 \itemize{
 \item \code{advance_population()}: Advances the population by one year (increases
 age by one year and aggregates people aged 100 and older).
-\item \code{calculate_projection()}: Calculates the projection for ages 1-100. Follows
-the method from the FSO.
+\item \code{calculate_projection()}: Calculates the projection for ages 1-100.
 \item \code{calculate_newborns()}: Calculate newborns per demographic group.
 }
 }
