@@ -80,10 +80,18 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
-#' @param subregional boolean, `TRUE` indicates that subregional migration
-#'        patterns (e.g., movement between municipalities within a canton)
-#'        are part of the projection. Requires input on the level of subregions
-#'        (in `parameters` and `population`).
+#' @param subregional character or NULL, indicates if subregional migration
+#'        patterns (e.g., movement between municipalities within a canton) are
+#'        part of the projection (default `subregional = NULL`). Requires input
+#'        on the level of subregions (in `parameters` and `population`).
+#'        Two calculation methods are supported to distribute people between
+#'        subregions: With `subregional = "net"`, the net migration between
+#'        subregions is added to the population balance. Net migration numbers
+#'        must be specified in a data column `mig_sub` in `parameters`.
+#'        With `subregional = "rate"`, the numbers for subregional emigrants are
+#'        subtracted from the population balance, then redistributed back to all
+#'        subregional units as subregional immigration; `parameters` must contain
+#'        the columns `emi_sub` and `imm_sub`.
 #' @param binational boolean, `TRUE` indicates that projections discriminate
 #'        between two groups of nationalities. `FALSE` indicates that the
 #'        projection is run without distinguishing between nationalities.
@@ -137,7 +145,25 @@
 #' @autoglobal
 #'
 #' @examples
-#'
+#' # Run projection for the sample data (whole canton of Aargau)
+#' propop_tables(
+#'   parameters = fso_parameters,
+#'   year_first = 2024,
+#'   year_last = 2027,
+#'   population = fso_population,
+#'   subregional = NULL,
+#'   binational = TRUE
+#' )
+#' propop_tables(
+#'   parameters = fso_parameters |>
+#'     dplyr::filter(scen == "reference" | scen == "high"),
+#'   year_first = 2024,
+#'   year_last = 2026,
+#'   scenarios = c("reference", "high"),
+#'   population = fso_population,
+#'   subregional = NULL,
+#'   binational = TRUE
+#' )
 propop_tables <- function(
     parameters,
     population,
@@ -567,7 +593,8 @@ propop_tables <- function(
   })
 
   # Combine all groups back into one data frame
-  df_result <- do.call(rbind, list_out)
+  df_result <- do.call(rbind, list_out) |>
+    arrange(scen, year, spatial_unit, sex, nat, age)
 
   # Remove row names
   rownames(df_result) <- NULL
@@ -582,8 +609,12 @@ propop_tables <- function(
       dplyr::select(-any_of(c("nat", "acq")))
   }
 
-  # Feedback about arguments used ----
+  # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
+  cli::cli_text(
+    "Scenario(s): ",
+    "{.val {unique(scenarios)}}"
+  )
   cli::cli_text(
     "Year of starting population: ",
     "{.val {min(as.numeric(as.character(population$year)))}}"
@@ -614,14 +645,6 @@ propop_tables <- function(
     "{.val {year_last}}"
   )
   cli::cli_text(
-    "{.emph Projected} population size (",
-    "{.val {year_last}}): ",
-    "{.emph {.val {df_result |>
-    dplyr::filter(year == year_last) |>
-    dplyr:: summarise(sum(n_jan, na.rm = TRUE)) |>
-    dplyr::pull() |> round(digits = 0)}}}"
-  )
-  cli::cli_text(
     "Nationality-specific projection: ",
     "{.val {if (binational) 'yes' else 'no'}}"
   )
@@ -629,6 +652,27 @@ propop_tables <- function(
     "Subregional migration: ",
     "{.val {if (is.null(subregional)) 'no' else 'yes'}}"
   )
+  cli::cli_rule()
+  cli::cli_text(
+    "{.emph Projected} population size by ",
+    "{.val {year_last}}: "
+  )
+
+  purrr::walk(scenarios, function(scenario) {
+    pop_size <- df_result |>
+      filter(year == year_last, scen == scenario) |>
+      summarise(total = sum(n_dec, na.rm = TRUE)) |>
+      pull(total) |>
+      round(0)
+
+    cli::cli_text(
+      "- Scenario ",
+      "{.val {scenario}}",
+      ": ",
+      "{.emph {.val {pop_size}}}"
+    )
+  })
+  cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 
   return(df_result)

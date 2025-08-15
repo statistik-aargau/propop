@@ -3,15 +3,18 @@
 #' @description Uses the cohort component method to project population development.
 #'
 #' @param .data data frame, population and parameters for one year.
-#' @param subregional character or NULL, indicates if subregional migration patterns
-#'        (e.g., movement between municipalities within a canton) are part of
-#'        the projection (default `subregional = NULL`). Two calculation methods
-#'        are supported to distribute people between subregions:
-#'        With `subregional = "net"`, the net migration between subregions is
-#'        added to the population balance. Net migration must be specified in
-#'        data column `mig_sub`. With `subregional = "rate"`, the numbers for
-#'        subregional emigrants are subtracted from the population balance, then
-#'        redistributed back to all subregional units as subregional immigration.
+#' @param subregional character or NULL, indicates if subregional migration
+#'        patterns (e.g., movement between municipalities within a canton) are
+#'        part of the projection (default `subregional = NULL`). Requires input
+#'        on the level of subregions (in `parameters` and `population`).
+#'        Two calculation methods are supported to distribute people between
+#'        subregions: With `subregional = "net"`, the net migration between
+#'        subregions is added to the population balance. Net migration numbers
+#'        must be specified in a data column `mig_sub` in `parameters`.
+#'        With `subregional = "rate"`, the numbers for subregional emigrants are
+#'        subtracted from the population balance, then redistributed back to all
+#'        subregional units as subregional immigration; `parameters` must contain
+#'        the columns `emi_sub` and `imm_sub`.
 #'
 #' @return Returns a data frame with the starting population `n_jan`, components,
 #'         and the resulting projected population for the next year `n_dec`.
