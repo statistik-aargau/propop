@@ -2,7 +2,7 @@
 title: "WIP: New function `propop::propop_tables()`"
 subtitle: "Run projections with `tibbles`, `purrr` and `dplyr`"
 author: "Statistik Aargau (2025), Norah Efosa"
-date: April 2025
+date: August 2025
 format:
   html:
     embed-resources: true
@@ -61,11 +61,12 @@ propop::propop_tables(
   population,
   year_first,
   year_last,
+  scenarios = NULL,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  subregional = FALSE,
+  subregional = NULL,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -80,15 +81,15 @@ propop::propop_tables(
 ```{r, echo = TRUE, eval = FALSE}
 # [...]
 # Run projection ----
-# iterate across spatial units and years
- df_result <- purrr::reduce(
-    .x = list_parameters,
-    .f = \(population, parameters) project_population(
-      population, parameters,
-      subregional = subregional
-    ),
-    .init = init_population
-  )
+# iterate across spatial units, scenarios and years
+df_result <- purrr::reduce(
+  .x = list_parameters,
+  .f = \(population, parameters) project_population(
+    population, parameters,
+    subregional = subregional
+  ),
+  .init = init_population
+)
 # [...]
 ```
 
@@ -101,11 +102,10 @@ We use STAT-TAB data as described in the [vignette for projecting a single regio
 system.time({
   result_tables <- propop::propop_tables(
     parameters = fso_parameters,
-    # scenarios = "reference",
     year_first = 2024,
     year_last = 2030,
     population = fso_population,
-    # subregional = FALSE,
+    subregional = NULL,
     binational = TRUE
   )
 })
@@ -224,7 +224,7 @@ compare_models |>
     legend.text = element_text(size = 9),
     legend.title = element_blank()
   ) +
-  ggplot2::facet_wrap(~ variable)
+  ggplot2::facet_wrap(~variable)
 ```
 
 
@@ -239,7 +239,7 @@ fso_parameters_sub <- fso_parameters |>
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 
-# Generate 5 random "cuts" to distribute the original population; 
+# Generate 5 random "cuts" to distribute the original population;
 # avoid extreme values with a range of 0.1 to 0.5
 cut_1 <- {
   set.seed(1)
@@ -320,16 +320,17 @@ parameters_sub_mig <- fso_parameters_sub |>
 ```
 
 
-```{r eval = FALSE, message = FALSE, warning = FALSE, result = FALSE}
+```{r eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
 # Run propop with tables (new feature)
 system.time({
   result_tables_sub <- propop::propop_tables(
-    parameters = parameters_sub_mig |> 
-    # mutate(emi_sub = 0, imm_sub = 0),
+    parameters = parameters_sub_mig,
+    # |> mutate(emi_sub = 0, imm_sub = 0)
     year_first = 2024,
     year_last = 2030,
     population = df_population_sub,
-    subregional = "rate",
+    subregional = "net",
+    # subregional = "rate",
     binational = TRUE
   )
 })
@@ -397,10 +398,10 @@ compare_models_sub <- result_matrices_sub |>
   )
 ```
 
-```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+```{r plot-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE}
 # Plot each projection component
 compare_models_sub |>
-  filter(variable %in% c("n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor")) |> 
+  filter(variable %in% c("n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor")) |>
   mutate(
     pe = case_when((variable == "births" & error == 0) ~ 0, .default = pe),
     variable = factor(
@@ -416,7 +417,7 @@ compare_models_sub |>
     )
   ) |>
   # exclude births for older age groups
-  filter(!(variable == "births" & age_groups != "age_00_19")) |> 
+  filter(!(variable == "births" & age_groups != "age_00_19")) |>
   ggplot2::ggplot(
     ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
   ) +
@@ -452,9 +453,21 @@ compare_models_sub |>
 
 # Next steps
 
--   [ ] Fine tuning for rates (esp. people aged 80 years and older)
--   [x] Evaluation for subregions (in progress)
--       [ ] evaluate computation speed
-        [ ] tests with real data
--   [ ] Code cleaning, function-feedback, package tests
--   [ ] Integration into the main branch
+**Fine tuning for rates (esp. people aged 80 years and older)** \
+☒ No bugs were found. Results for population components in the output still 
+    differ a bit from the original (`propop()`), but only for components that
+     are based on rates. \
+☐ Comparison with FSO-results
+
+**Subregions**\
+☒ `propop_tables()` runs for subregions\
+☒ Two methods enabled for the subregional distribution of migration (net numbers or rates)\
+☐ Evaluate computation speed and accuracy (tests with real data)
+
+**Code cleaning, function-feedback, package tests**\
+☒ Code is more or less clean\
+☒ Function feedback is there\
+☐ Package tests and documentation (e.g. a new vignette) 
+
+**Integration into the main branch (should `propop_tables()` remain as a separate
+function or become an argument to select in `propop()`?)**
