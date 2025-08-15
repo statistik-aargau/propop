@@ -15,12 +15,6 @@
 #' year. Possible identifiers are the same as in `parameters` (apart from year).
 #' The data frame only includes one year, usually the one preceding the first
 #' projected year.
-#'    * `year` numeric
-#'    * `spatial_unit` character.
-#'    * `nat` character.
-#'    * `sex` character.
-#'    * `age` numeric.
-#'    * `n_dec` numeric, number of people per demographic group in December.
 #' @param parameters list, data frames containing the FSO rates and numbers to
 #' run the projection for a specific spatial level (e.g., canton, municipality).
 #' @param fert_first numeric, first year of female fertility. Defaults to 16
@@ -29,6 +23,21 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
+#' @param subregional character or NULL, indicates if subregional migration
+#'        patterns (e.g., movement between municipalities within a canton) are
+#'        part of the projection (default `subregional = NULL`). Requires input
+#'        on the level of subregions (in `parameters` and `population`).
+#'        Two calculation methods are supported to distribute people between
+#'        subregions: With `subregional = "net"`, the net migration between
+#'        subregions is added to the population balance. Net migration numbers
+#'        must be specified in a data column `mig_sub` in `parameters`.
+#'        With `subregional = "rate"`, the numbers for subregional emigrants are
+#'        subtracted from the population balance, then redistributed back to all
+#'        subregional units as subregional immigration; `parameters` must contain
+#'        the columns `emi_sub` and `imm_sub`.
+#' @param binational boolean, `TRUE` indicates that projections discriminate
+#'        between two groups of nationalities. `FALSE` indicates that the
+#'        projection is run without distinguishing between nationalities.
 #'
 #' @return
 #' Returns a data frame that includes the number of people for each demographic
@@ -75,11 +84,77 @@ project_population <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = FALSE,
+    subregional = NULL,
     binational = TRUE) {
   # Checks ----
-  # TODO
-  # - numeric years
+  ## Mandatory parameters ----
+  assertthat::assert_that("scen" %in% names(parameters),
+    msg = "Column `scen` is missing in parameters."
+  )
+  assertthat::assert_that("sex" %in% names(parameters),
+    msg = "Column `sex` is missing in parameters."
+  )
+  assertthat::assert_that("age" %in% names(parameters),
+    msg = "Column `age` is missing in parameters."
+  )
+  assertthat::assert_that("year" %in% names(parameters),
+    msg = "Column `year` is missing in parameters."
+  )
+  assertthat::assert_that("birthrate" %in% names(parameters),
+    msg = "Column `birthrate` is missing in parameters."
+  )
+  assertthat::assert_that("mor" %in% names(parameters),
+    msg = "Column `mor` is missing in parameters."
+  )
+  assertthat::assert_that("emi_int" %in% names(parameters),
+    msg = "Column `emi_int` is missing in parameters."
+  )
+  assertthat::assert_that("emi_nat" %in% names(parameters),
+    msg = "Column `emi_nat` is missing in parameters."
+  )
+  assertthat::assert_that("imm_int_n" %in% names(parameters),
+    msg = "Column `imm_int_n` is missing in parameters."
+  )
+  assertthat::assert_that("imm_nat_n" %in% names(parameters),
+    msg = "Column `imm_nat_n` is missing in parameters."
+  )
+  assertthat::assert_that("spatial_unit" %in% names(parameters),
+    msg = paste0("Column `spatial_unit` is missing in parameters.")
+  )
+
+  ## Optional parameter when requested ----
+  # Subregional migration
+  if (!is.null(subregional) && subregional == "net") {
+    assertthat::assert_that("mig_sub" %in% names(parameters),
+      msg = "Column `mig_sub` is missing in parameters."
+    )
+  } else if (!is.null(subregional) && subregional == "rate") {
+    assertthat::assert_that("emi_sub" %in% names(parameters),
+      msg = "Column `emi_sub` is missing in parameters."
+    )
+    assertthat::assert_that("imm_sub" %in% names(parameters),
+      msg = "Column `imm_sub` is missing in parameters."
+    )
+  } else {
+    parameters <- parameters
+  }
+
+  ## Population data frame ----
+  assertthat::assert_that("year" %in% names(population),
+    msg = "Column `year` is missing in `population`."
+  )
+  assertthat::assert_that(!any(is.na(population$year)),
+    msg = "Column 'year' in `population` must not include any missing values (NA)."
+  )
+
+  ## Check other arguments ----
+  # convert input in years to integer, results in error if not possible
+  population$year <- vctrs::vec_cast(population$year, integer())
+  parameters$year <- vctrs::vec_cast(parameters$year, integer())
+  assertthat::assert_that(is.integer(population$year),
+    msg = "The variable 'year' must be numeric in 'population'.")
+  assertthat::assert_that(is.integer(parameters$year),
+    msg = "The variable 'year' must be numeric in 'parameters'.")
 
   # Define projection year ----
   # `pop_year` helps to identify the progress of the iteration. For the first
@@ -110,10 +185,6 @@ project_population <- function(
     advance_population() |>
     # adapt projection year to year in parameters
     mutate(year = unique(parameters$year))
-
-  # Checks ----
-  # TODO
-  # - population_aged does not contain newborns
 
   # Calculate the projection for ages 1-100 ----
   population_new <- parameters |>
@@ -149,7 +220,7 @@ project_population <- function(
     bind_rows(population) |>
     # clean the data
     select(any_of(c(
-      "year", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
+      "year", "scen", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
       "mor_n", "emi_int_n", "emi_nat_n", "emi_sub_n", "imm_int_n", "imm_nat_n",
       "imm_sub_n", "acq_n", "n_dec"
     ))) |>
@@ -157,7 +228,7 @@ project_population <- function(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
-    arrange(spatial_unit, year, age, nat, desc(sex))
+    arrange(spatial_unit, year, scen, age, nat, desc(sex))
 
   return(population_out)
 }

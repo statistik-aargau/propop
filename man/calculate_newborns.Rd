@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_newborns.R
 \name{calculate_newborns}
 \alias{calculate_newborns}
-\title{Calculate newborns per demographic group.}
+\title{Calculate the number of newborn babies.}
 \usage{
 calculate_newborns(
   population,
@@ -10,7 +10,7 @@ calculate_newborns(
   fert_first,
   fert_last,
   share_born_female,
-  subregional = FALSE
+  subregional = subregional
 )
 }
 \arguments{
@@ -30,12 +30,22 @@ projection for a specific spatial level (e.g., canton, municipality).}
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
 
-\item{subregional}{}
+\item{subregional}{character or NULL, indicates if subregional migration patterns
+(e.g., movement between municipalities within a canton) are part of
+the projection (default \code{subregional = NULL}). Two calculation methods
+are supported to distribute people between subregions:
+With \code{subregional = "net"}, the net migration between subregions is
+added to the population balance. Net migration must be specified in
+data column \code{mig_sub}. With \code{subregional = "rate"}, the numbers for
+subregional emigrants are subtracted from the population balance, then
+redistributed back to all subregional units as subregional immigration.}
 }
 \value{
 Returns a data frame with the number of newborn children 'births'
 structured in demographic groups.
 }
 \description{
-Calculate newborns per demographic group.
+Calculates the number of newborn babies based on birthrates and the female
+population within a pre-defined fertility age range. In a second step, the
+cohort component method is used to determine newborn's survival rates.
 }

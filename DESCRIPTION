@@ -36,10 +36,6 @@ Authors@R: c(
       "Lutz", "Benson",
       role = "ctb"
     ),
-   person(
-      "Thomas", "Knecht",
-      role = "ctb"
-    ),
     person(
       "Eric", "Meyer",
       role = "ctb"
@@ -83,7 +79,6 @@ Suggests:
     stringr,
     testthat,
     vctrs,
-    purrr,
     rlang
 VignetteBuilder: 
     knitr

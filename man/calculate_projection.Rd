@@ -4,15 +4,25 @@
 \alias{calculate_projection}
 \title{Calculates the projection for ages 1-100.}
 \usage{
-calculate_projection(.data, subregional = FALSE)
+calculate_projection(.data, subregional = subregional)
 }
 \arguments{
 \item{.data}{data frame, population and parameters for one year.}
+
+\item{subregional}{character or NULL, indicates if subregional migration patterns
+(e.g., movement between municipalities within a canton) are part of
+the projection (default \code{subregional = NULL}). Two calculation methods
+are supported to distribute people between subregions:
+With \code{subregional = "net"}, the net migration between subregions is
+added to the population balance. Net migration must be specified in
+data column \code{mig_sub}. With \code{subregional = "rate"}, the numbers for
+subregional emigrants are subtracted from the population balance, then
+redistributed back to all subregional units as subregional immigration.}
 }
 \value{
-data frame, contains the staring population \code{n_jan}, components, and
-the resulting projected population for the next year \code{n_dec}.
+Returns a data frame with the starting population \code{n_jan}, components,
+and the resulting projected population for the next year \code{n_dec}.
 }
 \description{
-Calculates the projection for ages 1-100.
+Uses the cohort component method to project population development.
 }

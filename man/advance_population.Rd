@@ -14,6 +14,8 @@ The data frame only includes one year, usually the one preceding the first
 projected year.
 \itemize{
 \item \code{year} numeric
+\item \code{scen}, character, one or several projection scenario(s). The main
+scenarios are usually "reference", "low" growth, and "high" growth.
 \item \code{spatial_unit} character.
 \item \code{nat} character.
 \item \code{sex} character.
