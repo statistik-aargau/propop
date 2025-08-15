@@ -87,10 +87,18 @@ currently be set to \verb{= 101} (FSO standard number of age groups).}
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
 
-\item{subregional}{boolean, \code{TRUE} indicates that subregional migration
-patterns (e.g., movement between municipalities within a canton)
-are part of the projection. Requires input on the level of subregions
-(in \code{parameters} and \code{population}).}
+\item{subregional}{character or NULL, indicates if subregional migration
+patterns (e.g., movement between municipalities within a canton) are
+part of the projection (default \code{subregional = NULL}). Requires input
+on the level of subregions (in \code{parameters} and \code{population}).
+Two calculation methods are supported to distribute people between
+subregions: With \code{subregional = "net"}, the net migration between
+subregions is added to the population balance. Net migration numbers
+must be specified in a data column \code{mig_sub} in \code{parameters}.
+With \code{subregional = "rate"}, the numbers for subregional emigrants are
+subtracted from the population balance, then redistributed back to all
+subregional units as subregional immigration; \code{parameters} must contain
+the columns \code{emi_sub} and \code{imm_sub}.}
 
 \item{binational}{boolean, \code{TRUE} indicates that projections discriminate
 between two groups of nationalities. \code{FALSE} indicates that the

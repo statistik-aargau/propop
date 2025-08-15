@@ -10,7 +10,7 @@ project_population(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100/205,
-  subregional = FALSE,
+  subregional = NULL,
   binational = TRUE
 )
 }
@@ -19,15 +19,7 @@ project_population(
 demographic group; either the initial population or the previous projected
 year. Possible identifiers are the same as in \code{parameters} (apart from year).
 The data frame only includes one year, usually the one preceding the first
-projected year.
-\itemize{
-\item \code{year} numeric
-\item \code{spatial_unit} character.
-\item \code{nat} character.
-\item \code{sex} character.
-\item \code{age} numeric.
-\item \code{n_dec} numeric, number of people per demographic group in December.
-}}
+projected year.}
 
 \item{parameters}{list, data frames containing the FSO rates and numbers to
 run the projection for a specific spatial level (e.g., canton, municipality).}
@@ -40,6 +32,23 @@ run the projection for a specific spatial level (e.g., canton, municipality).}
 
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
+
+\item{subregional}{character or NULL, indicates if subregional migration
+patterns (e.g., movement between municipalities within a canton) are
+part of the projection (default \code{subregional = NULL}). Requires input
+on the level of subregions (in \code{parameters} and \code{population}).
+Two calculation methods are supported to distribute people between
+subregions: With \code{subregional = "net"}, the net migration between
+subregions is added to the population balance. Net migration numbers
+must be specified in a data column \code{mig_sub} in \code{parameters}.
+With \code{subregional = "rate"}, the numbers for subregional emigrants are
+subtracted from the population balance, then redistributed back to all
+subregional units as subregional immigration; \code{parameters} must contain
+the columns \code{emi_sub} and \code{imm_sub}.}
+
+\item{binational}{boolean, \code{TRUE} indicates that projections discriminate
+between two groups of nationalities. \code{FALSE} indicates that the
+projection is run without distinguishing between nationalities.}
 }
 \value{
 Returns a data frame that includes the number of people for each demographic
