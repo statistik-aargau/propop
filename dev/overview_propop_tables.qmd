@@ -105,7 +105,7 @@ system.time({
     year_first = 2024,
     year_last = 2030,
     population = fso_population,
-    subregional = FALSE,
+    # subregional = FALSE,
     binational = TRUE
   )
 })
@@ -325,11 +325,11 @@ parameters_sub_mig <- fso_parameters_sub |>
 system.time({
   result_tables_sub <- propop::propop_tables(
     parameters = parameters_sub_mig |> 
-      mutate(emi_sub = 0, imm_sub = 0),
+    # mutate(emi_sub = 0, imm_sub = 0),
     year_first = 2024,
     year_last = 2030,
     population = df_population_sub,
-    subregional = TRUE,
+    subregional = "rate",
     binational = TRUE
   )
 })
@@ -365,7 +365,7 @@ compare_models_sub <- result_matrices_sub |>
       select(
         year:births,
         mor = mor_n, emi_int = emi_int_n, emi_nat = emi_nat_n,
-        imm_int = imm_int_n, imm_nat = imm_nat_n, acq = acq_n, n_dec
+        imm_int = imm_int_n, imm_nat = imm_nat_n, n_dec
       ) |>
       pivot_longer(
         cols = -c(year:age),
@@ -397,25 +397,26 @@ compare_models_sub <- result_matrices_sub |>
   )
 ```
 
-```{r plot, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 # Plot each projection component
 compare_models_sub |>
+  filter(variable %in% c("n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor")) |> 
   mutate(
     pe = case_when((variable == "births" & error == 0) ~ 0, .default = pe),
     variable = factor(
       variable,
       levels = c(
-        "n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat",
-        "acq", "mor"
+        "n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor"
       ),
       labels = c(
         "total n", "births", "international immigration",
         "intercantonal immigration", "international emigration",
-        "intercantonal emigration", "acquisition of CH citizenship",
-        "deaths"
+        "intercantonal emigration", "deaths"
       )
-    ),
+    )
   ) |>
+  # exclude births for older age groups
+  filter(!(variable == "births" & age_groups != "age_00_19")) |> 
   ggplot2::ggplot(
     ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
   ) +
@@ -452,6 +453,8 @@ compare_models_sub |>
 # Next steps
 
 -   [ ] Fine tuning for rates (esp. people aged 80 years and older)
--   [ ] Evaluation for subregions (in progress) -\> computation speed?
+-   [x] Evaluation for subregions (in progress)
+-       [ ] evaluate computation speed
+        [ ] tests with real data
 -   [ ] Code cleaning, function-feedback, package tests
 -   [ ] Integration into the main branch
