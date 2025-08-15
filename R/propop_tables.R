@@ -149,21 +149,21 @@ propop_tables <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = FALSE,
+    subregional = NULL,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>
     select(any_of(c(
-      "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
-      "int_mothers", "mor", "emi_int", "emi_nat", "imm_int_n", "imm_nat_n",
-      "acq", "emi_sub", "imm_sub"
+      "year", "scen", "spatial_unit", "nat", "sex", "age", "birthrate",
+      "int_mothers", "mor", "emi_int", "emi_nat", "emi_sub", "acq", "imm_int_n",
+      "imm_nat_n", "imm_sub", "mig_sub"
     )))
 
   # Population
   population <- population |>
-    select(any_of(c("year", "spatial_unit", "scen", "nat", "sex", "age", "n")))
+    select(any_of(c("year", "scen", "spatial_unit", "nat", "sex", "age", "n")))
 
   # Check input ----
   # Check scenarios
@@ -222,19 +222,19 @@ propop_tables <- function(
   assertthat::assert_that(is.integer(fert_first),
     is.integer(fert_last), fert_first <= fert_last,
     msg = paste0(
-      "fert_first must be smaller than or ",
+      "'fert_first' must be smaller than or ",
       "equal to fert_last"
     )
   )
   assertthat::assert_that(is.numeric(share_born_female),
     msg = "The argument 'share_born_female' must be numeric."
   )
-  assertthat::assert_that(is.logical(subregional),
-    msg = paste0(
-      "The argument 'subregional' must ",
-      "either be `TRUE` or `FALSE`."
-    )
-  )
+  # assertthat::assert_that(is.logical(subregional),
+  #   msg = paste0(
+  #     "The argument 'subregional' must ",
+  #     "either be `TRUE` or `FALSE`."
+  #   )
+  # )
   assertthat::assert_that(is.character(spatial_unit),
     msg = paste0(
       "The argument 'spatial_unit' must be ",
@@ -413,17 +413,22 @@ propop_tables <- function(
 
   ## Optional parameter when requested ----
   # Subregional migration
-  if (subregional == TRUE) {
+  if (!is.null(subregional) && subregional == "net") {
+    assertthat::assert_that("mig_sub" %in% names(parameters),
+      msg = "Column `mig_sub` is missing in parameters."
+    )
+  } else if (!is.null(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
       msg = "Column `emi_sub` is missing in parameters."
     )
     assertthat::assert_that("imm_sub" %in% names(parameters),
       msg = "Column `imm_sub` is missing in parameters."
     )
-  } else if (subregional == FALSE) {
-    parameters <- parameters |>
-      # set subregional to null
-      mutate(emi_sub = 0, imm_sub = 0)
+  } else {
+    parameters <- parameters
+    # parameters <- parameters |>
+    #   # set subregional to null
+    #   mutate(emi_sub = 0, imm_sub = 0, mig_sub = 0)
   }
 
   ## Population data frame ----
@@ -535,7 +540,6 @@ propop_tables <- function(
     "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
     "pull() |> paste(collapse = ", ")}}"
   )
-
   # Prepare projection ----
   # Projection period
   proj_years <- year_first:year_last
@@ -569,7 +573,7 @@ propop_tables <- function(
   df_result <- do.call(rbind, list_out)
 
   # Remove row names
-  rownames(result_tables) <- NULL
+  rownames(df_result) <- NULL
 
   # Format output ----
   # No distinction between nationalities (binational = FALSE)
@@ -582,11 +586,11 @@ propop_tables <- function(
   }
 
   # Only one spatial_unit (subregional = FALSE)
-  if (subregional == FALSE) {
-    # remove the `mig_sub`column (otherwise is filled with zeros if present)
-    df_result <- df_result |>
-      dplyr::select(-any_of(c("emi_sub_n", "imm_sub_n")))
-  }
+  # if (is.null(subregional)) {
+  #   # remove the `mig_sub`column (otherwise is filled with zeros if present)
+  #   df_result <- df_result |>
+  #     dplyr::select(-any_of(c("emi_sub_n", "imm_sub_n", "mig_sub")))
+  # }
 
   # Feedback about arguments used ----
   cli::cli_h1("Settings used for the projection")
@@ -633,7 +637,7 @@ propop_tables <- function(
   )
   cli::cli_text(
     "Subregional migration: ",
-    "{.val {if (subregional) 'yes' else 'no'}}"
+    "{.val {if (is.null(subregional)) 'no' else 'yes'}}"
   )
   cli::cli_rule()
 

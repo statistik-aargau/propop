@@ -16,12 +16,18 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
-#' @param subregional boolean, TRUE indicates that subregional migration
-#'        patterns (e.g., movement between municipalities within a canton)
-#'        are part of the projection.
+#' @param subregional character or NULL, indicates if subregional migration patterns
+#'        (e.g., movement between municipalities within a canton) are part of
+#'        the projection (default `subregional = NULL`). Two calculation methods
+#'        are supported to distribute people between subregions:
+#'        With `subregional = "net"`, the net migration between subregions is
+#'        added to the population balance. Net migration must be specified in
+#'        data column `mig_sub`. With `subregional = "rate"`, the numbers for
+#'        subregional emigrants are subtracted from the population balance, then
+#'        redistributed back to all subregional units as subregional immigration.
 #'
 #' @return Returns a data frame with the number of newborn children 'births'
-#' structured in demographic groups.
+#'         structured in demographic groups.
 #' @export
 #'
 #' @autoglobal
@@ -32,10 +38,10 @@ calculate_newborns <- function(
     fert_first,
     fert_last,
     share_born_female,
-    subregional = FALSE) {
+    subregional = subregional) {
   # Prepare population data ----
   population_prep <- population |>
-    #Ffemales in the fertile age range are defined by `fert_first` and `fert_last`
+    #Females in the fertile age range are defined by `fert_first` and `fert_last`
     filter(sex == "f", age %in% c(fert_first:fert_last)) |>
     select(any_of(c(
       "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
@@ -84,7 +90,7 @@ calculate_newborns <- function(
 
   # Clean data ----
   df_newborns <- df_newborns_calc |>
-    select(year, spatial_unit, ch_m, ch_f, int_m, int_f) |>
+    select(year, scen, spatial_unit, ch_m, ch_f, int_m, int_f) |>
     # long format
     pivot_longer(
       names_to = "ID",
@@ -99,7 +105,7 @@ calculate_newborns <- function(
 
   # Aggregate newborns by demographic groups ----
   df_newborns_aggregated <- df_newborns |>
-    summarize(births = sum(births), .by = c(year, spatial_unit, nat, sex))
+    summarize(births = sum(births), .by = c(year, scen, spatial_unit, nat, sex))
 
   # Check if there are no NAs
   assertthat::assert_that(
@@ -118,26 +124,24 @@ calculate_newborns <- function(
       #   unique(population_prep$spatial_unit[!is.na(population_prep$spatial_unit)]),
       # n_dec = 0
     ) |>
-    select(year, nat, sex, age, spatial_unit, births) |>
+    select(year, scen, nat, sex, age, spatial_unit, births) |>
     # add info from parameters
     left_join(
       parameters,
-      by = c("year", "nat", "sex", "age", "spatial_unit"),
+      by = c("year", "scen", "nat", "sex", "age", "spatial_unit"),
       relationship = "one-to-one"
     ) |>
     # arrange data
     mutate(sex = factor(sex, levels = c("m", "f"))) |>
-    arrange(spatial_unit, year, nat, sex, age) |>
+    arrange(spatial_unit, scen, year, nat, sex, age) |>
     # apply FSO method for projections
     mutate(
-      .by = c(year, spatial_unit, scen, sex, age),
+      .by = c(year, scen, spatial_unit, scen, sex, age),
       n_jan = NA,
       # international emigration
       emi_int_n = births * emi_int,
       # emigration to other cantons
       emi_nat_n = births * emi_nat,
-      # emigration to other subregional units
-      emi_sub_n = births * emi_sub,
       # acquisition of the Swiss citizenship
       acq_n = births * acq,
       # subtract new Swiss citizens from the international population
@@ -147,26 +151,50 @@ calculate_newborns <- function(
         (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
           (2 / 3) * (imm_int_n + acq_n + imm_nat_n)),
       # calculate the population balance
-      n_dec = births - mor_n - emi_int_n - emi_nat_n - emi_sub_n +
-        acq_n + imm_int_n + imm_nat_n
+      n_dec = births - mor_n - emi_int_n - emi_nat_n - acq_n +
+        imm_int_n + imm_nat_n
     )
 
-  # Redistribute subregional emigration back to all subregional units as immigration
-  if (subregional) {
-    # get total of subregional emigration
-    dat_emi_sub_n_total <- df_newborns_out |>
-      dplyr::summarise(.by = c(year, nat, sex, age), emi_sub_n_total = sum(emi_sub_n))
+  # Subregional migration ----
+  if (!is.null(subregional) && subregional == "net") {
 
-    # redistribution according to provided shares for each subregion
+    # Add net saldo for subregional migration
+    df_newborns_out |> mutate(n_dec = n_dec + mig_sub)
+
+  } else if (!is.null(subregional) && subregional == "rate") {
+
+    # Redistribute subregional emigration back to all subregional units as
+    # subregional immigration
+    df_newborns_out <- df_newborns_out |>
+      mutate(
+        # emigration to other subregional units
+        emi_sub_n = n_jan * (emi_sub * (1 - (mor / 2))),
+        # calculate the population balance
+        n_dec = n_dec - emi_sub_n
+      )
+
+    # Get total of subregional emigration
+    df_emi_sub_n_total <- df_newborns_out |>
+      dplyr::summarise(
+        emi_sub_n_total = sum(emi_sub_n),
+        .by = c(year, scen, nat, sex, age)
+      )
+
+    # Redistribution according to provided shares for each subregion
     df_newborns_out |>
-      dplyr::left_join(dat_emi_sub_n_total,
-        by = dplyr::join_by(year, nat, sex, age)
+      dplyr::left_join(
+        df_emi_sub_n_total,
+        by = dplyr::join_by(year, scen, nat, sex, age)
       ) |>
       dplyr::mutate(
         imm_sub_n = imm_sub * emi_sub_n_total,
         n_dec = n_dec + imm_sub_n
       )
+
   } else {
+
+    # No subregional migration
     return(df_newborns_out)
+
   }
 }
