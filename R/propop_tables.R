@@ -137,7 +137,6 @@
 #' @autoglobal
 #'
 #' @examples
-#' TODO
 #'
 propop_tables <- function(
     parameters,
