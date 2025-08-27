@@ -80,8 +80,8 @@
 <script src="project_subregions_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="project_subregions_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
 <script src="project_subregions_files/datatables-binding-0.33/datatables.js"></script><link href="project_subregions_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="project_subregions_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="project_subregions_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="project_subregions_files/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="project_subregions_files/crosstalk-1.2.1/js/crosstalk.min.js"></script><div class="row">
+<script src="project_subregions_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="project_subregions_files/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="project_subregions_files/crosstalk-1.2.2/js/crosstalk.min.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Projections for subregions</h1>
             
@@ -154,9 +154,9 @@ canton):</p>
 <span>  <span class="co"># duplicating rows 5 times</span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/uncount.html" class="external-link">uncount</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># create 5 subregions</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>spatial_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">fso_parameters</span> <span class="op">|&gt;</span> </span>
-<span>                                                       <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>                                                         <span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>spatial_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span></span>
+<span>    <span class="va">fso_parameters</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>spatial_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">spatial_unit</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Population</strong> data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -258,7 +258,7 @@ figures provided by the FSO for the whole canton).</p>
 <code class="sourceCode R"><span><span class="va">parameters_sub_size</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">imm_int_n_distr</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>    .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span></span>
+<span>    .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">scen</span>, <span class="va">year</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"m"</span> <span class="op">&amp;</span> <span class="va">nat</span> <span class="op">==</span> <span class="st">"int"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -405,8 +405,9 @@ fictitious data assumes that we have already performed this step.</p>
 <span>    hist_imm_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">50</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    <span class="co"># for one spatial unit, we artificially assign zeros to all children</span></span>
 <span>    <span class="co"># between 0-4 years</span></span>
-<span>    hist_imm_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">spatial_unit</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">age</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
-<span>                            <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">0</span>, <span class="va">hist_imm_int</span><span class="op">)</span></span>
+<span>    hist_imm_int <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>      <span class="va">spatial_unit</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">age</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">0</span>, <span class="va">hist_imm_int</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>The resulting data frame includes two columns with (fictitious)
 immigration from abroad (<code>hist_imm_nat</code>) and from other
@@ -513,8 +514,9 @@ whole canton.</p>
 <span>    <span class="st">"hist_imm_nat"</span>, <span class="st">"hist_imm_int"</span>, <span class="st">"age_group_5"</span>, <span class="st">"age_group_10"</span>, <span class="st">"sum_10"</span>,</span>
 <span>    <span class="st">"prop_10"</span>, <span class="st">"use_age_group"</span>, <span class="st">"n"</span>, <span class="st">"n_sum"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">data_distr_hist_nat</span>,</span>
-<span>                   by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spatial_unit"</span>, <span class="st">"nat"</span>, <span class="st">"sex"</span>, <span class="st">"age"</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<span>    <span class="va">data_distr_hist_nat</span>,</span>
+<span>    by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spatial_unit"</span>, <span class="st">"nat"</span>, <span class="st">"sex"</span>, <span class="st">"age"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add shares to the data frame that holds the projection parameters</span></span>
@@ -701,7 +703,6 @@ in the section “Distribution of people according to past migration”.</p>
 <span>  parameters <span class="op">=</span> <span class="va">parameters_sub_mig</span>,</span>
 <span>  year_first <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span>
-<span>  scenarios <span class="op">=</span> <span class="st">"reference"</span>,</span>
 <span>  age_groups <span class="op">=</span> <span class="fl">101</span>,</span>
 <span>  fert_first <span class="op">=</span> <span class="fl">16</span>,</span>
 <span>  fert_last <span class="op">=</span> <span class="fl">50</span>,</span>
