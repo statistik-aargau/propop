@@ -1467,27 +1467,11 @@ parameters_short <- tibble::tibble(
     2.000001, 1.333334
   ),
 )
-Browse[1]> parameters
-# A tibble: 404 × 14
-year scen  spatial_unit nat   sex     age birthrate int_mothers      mor
-<int> <chr> <chr>        <chr> <chr> <dbl>     <dbl>       <dbl>    <dbl>
-  1  2024 high  Aargau       ch    m         0         0       0.250 0.00340
-2  2024 high  Aargau       ch    m         1         0       0.250 0.000414
-3  2024 high  Aargau       ch    m         2         0       0.250 0.000389
-4  2024 high  Aargau       ch    m         3         0       0.250 0.000343
-5  2024 high  Aargau       ch    m         4         0       0.250 0
-6  2024 high  Aargau       ch    m         5         0       0.250 0
-7  2024 high  Aargau       ch    m         6         0       0.250 0
-8  2024 high  Aargau       ch    m         7         0       0.250 0
-9  2024 high  Aargau       ch    m         8         0       0.250 0
-10  2024 high  Aargau       ch    m         9         0       0.250 0
-# ℹ 394 more rows
-# ℹ 5 more variables: emi_int <dbl>, emi_nat <dbl>, acq <dbl>,
-#   imm_int_n <dbl>, imm_nat_n <dbl>
-# ℹ Use `print(n = ...)` to see more rows
-Browse[1]> parameters |>
-  +   constructive::construct()
-tibble::tibble(
+
+## Parameters ----
+# parameters |>
+#   constructive::construct()
+parameters_short <- tibble::tibble(
   year = rep(2024L, 404L),
   scen = rep("high", 404L),
   spatial_unit = rep("Aargau", 404L),
@@ -1732,6 +1716,17 @@ tibble::tibble(
     25, 23, 22, 21, 18, 17, 15, 14, 11, 10, 8, 8, 7, 6, 4, 4, 3, 2, 2, 2, 2, 2, 2,
     2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   ),
+)
+
+## Run function ----
+
+test <- calculate_newborns(
+  population = population_new_short,
+  parameters = parameters_short,
+  fert_first = fert_first,
+  fert_last = fert_last,
+  share_born_female = share_born_female,
+  subregional = subregional
 )
 
 
