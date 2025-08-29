@@ -1,6 +1,6 @@
 #' Parameters to run population projection
 #'
-#' @description Uses `get_parametrs` to create data frame with
+#' @description Uses `get_parameters` to create data frame with
 #' FSO parameters.
 #'
 #' Update description in folder propop/R/
