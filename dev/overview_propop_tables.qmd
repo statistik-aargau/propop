@@ -24,9 +24,9 @@ cache: false
 
 ✅modular structure
 
-✅mainly dplyr-coded
+✅uses dplyr
 
-✅more flexibility for adding/removing columns
+✅more flexibility for adding/removing columns and new modules
 
 ✅for now, both functions will be kept and maintained
 
@@ -37,9 +37,6 @@ cache: false
 # Load packages
 library(propop)
 library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(ggtext)
 
 add_percent <- function(x) {
   paste0(x, "%")
@@ -66,7 +63,7 @@ propop::propop_tables(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  subregional = NULL,
+  subregional = NULL, # = "net" for net migration; = "rate" for emi- and immigration rates
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -103,9 +100,8 @@ system.time({
   result_tables <- propop::propop_tables(
     parameters = fso_parameters,
     year_first = 2024,
-    year_last = 2030,
+    year_last = 2055,
     population = fso_population,
-    subregional = NULL,
     binational = TRUE
   )
 })
@@ -115,122 +111,90 @@ system.time({
   result_matrices <- propop::propop(
     parameters = fso_parameters,
     year_first = 2024,
-    year_last = 2030,
+    year_last = 2055,
     population = fso_population,
-    subregional = FALSE,
     binational = TRUE
   )
 })
 ```
 
-#### Comparison between `propop::tables()` and `propop::propop()`
+#### Comparison between FSO-results, `propop::propop_tables()` and `propop::propop()`
 
 ```{r comparison-propop, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
-# Compare results
-compare_models <- result_matrices |>
-  arrange(year, nat, sex, age) |>
-  select(year:nat, births:n_dec) |>
-  mutate(acq = case_when(nat == "int" ~ NA, .default = acq)) |>
-  tidyr::pivot_longer(
-    cols = -c(year:nat),
-    names_to = "variable",
-    values_to = "n_matrix"
+# Split results by scenario
+## FSO results
+list_fso_results <- split(fso_parameters, fso_parameters$scen)
+## Results from propop with matrices
+# list_propop_matrices <- split(result_matrices, result_matrices$scen)
+## Results from propop with tables
+list_propop_tables <- split(result_tables, result_tables$scen)
+
+# Define function comparing the FSO results (= benchmark) to propop with
+# matrices/tables. (See function documentations of 'R/prepare_evaluation.R' and
+# 'R/compute_measures.R').
+compare_result <- function(
+    df_fso_results,
+    df_projection_result
+  ) {
+  # Match projection length between model results
+  df_bench <- df_fso_results |> dplyr::filter(year %in% c(2024:2055))
+  df_proj <- df_projection_result |> dplyr::filter(year %in% c(2024:2055))
+
+  # Compare results
+  df_result <- prepare_evaluation(
+    data_benchmark = df_bench,
+    n_benchmark = "fso_projection_n",
+    data_projected = df_proj,
+    n_projected = "n_dec",
+    age_groups = "age_groups_5"
   ) |>
-  # join results
-  left_join(
-    result_tables |>
-      mutate(acq_n = case_when(nat == "int" ~ NA, .default = acq_n)) |>
-      select(
-        year:births,
-        mor = mor_n, emi_int = emi_int_n, emi_nat = emi_nat_n,
-        imm_int = imm_int_n, imm_nat = imm_nat_n, acq = acq_n, n_dec
-      ) |>
-      pivot_longer(
-        cols = -c(year:age),
-        names_to = "variable",
-        values_to = "n_tables"
-      ),
-    by = join_by(year, scen, spatial_unit, age, sex, nat, variable)
-  ) |>
-  # create age groups
-  mutate(
-    age_groups = case_when(
-      age < 20 ~ "age_00_19",
-      age >= 20 & age < 40 ~ "age_20_39",
-      age >= 40 & age < 60 ~ "age_40_59",
-      age >= 60 & age < 80 ~ "age_60_79",
-      age >= 80 ~ "age_80_plus"
-    )
-  ) |>
-  summarize(
-    n_matrix = sum(n_matrix, na.rm = TRUE),
-    n_tables = sum(n_tables, na.rm = TRUE),
-    .by = c(year, scen, spatial_unit, variable, age_groups)
-  ) |>
-  # compute evaluation
-  mutate(
-    error = n_matrix - n_tables,
-    pe = (error / n_matrix) * 100,
-    ape = (abs(error) / n_matrix) * 100
-  )
+    compute_measures()
+
+  return(df_result)
+}
+
+# Comparison between FSO results and propop with tables
+
+fso_comparison_tables <- purrr::map2(
+  list_fso_results, 
+  list_propop_tables, 
+  compare_result
+) |>
+  purrr::reduce(bind_rows)
 ```
 
 ```{r plot, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
-# Plot each projection component
-compare_models |>
-  mutate(
-    pe = case_when((variable == "births" & error == 0) ~ 0, .default = pe),
-    variable = factor(
-      variable,
-      levels = c(
-        "n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat",
-        "acq", "mor"
-      ),
-      labels = c(
-        "total n", "births", "international immigration",
-        "intercantonal immigration", "international emigration",
-        "intercantonal emigration", "acquisition of CH citizenship",
-        "deaths"
-      )
-    ),
-  ) |>
-  ggplot2::ggplot(
-    ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
-  ) +
-  geom_hline(yintercept = 0, linewidth = 0.3) +
-  geom_point() +
-  scale_y_continuous(
-    labels = add_percent,
-    limits = c(-1, 5),
-    breaks = c(-1, 0, 1, 3, 5)
-  ) +
-  labs(
-    title = "Differences between propop_tables() and propop() (benchmark)",
-    subtitle = "by projected year and age group across the Canton of Aargau (2024-2030)",
+# Plot percentage error
+fso_comparison_tables |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age, pch = sex_nat)) +
+  ggplot2::geom_jitter(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_plus" = "#96D4FF"
+  )) +
+  ggplot2::labs(
+    title = "Differences between FSO and propop_tables (2024-2055)",
     x = "Year",
-    y = "Mean difference in percent"
+    y = "Difference in percent"
   ) +
-  scale_color_manual(values = rev(c("#007AB8", "#ffa81f", "#A05388", "#ffe562", "#96D4FF"))) +
-  scale_shape_manual(values = c(1, 4, 6)) +
-  scale_x_continuous(breaks = c(2020, 2025, 2030)) +
-  theme_bw() +
-  theme(
-    legend.position = "right",
-    plot.title = element_markdown(size = 14),
-    axis.title.y = element_text(size = 9),
-    axis.title.x = element_text(size = 9),
-    axis.text.x = element_text(size = 9),
-    axis.text.y = element_text(size = 9),
-    legend.text = element_text(size = 9),
-    legend.title = element_blank()
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
-  ggplot2::facet_wrap(~variable)
+  ggplot2::scale_y_continuous(labels = add_percent, limits = c(-0.5, 0.5)) +
+  ggplot2::theme_minimal()
 ```
 
 
 ### Performance for five subregions
 
 ```{r data-parameters} 
+#| code-fold: true
+#| code-summary: "Show/hide example code"
 # FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
   # duplicating rows 5 times
@@ -282,6 +246,7 @@ df_population_sub <- fso_population |>
     .keep = "all"
   )
 
+# Prepare subregional migration
 parameters_sub_mig <- fso_parameters_sub |>
   # Create fictitious migration parameters
   dplyr::mutate(
@@ -310,37 +275,63 @@ parameters_sub_mig <- fso_parameters_sub |>
     mig_sub = dplyr::case_when(
       spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub
     ),
-    # check = sum(mig_sub, na.rm = TRUE),
+    check = sum(mig_sub, na.rm = TRUE),
     .by = c("nat", "sex", "age", "year", "scen")
   ) |>
   dplyr::select(
     nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
     emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n, mig_sub
   )
+
+# Calculate shares
+df_population_shares <- df_population_sub |>
+  dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
+  dplyr::mutate(
+    share = n / sum_n,
+    share = case_when(
+      sum_n == 0 ~ 0,
+      .default = share
+    )
+  )
+
+# Apply shares
+parameters_sub_size <- parameters_sub_mig |>
+  dplyr::left_join(
+    df_population_shares |>
+      dplyr::select("spatial_unit", "nat", "sex", "age", "share"),
+    by = c("spatial_unit", "nat", "sex", "age")
+  ) |>
+  dplyr::mutate(
+    # Calculate number of incoming people per demographic group and spatial unit
+    imm_int_n_distr = imm_int_n * share,
+    imm_nat_n_distr = imm_nat_n * share
+  ) |>
+  dplyr::mutate(
+    imm_int_n = imm_int_n_distr,
+    imm_nat_n = imm_nat_n_distr
+  )
 ```
 
 
 ```{r eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
-# Run propop with tables (new feature)
+# Run propop with tables
 system.time({
   result_tables_sub <- propop::propop_tables(
-    parameters = parameters_sub_mig,
-    # |> mutate(emi_sub = 0, imm_sub = 0)
+    parameters = parameters_sub_size,
     year_first = 2024,
-    year_last = 2030,
+    year_last = 2055,
     population = df_population_sub,
     subregional = "net",
-    # subregional = "rate",
     binational = TRUE
   )
 })
 
-# Run propop with matrices (original)
+# Run propop with matrices
 system.time({
   result_matrices_sub <- propop::propop(
-    parameters = parameters_sub_mig,
+    parameters = parameters_sub_size,
     year_first = 2024,
-    year_last = 2030,
+    year_last = 2055,
     population = df_population_sub,
     subregional = TRUE,
     binational = TRUE
@@ -350,105 +341,46 @@ system.time({
 
 ```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
 # Compare results
-compare_models_sub <- result_matrices_sub |>
-  arrange(year, nat, sex, age) |>
-  select(year:nat, births:n_dec) |>
-  mutate(acq = case_when(nat == "int" ~ NA, .default = acq)) |>
-  tidyr::pivot_longer(
-    cols = -c(year:nat),
-    names_to = "variable",
-    values_to = "n_matrix"
-  ) |>
-  # join results
-  left_join(
-    result_tables_sub |>
-      mutate(acq_n = case_when(nat == "int" ~ NA, .default = acq_n)) |>
-      select(
-        year:births,
-        mor = mor_n, emi_int = emi_int_n, emi_nat = emi_nat_n,
-        imm_int = imm_int_n, imm_nat = imm_nat_n, n_dec
-      ) |>
-      pivot_longer(
-        cols = -c(year:age),
-        names_to = "variable",
-        values_to = "n_tables"
-      ),
-    by = join_by(year, scen, spatial_unit, age, sex, nat, variable)
-  ) |>
-  # create age groups
-  mutate(
-    age_groups = case_when(
-      age < 20 ~ "age_00_19",
-      age >= 20 & age < 40 ~ "age_20_39",
-      age >= 40 & age < 60 ~ "age_40_59",
-      age >= 60 & age < 80 ~ "age_60_79",
-      age >= 80 ~ "age_80_plus"
-    )
-  ) |>
-  summarize(
-    n_matrix = sum(n_matrix, na.rm = TRUE),
-    n_tables = sum(n_tables, na.rm = TRUE),
-    .by = c(year, scen, spatial_unit, variable, age_groups)
-  ) |>
-  # compute evaluation
-  mutate(
-    error = n_matrix - n_tables,
-    pe = (error / n_matrix) * 100,
-    ape = (abs(error) / n_matrix) * 100
-  )
+list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
+list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
+
+# Matrices vs tables
+comparison_tables_matrices <- purrr::map2(
+  list_propop_matrices_sub |> purrr::map(~ .x |> rename(fso_projection_n = n_dec)),
+  list_propop_tables_sub,
+  compare_result
+) |>
+  purrr::reduce(bind_rows)
 ```
 
-```{r plot-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE}
-# Plot each projection component
-compare_models_sub |>
-  filter(variable %in% c("n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor")) |>
-  mutate(
-    pe = case_when((variable == "births" & error == 0) ~ 0, .default = pe),
-    variable = factor(
-      variable,
-      levels = c(
-        "n_dec", "births", "imm_int", "imm_nat", "emi_int", "emi_nat", "mor"
-      ),
-      labels = c(
-        "total n", "births", "international immigration",
-        "intercantonal immigration", "international emigration",
-        "intercantonal emigration", "deaths"
-      )
-    )
+```{r plot-sub, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
+# Plot comparison
+comparison_tables_matrices |>
+  dplyr::mutate(
+    spatial_unit = paste0("spatial unit ", spatial_unit),
+    age = factor(age)
   ) |>
-  # exclude births for older age groups
-  filter(!(variable == "births" & age_groups != "age_00_19")) |>
-  ggplot2::ggplot(
-    ggplot2::aes(x = as.numeric(year), y = pe, color = age_groups, pch = scen)
-  ) +
-  geom_hline(yintercept = 0, linewidth = 0.3) +
-  geom_point() +
-  scale_y_continuous(
-    labels = add_percent,
-    limits = c(-1, 5),
-    breaks = c(-1, 0, 1, 3, 5)
-  ) +
-  labs(
-    title = "Differences between propop_tables() and propop() (benchmark)",
-    subtitle = "by projected year and age group across the Canton of Aargau (2024-2030)",
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::geom_jitter(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_plus" = "#96D4FF"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop with matrices and with tables (2024-2055)",
     x = "Year",
-    y = "Mean difference in percent"
+    y = "Difference in percent"
   ) +
-  scale_color_manual(values = rev(c("#007AB8", "#ffa81f", "#A05388", "#ffe562", "#96D4FF"))) +
-  scale_shape_manual(values = c(1, 4, 6)) +
-  scale_x_continuous(breaks = c(2020, 2025, 2030)) +
-  theme_bw() +
-  theme(
-    legend.position = "right",
-    plot.title = element_markdown(size = 14),
-    axis.title.y = element_text(size = 9),
-    axis.title.x = element_text(size = 9),
-    axis.text.x = element_text(size = 9),
-    axis.text.y = element_text(size = 9),
-    legend.text = element_text(size = 9),
-    legend.title = element_blank()
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
-  ggplot2::facet_wrap(~ variable + spatial_unit)
+  ggplot2::scale_y_continuous(labels = add_percent, limits = c(-0.5, 0.5)) +
+  ggplot2::theme_minimal() +
+  ggplot2::facet_wrap(~spatial_unit)
 ```
 
 # Next steps
@@ -457,7 +389,7 @@ compare_models_sub |>
 ☒ No bugs were found. Results for population components in the output still 
     differ a bit from the original (`propop()`), but only for components that
      are based on rates. \
-☐ Comparison with FSO-results
+☒ Comparison with FSO-results
 
 **Subregions**\
 ☒ `propop_tables()` runs for subregions\
@@ -469,5 +401,4 @@ compare_models_sub |>
 ☒ Function feedback is there\
 ☐ Package tests and documentation (e.g. a new vignette) 
 
-**Integration into the main branch (should `propop_tables()` remain as a separate
-function or become an argument to select in `propop()`?)**
+**Integration into the main branch: should `propop_tables()` remain as a separate function or become an argument to select in `propop()`?)**

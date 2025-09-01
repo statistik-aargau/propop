@@ -1,3 +1,8 @@
+# propop 1.5.0
+- New function `propop_tables()` to run population projections with data frames
+instead of matrices. The function also comes with a new feature: distributing
+subregional migration can be calculated using rates in addition to using net numbers.
+
 # propop 1.4.0
 - `propop::propop()` can now perform multiple projection scenarios in a 
 single run. 
