@@ -132,5 +132,8 @@ test_that("snapshot table px-x-0102010000_101", {
   # load(test_path("_snaps", "stattab_pop_snap.rda"))
   stattab_pop_snap <- propop::stattab_pop_snap
   expect_identical(stattab_pop, stattab_pop_snap)
+  # summary(arsenal::comparedf(stattab_pop, stattab_pop_snap))
+  # waldo::compare(stattab_pop, stattab_pop_snap)
+
 
 })
