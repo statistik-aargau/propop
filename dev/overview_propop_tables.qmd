@@ -345,7 +345,7 @@ list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
 list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
 
 # Matrices vs tables
-comparison_tables_matrices <- purrr::map2(
+comparison_tables_matrices_sub <- purrr::map2(
   list_propop_matrices_sub |> purrr::map(~ .x |> rename(fso_projection_n = n_dec)),
   list_propop_tables_sub,
   compare_result
@@ -355,12 +355,12 @@ comparison_tables_matrices <- purrr::map2(
 
 ```{r plot-sub, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 # Plot comparison
-comparison_tables_matrices |>
+comparison_tables_matrices_sub |>
   dplyr::mutate(
     spatial_unit = paste0("spatial unit ", spatial_unit),
     age = factor(age)
   ) |>
-  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::ggplot(ggplot2::aes(x = factor(year), y = pe, color = age)) +
   ggplot2::geom_jitter(size = 0.8) +
   ggplot2::scale_color_manual(values = c(
     "age_00_19" = "#007AB8",
@@ -379,8 +379,11 @@ comparison_tables_matrices |>
     pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
   ggplot2::scale_y_continuous(labels = add_percent, limits = c(-0.5, 0.5)) +
+  ggplot2::scale_x_discrete(
+    breaks = c(2025, 2035, 2045, 2055)
+  ) +
   ggplot2::theme_minimal() +
-  ggplot2::facet_wrap(~spatial_unit)
+  ggplot2::facet_wrap(~ spatial_unit)
 ```
 
 # Next steps
