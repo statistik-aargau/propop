@@ -215,7 +215,7 @@ project_population <- function(
   # Bind results of year t and year t+1
   population_out <- population_new |>
     filter(year == unique(population_aged$year)) |>
-    bind_rows(newborns |> mutate(n_jan = 0) |>
+    bind_rows(newborns |> mutate(n_jan = 0)) |>
     bind_rows(population) |>
     # clean the data
     select(any_of(c(
