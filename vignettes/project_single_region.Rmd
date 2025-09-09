@@ -29,7 +29,7 @@ data("fso_population")
 
 This vignette explains how to use `propop::propop()` to perform population 
 projections for a **single region** such as a **canton** (for projections of 
-subregions, see [this vignette](project_multiple_regions.html)). 
+subregions, see [this vignette](project_subregions.html)). 
 
 The function was tailored to the context of 
 Switzerland. It uses the cohort component method for cantonal scenarios, which 
