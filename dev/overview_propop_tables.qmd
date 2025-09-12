@@ -353,7 +353,7 @@ comparison_tables_matrices_sub <- purrr::map2(
   purrr::reduce(bind_rows)
 ```
 
-```{r plot-sub, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
+```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 # Plot comparison
 comparison_tables_matrices_sub |>
   dplyr::mutate(
