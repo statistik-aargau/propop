@@ -45,6 +45,10 @@ Authors@R: c(
       role = "ctb"
     ),
     person(
+      "Moana", "Stadelmann",
+      role = "ctb"
+    ),
+    person(
     "Statistik", "Aargau",
     role = c("fnd", "cph")
     )
