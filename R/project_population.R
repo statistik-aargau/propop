@@ -77,6 +77,7 @@
 #'
 #' @export
 #' @autoglobal
+#' @noRd
 #'
 project_population <- function(
     population,

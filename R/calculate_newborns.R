@@ -31,6 +31,7 @@
 #' @export
 #'
 #' @autoglobal
+#' @noRd
 #'
 calculate_newborns <- function(
     population,

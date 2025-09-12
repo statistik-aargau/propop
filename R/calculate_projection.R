@@ -20,6 +20,7 @@
 #'         and the resulting projected population for the next year `n_dec`.
 #' @export
 #' @autoglobal
+#' @noRd
 #'
 calculate_projection <- function(.data, subregional = subregional) {
   df_out <- .data |>
