@@ -57,7 +57,7 @@ URL: https://statistik-aargau.github.io/propop, https://statistik-aargau.github.
 BugReports: https://github.com/statistik-aargau/propop
 License: GPL (>= 3)
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports: 
     assertthat,
     BFS,
