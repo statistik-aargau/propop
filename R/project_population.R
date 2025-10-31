@@ -90,51 +90,51 @@ project_population <- function(
   # Checks ----
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
-                          msg = "Column `scen` is missing in parameters."
+    msg = "Column `scen` is missing in parameters."
   )
   assertthat::assert_that("sex" %in% names(parameters),
-                          msg = "Column `sex` is missing in parameters."
+    msg = "Column `sex` is missing in parameters."
   )
   assertthat::assert_that("age" %in% names(parameters),
-                          msg = "Column `age` is missing in parameters."
+    msg = "Column `age` is missing in parameters."
   )
   assertthat::assert_that("year" %in% names(parameters),
-                          msg = "Column `year` is missing in parameters."
+    msg = "Column `year` is missing in parameters."
   )
   assertthat::assert_that("birthrate" %in% names(parameters),
-                          msg = "Column `birthrate` is missing in parameters."
+    msg = "Column `birthrate` is missing in parameters."
   )
   assertthat::assert_that("mor" %in% names(parameters),
-                          msg = "Column `mor` is missing in parameters."
+    msg = "Column `mor` is missing in parameters."
   )
   assertthat::assert_that("emi_int" %in% names(parameters),
-                          msg = "Column `emi_int` is missing in parameters."
+    msg = "Column `emi_int` is missing in parameters."
   )
   assertthat::assert_that("emi_nat" %in% names(parameters),
-                          msg = "Column `emi_nat` is missing in parameters."
+    msg = "Column `emi_nat` is missing in parameters."
   )
   assertthat::assert_that("imm_int_n" %in% names(parameters),
-                          msg = "Column `imm_int_n` is missing in parameters."
+    msg = "Column `imm_int_n` is missing in parameters."
   )
   assertthat::assert_that("imm_nat_n" %in% names(parameters),
-                          msg = "Column `imm_nat_n` is missing in parameters."
+    msg = "Column `imm_nat_n` is missing in parameters."
   )
   assertthat::assert_that("spatial_unit" %in% names(parameters),
-                          msg = paste0("Column `spatial_unit` is missing in parameters.")
+    msg = paste0("Column `spatial_unit` is missing in parameters.")
   )
 
   ## Optional parameter when requested ----
   # Subregional migration
   if (!is.null(subregional) && subregional == "net") {
     assertthat::assert_that("mig_sub" %in% names(parameters),
-                            msg = "Column `mig_sub` is missing in parameters."
+      msg = "Column `mig_sub` is missing in parameters."
     )
   } else if (!is.null(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
-                            msg = "Column `emi_sub` is missing in parameters."
+      msg = "Column `emi_sub` is missing in parameters."
     )
     assertthat::assert_that("imm_sub" %in% names(parameters),
-                            msg = "Column `imm_sub` is missing in parameters."
+      msg = "Column `imm_sub` is missing in parameters."
     )
   } else {
     parameters <- parameters
@@ -142,10 +142,10 @@ project_population <- function(
 
   ## Population data frame ----
   assertthat::assert_that("year" %in% names(population),
-                          msg = "Column `year` is missing in `population`."
+    msg = "Column `year` is missing in `population`."
   )
   assertthat::assert_that(!any(is.na(population$year)),
-                          msg = "Column 'year' in `population` must not include any missing values (NA)."
+    msg = "Column 'year' in `population` must not include any missing values (NA)."
   )
 
   ## Check other arguments ----
@@ -153,9 +153,11 @@ project_population <- function(
   population$year <- vctrs::vec_cast(population$year, integer())
   parameters$year <- vctrs::vec_cast(parameters$year, integer())
   assertthat::assert_that(is.integer(population$year),
-                          msg = "The variable 'year' must be numeric in 'population'.")
+    msg = "The variable 'year' must be numeric in 'population'."
+  )
   assertthat::assert_that(is.integer(parameters$year),
-                          msg = "The variable 'year' must be numeric in 'parameters'.")
+    msg = "The variable 'year' must be numeric in 'parameters'."
+  )
 
   # Define projection year ----
   # `pop_year` helps to identify the progress of the iteration. For the first
@@ -174,10 +176,6 @@ project_population <- function(
     population_prev <- population
   }
 
-  ## Progress feedback ----
-  # Provide progress information
-  cli::cli_alert_success("Year: {.val { max(pop_year) }}")
-
   # Advance population ----
   # prepare the population from the previous iteration for the projection of the
   # next year.
@@ -188,12 +186,10 @@ project_population <- function(
     mutate(year = unique(parameters$year))
 
   # Calculate the projection for ages 1-100 ----
-  population_new <- parameters |>
-    # exclude newborn children
-    dplyr::filter(age > 0) |>
-    # join population and parameters
+  population_new <- population_aged |>
+    # join parameters
     left_join(
-      population_aged,
+      parameters,
       by = c("year", "spatial_unit", "nat", "sex", "age")
     ) |>
     # use helper function to calculate projections
@@ -201,6 +197,9 @@ project_population <- function(
     # bind results of year t and year t+1
     bind_rows(population |> filter(year == unique(population_prev$year)))
 
+  ## Progress feedback ----
+  # Provide progress information
+  cli::cli_alert_success("Year: {.val { max(population_new$year) }}")
 
   # Project newborns of year t+1 ----
   newborns <-
@@ -212,12 +211,14 @@ project_population <- function(
       share_born_female = share_born_female,
       subregional = subregional
     )
+
   # Projection result ----
   # Bind results of year t and year t+1
   population_out <- population_new |>
     filter(year == unique(population_aged$year)) |>
     bind_rows(newborns |> mutate(n_jan = 0)) |>
     bind_rows(population) |>
+    mutate(births = case_when(age == 0 ~ births, .default = 0)) |>
     # clean the data
     select(any_of(c(
       "year", "scen", "spatial_unit", "nat", "sex", "age", "births", "n_jan",

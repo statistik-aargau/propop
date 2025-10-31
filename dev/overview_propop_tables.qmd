@@ -2,7 +2,7 @@
 title: "WIP: New function `propop::propop_tables()`"
 subtitle: "Run projections with `tibbles`, `purrr` and `dplyr`"
 author: "Statistik Aargau (2025), Norah Efosa"
-date: August 2025
+date: November 2025
 format:
   html:
     embed-resources: true
@@ -28,7 +28,7 @@ cache: false
 
 ✅more flexibility for adding/removing columns and new modules
 
-✅for now, both functions will be kept and maintained
+🟨 for now, both functions will be kept and maintained -> to be discussed
 
 ```{r packages, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 # Install propop from the development branch
@@ -122,62 +122,125 @@ system.time({
 
 ```{r comparison-propop, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
 # Split results by scenario
-## FSO results
-list_fso_results <- split(fso_parameters, fso_parameters$scen)
 ## Results from propop with matrices
-# list_propop_matrices <- split(result_matrices, result_matrices$scen)
+list_propop_matrices <- split(result_matrices, result_matrices$scen)
 ## Results from propop with tables
 list_propop_tables <- split(result_tables, result_tables$scen)
+
+# Make custom age groups
+make_age_group <- function(.data) {
+  df_out <- .data |>
+    dplyr::mutate(
+      age = case_when(
+        age < 20 ~ "age_00_19",
+        age >= 20 & age < 40 ~ "age_20_39",
+        age >= 40 & age < 60 ~ "age_40_59",
+        age >= 60 & age < 80 ~ "age_60_79",
+        age >= 80 & age < 100 ~ "age_80_99",
+        age == 100 ~ "age_100_plus"
+      )
+    ) |>
+    dplyr::summarise(
+      n_dec = sum(n_dec, na.rm = TRUE),
+      .by = c(year, spatial_unit, scen, age, sex, nat)
+    )
+
+  return(df_out)
+}
 
 # Define function comparing the FSO results (= benchmark) to propop with
 # matrices/tables. (See function documentations of 'R/prepare_evaluation.R' and
 # 'R/compute_measures.R').
 compare_result <- function(
-    df_fso_results,
-    df_projection_result
-  ) {
+    df_matrices,
+    df_tables) {
+  # browser()
   # Match projection length between model results
-  df_bench <- df_fso_results |> dplyr::filter(year %in% c(2024:2055))
-  df_proj <- df_projection_result |> dplyr::filter(year %in% c(2024:2055))
+  df_bench <- df_matrices |>
+    dplyr::filter(
+      year %in% c(2024:2055)
+    )
+  df_proj <- df_tables |>
+    dplyr::filter(
+      year %in% c(2024:2055)
+    )
 
   # Compare results
   df_result <- prepare_evaluation(
     data_benchmark = df_bench,
-    n_benchmark = "fso_projection_n",
+    n_benchmark = "n_dec",
     data_projected = df_proj,
-    n_projected = "n_dec",
-    age_groups = "age_groups_5"
+    n_projected = "n_dec"
   ) |>
     compute_measures()
 
   return(df_result)
 }
 
-# Comparison between FSO results and propop with tables
-
-fso_comparison_tables <- purrr::map2(
-  list_fso_results, 
-  list_propop_tables, 
+comparison_matrices_tables <- purrr::map2(
+  list_propop_matrices |> purrr::map(~ .x |> make_age_group()),
+  list_propop_tables |> purrr::map(~ .x |> make_age_group()),
   compare_result
 ) |>
   purrr::reduce(bind_rows)
 ```
 
 ```{r plot, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
-# Plot percentage error
-fso_comparison_tables |>
+# Plot abs numbers
+comparison_matrices_tables |>
+  dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
   dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
-  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age, pch = sex_nat)) +
-  ggplot2::geom_jitter(size = 0.8) +
+  ggplot2::ggplot(ggplot2::aes(x = year, y = error, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
   ggplot2::scale_color_manual(values = c(
     "age_00_19" = "#007AB8",
     "age_20_39" = "#ffa81f",
     "age_40_59" = "#A05388",
     "age_60_79" = "#ffe562",
-    "age_80_plus" = "#96D4FF"
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
   )) +
   ggplot2::labs(
-    title = "Differences between FSO and propop_tables (2024-2055)",
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in number of people"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen ~ age)
+
+# Plot percentage error
+comparison_matrices_tables |>
+   dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
     x = "Year",
     y = "Difference in percent"
   ) +
@@ -185,8 +248,10 @@ fso_comparison_tables |>
     color = ggplot2::guide_legend(title = "age"),
     pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
-  ggplot2::scale_y_continuous(labels = add_percent, limits = c(-0.5, 0.5)) +
-  ggplot2::theme_minimal()
+  ggplot2::scale_y_continuous(labels = add_percent) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen ~ age)
 ```
 
 
@@ -339,38 +404,75 @@ system.time({
 })
 ```
 
-```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
+```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, fig.height = 15}
 # Compare results
 list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
 list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
 
-# Matrices vs tables
-comparison_tables_matrices_sub <- purrr::map2(
-  list_propop_matrices_sub |> purrr::map(~ .x |> rename(fso_projection_n = n_dec)),
-  list_propop_tables_sub,
+comparison_matrices_tables_sub <- purrr::map2(
+  list_propop_matrices_sub |> purrr::map(~ .x |> make_age_group()),
+  list_propop_tables_sub |> purrr::map(~ .x |> make_age_group()),
   compare_result
 ) |>
   purrr::reduce(bind_rows)
 ```
 
-```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
-# Plot comparison
-comparison_tables_matrices_sub |>
+```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, fig.height = 15}
+# Plot abs numbers
+comparison_matrices_tables_sub |>
   dplyr::mutate(
-    spatial_unit = paste0("spatial unit ", spatial_unit),
-    age = factor(age)
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
   ) |>
-  ggplot2::ggplot(ggplot2::aes(x = factor(year), y = pe, color = age)) +
-  ggplot2::geom_jitter(size = 0.8) +
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = error, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
   ggplot2::scale_color_manual(values = c(
     "age_00_19" = "#007AB8",
     "age_20_39" = "#ffa81f",
     "age_40_59" = "#A05388",
     "age_60_79" = "#ffe562",
-    "age_80_plus" = "#96D4FF"
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
   )) +
   ggplot2::labs(
-    title = "Differences between propop with matrices and with tables (2024-2055)",
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in number of people"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen + spatial_unit ~ age)
+
+# Plot percentage error
+comparison_matrices_tables_sub |>
+   dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
     x = "Year",
     y = "Difference in percent"
   ) +
@@ -378,12 +480,12 @@ comparison_tables_matrices_sub |>
     color = ggplot2::guide_legend(title = "age"),
     pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
-  ggplot2::scale_y_continuous(labels = add_percent, limits = c(-0.5, 0.5)) +
-  ggplot2::scale_x_discrete(
-    breaks = c(2025, 2035, 2045, 2055)
-  ) +
+  ggplot2::scale_y_continuous(labels = add_percent) +
   ggplot2::theme_minimal() +
-  ggplot2::facet_wrap(~ spatial_unit)
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen + spatial_unit ~ age)
+
+
 ```
 
 # Next steps
@@ -402,6 +504,7 @@ comparison_tables_matrices_sub |>
 **Code cleaning, function-feedback, package tests**\
 ☒ Code is more or less clean\
 ☒ Function feedback is there\
-☐ Package tests and documentation (e.g. a new vignette) 
+☐ Package tests (mostly completed, only missing crossover tests between the matrices and tables)
+☐ Documentation (e.g. a new vignette) 
 
 **Integration into the main branch: should `propop_tables()` remain as a separate function or become an argument to select in `propop()`?)**

@@ -115,7 +115,8 @@ calculate_newborns <- function(
   )
 
   # Cohort component method ----
-  df_newborns_out <- df_newborns_aggregated |>
+  # Prepare data
+  df_newborns_prep <- df_newborns_aggregated |>
     # complement data
     mutate(age = 0) |>
     select(year, scen, nat, sex, age, spatial_unit, births) |>
@@ -127,11 +128,15 @@ calculate_newborns <- function(
     ) |>
     # arrange data
     mutate(sex = factor(sex, levels = c("m", "f"))) |>
-    arrange(spatial_unit, scen, year, nat, sex, age) |>
-    # apply FSO method for projections
+    arrange(spatial_unit, scen, year, nat, sex, age)
+
+  # Get the new population
+  df_newborns_out <- df_newborns_prep |>
     mutate(
-      .by = c(year, scen, spatial_unit, scen, sex, age),
       n_jan = NA,
+      mor_n = mor *
+        (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
+          (2 / 3) * (imm_int_n + acq + imm_nat_n)),
       # international emigration
       emi_int_n = births * emi_int,
       # emigration to other cantons
@@ -139,11 +144,7 @@ calculate_newborns <- function(
       # acquisition of the Swiss citizenship
       acq_n = births * acq,
       # subtract new Swiss citizens from the international population
-      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, order_by = nat), -acq_n),
-      # mortality (deaths)
-      mor_n = mor *
-        (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
-          (2 / 3) * (imm_int_n + acq_n + imm_nat_n)),
+      acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, 2), -acq_n),
       # calculate the population balance
       n_dec = births - mor_n - emi_int_n - emi_nat_n + acq_n +
         imm_int_n + imm_nat_n
