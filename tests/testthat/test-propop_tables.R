@@ -398,8 +398,7 @@ test_that("Simple propop test", {
     ),
   )
 
-  # Several subregions ----
-
+  # One region ----
   propop_tables_default <- propop_tables(
     parameters_short_1r,
     population_short_1r,
