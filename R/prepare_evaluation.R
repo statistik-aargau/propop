@@ -171,7 +171,6 @@ prepare_evaluation <- function(
 
   ## Prepare projected data ----
   data_projected_clean <- data_projected |>
-    dplyr::mutate(n_projected = round(n_projected, digits = 0)) |>
     dplyr::select(year, spatial_unit, age, sex, nat, n_projected)
 
   ## Combine data ----
