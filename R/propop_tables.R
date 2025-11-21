@@ -371,7 +371,7 @@ propop_tables <- function(
         )
       ), ~ if_else(nat == "int", 0, .x))) |>
       # add remaining columns `acq` and `int_mothers`
-      dplyr::mutate(acq = 0, int_mothers = 0) |>
+      mutate(acq = 0, int_mothers = 0) |>
       # arrange the data
       select(any_of(c(
         "nat", "sex", "age", "year", "scen", "birthrate", "int_mothers",
@@ -389,7 +389,7 @@ propop_tables <- function(
       mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
       # arrange the data
       select(year, spatial_unit, nat, sex, age, n) |>
-      arrange(nat, desc(sex), year, scen, spatial_unit)
+      arrange(nat, desc(sex), year, spatial_unit)
   }
 
   ## Mandatory parameters ----
