@@ -15,7 +15,7 @@ test_that("calculate projection test", {
   #   ) |>
   #   filter(year == 2024) |>
   #   constructive::construct()
-  population__and_parameters_short <- tibble::tibble(
+  population_and_parameters_short <- tibble::tibble(
     year = rep(2024L, 400L),
     scen = rep("high", 400L),
     spatial_unit = rep("Aargau", 400L),
@@ -293,46 +293,46 @@ test_that("calculate projection test", {
 
   # Several subregions ----
   # snapshot of default option default
-  population__and_parameters_short_default <- population__and_parameters_short |>
+  population_and_parameters_short_default <- population_and_parameters_short |>
     calculate_projection(subregional = NULL)
 
-  expect_snapshot(constructive::construct(population__and_parameters_short_default))
+  expect_snapshot(constructive::construct(population_and_parameters_short_default))
 
 
   # snapshot of default option net
-  population__and_parameters_short$mig_sub <- 1
+  population_and_parameters_short$mig_sub <- 1
 
-  population__and_parameters_short_net <- population__and_parameters_short |>
+  population_and_parameters_short_net <- population_and_parameters_short |>
     calculate_projection(subregional = "net")
 
-  expect_snapshot(constructive::construct(population__and_parameters_short_net))
+  expect_snapshot(constructive::construct(population_and_parameters_short_net))
 
 
   # # snapshot of default option rate
-  population__and_parameters_short$emi_sub <- 0.5
-  population__and_parameters_short$imm_sub <- 0.5
+  population_and_parameters_short$emi_sub <- 0.5
+  population_and_parameters_short$imm_sub <- 0.5
 
-  population__and_parameters_short_rate <- population__and_parameters_short |>
+  population_and_parameters_short_rate <- population_and_parameters_short |>
     calculate_projection(subregional = "rate")
 
-  expect_snapshot(constructive::construct(population__and_parameters_short_rate))
+  expect_snapshot(constructive::construct(population_and_parameters_short_rate))
 
 
   expect_failure(expect_equal(
-    population__and_parameters_short_rate |>
+    population_and_parameters_short_rate |>
       select(-c(emi_sub, imm_sub, emi_sub_n, emi_sub_n_total, imm_sub_n)),
-    population__and_parameters_short_net
+    population_and_parameters_short_net
   ))
 
   expect_failure(expect_equal(
-    population__and_parameters_short_rate |>
+    population_and_parameters_short_rate |>
       select(-c(emi_sub, imm_sub, emi_sub_n, emi_sub_n_total, imm_sub_n, mig_sub)),
-    population__and_parameters_short_default
+    population_and_parameters_short_default
   ))
 
   expect_failure(expect_equal(
-    population__and_parameters_short_net |>
+    population_and_parameters_short_net |>
       select(-c(mig_sub)),
-    population__and_parameters_short_default
+    population_and_parameters_short_default
   ))
 })

@@ -97,7 +97,7 @@ calculate_projection <- function(.data, subregional = subregional) {
       by = join_by(year, nat, sex, age, spatial_unit, scen)
     )
 
-# Adapt mortality rate for aggregated people of age 100 and older
+  # Adapt mortality rate for aggregated people of age 100 and older
   df_mor_100plus <- .data |>
     select(year, nat, sex, age, spatial_unit, scen, mor) |>
     mutate(age = age - 1) |>
@@ -118,8 +118,7 @@ calculate_projection <- function(.data, subregional = subregional) {
     ))) |>
     left_join(
       df_mor_100plus,
-      by = join_by(year, nat, sex, age, spatial_unit, scen
-      )
+      by = join_by(year, nat, sex, age, spatial_unit, scen)
     ) |>
     mutate(
       # take immigration from other cantons and countries into account
@@ -142,6 +141,13 @@ calculate_projection <- function(.data, subregional = subregional) {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
     df_out <- df_out |>
+      left_join(
+        .data |>
+          select(any_of(c(
+            "year", "nat", "sex", "age", "spatial_unit", "scen", "mor"
+          ))),
+        by = join_by(year, nat, sex, age, spatial_unit, scen)
+      ) |>
       mutate(
         # emigration to other subregional units
         emi_sub_n = n_jan * (emi_sub * (1 - (mor / 2))),
