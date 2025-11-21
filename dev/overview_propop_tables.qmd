@@ -504,7 +504,7 @@ comparison_matrices_tables_sub |>
 **Code cleaning, function-feedback, package tests**\
 ☒ Code is more or less clean\
 ☒ Function feedback is there\
-☐ Package tests (mostly completed, only missing crossover tests between the matrices and tables)
+☐ Package tests (mostly completed, only missing crossover tests between the matrices and tables)\
 ☐ Documentation (e.g. a new vignette) 
 
 **Integration into the main branch: should `propop_tables()` remain as a separate function or become an argument to select in `propop()`?)**
