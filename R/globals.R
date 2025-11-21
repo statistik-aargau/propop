@@ -29,13 +29,13 @@ utils::globalVariables(c(
   "ID", # <calculate_newborns>
   "births", # <calculate_newborns>
   "nat", # <calculate_newborns>
-  "emi_int", # <calculate_newborns>
-  "emi_nat", # <calculate_newborns>
-  "acq", # <calculate_newborns>
-  "acq_n", # <calculate_newborns>
   "mor", # <calculate_newborns>
+  "emi_int", # <calculate_newborns>
+  "acq", # <calculate_newborns>
+  "emi_nat", # <calculate_newborns>
   "imm_int_n", # <calculate_newborns>
   "imm_nat_n", # <calculate_newborns>
+  "acq_n", # <calculate_newborns>
   "mor_n", # <calculate_newborns>
   "emi_int_n", # <calculate_newborns>
   "emi_nat_n", # <calculate_newborns>
@@ -52,17 +52,18 @@ utils::globalVariables(c(
   "age", # <calculate_projection>
   "n_jan", # <calculate_projection>
   "emi_int", # <calculate_projection>
-  "mor", # <calculate_projection>
   "emi_nat", # <calculate_projection>
   "acq", # <calculate_projection>
   "nat", # <calculate_projection>
   "acq_n", # <calculate_projection>
-  "births", # <calculate_projection>
+  "mor", # <calculate_projection>
+  "mor_n_new", # <calculate_projection>
   "mor_n", # <calculate_projection>
+  "imm_nat_n", # <calculate_projection>
+  "imm_int_n", # <calculate_projection>
+  "births", # <calculate_projection>
   "emi_int_n", # <calculate_projection>
   "emi_nat_n", # <calculate_projection>
-  "imm_int_n", # <calculate_projection>
-  "imm_nat_n", # <calculate_projection>
   "n_dec", # <calculate_projection>
   "mig_sub", # <calculate_projection>
   "emi_sub", # <calculate_projection>
@@ -165,11 +166,11 @@ utils::globalVariables(c(
   "sex", # <prepare_evaluation>
   "nat", # <prepare_evaluation>
   "year", # <project_population>
-  "age", # <project_population>
   "sex", # <project_population>
   "nat", # <project_population>
   "spatial_unit", # <project_population>
   "scen", # <project_population>
+  "age", # <project_population>
   "year", # <project_raw>
   "age", # <project_raw>
   "parameter", # <project_raw>
