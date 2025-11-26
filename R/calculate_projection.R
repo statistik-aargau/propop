@@ -23,11 +23,12 @@
 #' @noRd
 #'
 calculate_projection <- function(.data, subregional = subregional) {
+
   # Transition of each age-cohort to the next age
   df_transition <- .data |>
     mutate(
       .by = c(year, scen, spatial_unit, sex, age),
-      # placeholder for newborns (those will be calculated later)
+      # placeholder for newborns
       births = 0,
       # calculate the number of deaths
       mor_n = case_when(
@@ -48,12 +49,10 @@ calculate_projection <- function(.data, subregional = subregional) {
     )
 
   # Number of deaths of international people acquiring Swiss citizenship
-  ## Prepare helper data with Swiss mortality rates for new citizens
+  # (Swiss mortality rates for new Swiss citizens)
   df_mor_acq_helper <- .data |>
     filter(nat == "ch") |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "mor"
-    ))) |>
+    select(any_of(c("year", "nat", "sex", "age", "spatial_unit", "scen", "mor"))) |>
     mutate(nat = "int")
 
   # Number of deaths after nationality change through citizenship acquisition
@@ -88,7 +87,7 @@ calculate_projection <- function(.data, subregional = subregional) {
       "year", "nat", "sex", "age", "spatial_unit", "scen", "mor_n"
     )))
 
-  # Combine
+  # Combine new Swiss citizens's number of deaths with the rest of the population
   df_transition_complete <- df_transition |>
     # Replace by number of deaths which include new Swiss citizens
     select(-mor_n) |>
@@ -109,7 +108,6 @@ calculate_projection <- function(.data, subregional = subregional) {
         mutate(age = 100)
     )
 
-  # browser()
   df_out <- df_transition_complete |>
     select(any_of(c(
       "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "births",

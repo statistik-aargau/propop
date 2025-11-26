@@ -3,8 +3,6 @@
 #' @description Wrapper function to project population development using the
 #' cohort component method. This function iterates across years and spatial units
 #' calling the function `project_population.R`, which performs the calculations.
-#' An example is currently in development.
-#' For more information, see script: dev/overview_propop_tables.qmd
 #'
 #' You can either use your own parameters and starting population or download
 #' these data from the Swiss Federal Statistical Office (FSO). For instructions
@@ -453,7 +451,7 @@ propop_tables <- function(
   )
   assertthat::assert_that(!any(is.na(population$year)),
     msg = "Column 'year' in `population` must not
-                          include any missing values (NA)."
+      include any missing values (NA)."
   )
   assertthat::assert_that("spatial_unit" %in% names(population),
     msg = paste0(
@@ -563,7 +561,6 @@ propop_tables <- function(
   list_parameters_scen <- split(parameters, parameters$scen)
 
   list_out <- lapply(list_parameters_scen, function(parameters_scen) {
-
     ## Progress feedback ----
     cli::cli_text(
       "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
@@ -589,7 +586,6 @@ propop_tables <- function(
     ) |>
       # remove initial population's year
       filter(year != unique(init_population$year))
-
   })
 
   # Combine all groups back into one data frame
