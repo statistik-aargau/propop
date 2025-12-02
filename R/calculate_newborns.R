@@ -111,7 +111,7 @@ calculate_newborns <- function(
   # Check if there are no NAs
   assertthat::assert_that(
     isTRUE(all((!is.na(df_newborns_aggregated$births)))),
-    msg = "NA values were found in newborns aggregated across demographic groups."
+    msg = "Newborns contain NA values."
   )
 
   # Cohort component method ----
@@ -119,16 +119,12 @@ calculate_newborns <- function(
   df_newborns_prep <- df_newborns_aggregated |>
     # complement data
     mutate(age = 0) |>
-    select(year, scen, nat, sex, age, spatial_unit, births) |>
     # add info from parameters
     left_join(
       parameters,
       by = c("year", "scen", "nat", "sex", "age", "spatial_unit"),
       relationship = "one-to-one"
-    ) |>
-    # arrange data
-    mutate(sex = factor(sex, levels = c("m", "f"))) |>
-    arrange(spatial_unit, scen, year, nat, sex, age)
+    )
 
   # Get the new population
   df_newborns_out <- df_newborns_prep |>

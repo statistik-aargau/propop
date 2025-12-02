@@ -221,15 +221,14 @@ project_population <- function(
     mutate(births = case_when(age == 0 ~ births, .default = 0)) |>
     # clean the data
     select(any_of(c(
-      "year", "scen", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
-      "mor_n", "emi_int_n", "emi_nat_n", "emi_sub_n", "imm_int_n", "imm_nat_n",
-      "imm_sub_n", "mig_sub", "acq_n", "n_dec"
+      "year", "scen", "spatial_unit", "nat", "sex", "age", "n_jan", "n_dec"
     ))) |>
     mutate(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
     ) |>
     arrange(spatial_unit, year, scen, age, nat, desc(sex))
+
 
   return(population_out)
 }
