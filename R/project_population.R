@@ -231,5 +231,6 @@ project_population <- function(
     ) |>
     arrange(spatial_unit, year, scen, age, nat, desc(sex))
 
+
   return(population_out)
 }

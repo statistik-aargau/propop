@@ -57,7 +57,6 @@ utils::globalVariables(c(
   "nat", # <calculate_projection>
   "acq_n", # <calculate_projection>
   "mor", # <calculate_projection>
-  "mor_n_new", # <calculate_projection>
   "mor_n", # <calculate_projection>
   "imm_nat_n", # <calculate_projection>
   "imm_int_n", # <calculate_projection>

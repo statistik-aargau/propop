@@ -291,14 +291,14 @@ test_that("calculate projection test", {
     ),
   )
 
-  # Several subregions ----
+  # One subregion ----
   # snapshot of default option default
   population_and_parameters_short_default <- population_and_parameters_short |>
     calculate_projection(subregional = NULL)
 
   expect_snapshot(constructive::construct(population_and_parameters_short_default))
 
-
+  # Several subregions ----
   # snapshot of default option net
   population_and_parameters_short$mig_sub <- 1
 

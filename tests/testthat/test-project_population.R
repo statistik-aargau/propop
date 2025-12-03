@@ -1302,10 +1302,6 @@ test_that("calculate project population", {
     ),
   )
 
-
-
-
-
   # calculation -----
   project_population_default_2 <- project_population(
     project_population_default_1,

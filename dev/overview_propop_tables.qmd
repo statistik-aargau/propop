@@ -63,7 +63,9 @@ propop::propop_tables(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  subregional = NULL, # = "net" for net migration; = "rate" for emi- and immigration rates
+  # subregional = "net" for net migration
+  # subregional = "rate" for emi- and immigration rates
+  subregional = NULL,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -154,7 +156,6 @@ make_age_group <- function(.data) {
 compare_result <- function(
     df_matrices,
     df_tables) {
-  # browser()
   # Match projection length between model results
   df_bench <- df_matrices |>
     dplyr::filter(
@@ -206,6 +207,7 @@ comparison_matrices_tables |>
     "age_80_99" = "#96D4FF",
     "age_100_plus" = "#FF82a9"
   )) +
+  ggplot2::scale_x_continuous(breaks = c(2030, 2050)) +
   ggplot2::labs(
     title = "Differences between propop and propop_tables (2024-2055)",
     x = "Year",
@@ -216,8 +218,12 @@ comparison_matrices_tables |>
     pch = ggplot2::guide_legend(title = "nationality and sex")
   ) +
   ggplot2::theme_minimal() +
-  ggplot2::theme(legend.position = "none") +
+  ggplot2::theme(
+    legend.position = "none", 
+    axis.text.x = ggplot2::element_text(angle = 45)
+  ) +
   ggplot2::facet_grid(scen ~ age)
+
 
 # Plot percentage error
 comparison_matrices_tables |>
@@ -250,14 +256,17 @@ comparison_matrices_tables |>
   ) +
   ggplot2::scale_y_continuous(labels = add_percent) +
   ggplot2::theme_minimal() +
-  ggplot2::theme(legend.position = "none") +
+  ggplot2::theme(
+    legend.position = "none", 
+    axis.text.x = ggplot2::element_text(angle = 45)
+  ) +
   ggplot2::facet_grid(scen ~ age)
 ```
 
 
-### Performance for five subregions
+<!-- ### Performance for five subregions -->
 
-```{r data-parameters} 
+```{r data-parameters, eval = FALSE} 
 #| code-fold: true
 #| code-summary: "Show/hide example code"
 # FSO parameters for fictitious subregions
@@ -378,7 +387,7 @@ parameters_sub_size <- parameters_sub_mig |>
 ```
 
 
-```{r eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
+```{r eval = FALSE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
 # Run propop with tables
 system.time({
   result_tables_sub <- propop::propop_tables(
@@ -404,7 +413,7 @@ system.time({
 })
 ```
 
-```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, fig.height = 15}
+```{r comparison-propop-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE, result = FALSE, fig.height = 15}
 # Compare results
 list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
 list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
@@ -417,7 +426,7 @@ comparison_matrices_tables_sub <- purrr::map2(
   purrr::reduce(bind_rows)
 ```
 
-```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, fig.height = 15}
+```{r plot-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE, fig.height = 15}
 # Plot abs numbers
 comparison_matrices_tables_sub |>
   dplyr::mutate(
@@ -504,7 +513,7 @@ comparison_matrices_tables_sub |>
 **Code cleaning, function-feedback, package tests**\
 ☒ Code is more or less clean\
 ☒ Function feedback is there\
-☐ Package tests (mostly completed, only missing crossover tests between the matrices and tables)\
+☒ Package tests (new crossover tests comparing results from matrices and tables)\
 ☐ Documentation (e.g. a new vignette) 
 
 **Integration into the main branch: should `propop_tables()` remain as a separate function or become an argument to select in `propop()`?)**
