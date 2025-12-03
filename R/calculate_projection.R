@@ -23,7 +23,7 @@
 #' @noRd
 #'
 calculate_projection <- function(.data, subregional = subregional) {
-  # Transition of each age-cohort to the next age
+  # Step 1: Transition of each demographic cohort to the next age ----
   df_transition <- .data |>
     mutate(
       .by = c(year, scen, spatial_unit, sex, age),
@@ -47,89 +47,69 @@ calculate_projection <- function(.data, subregional = subregional) {
       acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, order_by = nat), -acq_n)
     )
 
-  # Prepare helper data for mor and acq
+  # Step 2: Number of deaths of formerly international people who acquired Swiss
+  # citizenship (Swiss mortality rates for new Swiss citizens). ----
+
+  # Prepare helper data
   mor_acq_helper <- .data |>
     select(any_of(c(
       "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "mor", "acq"
     )))
 
-  # Number of deaths of international people acquiring Swiss citizenship
-  # (Swiss mortality rates for new Swiss citizens)
-  mor_acq_ch <- mor_acq_helper |>
-    filter(nat == "ch") |>
-    select(any_of(c("year", "nat", "sex", "age", "spatial_unit", "scen", "mor"))) |>
-    mutate(nat = "int")
-
-  # Number of deaths after nationality change through citizenship acquisition
-  mor_acq_int <- mor_acq_helper |>
+  # Apply Swiss mortality rates for new Swiss citizens
+  df_mor_acq <- mor_acq_helper |>
     filter(nat == "int") |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "acq"
-    )))
-
-  # add Swiss mortality rates
-  df_mor_acq <- merge(
-    mor_acq_ch,
-    mor_acq_int,
-    by = c("year", "nat", "sex", "age", "spatial_unit", "scen"),
-    all.y = TRUE
-  ) |>
+    select(-mor) |>
+    left_join(
+      mor_acq_helper |>
+        filter(nat == "ch") |>
+        select(any_of(c("year", "nat", "sex", "age", "spatial_unit", "scen", "mor"))) |>
+        mutate(nat = "int"),
+      by = join_by(year, nat, sex, age, spatial_unit, scen)
+    ) |>
     mutate(
       # calculate the number of deaths for new Swiss citizens
       mor_n_new = n_jan * (acq * (mor / 2)),
       # change nationality from international to Swiss
       nat = "ch"
     ) |>
-    select(year, nat, sex, age, spatial_unit, scen, mor_n_new)
+    select(any_of(c(
+      "year", "nat", "sex", "age", "spatial_unit", "scen", "mor_n_new"
+    )))
 
-  # Add new citizens to the Swiss population
-  df_transition_mor <- merge(
-    df_transition,
-    df_mor_acq,
-    by = c("year", "nat", "sex", "age", "spatial_unit", "scen"),
-    all.x = TRUE
-  ) |>
+  # Step 3: Adapt mortality rate for aggregated people of age 100 and older ----
+  df_mor_100plus <- mor_acq_helper |>
+    mutate(age = age - 1) |>
+    bind_rows(
+      mor_acq_helper |>
+        mutate(age = ifelse(age - 1 == 99, 100, age - 1)) |>
+        filter(age == 100)
+    ) |>
+    select("year", "nat", "sex", "age", "spatial_unit", "scen", "mor")
+
+  # Step 4: Combine the aged population, calculate immigration and population
+  # balance ----
+  df_out <- df_transition |>
+    # Complement new Swiss citizens's number of deaths
+    left_join(
+      df_mor_acq,
+    by = join_by("year", "nat", "sex", "age", "spatial_unit", "scen")
+    ) |>
     mutate(
       mor_n = case_when(nat == "ch" ~ mor_n + mor_n_new, .default = mor_n)
     ) |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "mor_n"
-    )))
-
-  # Combine new Swiss citizens's number of deaths with the rest of the population
-  df_transition_complete <- merge(
-    df_transition |>
-      # Replace by number of deaths which include new Swiss citizens
-      select(-mor_n),
-    df_transition_mor,
-    by = c("year", "nat", "sex", "age", "spatial_unit", "scen"),
-    all.x = TRUE
-  )
-
-  # Adapt mortality rate for aggregated people of age 100 and older
-  df_mor_100plus <- mor_acq_helper |>
-    select(year, nat, sex, age, spatial_unit, scen, mor) |>
-    mutate(age = age - 1) |>
-    bind_rows(
-      mor_acq_helper|>
-        select(year, nat, sex, age, spatial_unit, scen, mor) |>
-        mutate(age = age - 1) |>
-        filter(age == 99) |>
-        mutate(age = 100)
-    )
-
-  df_out <- df_transition_complete |>
     select(any_of(c(
       "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "births",
       "mor_n", "emi_int_n", "emi_nat_n", "acq_n", "imm_int_n", "imm_nat_n",
       "n_dec", "mig_sub", "emi_sub", "imm_sub", "int_mothers", "birthrate"
     ))) |>
+    # Complete people of age 100 and older
     left_join(
       df_mor_100plus,
       by = join_by(year, nat, sex, age, spatial_unit, scen)
     ) |>
     mutate(
-      # take immigration from other cantons and countries into account
+      # add immigration from other cantons and countries
       mor_n = mor_n + (imm_nat_n * mor / 2) + (imm_int_n * mor / 2),
       # calculate the population balance for the transition
       n_dec = n_jan + births - mor_n - emi_int_n - emi_nat_n + acq_n +
@@ -141,7 +121,7 @@ calculate_projection <- function(.data, subregional = subregional) {
       "n_dec", "mig_sub", "emi_sub", "imm_sub", "int_mothers", "birthrate"
     )))
 
-  # Subregional migration ----
+  # Optional Step 5: Subregional migration ----
   if (!is.null(subregional) && subregional == "net") {
     # Add net saldo for subregional migration
     df_out |> mutate(n_dec = n_dec + mig_sub)
