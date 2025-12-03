@@ -193,6 +193,9 @@ utils::globalVariables(c(
   "age", # <propop_tables>
   "scen", # <propop_tables>
   "n_dec", # <propop_tables>
+  "n_jan", # <propop_tables>
+  "delta_n", # <propop_tables>
+  "delta_perc", # <propop_tables>
   "total", # <propop_tables>
   NULL
 ))

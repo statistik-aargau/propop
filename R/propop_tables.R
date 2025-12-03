@@ -590,7 +590,16 @@ propop_tables <- function(
 
   # Combine all groups back into one data frame
   df_result <- do.call(rbind, list_out) |>
-    arrange(scen, year, spatial_unit, sex, nat, age)
+    arrange(scen, year, spatial_unit, sex, nat, age) |>
+    mutate(
+      # calculate the annual change per demographic group
+      ## total number of people
+      delta_n = round(n_dec - n_jan, 0),
+      ## percentage
+      delta_perc = round((delta_n / n_jan) * 100, 3),
+      # percentages for newborns are NAs
+      delta_perc = ifelse(age == 0, NA, delta_perc),
+    )
 
   # Remove row names
   rownames(df_result) <- NULL
