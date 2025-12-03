@@ -153,8 +153,6 @@ from other cantons.}
 Wrapper function to project population development using the
 cohort component method. This function iterates across years and spatial units
 calling the function \code{project_population.R}, which performs the calculations.
-An example is currently in development.
-For more information, see script: dev/overview_propop_tables.qmd
 
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
