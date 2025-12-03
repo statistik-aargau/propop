@@ -72,7 +72,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
-    constructive (>= 1.0.1),
+    constructive (>= 1.3.0),
     devtools,
     DT,
     ggplot2,
