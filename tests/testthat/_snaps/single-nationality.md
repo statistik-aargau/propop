@@ -4,9 +4,9 @@
       constructive::construct(sub_F_binat_F_CH)
     Output
       tibble::tibble(
-        year = rep(2025, 202L),
-        scen = factor(rep("reference", 202L)),
-        spatial_unit = factor(rep("Aargau", 202L)),
+        year = 2025,
+        scen = factor("reference"),
+        spatial_unit = factor("Aargau"),
         age = rep(seq(0, 100, by = 1), 2),
         sex = factor(rep(c("m", "f"), each = 101L), levels = c("m", "f")),
         n_jan = c(
@@ -298,9 +298,9 @@
       constructive::construct(sub_F_binat_F_INT)
     Output
       tibble::tibble(
-        year = rep(2025, 202L),
-        scen = factor(rep("reference", 202L)),
-        spatial_unit = factor(rep("Aargau", 202L)),
+        year = 2025,
+        scen = factor("reference"),
+        spatial_unit = factor("Aargau"),
         age = rep(seq(0, 100, by = 1), 2),
         sex = factor(rep(c("m", "f"), each = 101L), levels = c("m", "f")),
         n_jan = c(
@@ -583,8 +583,8 @@
       constructive::construct(sub_T_binat_F_CH)
     Output
       tibble::tibble(
-        year = rep(2025, 1010L),
-        scen = factor(rep("reference", 1010L)),
+        year = 2025,
+        scen = factor("reference"),
         spatial_unit = factor(rep(c("1", "2", "3", "4", "5"), each = 202L)),
         age = rep(seq(0, 100, by = 1), 10),
         sex = factor(rep(rep(c("m", "f"), 5), each = 101L), levels = c("m", "f")),
@@ -1247,7 +1247,7 @@
           ),
           5
         ),
-        mig_sub = rep(0.2, 1010L),
+        mig_sub = 0.2,
         n_dec = c(
           693.6533199714773, 830.4449040813801, 824.161611984592, 807.905042257696,
           841.559866, 928.8220000000001, 883.1106760000001, 883.748608,
