@@ -4,12 +4,12 @@
       constructive::construct(population_and_parameters_short_default)
     Output
       tibble::tibble(
-        year = rep(2024L, 400L),
+        year = 2024L,
         nat = rep(c("ch", "int"), each = 200L),
         sex = rep(rep(c("m", "f"), 2), each = 100L),
         age = rep(seq(1, 100, by = 1), 4),
-        spatial_unit = rep("Aargau", 400L),
-        scen = rep("high", 400L),
+        spatial_unit = "Aargau",
+        scen = "high",
         n_jan = c(
           2371, 2542, 2891, 2766, 2794, 2782, 2787, 2726, 2837, 2866, 2760, 2766, 2799,
           2823, 2707, 2768, 2660, 2744, 2759, 2767, 2730, 2686, 2639, 2872, 2812, 2874,
@@ -465,7 +465,7 @@
           53.9916475, 52.1171269222255, 28.990182588236, 24.988094666665, 17.000004,
           17.000004, 10.000003, 8, 3, 2.000001, 1.333334
         ),
-        int_mothers = rep(0.2499218016890835, 400L),
+        int_mothers = 0.2499218016890835,
         birthrate = rep(
           c(
             0, 0.000786, 0.001905, 0.003492, 0.007046, 0.012176, 0.019929, 0.02971,
@@ -488,12 +488,12 @@
       constructive::construct(population_and_parameters_short_net)
     Output
       tibble::tibble(
-        year = rep(2024L, 400L),
+        year = 2024L,
         nat = rep(c("ch", "int"), each = 200L),
         sex = rep(rep(c("m", "f"), 2), each = 100L),
         age = rep(seq(1, 100, by = 1), 4),
-        spatial_unit = rep("Aargau", 400L),
-        scen = rep("high", 400L),
+        spatial_unit = "Aargau",
+        scen = "high",
         n_jan = c(
           2371, 2542, 2891, 2766, 2794, 2782, 2787, 2726, 2837, 2866, 2760, 2766, 2799,
           2823, 2707, 2768, 2660, 2744, 2759, 2767, 2730, 2686, 2639, 2872, 2812, 2874,
@@ -949,8 +949,8 @@
           54.9916475, 53.1171269222255, 29.990182588236, 25.988094666665, 18.000004,
           18.000004, 11.000003, 9, 4, 3.000001, 2.333334
         ),
-        mig_sub = rep(1, 400L),
-        int_mothers = rep(0.2499218016890835, 400L),
+        mig_sub = 1,
+        int_mothers = 0.2499218016890835,
         birthrate = rep(
           c(
             0, 0.000786, 0.001905, 0.003492, 0.007046, 0.012176, 0.019929, 0.02971,
@@ -973,12 +973,12 @@
       constructive::construct(population_and_parameters_short_rate)
     Output
       tibble::tibble(
-        year = rep(2024L, 400L),
+        year = 2024L,
         nat = rep(c("ch", "int"), each = 200L),
         sex = rep(rep(c("m", "f"), 2), each = 100L),
         age = rep(seq(1, 100, by = 1), 4),
-        spatial_unit = rep("Aargau", 400L),
-        scen = rep("high", 400L),
+        spatial_unit = "Aargau",
+        scen = "high",
         n_jan = c(
           2371, 2542, 2891, 2766, 2794, 2782, 2787, 2726, 2837, 2866, 2760, 2766, 2799,
           2823, 2707, 2768, 2660, 2744, 2759, 2767, 2730, 2686, 2639, 2872, 2812, 2874,
@@ -1438,10 +1438,10 @@
           21.115183338236, 18.113095916665, 12.250003500000002, 12.250003500000002,
           7.125002625, 5.75, 2.125, 1.3750008750000002, 0.91666725
         ),
-        mig_sub = rep(1, 400L),
-        emi_sub = rep(0.5, 400L),
-        imm_sub = rep(0.5, 400L),
-        int_mothers = rep(0.2499218016890835, 400L),
+        mig_sub = 1,
+        emi_sub = 0.5,
+        imm_sub = 0.5,
+        int_mothers = 0.2499218016890835,
         birthrate = rep(
           c(
             0, 0.000786, 0.001905, 0.003492, 0.007046, 0.012176, 0.019929, 0.02971,

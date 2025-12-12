@@ -4,9 +4,9 @@
       constructive::construct(output_table)
     Output
       tibble::tibble(
-        year = rep(2024, 404L),
-        scen = factor(rep("reference", 404L)),
-        spatial_unit = factor(rep("Aargau", 404L)),
+        year = 2024,
+        scen = factor("reference"),
+        spatial_unit = factor("Aargau"),
         age = rep(seq(0, 100, by = 1), 4),
         sex = factor(rep(rep(c("m", "f"), 2), each = 101L), levels = c("m", "f")),
         nat = factor(rep(c("ch", "int"), each = 202L)),
@@ -383,7 +383,7 @@
           -0.9046850000000001, -0.9200489999999999, -0, -0, -0, -0, -0, -0, -0, -0, -0,
           -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0, -0
         ),
-        mig_sub = numeric(404),
+        mig_sub = 0,
         n_dec = c(
           2490.8149601355367, 2434.6816559365097, 2589.395925821446, 2928.488385624462,
           2805.986206, 2827.331744, 2813.0091230000003, 2815.4307349999995, 2759.344254,

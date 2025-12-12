@@ -4,8 +4,8 @@
       constructive::construct(snapshot1)
     Output
       tibble::tibble(
-        year = rep(2020L, 404L),
-        spatial_unit = rep("Aargau", 404L),
+        year = 2020L,
+        spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 202L),
         sex = rep(rep(c("m", "f"), 2), each = 101L),
         age = rep(seq(0, 100, by = 1), 4),
@@ -334,8 +334,8 @@
       constructive::construct(snapshot2)
     Output
       tibble::tibble(
-        year = rep(2020L, 404L),
-        spatial_unit = rep("Aargau", 404L),
+        year = 2020L,
+        spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 202L),
         sex = rep(rep(c("m", "f"), 2), each = 101L),
         age = rep(seq(0, 100, by = 1), 4),
@@ -656,7 +656,7 @@
           10, 12.244897959183673, 6.25, 0, 7.142857142857142, 4.761904761904762,
           13.043478260869565, 8.333333333333332, 0, 40, 0, 100, 50, 66.66666666666666
         ),
-        n_tot = rep(694072, 404L),
+        n_tot = 694072,
         group_tot = c(
           4972, 5131, 5149, 5268, 5212, 5281, 5268, 5153, 5189, 5144, 5319, 5056, 5200,
           4947, 5068, 5058, 5158, 5159, 5150, 5143, 5480, 5451, 5560, 5762, 5900, 5779,
@@ -966,8 +966,8 @@
       constructive::construct(snapshot3)
     Output
       tibble::tibble(
-        year = rep(2020L, 12L),
-        spatial_unit = rep("Aargau", 12L),
+        year = 2020L,
+        spatial_unit = "Aargau",
         age = rep(c("age_00_19", "age_20_64", "age_65_"), each = 4L),
         sex = rep(rep(c("f", "m"), 3), each = 2L),
         nat = rep(c("ch", "int"), 6),
@@ -994,8 +994,8 @@
       constructive::construct(snapshot4)
     Output
       tibble::tibble(
-        year = rep(2020L, 12L),
-        spatial_unit = rep("Aargau", 12L),
+        year = 2020L,
+        spatial_unit = "Aargau",
         age = rep(c("age_00_19", "age_20_64", "age_65_"), each = 4L),
         sex = rep(rep(c("f", "m"), 3), each = 2L),
         nat = rep(c("ch", "int"), 6),
@@ -1014,7 +1014,7 @@
           0.5434622954672307, 0.5964279862362772, 0.9796533534287867, 1.271028769510977,
           2.3380811609782315
         ),
-        n_tot = rep(694072, 12L),
+        n_tot = 694072,
         group_tot = c(
           103025, 37418, 103025, 37418, 301899, 125562, 301899, 125562, 112091, 14077,
           112091, 14077
