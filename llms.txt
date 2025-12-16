@@ -19,7 +19,7 @@ are available for the years 2024-2055. As starting population, you can
 either use [population data from the
 FSO](https://www.pxweb.bfs.admin.ch/pxweb) or your own population data.
 
-`propop` uses the same matrix calculation method as the FSO
+`propop` uses the same calculation method as the FSO
 ([2020](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf);
 only available in French) and therefore reveals almost identical results
 (see vignette [Evaluate
