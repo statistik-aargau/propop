@@ -28,7 +28,7 @@ cache: false
 
 ✅more flexibility for adding/removing columns and new modules
 
-🟨 for now, both functions will be kept and maintained -> to be discussed
+✅`propop_tables()`will replace `propop()` entirely. The matrices-function code will be kept in the repo tagged as `deprecated`.
 
 ```{r packages, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 # Install propop from the development branch
@@ -264,9 +264,9 @@ comparison_matrices_tables |>
 ```
 
 
-<!-- ### Performance for five subregions -->
+### Performance for five subregions
 
-```{r data-parameters, eval = FALSE} 
+```{r data-parameters, eval = TRUE} 
 #| code-fold: true
 #| code-summary: "Show/hide example code"
 # FSO parameters for fictitious subregions
@@ -387,7 +387,7 @@ parameters_sub_size <- parameters_sub_mig |>
 ```
 
 
-```{r eval = FALSE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
+```{r eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
 # Run propop with tables
 system.time({
   result_tables_sub <- propop::propop_tables(
@@ -413,7 +413,7 @@ system.time({
 })
 ```
 
-```{r comparison-propop-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE, result = FALSE, fig.height = 15}
+```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = TRUE, fig.height = 18}
 # Compare results
 list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
 list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
@@ -426,7 +426,7 @@ comparison_matrices_tables_sub <- purrr::map2(
   purrr::reduce(bind_rows)
 ```
 
-```{r plot-sub, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE, fig.height = 15}
+```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, fig.height = 18}
 # Plot abs numbers
 comparison_matrices_tables_sub |>
   dplyr::mutate(
@@ -494,7 +494,6 @@ comparison_matrices_tables_sub |>
   ggplot2::theme(legend.position = "none") +
   ggplot2::facet_grid(scen + spatial_unit ~ age)
 
-
 ```
 
 # Next steps
@@ -508,12 +507,12 @@ comparison_matrices_tables_sub |>
 **Subregions**\
 ☒ `propop_tables()` runs for subregions\
 ☒ Two methods enabled for the subregional distribution of migration (net numbers or rates)\
-☐ Evaluate computation speed and accuracy (tests with real data)
+☒ Evaluate computation speed and accuracy (tests with real data)
 
 **Code cleaning, function-feedback, package tests**\
 ☒ Code is more or less clean\
 ☒ Function feedback is there\
 ☒ Package tests (new crossover tests comparing results from matrices and tables)\
+☐ Recent changes decreased the computing speed of `propop_tables()` -> resolve
 ☐ Documentation (e.g. a new vignette) 
 
-**Integration into the main branch: should `propop_tables()` remain as a separate function or become an argument to select in `propop()`?)**
