@@ -14,21 +14,24 @@ utils::globalVariables(c(
   "n_projected", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
-  "sex", # <calculate_newborns>
-  "age", # <calculate_newborns>
   "int_mothers", # <calculate_newborns>
+  "nat", # <calculate_newborns>
+  "births_int_int", # <calculate_newborns>
   "n_jan", # <calculate_newborns>
   "n_dec", # <calculate_newborns>
+  "n_average", # <calculate_newborns>
+  "birthrate", # <calculate_newborns>
+  "share_born_male", # <calculate_newborns>
   "year", # <calculate_newborns>
-  "scen", # <calculate_newborns>
-  "spatial_unit", # <calculate_newborns>
   "ch_m", # <calculate_newborns>
   "ch_f", # <calculate_newborns>
   "int_m", # <calculate_newborns>
   "int_f", # <calculate_newborns>
   "ID", # <calculate_newborns>
   "births", # <calculate_newborns>
-  "nat", # <calculate_newborns>
+  "scen", # <calculate_newborns>
+  "spatial_unit", # <calculate_newborns>
+  "sex", # <calculate_newborns>
   "mor", # <calculate_newborns>
   "emi_int", # <calculate_newborns>
   "acq", # <calculate_newborns>
@@ -42,6 +45,7 @@ utils::globalVariables(c(
   "mig_sub", # <calculate_newborns>
   "emi_sub", # <calculate_newborns>
   "emi_sub_n", # <calculate_newborns>
+  "age", # <calculate_newborns>
   "imm_sub", # <calculate_newborns>
   "emi_sub_n_total", # <calculate_newborns>
   "imm_sub_n", # <calculate_newborns>
@@ -57,6 +61,9 @@ utils::globalVariables(c(
   "nat", # <calculate_projection>
   "acq_n", # <calculate_projection>
   "mor", # <calculate_projection>
+  "mor_n_int", # <calculate_projection>
+  "mor_n_acq", # <calculate_projection>
+  "mor_n_ch", # <calculate_projection>
   "mor_n", # <calculate_projection>
   "imm_nat_n", # <calculate_projection>
   "imm_int_n", # <calculate_projection>
@@ -165,11 +172,20 @@ utils::globalVariables(c(
   "sex", # <prepare_evaluation>
   "nat", # <prepare_evaluation>
   "year", # <project_population>
-  "sex", # <project_population>
-  "nat", # <project_population>
-  "spatial_unit", # <project_population>
-  "scen", # <project_population>
   "age", # <project_population>
+  "births", # <project_population>
+  "scen", # <project_population>
+  "spatial_unit", # <project_population>
+  "nat", # <project_population>
+  "sex", # <project_population>
+  "n_jan", # <project_population>
+  "mor_n", # <project_population>
+  "emi_int_n", # <project_population>
+  "emi_nat_n", # <project_population>
+  "imm_int_n", # <project_population>
+  "imm_nat_n", # <project_population>
+  "acq_n", # <project_population>
+  "n_dec", # <project_population>
   "year", # <project_raw>
   "age", # <project_raw>
   "parameter", # <project_raw>

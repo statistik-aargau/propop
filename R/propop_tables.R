@@ -384,7 +384,7 @@ propop_tables <- function(
       tidyr::expand(tidyr::nesting(!!!syms(names(population))), rep = 1:2) |>
       mutate(nat = ifelse(rep == 2, "int", "ch")) |>
       # set all values for "int" at zero
-      mutate(n = case_when(nat == "int" ~ 0, TRUE ~ n)) |>
+      mutate(n = ifelse(nat == "int", 0, n)) |>
       # arrange the data
       select(year, spatial_unit, nat, sex, age, n) |>
       arrange(nat, desc(sex), year, spatial_unit)

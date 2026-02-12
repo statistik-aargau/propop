@@ -218,13 +218,13 @@ project_population <- function(
     filter(year == unique(population_aged$year)) |>
     bind_rows(newborns |> mutate(n_jan = 0)) |>
     bind_rows(population) |>
-    mutate(births = case_when(age == 0 ~ births, .default = 0)) |>
+    mutate(births = ifelse(age == 0, births, 0)) |>
     # clean the data
-    select(any_of(c(
-      "year", "scen", "spatial_unit", "nat", "sex", "age", "births", "n_jan",
-      "mor_n", "emi_int_n", "emi_nat_n", "emi_sub_n", "imm_int_n", "imm_nat_n",
-      "imm_sub_n", "mig_sub", "acq_n", "n_dec"
-    ))) |>
+    select(
+      year, scen, spatial_unit, nat, sex, age, births, n_jan, mor_n, emi_int_n,
+      emi_nat_n, any_of(c("emi_sub_n", "imm_sub_n", "mig_sub")), imm_int_n,
+      imm_nat_n, acq_n, n_dec
+    ) |>
     mutate(
       sex = factor(sex, levels = c("m", "f")),
       nat = factor(nat, levels = c("ch", "int"))
