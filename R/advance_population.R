@@ -29,7 +29,7 @@ advance_population <- function(.data) {
       # advance the populations' age by one year
       age = age + 1,
       # group people aged 100 and older (age = 101) into one group (age = 100)
-      age = case_when(age == 101 ~ 100, TRUE ~ age)
+      age = ifelse(age == 101, 100, age)
     ) |>
     # aggregate people aged 100 and older
     summarize(n_dec = sum(n_dec), .by = c(year, nat, sex, age, spatial_unit)) |>
@@ -38,9 +38,7 @@ advance_population <- function(.data) {
     # arrange data
     arrange(spatial_unit, year, nat, sex, age) |>
     # select identifier columns and population
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "n_dec"
-    ))) |>
+    select(year, nat, sex, age, spatial_unit, n_dec) |>
     # the population in December of year t becomes the population in January
     # of year t+1
     rename(n_jan = n_dec)

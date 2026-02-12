@@ -40,21 +40,22 @@ calculate_newborns <- function(
     fert_last,
     share_born_female,
     subregional = subregional) {
+
+  # Define ID-columns for joins
+  id_cols <- c("year", "nat", "sex", "age", "spatial_unit", "scen")
+
   # Prepare population data ----
   population_prep <- population |>
     # Females in the fertile age range are defined by `fert_first` and `fert_last`
     filter(sex == "f", age %in% c(fert_first:fert_last)) |>
-    select(any_of(c(
-      "year", "spatial_unit", "scen", "nat", "sex", "age", "birthrate",
-      "int_mothers", "births", "n_jan", "n_dec"
-    ))) |>
+    select(id_cols, birthrate, int_mothers, births, n_jan, n_dec) |>
     # Calculate shares and rates
     mutate(
       births_int_int = 1 - int_mothers,
       share_born_female = share_born_female,
       share_born_male = 1 - share_born_female,
-      int_mothers = case_when(nat == "ch" ~ 0, TRUE ~ int_mothers),
-      births_int_int = case_when(nat == "ch" ~ 0, TRUE ~ births_int_int)
+      int_mothers = ifelse(nat == "ch", 0, int_mothers),
+      births_int_int = ifelse(nat == "ch", 0, births_int_int)
     )
 
   # Calculate newborns ----
@@ -63,28 +64,30 @@ calculate_newborns <- function(
       # average number of females between year t and year t+1
       n_average = (n_jan + n_dec) / 2,
       # newborn Swiss males
-      ch_m = case_when(
+      ch_m = ifelse(
         # Swiss females giving birth to Swiss males
-        nat == "ch" ~ (n_average * birthrate) * share_born_male,
+        nat == "ch", (n_average * birthrate) * share_born_male,
         # international females giving birth to Swiss males
-        nat == "int" ~ (n_average * birthrate) * share_born_male * int_mothers
+        (n_average * birthrate) * share_born_male * int_mothers
       ),
       # newborn Swiss females
-      ch_f = case_when(
+      ch_f = ifelse(
         # Swiss females giving birth to Swiss females
-        nat == "ch" ~ (n_average * birthrate) * share_born_female,
+        nat == "ch", (n_average * birthrate) * share_born_female,
         # international females giving birth to Swiss females
-        nat == "int" ~ (n_average * birthrate) * share_born_female * int_mothers
+        (n_average * birthrate) * share_born_female * int_mothers
       ),
       # newborn international males
-      int_m = case_when(
+      int_m = ifelse(
         # international females giving birth to international males
-        nat == "int" ~ (n_average * birthrate) * share_born_male * births_int_int
+        nat == "int", (n_average * birthrate) * share_born_male * births_int_int,
+        NA_real_
       ),
       # newborn international females
-      int_f = case_when(
+      int_f = ifelse(
         # international females giving birth to international females
-        nat == "int" ~ (n_average * birthrate) * share_born_female * births_int_int
+        nat == "int", (n_average * birthrate) * share_born_female * births_int_int,
+        NA_real_
       )
     ) |>
     filter(year == max(year))
@@ -120,16 +123,14 @@ calculate_newborns <- function(
     # complement data
     mutate(age = 0) |>
     # add info from parameters
-    left_join(
-      parameters,
-      by = c("year", "scen", "nat", "sex", "age", "spatial_unit"),
-      relationship = "one-to-one"
-    )
+    left_join( parameters, by = id_cols, relationship = "one-to-one")
 
   # Get the new population
   df_newborns_out <- df_newborns_prep |>
     mutate(
+      # placeholder for the unborn population at the start of the year
       n_jan = NA,
+      # number of deaths
       mor_n = mor *
         (births * (1 - (2 / 3) * (emi_int + acq + emi_nat)) +
           (2 / 3) * (imm_int_n + acq + imm_nat_n)),
