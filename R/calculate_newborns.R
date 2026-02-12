@@ -45,10 +45,16 @@ calculate_newborns <- function(
   id_cols <- c("year", "nat", "sex", "age", "spatial_unit", "scen")
 
   # Prepare population data ----
-  population_prep <- population |>
+  # Female population
+  population_female <- vec_slice(population, population$sex == "f")[c(
+    id_cols, "birthrate", "int_mothers", "births", "n_jan", "n_dec"
+  )]
+
+  # Calculate shares and rates
+  population_prep <- vec_slice(
     # Females in the fertile age range are defined by `fert_first` and `fert_last`
-    filter(sex == "f", age %in% c(fert_first:fert_last)) |>
-    select(id_cols, birthrate, int_mothers, births, n_jan, n_dec) |>
+    population_female, population_female$age %in% c(fert_first:fert_last)
+    ) |>
     # Calculate shares and rates
     mutate(
       births_int_int = 1 - int_mothers,
@@ -93,8 +99,9 @@ calculate_newborns <- function(
     filter(year == max(year))
 
   # Clean data ----
-  df_newborns <- df_newborns_calc |>
-    select(year, scen, spatial_unit, ch_m, ch_f, int_m, int_f) |>
+  df_newborns <- df_newborns_calc[c(
+    "year", "scen", "spatial_unit", "ch_m", "ch_f", "int_m", "int_f"
+  )] |>
     # long format
     pivot_longer(
       names_to = "ID",

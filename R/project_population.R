@@ -87,7 +87,6 @@ project_population <- function(
     share_born_female = 100 / 205,
     subregional = NULL,
     binational = TRUE) {
-  # browser()
   # Checks ----
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
