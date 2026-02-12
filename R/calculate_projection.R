@@ -111,7 +111,9 @@ calculate_projection <- function(.data, subregional = subregional) {
       # calculate the population balance for the transition
       n_dec = n_jan + births - mor_n - emi_int_n - emi_nat_n + acq_n +
         imm_int_n + imm_nat_n
-    )
+    ) |>
+    # prune columns
+    select(-c(mor_n_int, mor_n_ch, mor))
 
   # Optional Step 5: Subregional migration ----
   if (!is.null(subregional) && subregional == "net") {
