@@ -45,6 +45,12 @@ calculate_projection <- function(.data, subregional = subregional) {
       acq_n = n_jan * acq,
       # subtract new Swiss citizens from the international population
       acq_n = ifelse(nat == "ch", dplyr::lead(acq_n, order_by = nat), -acq_n)
+    ) |>
+    # prune columns
+    select(
+      year, nat, sex, age, spatial_unit, scen, n_jan, births, mor_n, emi_int_n,
+      emi_nat_n, imm_int_n, imm_nat_n, acq_n, any_of(c("mig_sub", "emi_sub", "imm_sub")),
+      int_mothers, birthrate
     )
 
   # Step 2: Number of deaths of formerly international people who acquired Swiss
@@ -52,9 +58,7 @@ calculate_projection <- function(.data, subregional = subregional) {
 
   # Prepare helper data
   mor_acq_helper <- .data |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "mor", "acq"
-    )))
+    select(year, nat, sex, age, spatial_unit, scen, n_jan, mor, acq)
 
   # Apply Swiss mortality rates for new Swiss citizens
   df_mor_acq <- mor_acq_helper |>
@@ -62,8 +66,8 @@ calculate_projection <- function(.data, subregional = subregional) {
     select(-mor) |>
     left_join(
       mor_acq_helper |>
+        select(-c(n_jan, acq)) |>
         filter(nat == "ch") |>
-        select(any_of(c("year", "nat", "sex", "age", "spatial_unit", "scen", "mor"))) |>
         mutate(nat = "int"),
       by = join_by(year, nat, sex, age, spatial_unit, scen)
     ) |>
@@ -73,19 +77,13 @@ calculate_projection <- function(.data, subregional = subregional) {
       # change nationality from international to Swiss
       nat = "ch"
     ) |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "mor_n_new"
-    )))
+    select(year, nat, sex, age, spatial_unit, scen, mor_n_new)
 
   # Step 3: Adapt mortality rate for aggregated people of age 100 and older ----
   df_mor_100plus <- mor_acq_helper |>
     mutate(age = age - 1) |>
-    bind_rows(
-      mor_acq_helper |>
-        mutate(age = ifelse(age - 1 == 99, 100, age - 1)) |>
-        filter(age == 100)
-    ) |>
-    select("year", "nat", "sex", "age", "spatial_unit", "scen", "mor")
+    bind_rows(mor_acq_helper |> filter(age == 100)) |>
+    select(year, nat, sex, age, spatial_unit, scen, mor)
 
   # Step 4: Combine the aged population, calculate immigration and population
   # balance ----
@@ -93,16 +91,11 @@ calculate_projection <- function(.data, subregional = subregional) {
     # Complement new Swiss citizens's number of deaths
     left_join(
       df_mor_acq,
-    by = join_by("year", "nat", "sex", "age", "spatial_unit", "scen")
+    by = join_by(year, nat, sex, age, spatial_unit, scen)
     ) |>
     mutate(
       mor_n = case_when(nat == "ch" ~ mor_n + mor_n_new, .default = mor_n)
     ) |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan", "births",
-      "mor_n", "emi_int_n", "emi_nat_n", "acq_n", "imm_int_n", "imm_nat_n",
-      "n_dec", "mig_sub", "emi_sub", "imm_sub", "int_mothers", "birthrate"
-    ))) |>
     # Complete people of age 100 and older
     left_join(
       df_mor_100plus,
@@ -114,12 +107,7 @@ calculate_projection <- function(.data, subregional = subregional) {
       # calculate the population balance for the transition
       n_dec = n_jan + births - mor_n - emi_int_n - emi_nat_n + acq_n +
         imm_int_n + imm_nat_n
-    ) |>
-    select(any_of(c(
-      "year", "nat", "sex", "age", "spatial_unit", "scen", "n_jan",
-      "mor_n", "emi_int_n", "emi_nat_n", "acq_n", "imm_int_n", "imm_nat_n",
-      "n_dec", "mig_sub", "emi_sub", "imm_sub", "int_mothers", "birthrate"
-    )))
+    )
 
   # Optional Step 5: Subregional migration ----
   if (!is.null(subregional) && subregional == "net") {
@@ -131,9 +119,7 @@ calculate_projection <- function(.data, subregional = subregional) {
     df_out <- df_out |>
       left_join(
         .data |>
-          select(any_of(c(
-            "year", "nat", "sex", "age", "spatial_unit", "scen", "mor"
-          ))),
+          select(year, nat, sex, age, spatial_unit, scen, mor),
         by = join_by(year, nat, sex, age, spatial_unit, scen)
       ) |>
       mutate(
