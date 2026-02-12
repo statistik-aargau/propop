@@ -120,7 +120,7 @@ system.time({
 })
 ```
 
-#### Comparison between FSO-results, `propop::propop_tables()` and `propop::propop()`
+#### Comparison between `propop::propop_tables()` and `propop::propop()`
 
 ```{r comparison-propop, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
 # Split results by scenario
@@ -513,6 +513,6 @@ comparison_matrices_tables_sub |>
 ☒ Code is more or less clean\
 ☒ Function feedback is there\
 ☒ Package tests (new crossover tests comparing results from matrices and tables)\
-☐ Recent changes decreased the computing speed of `propop_tables()` -> resolve
-☐ Documentation (e.g. a new vignette) 
+☒ Recent changes decreased the computing speed of `propop_tables()` -> code was adapted and runs a bit faster now\
+☐ Documentation (e.g. a new vignette)?
 

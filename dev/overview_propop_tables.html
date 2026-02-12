@@ -2220,7 +2220,7 @@ vertical-align: -.125em;
   </ul></li>
   <li><a href="#performance-for-one-region-canton-of-aargau" id="toc-performance-for-one-region-canton-of-aargau" class="nav-link" data-scroll-target="#performance-for-one-region-canton-of-aargau">Performance for one region (Canton of Aargau)</a>
   <ul class="collapse">
-  <li><a href="#comparison-between-fso-results-propoppropop_tables-and-propoppropop" id="toc-comparison-between-fso-results-propoppropop_tables-and-propoppropop" class="nav-link" data-scroll-target="#comparison-between-fso-results-propoppropop_tables-and-propoppropop">Comparison between FSO-results, <code>propop::propop_tables()</code> and <code>propop::propop()</code></a></li>
+  <li><a href="#comparison-between-propoppropop_tables-and-propoppropop" id="toc-comparison-between-propoppropop_tables-and-propoppropop" class="nav-link" data-scroll-target="#comparison-between-propoppropop_tables-and-propoppropop">Comparison between <code>propop::propop_tables()</code> and <code>propop::propop()</code></a></li>
   </ul></li>
   <li><a href="#performance-for-five-subregions" id="toc-performance-for-five-subregions" class="nav-link" data-scroll-target="#performance-for-five-subregions">Performance for five subregions</a></li>
   </ul></li>
@@ -2334,7 +2334,7 @@ vertical-align: -.125em;
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
- 10.539   0.042  10.609 </code></pre>
+  8.022   0.035   8.120 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run propop with matrices (original)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
@@ -2348,11 +2348,11 @@ vertical-align: -.125em;
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  3.074   0.024   3.103 </code></pre>
+  2.941   0.060   3.033 </code></pre>
 </div>
 </div>
-<section id="comparison-between-fso-results-propoppropop_tables-and-propoppropop" class="level4">
-<h4 class="anchored" data-anchor-id="comparison-between-fso-results-propoppropop_tables-and-propoppropop">Comparison between FSO-results, <code>propop::propop_tables()</code> and <code>propop::propop()</code></h4>
+<section id="comparison-between-propoppropop_tables-and-propoppropop" class="level4">
+<h4 class="anchored" data-anchor-id="comparison-between-propoppropop_tables-and-propoppropop">Comparison between <code>propop::propop_tables()</code> and <code>propop::propop()</code></h4>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -2507,7 +2507,7 @@ vertical-align: -.125em;
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
- 26.982   0.052  27.058 </code></pre>
+ 14.909   0.068  14.992 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run propop with matrices</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
@@ -2522,7 +2522,7 @@ vertical-align: -.125em;
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
- 11.090   0.023  11.124 </code></pre>
+ 11.642   0.060  11.713 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -2557,7 +2557,8 @@ vertical-align: -.125em;
 ☒ Code is more or less clean<br>
 ☒ Function feedback is there<br>
 ☒ Package tests (new crossover tests comparing results from matrices and tables)<br>
-☐ Recent changes decreased the computing speed of <code>propop_tables()</code> -&gt; resolve ☐ Documentation (e.g. a new vignette)</p>
+☒ Recent changes decreased the computing speed of <code>propop_tables()</code> -&gt; code was adapted and runs a bit faster now<br>
+☐ Documentation (e.g. a new vignette)?</p>
 </section>
 
 </main>
