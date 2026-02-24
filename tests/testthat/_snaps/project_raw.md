@@ -4,8 +4,8 @@
       constructive::construct(output_table)
     Output
       data.frame(
-        scen = factor(rep("reference", 808L)),
-        spatial_unit = factor(rep("Aargau", 808L)),
+        scen = factor("reference"),
+        spatial_unit = factor("Aargau"),
         N = c(
           2461, 2481, 2452, 2595, 2935, 2804, 2827, 2814, 2816, 2760, 2869, 2901, 2799,
           2812, 2847, 2872, 2759, 2823, 2705, 2781, 2767, 2764, 2724, 2683, 2637, 2859,
