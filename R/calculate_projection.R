@@ -45,19 +45,19 @@ calculate_projection <- function(.data, subregional = subregional) {
 
   # Step 2: Calculate the number of deaths ----
   # Subset data for mortality rates of international people
-  df_mor_int <- vec_slice(.data, .data$nat == "int")[c(
+  df_mor_int <- vctrs::vec_slice(.data, .data$nat == "int")[c(
     id_cols, "n_jan", "mor", "emi_int", "emi_nat", "acq"
   )]
 
   # Subset data for mortality rates of Swiss people
-  df_mor_ch <- vec_slice(.data, .data$nat == "ch")[c(
+  df_mor_ch <- vctrs::vec_slice(.data, .data$nat == "ch")[c(
     id_cols, "n_jan", "mor", "emi_int", "emi_nat", "acq"
   )]
 
   # Calculate the number of deaths for international people
   int_mor <- df_mor_int |>
     mutate(mor_n_int = n_jan * (mor - (emi_int + emi_nat + acq) * (mor / 2))) |>
-    select(id_cols, mor_n_int)
+    select(all_of(id_cols), mor_n_int)
 
   # Calculate the number of deaths for people who acquired Swiss citizenship
   ch_acq_mor <- df_mor_ch[c(id_cols, "mor")] |>
@@ -85,16 +85,16 @@ calculate_projection <- function(.data, subregional = subregional) {
           mor_n_acq,
         na.rm = TRUE
       ),
-      .by = id_cols
+      .by = all_of(id_cols)
     ) |>
-    select(id_cols, mor_n_ch)
+    select(all_of(id_cols), mor_n_ch)
 
   # Step 3: Adapt mortality rate for the transitioned population ----
   # Also, aggregates people of age 100 and older
   df_mor_transitioned <- .data |>
     mutate(age = age - 1) |>
     bind_rows(filter(.data, age == 100)) |>
-    select(id_cols, mor)
+    select(all_of(id_cols), mor)
 
   # Step 4: Calculate immigration and balance for the transitioned population ----
   df_out <- df_transition |>
@@ -102,7 +102,7 @@ calculate_projection <- function(.data, subregional = subregional) {
     # Join previously calculated number of deaths by nationality
     left_join(ch_mor, by = id_cols) |>
     left_join( int_mor, by = id_cols) |>
-    mutate(mor_n = sum(mor_n_ch, mor_n_int, na.rm = TRUE), .by = id_cols) |>
+    mutate(mor_n = sum(mor_n_ch, mor_n_int, na.rm = TRUE), .by = all_of(id_cols)) |>
     # Complete people of age 100 and older
     left_join(df_mor_transitioned, by = id_cols) |>
     mutate(
@@ -123,7 +123,7 @@ calculate_projection <- function(.data, subregional = subregional) {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
     df_out <- df_out |>
-      left_join(.data |> select(id_cols, mor), by = id_cols) |>
+      left_join(.data |> select(all_of(id_cols), mor), by = id_cols) |>
       mutate(
         # emigration to other subregional units
         emi_sub_n = n_jan * (emi_sub * (1 - (mor / 2))),

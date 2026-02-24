@@ -46,12 +46,12 @@ calculate_newborns <- function(
 
   # Prepare population data ----
   # Female population
-  population_female <- vec_slice(population, population$sex == "f")[c(
+  population_female <- vctrs::vec_slice(population, population$sex == "f")[c(
     id_cols, "birthrate", "int_mothers", "births", "n_jan", "n_dec"
   )]
 
   # Calculate shares and rates
-  population_prep <- vec_slice(
+  population_prep <- vctrs::vec_slice(
     # Females in the fertile age range are defined by `fert_first` and `fert_last`
     population_female, population_female$age %in% c(fert_first:fert_last)
     ) |>
@@ -130,7 +130,7 @@ calculate_newborns <- function(
     # complement data
     mutate(age = 0) |>
     # add info from parameters
-    left_join( parameters, by = id_cols, relationship = "one-to-one")
+    left_join(parameters, by = id_cols, relationship = "one-to-one")
 
   # Get the new population
   df_newborns_out <- df_newborns_prep |>
