@@ -5,7 +5,7 @@
 \alias{stattab_pop_snap}
 \title{Snapshot of STAT-TAB that includes the population records}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2431 rows and 7 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2427 rows and 7 columns.
 }
 \source{
 Federal Statistical Office:
