@@ -14,22 +14,23 @@
 #' @autoglobal
 #'
 #' @examples
-#' propop(
-#'   parameters = fso_parameters,
-#'   year_first = 2024,
-#'   year_last = 2027,
-#'   population = fso_population,
-#'   subregional = FALSE,
-#'   binational = TRUE
-#' ) |>
-#'   check_balance()
+#'propop(
+#'  parameters = fso_parameters,
+#'  year_first = 2024,
+#'  year_last = 2027,
+#'  population = fso_population,
+#'  subregional = FALSE,
+#'  binational = TRUE
+#') |>
+#'  check_balance()
 
 check_balance <- function(data){
+
   df_check <- data |>
     dplyr::mutate(
-      pop_balance = n_jan + births - mor - emi_int - emi_nat + imm_int + imm_nat,
-      pop_balance = if ("acq" %in% names(data))
-        pop_balance + acq else pop_balance,
+      pop_balance = n_jan + births - mor_n - emi_int_n - emi_nat_n + imm_int_n + imm_nat_n,
+      pop_balance = if ("acq_n" %in% names(data))
+        pop_balance + acq_n else pop_balance,
       pop_balance = if ("mig_sub" %in% names(data))
         pop_balance + mig_sub else pop_balance,
       diff = round(n_dec - pop_balance, 0)

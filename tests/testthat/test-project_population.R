@@ -1742,8 +1742,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     filter(year == 2024)
 
   # Check if components add up
-  balance_check <- check_balance(output_propop_1r |>
-    rename_with(~ sub("_n$", "", .), ends_with("_n")))
+  balance_check <- check_balance(output_propop_1r)
 
   expect_equal(balance_check$nonzeros, 0,
     info =
@@ -2397,8 +2396,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     filter(year == 2024)
 
   # Check if components add up
-  balance_check <- check_balance(output_propop_5r |>
-    rename_with(~ sub("_n$", "", .), ends_with("_n")))
+  balance_check <- check_balance(output_propop_5r)
 
   expect_equal(balance_check$nonzeros, 0,
     info =
@@ -2426,8 +2424,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     filter(year == 2024)
 
   # Check if components add up
-  balance_check <- check_balance(output_propop_5r_F |>
-    rename_with(~ sub("_n$", "", .), ends_with("_n")))
+  balance_check <- check_balance(output_propop_5r_F)
 
   expect_equal(balance_check$nonzeros, 0,
     info =

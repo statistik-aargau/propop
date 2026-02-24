@@ -138,7 +138,9 @@ complement_projection <- function(skeleton,
     dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
-      "imm_int", "imm_nat", "acq", "mig_sub", "n_dec", "delta_n", "delta_perc"
+      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births",
+      "mor_n" = "mor", "emi_int_n" = "emi_int", "emi_nat_n" = "emi_nat",
+      "imm_int_n" = "imm_int", "imm_nat_n" = "imm_nat", "acq_n" = "acq",
+      "mig_sub", "n_dec", "delta_n", "delta_perc"
     )))
 }
