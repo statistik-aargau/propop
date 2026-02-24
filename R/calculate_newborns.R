@@ -28,7 +28,6 @@
 #'
 #' @return Returns a data frame with the number of newborn children 'births'
 #'         structured in demographic groups.
-#' @export
 #'
 #' @autoglobal
 #' @noRd

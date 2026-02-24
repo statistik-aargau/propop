@@ -18,7 +18,6 @@
 #'
 #' @return Returns a data frame with the starting population `n_jan`, components,
 #'         and the resulting projected population for the next year `n_dec`.
-#' @export
 #' @autoglobal
 #' @noRd
 #'
