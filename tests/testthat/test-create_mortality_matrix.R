@@ -1,5 +1,4 @@
 test_that("create_mortality_matrix", {
-
   skip_on_ci()
 
   expect_snapshot(constructive::construct(

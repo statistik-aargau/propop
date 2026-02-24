@@ -1,5 +1,4 @@
 test_that("calculate shares", {
-
   # create immigration records data
   # set.seed(145)
   # tibble::tibble(
@@ -286,15 +285,18 @@ test_that("calculate shares", {
     dplyr::slice(1:20)
 
   # resulting shares should be different
-  expect_failure(expect_equal(df_distr_hist_default |>
-                                dplyr::select(share) |>
-                                dplyr::slice(1:20),
-                              df_distr_hist_5 |>
-                                dplyr::select(share)))
+  expect_failure(expect_equal(
+    df_distr_hist_default |>
+      dplyr::select(share) |>
+      dplyr::slice(1:20),
+    df_distr_hist_5 |>
+      dplyr::select(share)
+  ))
 
-  expect_failure(expect_equal(df_distr_hist_5 |>
-                                dplyr::select(share),
-                              df_distr_hist_10 |>
-                                dplyr::select(share)))
-
+  expect_failure(expect_equal(
+    df_distr_hist_5 |>
+      dplyr::select(share),
+    df_distr_hist_10 |>
+      dplyr::select(share)
+  ))
 })

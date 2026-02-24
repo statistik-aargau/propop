@@ -1710,4 +1710,3 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
     )
   )
 })
-

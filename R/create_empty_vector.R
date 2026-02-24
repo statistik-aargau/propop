@@ -15,7 +15,6 @@ create_empty_vector <-
   function(empty_val,
            proj_length,
            length_pop_vec) {
-
     # Deprecate
     lifecycle::deprecate_warn(
       "2.0.0", "create_empty_vector()",

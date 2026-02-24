@@ -69,7 +69,6 @@ get_population <- function(number_fso = "px-x-0102010000_101",
                            year,
                            year_last = NULL,
                            spatial_units) {
-
   # Set `year_last` to `year` if only 1 year is requested
   if (is.null(year_last)) {
     year_last <- year
@@ -87,16 +86,16 @@ get_population <- function(number_fso = "px-x-0102010000_101",
     year >= 2010 && year < current_year,
     msg = paste0(
       "`year` is beyond the available records (2010 to ",
-      current_year-2, " / ",
-      current_year-1, ")."
+      current_year - 2, " / ",
+      current_year - 1, ")."
     )
   )
   assertthat::assert_that(is.integer(year_last),
     year_last >= 2010 && year_last < current_year,
     msg = paste0(
       "`year_last` is beyond the available records (2010 to ",
-      current_year-2, " / ",
-      current_year-1, ")."
+      current_year - 2, " / ",
+      current_year - 1, ")."
     )
   )
   assertthat::assert_that(is.integer(year),
@@ -172,11 +171,15 @@ get_population <- function(number_fso = "px-x-0102010000_101",
     %in%
       metadata_pop_tidy$valueTexts[
         metadata_pop_tidy$text ==
-          "Kanton (-) / Bezirk (>>) / Gemeinde (......)"]) ,
-    msg = paste0("At least one of the requested spatial units is not ",
-    "available. Check the spelling against those in the STATTAB cube ",
-    number_fso, ". Inspecting the column 'valueTexts' in the following package",
-    " data may also help: data('stattab_pop_snap')"))
+          "Kanton (-) / Bezirk (>>) / Gemeinde (......)"
+      ]),
+    msg = paste0(
+      "At least one of the requested spatial units is not ",
+      "available. Check the spelling against those in the STATTAB cube ",
+      number_fso, ". Inspecting the column 'valueTexts' in the following package",
+      " data may also help: data('stattab_pop_snap')"
+    )
+  )
 
   # Specify the elements to download
   dim1 <- metadata_pop_tidy |>
@@ -281,7 +284,8 @@ get_population <- function(number_fso = "px-x-0102010000_101",
       ),
       sex = dplyr::case_when(
         sex == "Mann" ~ "m",
-        sex == "Frau" ~ "f"),
+        sex == "Frau" ~ "f"
+      ),
       year = as.numeric(year),
       age = as.numeric(stringr::str_extract(age, "\\d+"))
     ) |>
@@ -290,5 +294,4 @@ get_population <- function(number_fso = "px-x-0102010000_101",
   # TODO
   # Implement a consistent arrangement for the identifier-columns throughout input and output tables:
   # year - spatial unit - scen - nat - sex - age
-
 }

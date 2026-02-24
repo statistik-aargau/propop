@@ -216,7 +216,7 @@ comparison_matrices_tables |>
   ) +
   ggplot2::theme_minimal() +
   ggplot2::theme(
-    legend.position = "none", 
+    legend.position = "none",
     axis.text.x = ggplot2::element_text(angle = 45)
   ) +
   ggplot2::facet_grid(scen ~ age)
@@ -224,7 +224,7 @@ comparison_matrices_tables |>
 
 # Plot percentage error
 comparison_matrices_tables |>
-   dplyr::mutate(
+  dplyr::mutate(
     age = factor(age, levels = c(
       "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
       "age_100_plus"
@@ -254,7 +254,7 @@ comparison_matrices_tables |>
   ggplot2::scale_y_continuous(labels = add_percent) +
   ggplot2::theme_minimal() +
   ggplot2::theme(
-    legend.position = "none", 
+    legend.position = "none",
     axis.text.x = ggplot2::element_text(angle = 45)
   ) +
   ggplot2::facet_grid(scen ~ age)
@@ -459,7 +459,7 @@ comparison_matrices_tables_sub |>
 
 # Plot percentage error
 comparison_matrices_tables_sub |>
-   dplyr::mutate(
+  dplyr::mutate(
     age = factor(age, levels = c(
       "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
       "age_100_plus"
@@ -490,7 +490,6 @@ comparison_matrices_tables_sub |>
   ggplot2::theme_minimal() +
   ggplot2::theme(legend.position = "none") +
   ggplot2::facet_grid(scen + spatial_unit ~ age)
-
 ```
 
 # Next steps

@@ -1,5 +1,4 @@
 test_that("advance population test", {
-
   # Input data ----
   ## One spatial unit ----
   ### FSO population for one spatial unit ----
@@ -57,6 +56,4 @@ test_that("advance population test", {
 
   # input/Output year should be all the same
   expect_equal(length(unique(population_prev_short_default$year)), 1)
-
-
 })

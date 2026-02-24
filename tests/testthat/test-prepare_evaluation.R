@@ -1,5 +1,4 @@
 test_that("prepare_evaluation snapshots", {
-
   skip_on_ci()
 
   # Prepare data ----
@@ -1257,15 +1256,18 @@ test_that("prepare_evaluation snapshots", {
 
   # population size must be equal
   check_n_3 <- combined_grouped_snapshot |>
-    summarise(n_check1 = sum(n_benchmark),
-              n_check2 = sum(n_projected),
-              .by = c(year))
+    summarise(
+      n_check1 = sum(n_benchmark),
+      n_check2 = sum(n_projected),
+      .by = c(year)
+    )
 
   check_n_5 <- combined_grouped_snapshot_5 |>
-    summarise(n_check1 = sum(n_benchmark),
-              n_check2 = sum(n_projected),
-              .by = c(year))
+    summarise(
+      n_check1 = sum(n_benchmark),
+      n_check2 = sum(n_projected),
+      .by = c(year)
+    )
 
   expect_identical(check_n_3, check_n_5)
-
 })

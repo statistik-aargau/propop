@@ -1,5 +1,4 @@
 test_that("Snapshot 1-year age classes", {
-
   skip_on_ci()
 
   input <- tibble::tibble(
@@ -22,7 +21,6 @@ test_that("Snapshot 1-year age classes", {
 
 
 test_that("Snapshot 3 age classes", {
-
   skip_on_ci()
 
   input2 <- tibble::tibble(
@@ -68,7 +66,4 @@ test_that("Snapshot 3 age classes", {
   output2 <- aggregate_measures(input2, weight_groups = c("age", "nat"))
 
   expect_snapshot(dput(output2))
-
 })
-
-

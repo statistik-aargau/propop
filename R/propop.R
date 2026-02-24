@@ -175,7 +175,6 @@ propop <- function(
     subregional = NULL,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
-
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>

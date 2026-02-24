@@ -14,25 +14,29 @@
 #' @autoglobal
 #'
 #' @examples
-#'propop(
-#'  parameters = fso_parameters,
-#'  year_first = 2024,
-#'  year_last = 2027,
-#'  population = fso_population,
-#'  subregional = FALSE,
-#'  binational = TRUE
-#') |>
-#'  check_balance()
-
-check_balance <- function(data){
-
+#' propop(
+#'   parameters = fso_parameters,
+#'   year_first = 2024,
+#'   year_last = 2027,
+#'   population = fso_population,
+#'   subregional = FALSE,
+#'   binational = TRUE
+#' ) |>
+#'   check_balance()
+check_balance <- function(data) {
   df_check <- data |>
     dplyr::mutate(
       pop_balance = n_jan + births - mor_n - emi_int_n - emi_nat_n + imm_int_n + imm_nat_n,
-      pop_balance = if ("acq_n" %in% names(data))
-        pop_balance + acq_n else pop_balance,
-      pop_balance = if ("mig_sub" %in% names(data))
-        pop_balance + mig_sub else pop_balance,
+      pop_balance = if ("acq_n" %in% names(data)) {
+        pop_balance + acq_n
+      } else {
+        pop_balance
+      },
+      pop_balance = if ("mig_sub" %in% names(data)) {
+        pop_balance + mig_sub
+      } else {
+        pop_balance
+      },
       diff = round(n_dec - pop_balance, 0)
     )
   summary <- df_check |>
@@ -49,13 +53,13 @@ check_balance <- function(data){
     cli::cli_alert_warning(paste0(
       "Check failed:\n",
       "- Rows in which population equation differs from zero: {.val {summary$nonzeros}}\n",
-      "- Rows in which equation check has missing values: {.val {summary$missings}}")
-      )
+      "- Rows in which equation check has missing values: {.val {summary$missings}}"
+    ))
   } else {
     cli::cli_alert_success(paste0(
       "Check passed: Equations in all rows add up ",
-      "and there are no missing values.")
-    )
+      "and there are no missing values."
+    ))
   }
 
 

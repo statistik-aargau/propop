@@ -16,13 +16,11 @@ test_that("Simple propop test for ci", {
       binational = TRUE
     )
   ))
-}
-)
+})
 
 # Ensure that N_high > N_reference > N_low
 
 test_that("N_totals of scenarios are ordered plausibly", {
-
   n_ordered <- propop_legacy(
     parameters = fso_parameters,
     year_first = 2024,
@@ -32,7 +30,7 @@ test_that("N_totals of scenarios are ordered plausibly", {
     binational = TRUE
   ) |>
     # Get end total per scenario
-    filter(year == 2025)  |>
+    filter(year == 2025) |>
     summarise(total = sum(n_dec), .by = "scen")
 
   n_high <- n_ordered |>
@@ -55,7 +53,6 @@ test_that("N_totals of scenarios are ordered plausibly", {
 # Prepare snapshot 1 region ----
 
 test_that("tests propop: 1 region vs. 5 regions", {
-
   skip_on_ci()
 
   ## FSO parameters ----
@@ -472,10 +469,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # Check if components add up
   balance_check <- check_balance(output_propop_1r)
 
-  expect_equal(balance_check$nonzeros, 0, info =
-                 "The components don't add up in at least one row")
-  expect_equal(balance_check$missings, 0, info =
-                 "There are missings in at least one row")
+  expect_equal(balance_check$nonzeros, 0,
+    info =
+      "The components don't add up in at least one row"
+  )
+  expect_equal(balance_check$missings, 0,
+    info =
+      "There are missings in at least one row"
+  )
 
   # Run snapshot 1 region ----
   expect_snapshot(constructive::construct(output_propop_1r))
@@ -1124,10 +1125,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # Check if components add up
   balance_check <- check_balance(output_propop_5r)
 
-  expect_equal(balance_check$nonzeros, 0, info =
-                 "The components don't add up in at least one row")
-  expect_equal(balance_check$missings, 0, info =
-                 "There are missings in at least one row")
+  expect_equal(balance_check$nonzeros, 0,
+    info =
+      "The components don't add up in at least one row"
+  )
+  expect_equal(balance_check$missings, 0,
+    info =
+      "There are missings in at least one row"
+  )
 
   # run snapshot 5 subregions ----
   expect_snapshot(constructive::construct(output_propop_5r))
@@ -1150,10 +1155,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # Check if components add up
   balance_check <- check_balance(output_propop_5r_F)
 
-  expect_equal(balance_check$nonzeros, 0, info =
-                 "The components don't add up in at least one row")
-  expect_equal(balance_check$missings, 0, info =
-                 "There are missings in at least one row")
+  expect_equal(balance_check$nonzeros, 0,
+    info =
+      "The components don't add up in at least one row"
+  )
+  expect_equal(balance_check$missings, 0,
+    info =
+      "There are missings in at least one row"
+  )
 
   # Remove additional column to enable fair comparison
   output_propop_5r_T <- output_propop_5r |>
@@ -1204,8 +1213,10 @@ test_that("tests propop: 1 region vs. 5 regions", {
     arrange(year, nat, sex, age)
 
   output_subregions <- output_propop_5r |>
-    dplyr::mutate(n_check = sum(n_dec, na.rm = TRUE),
-                  .by = c(year, nat, sex, age)) |>
+    dplyr::mutate(
+      n_check = sum(n_dec, na.rm = TRUE),
+      .by = c(year, nat, sex, age)
+    ) |>
     # remove column that includes redundancy
     dplyr::select(-n_dec, -spatial_unit) |>
     # rename n_check
@@ -1226,7 +1237,6 @@ options(cli.default_handler = NULL)
 # Unexpected input regarding nationalities ----
 
 test_that("Error when binational is FALSE but column `nat` is present", {
-
   expect_error(
     propop_legacy(
       parameters = fso_parameters,
@@ -1244,7 +1254,6 @@ test_that("Error when binational is FALSE but column `nat` is present", {
 
 
 test_that("Error when only 1 nationality in parameters", {
-
   expect_error(
     propop_legacy(
       # remove non-Swiss nationals
@@ -1264,7 +1273,6 @@ test_that("Error when only 1 nationality in parameters", {
 })
 
 test_that("Error when only 1 nationality in population", {
-
   expect_error(
     propop_legacy(
       # remove non-Swiss nationals
@@ -1284,7 +1292,6 @@ test_that("Error when only 1 nationality in population", {
 })
 
 test_that("Error if there are unexpected factor levels in pop `nat`", {
-
   expect_error(
     propop_legacy(
       # remove non-Swiss nationals
@@ -1299,7 +1306,8 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
         dplyr::mutate(nat = case_match(
           nat,
           "ch" ~ "swiss",
-          .default = nat)),
+          .default = nat
+        )),
       binational = TRUE,
       subregional = FALSE
     )

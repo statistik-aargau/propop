@@ -43,8 +43,7 @@
 calculate_shares <- function(
     data,
     col,
-    age_group = "default"
-  ) {
+    age_group = "default") {
   # Test input ----
   ## Presence of mandatory columns ----
   assertthat::assert_that("spatial_unit" %in% names(data),
@@ -159,16 +158,16 @@ calculate_shares <- function(
 
   # Calculate estimates for the number of people -----
   if (age_group == "default") {
-  df3 <- df2 |>
-    mutate(
-      # get estimates depending on group choices
-      n = case_when(
-        use_age_group == "age_group_1" ~ !!sym(col),
-        use_age_group == "age_group_5" ~ prop_5,
-        use_age_group == "age_group_10" ~ prop_10,
-        TRUE ~ NA
+    df3 <- df2 |>
+      mutate(
+        # get estimates depending on group choices
+        n = case_when(
+          use_age_group == "age_group_1" ~ !!sym(col),
+          use_age_group == "age_group_5" ~ prop_5,
+          use_age_group == "age_group_10" ~ prop_10,
+          TRUE ~ NA
+        )
       )
-    )
   } else if (age_group == "age_group_5") {
     df3 <- df2 |>
       mutate(n = prop_5, use_age_group = "age_group_5")

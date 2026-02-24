@@ -83,19 +83,19 @@ projection_canton_2030 <- propop(
 projection_canton_2030 |>
   # round to 2 digits
   dplyr::mutate(across(n_jan:n_dec, \(x) sprintf(fmt = "%.0f", x))) |>
-  DT::datatable(filter = "top") |> 
+  DT::datatable(filter = "top") |>
   DT::formatStyle(
-  'n_jan',
-  backgroundColor = '#ffcc8f'
-) |> 
+    "n_jan",
+    backgroundColor = "#ffcc8f"
+  ) |>
   DT::formatStyle(
-  c("births", "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n"),
-  backgroundColor = '#96D4FF'
-) |> 
+    c("births", "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n"),
+    backgroundColor = "#96D4FF"
+  ) |>
   DT::formatStyle(
-  'n_dec',
-  backgroundColor = '#007AB8'
-)  
+    "n_dec",
+    backgroundColor = "#007AB8"
+  )
 ```
 
 \
@@ -129,15 +129,15 @@ differ between Swiss and non-Swiss people).
 ``` {r prepare-single-nationality}
 fso_parameters_int <- fso_parameters |>
   # drop Swiss people, keep reference scenario
-    dplyr::filter(nat == "int" & scen == "reference") |>
+  dplyr::filter(nat == "int" & scen == "reference") |>
   #   remove `nat`, `acq` and `births_int_ch` from `parameters`
-    dplyr::select(-c(nat, acq, int_mothers))
+  dplyr::select(-c(nat, acq, int_mothers))
 
-fso_population_int <- fso_population |> 
-# drop Swiss people
-    dplyr::filter(nat == "int") |>
-    # remove `nat` from `population`
-     dplyr::select(-nat)
+fso_population_int <- fso_population |>
+  # drop Swiss people
+  dplyr::filter(nat == "int") |>
+  # remove `nat` from `population`
+  dplyr::select(-nat)
 ```
 
 When calling `propop::propop()`, you need to set `binational = FALSE`.

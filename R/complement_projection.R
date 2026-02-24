@@ -71,7 +71,7 @@ complement_projection <- function(skeleton,
 
   assertthat::assert_that(
     "scen" %in% names(projection_raw),
-                          msg = "Column `scen` is missing in `projection_raw`."
+    msg = "Column `scen` is missing in `projection_raw`."
   )
 
   assertthat::assert_that(
@@ -116,8 +116,10 @@ complement_projection <- function(skeleton,
       new_age_group_100 = ifelse(age == 100, 100, NA),
       age = dplyr::case_when(age < 100 ~ age + 1, TRUE ~ age)
     ) |>
-    dplyr::mutate(n_jan = sum(n_jan),
-                  .by = c(year, scen, nat, sex, age, spatial_unit)) |>
+    dplyr::mutate(
+      n_jan = sum(n_jan),
+      .by = c(year, scen, nat, sex, age, spatial_unit)
+    ) |>
     dplyr::mutate(
       # adapt age range to 0-100 years
       age = age - 1,
@@ -129,13 +131,16 @@ complement_projection <- function(skeleton,
       n_jan = dplyr::case_when(age == 0 ~ 0, TRUE ~ n_jan),
       # add new Swiss citizens and subtract the same number of people from the
       # international group
-      acq = ifelse(nat == "ch", dplyr::lead(acq, 2 * 101), - acq),
+      acq = ifelse(nat == "ch", dplyr::lead(acq, 2 * 101), -acq),
     ) |>
     dplyr::mutate(
       # calculate population balance
       n_dec = n_jan + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
-      n_dec = if ("mig_sub" %in% names(projection_result))
-        n_dec + mig_sub else n_dec,
+      n_dec = if ("mig_sub" %in% names(projection_result)) {
+        n_dec + mig_sub
+      } else {
+        n_dec
+      },
       # calculate the annual change per demographic group
       ## total number of people
       delta_n = round(n_dec - n_jan, 0),

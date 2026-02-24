@@ -39,7 +39,6 @@ calculate_newborns <- function(
     fert_last,
     share_born_female,
     subregional = subregional) {
-
   # Define ID-columns for joins
   id_cols <- c("year", "nat", "sex", "age", "spatial_unit", "scen")
 
@@ -53,7 +52,7 @@ calculate_newborns <- function(
   population_prep <- vctrs::vec_slice(
     # Females in the fertile age range are defined by `fert_first` and `fert_last`
     population_female, population_female$age %in% c(fert_first:fert_last)
-    ) |>
+  ) |>
     # Calculate shares and rates
     mutate(
       births_int_int = 1 - int_mothers,

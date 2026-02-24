@@ -22,7 +22,6 @@
 #' @noRd
 #'
 calculate_projection <- function(.data, subregional = subregional) {
-
   # Define ID-columns for joins
   id_cols <- c("year", "nat", "sex", "age", "spatial_unit", "scen")
 
@@ -100,7 +99,7 @@ calculate_projection <- function(.data, subregional = subregional) {
     select(-mor) |>
     # Join previously calculated number of deaths by nationality
     left_join(ch_mor, by = id_cols) |>
-    left_join( int_mor, by = id_cols) |>
+    left_join(int_mor, by = id_cols) |>
     mutate(mor_n = sum(mor_n_ch, mor_n_int, na.rm = TRUE), .by = all_of(id_cols)) |>
     # Complete people of age 100 and older
     left_join(df_mor_transitioned, by = id_cols) |>
