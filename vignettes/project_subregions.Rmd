@@ -200,7 +200,7 @@ the FSO for the whole canton).
 parameters_sub_size |>
   dplyr::mutate(
     check = round(sum(imm_int_n_distr), 0),
-    .by = c(year, nat, sex, age)
+    .by = c(scen, year, nat, sex, age)
   ) |>
   dplyr::filter(sex == "m" & nat == "int") |>
   dplyr::mutate(across(c(
@@ -298,8 +298,9 @@ df_hist_imm <- tibble::tibble(
     hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
     # for one spatial unit, we artificially assign zeros to all children
     # between 0-4 years
-    hist_imm_int = ifelse(spatial_unit == 1 & age %in%
-      c(0:4), 0, hist_imm_int)
+    hist_imm_int = ifelse(
+      spatial_unit == 1 & age %in% c(0:4), 0, hist_imm_int
+    )
   )
 ```
 
@@ -550,7 +551,6 @@ propop(
   parameters = parameters_sub_mig,
   year_first = 2024,
   year_last = 2026,
-  scenarios = "reference",
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,

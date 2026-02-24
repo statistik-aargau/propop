@@ -27,6 +27,9 @@ together with `complement_projection()`, `create_transition_matrix()`,
 `create_empty_vector()` and `project_raw()`. `propop_legacy()` and associated
 helper function will stay operational.
 
+# propop 1.4.1
+- maintenance work; no breaking changes
+
 # propop 1.4.0
 - `propop::propop()` can now perform multiple projection scenarios in a 
 single run. 
