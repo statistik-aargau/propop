@@ -450,7 +450,7 @@
         ),
         year = rep(seq(2024, 2028, by = 1), each = 1212L),
         scen = rep(rep(c("reference", "high", "low"), 5), each = 404L),
-        spatial_unit = rep("Aargau", 6060L),
+        spatial_unit = "Aargau",
         birthrate = rep(
           c(
             0, 0.000786, 0.001525, 0.003106, 0.005874, 0.010611, 0.01731, 0.026459,
