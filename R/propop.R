@@ -356,7 +356,6 @@ propop <- function(
       )
     )
 
-    # Create required data structure for project_raw()
     # Parameters
     parameters <- parameters |>
       # duplicate the data and add column `nat` with two levels: "ch" and "int"
