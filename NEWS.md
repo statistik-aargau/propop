@@ -1,7 +1,24 @@
-# propop 1.5.0
-- New function `propop_tables()` to run population projections with data frames
-instead of matrices. The function also comes with a new feature: distributing
+# propop 2.0.0
+## Breaking changes
+- New function syntax for `propop()` to run population projections with data frames
+instead of matrices, using identical data input. The function also comes with a new feature: distributing
 subregional migration can be calculated using rates in addition to using net numbers.
+
+- New helper functions for `propop()`: `project_population()` is a wrapper function,
+`advance_population()` ages the population by one year, `calculate_projection()`
+fosters the transition of the cohort to the next year and `calculate_newborns()`
+computes births.
+
+- New tests for `propop()` and helper functions as well as for comparing the output 
+between `propop()` and `propop_legacy()`, sensitive to differences larger than three 
+people in total by year 2055 for the Canton of Aargau.
+
+## Deprecated
+- The old function `propop()` was renamed to `propop_legacy()` and was deprecated 
+together with `complement_projection()`, `create_transition_matrix()`,
+`create_birth_matrix()`, `create_fertility_matrix()`, `create_mortality_matrix()`,
+`create_empty_vector()` and `project_raw()`. `propop_legacy()` and associated
+helper function will stay operational.
 
 # propop 1.4.0
 - `propop::propop()` can now perform multiple projection scenarios in a 
