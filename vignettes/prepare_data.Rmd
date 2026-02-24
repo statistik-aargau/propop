@@ -32,8 +32,8 @@ population projections `{propop}`.
 
 # Required data
 
-If you don't have the information and data required to run `propop::propop()` 
-(or `propop::project_raw()`), you can download most of the data from
+If you don't have the information and data required to run `propop::propop()`, 
+you can download most of the data from
 [STAT-TAB](https://www.pxweb.bfs.admin.ch/pxweb). More specifically, 
 the information from the following tables are needed:
 

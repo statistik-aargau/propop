@@ -62,8 +62,7 @@ Using these resources, we can project the population for the canton as a whole
 for 1-year age groups for the period 2024-2055. 
 
 The start and end of women's fertile period, the proportion of babies born as 
-female, and the share of babies born by mothers who are not Swiss are defined in 
-`propop::project_raw()` and passed to `propop::propop()`. We use FSO's standard
+female, and the share of babies born by mothers who are not Swiss are defined in `propop::propop()`. We use FSO's standard
 values as default for these arguments.
 
 If the argument `scenarios` is not specified, `propop::propop()` returns a 
@@ -90,7 +89,7 @@ projection_canton_2030 |>
   backgroundColor = '#ffcc8f'
 ) |> 
   DT::formatStyle(
-  c("births", "mor", "emi_int", "emi_nat", "imm_int", "imm_nat", "acq"),
+  c("births", "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n"),
   backgroundColor = '#96D4FF'
 ) |> 
   DT::formatStyle(
