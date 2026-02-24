@@ -12,7 +12,7 @@ stattab_pop_snap
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-2431 rows and 7 columns.
+2427 rows and 7 columns.
 
 ## Source
 

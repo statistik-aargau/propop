@@ -1,5 +1,9 @@
 # Changelog
 
+## propop 1.4.1
+
+- maintenance work; no breaking changes
+
 ## propop 1.4.0
 
 - [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)

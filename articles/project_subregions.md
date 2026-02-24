@@ -116,6 +116,11 @@ df_population <- fso_population |>
     ),
     .keep = "all"
   )
+#> Warning: There was 1 warning in `dplyr::mutate()`.
+#> ℹ In argument: `n = dplyr::case_match(...)`.
+#> Caused by warning:
+#> ! `case_match()` was deprecated in dplyr 1.2.0.
+#> ℹ Please use `recode_values()` instead.
 ```
 
 To calculate the shares, we count the number of people in each

@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -201,7 +201,12 @@ canton):</p>
 <span>      .default <span class="op">=</span> <span class="cn">NA</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    .keep <span class="op">=</span> <span class="st">"all"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There was 1 warning in `dplyr::mutate()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `n = dplyr::case_match(...)`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> `case_match()` was deprecated in dplyr 1.2.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `recode_values()` instead.</span></span></code></pre></div>
 <p>To calculate the shares, we count the number of people in each
 demographic group across all spatial units (<code>sum_n</code>). Next,
 the <code>share</code> is obtained by dividing the spatial unit’s
@@ -663,7 +668,7 @@ in the section “Distribution of people according to past migration”.</p>
 <code class="sourceCode R"><span><span class="va">parameters_sub_mig</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub_distr_hist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Create fictitious migration parameters</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    mig_sub <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    mig_sub <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="co"># Four regions with emigration, 1 region with immigration</span></span>
 <span>      <span class="va">spatial_unit</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="op">{</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
@@ -685,7 +690,7 @@ in the section “Distribution of people according to past migration”.</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    mig_sub <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    mig_sub <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
 <span>      <span class="va">spatial_unit</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">~</span> <span class="fl">0</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">mig_sub</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="va">mig_sub</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    <span class="co"># check = sum(mig_sub, na.rm = TRUE),</span></span>
