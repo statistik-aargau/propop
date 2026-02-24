@@ -1,5 +1,7 @@
 #' Create birth matrix (helper function for project_raw)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description The birth matrix is used to calculate age-specific annual births
 #' by demographic group. The result is integrated into the output data frame
 #' named as column `Births`.
@@ -26,6 +28,14 @@ create_birth_matrix <-
            birthrate_ch,
            birthrate_int,
            int_mothers) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "create_birth_matrix()",
+      details = paste0(
+        "`create_birth_matrix()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
     # Set indices -------------------------------------------------------------
     index_row <-
       c(

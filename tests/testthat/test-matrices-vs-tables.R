@@ -1,10 +1,10 @@
-# Compare results from propop calculating with tables vs matrices
+# Compare results from projections calculating with tables vs matrices
 # Differences must be less than 3 people in total by 2055
 
 test_that("Three scenarios", {
   # One region, three scenarios (reference, high, low), binational = TRUE
   ## Tables version ----
-  scen_tables <- propop_tables(
+  scen_tables <- propop(
     parameters = fso_parameters,
     year_first = 2024,
     year_last = 2055,
@@ -13,7 +13,7 @@ test_that("Three scenarios", {
   )
 
   ## Matrices version ----
-  scen_matrices <- propop(
+  scen_matrices <- propop_legacy(
     parameters = fso_parameters,
     year_first = 2024,
     year_last = 2055,
@@ -40,7 +40,7 @@ test_that("Three scenarios", {
 test_that("Default settings", {
   # One region, one scenario, binational = TRUE
   ## Tables version ----
-  default_tables <- propop_tables(
+  default_tables <- propop(
     parameters = fso_parameters |> dplyr::filter(scen == "reference"),
     year_first = 2024,
     year_last = 2055,
@@ -49,7 +49,7 @@ test_that("Default settings", {
   )
 
   ## Matrices version ----
-  default_matrices <- propop(
+  default_matrices <- propop_legacy(
     parameters = fso_parameters |> dplyr::filter(scen == "reference"),
     year_first = 2024,
     year_last = 2055,
@@ -75,7 +75,7 @@ test_that("Default settings", {
 test_that("One nationality", {
   # One region, one scenario, binational = FALSE
   ## Tables version ----
-  single_nat_tables <- propop_tables(
+  single_nat_tables <- propop(
     parameters = fso_parameters |>
       dplyr::filter(scen == "reference", nat == "ch") |>
       select(-nat),
@@ -88,7 +88,7 @@ test_that("One nationality", {
   )
 
   ## Matrices version ----
-  single_nat_matrices <- propop(
+  single_nat_matrices <- propop_legacy(
     parameters = fso_parameters |>
       dplyr::filter(scen == "reference", nat == "ch") |>
       select(-nat),
@@ -745,7 +745,7 @@ test_that("Five subregions", {
   )
 
   ## Tables version ----
-  subregions_tables <- propop_tables(
+  subregions_tables <- propop(
     parameters = parameters_short_5r,
     year_first = 2024,
     year_last = 2024,
@@ -759,7 +759,7 @@ test_that("Five subregions", {
   )
 
   ## Matrices version ----
-  subregions_matrices <- propop(
+  subregions_matrices <- propop_legacy(
     parameters = parameters_short_5r,
     year_first = 2024,
     year_last = 2024,

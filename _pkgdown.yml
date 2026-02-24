@@ -39,8 +39,6 @@ reference:
     Functions for running population projections
   contents:
   - propop
-  - project_raw
-  - propop_tables
 - title: "Evaluate projections"
   desc: >
     Functions to evaluate projection results

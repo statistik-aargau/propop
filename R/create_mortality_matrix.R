@@ -1,5 +1,7 @@
 #' Create mortality matrix (helper function for project_raw)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description The mortality matrix is used to calculate age-specific annual
 #' deaths by demographic group. The result is integrated into the output
 #' data frame named as column `NM`.
@@ -38,6 +40,14 @@ create_mortality_matrix <-
            emi_nat_int_m,
            acq_int_f,
            acq_int_m) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "create_mortality_matrix()",
+      details = paste0(
+        "`create_mortality_matrix()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
     # Set indices -------------------------------------------------------------
     index_row <-
       c(

@@ -1,7 +1,7 @@
 #' Project population development
 #'
 #' @description
-#' This function is applied within the wrapper function `propop_tables()`
+#' This function is applied within the wrapper function `propop()`
 #' to iterate across years and spatial units.
 #'
 #' The calculations involve three helper functions:

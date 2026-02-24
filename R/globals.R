@@ -87,13 +87,13 @@ utils::globalVariables(c(
   "n_sum", # <calculate_shares>
   "n_jan", # <check_balance>
   "births", # <check_balance>
-  "mor", # <check_balance>
-  "emi_int", # <check_balance>
-  "emi_nat", # <check_balance>
-  "imm_int", # <check_balance>
-  "imm_nat", # <check_balance>
+  "mor_n", # <check_balance>
+  "emi_int_n", # <check_balance>
+  "emi_nat_n", # <check_balance>
+  "imm_int_n", # <check_balance>
+  "imm_nat_n", # <check_balance>
   "pop_balance", # <check_balance>
-  "acq", # <check_balance>
+  "acq_n", # <check_balance>
   "mig_sub", # <check_balance>
   "n_dec", # <check_balance>
   "mig_sub", # <complement_projection>
@@ -198,20 +198,18 @@ utils::globalVariables(c(
   "age", # <propop>
   "scen", # <propop>
   "n_dec", # <propop>
+  "n_jan", # <propop>
+  "delta_n", # <propop>
+  "delta_perc", # <propop>
   "total", # <propop>
-  "imm_int_n", # <propop>
-  "imm_nat_n", # <propop>
-  "imm_int", # <propop>
-  "imm_nat", # <propop>
-  "nat", # <propop_tables>
-  "sex", # <propop_tables>
-  "year", # <propop_tables>
-  "age", # <propop_tables>
-  "scen", # <propop_tables>
-  "n_dec", # <propop_tables>
-  "n_jan", # <propop_tables>
-  "delta_n", # <propop_tables>
-  "delta_perc", # <propop_tables>
-  "total", # <propop_tables>
+  "nat", # <propop_legacy>
+  "sex", # <propop_legacy>
+  "year", # <propop_legacy>
+  "age", # <propop_legacy>
+  "scen", # <propop_legacy>
+  "n_dec", # <propop_legacy>
+  "total", # <propop_legacy>
+  "imm_int_n", # <propop_legacy>
+  "imm_nat_n", # <propop_legacy>
   NULL
 ))

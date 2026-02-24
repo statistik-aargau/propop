@@ -14,7 +14,7 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100/205,
-  subregional = FALSE,
+  subregional = NULL,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -87,10 +87,18 @@ currently be set to \verb{= 101} (FSO standard number of age groups).}
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
 
-\item{subregional}{boolean, \code{TRUE} indicates that subregional migration
-patterns (e.g., movement between municipalities within a canton)
-are part of the projection. Requires input on the level of subregions
-(in \code{parameters} and \code{population}).}
+\item{subregional}{character or NULL, indicates if subregional migration
+patterns (e.g., movement between municipalities within a canton) are
+part of the projection (default \code{subregional = NULL}). Requires input
+on the level of subregions (in \code{parameters} and \code{population}).
+Two calculation methods are supported to distribute people between
+subregions: With \code{subregional = "net"}, the net migration between
+subregions is added to the population balance. Net migration numbers
+must be specified in a data column \code{mig_sub} in \code{parameters}.
+With \code{subregional = "rate"}, the numbers for subregional emigrants are
+subtracted from the population balance, then redistributed back to all
+subregional units as subregional immigration; \code{parameters} must contain
+the columns \code{emi_sub} and \code{imm_sub}.}
 
 \item{binational}{boolean, \code{TRUE} indicates that projections discriminate
 between two groups of nationalities. \code{FALSE} indicates that the
@@ -129,24 +137,22 @@ The \bold{components} that are used to project the development of the
 population are also included in the output:
 \item{births}{numeric, number of births (non-zero values are only
 available for age = 0).}
-\item{mor}{numeric, number of deaths.}
-\item{emi_int}{numeric, number of people who emigrate
+\item{mor_n}{numeric, number of deaths.}
+\item{emi_int_n}{numeric, number of people who emigrate
 to other countries.}
-\item{emi_nat}{numeric, number of people who emigrate
+\item{emi_nat_n}{numeric, number of people who emigrate
 to other cantons.}
-\item{imm_int}{numeric, number of people who immigrate
+\item{imm_int_n}{numeric, number of people who immigrate
 from other countries.}
-\item{imm_nat}{numeric, number of people who immigrate
+\item{imm_nat_n}{numeric, number of people who immigrate
 from other cantons.}
-\item{acq}{numeric, number of people who acquire Swiss citizenship
+\item{acq_n}{numeric, number of people who acquire Swiss citizenship
 (only returned if  \code{binational = TRUE}.)}
 }
 \description{
-Wrapper function to project population development using the cohort
-component method (see e.g., \href{https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf}{here}
-and \href{https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios\%20cant.pdf}{here}
-for more details). This function calls \code{project_raw.R}, which uses matrix
-algebra to implement the demographic balancing equations.
+Wrapper function to project population development using the
+cohort component method. This function iterates across years and spatial units
+calling the function \code{project_population.R}, which performs the calculations.
 
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
@@ -173,7 +179,7 @@ propop(
   year_first = 2024,
   year_last = 2027,
   population = fso_population,
-  subregional = FALSE,
+  subregional = NULL,
   binational = TRUE
 )
 propop(
@@ -183,7 +189,7 @@ propop(
   year_last = 2026,
   scenarios = c("reference", "high"),
   population = fso_population,
-  subregional = FALSE,
+  subregional = NULL,
   binational = TRUE
 )
 }

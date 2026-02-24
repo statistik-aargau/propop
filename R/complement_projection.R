@@ -1,6 +1,8 @@
 #' Add identifiers to the raw results from the projection and arrange components
 #' to build the population balance.
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description
 #' Adds information about demographic groups and years to make the raw results
 #' from `project_raw.R` more informative. Arranges components of the population
@@ -35,6 +37,14 @@
 complement_projection <- function(skeleton,
                                   projection_raw,
                                   subregional) {
+  # Deprecate
+  lifecycle::deprecate_warn(
+    "2.0.0", "complement_projection()",
+    details = paste0(
+      "`complement_projection()` is still operational as part of `propop_legacy()` but ",
+      "won't be further maintained"
+    )
+  )
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -138,7 +148,9 @@ complement_projection <- function(skeleton,
     dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
-      "imm_int", "imm_nat", "acq", "mig_sub", "n_dec", "delta_n", "delta_perc"
+      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births",
+      "mor_n" = "mor", "emi_int_n" = "emi_int", "emi_nat_n" = "emi_nat",
+      "imm_int_n" = "imm_int", "imm_nat_n" = "imm_nat", "acq_n" = "acq",
+      "mig_sub", "n_dec", "delta_n", "delta_perc"
     )))
 }

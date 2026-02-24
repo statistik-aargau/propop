@@ -83,7 +83,8 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    rlang
+    rlang,
+    lifecycle
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

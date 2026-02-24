@@ -6,6 +6,10 @@
         emi_int_ch_m = 0.6, emi_int_int_f = 0.7, emi_int_int_m = 0.8, emi_nat_ch_f = 0.1,
         emi_nat_ch_m = 0.2, emi_nat_int_f = 0.4, emi_nat_int_m = 0.3, acq_int_f = 0.9,
         acq_int_m = 0.1))
+    Condition
+      Warning:
+      `create_transition_matrix()` was deprecated in propop 2.0.0.
+      i `create_transition_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
     Output
       new(
         "dgCMatrix" |>

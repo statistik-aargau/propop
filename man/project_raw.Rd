@@ -160,6 +160,9 @@ frame. The function 'propop()', in which this function is contained,
 automatically adds relevant meta data to the results.
 }
 }
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
 \examples{
 # load package data
 data(fso_parameters)

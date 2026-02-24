@@ -1,5 +1,7 @@
 #' Project population development (raw results)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description Core function that uses the cohort component method and matrix
 #' algebra to project population development (for more details, see
 #' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf)).
@@ -160,6 +162,15 @@ project_raw <-
            share_born_female = 100 / 205,
            n,
            subregional) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "project_raw()",
+      details = paste0(
+        "`project_raw()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
+
     # Check input ----
     ## Only 1 value in scenario
     assertthat::assert_that(
