@@ -129,16 +129,16 @@ The \bold{components} that are used to project the development of the
 population are also included in the output:
 \item{births}{numeric, number of births (non-zero values are only
 available for age = 0).}
-\item{mor}{numeric, number of deaths.}
-\item{emi_int}{numeric, number of people who emigrate
+\item{mor_n}{numeric, number of deaths.}
+\item{emi_int_n}{numeric, number of people who emigrate
 to other countries.}
-\item{emi_nat}{numeric, number of people who emigrate
+\item{emi_nat_n}{numeric, number of people who emigrate
 to other cantons.}
-\item{imm_int}{numeric, number of people who immigrate
+\item{imm_int_n}{numeric, number of people who immigrate
 from other countries.}
-\item{imm_nat}{numeric, number of people who immigrate
+\item{imm_nat_n}{numeric, number of people who immigrate
 from other cantons.}
-\item{acq}{numeric, number of people who acquire Swiss citizenship
+\item{acq_n}{numeric, number of people who acquire Swiss citizenship
 (only returned if  \code{binational = TRUE}.)}
 }
 \description{

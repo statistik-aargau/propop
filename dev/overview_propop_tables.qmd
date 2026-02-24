@@ -99,10 +99,10 @@ We use STAT-TAB data as described in the [vignette for projecting a single regio
 ```{r message = FALSE, warning = FALSE, result = FALSE}
 # Run propop with tables (new feature)
 system.time({
-  result_tables <- propop::propop_tables(
+  result_tables <- propop::propop(
     parameters = fso_parameters,
     year_first = 2024,
-    year_last = 2055,
+    year_last = 2025,
     population = fso_population,
     binational = TRUE
   )
@@ -110,10 +110,10 @@ system.time({
 
 # Run propop with matrices (original)
 system.time({
-  result_matrices <- propop::propop(
+  result_matrices <- propop::propop_legacy(
     parameters = fso_parameters,
     year_first = 2024,
-    year_last = 2055,
+    year_last = 2025,
     population = fso_population,
     binational = TRUE
   )

@@ -2,7 +2,14 @@
 ## Breaking changes
 - New function syntax for `propop()` to run population projections with data frames
 instead of matrices, using identical data input. The function also comes with a new feature: distributing
-subregional migration can be calculated using rates in addition to using net numbers.
+subregional migration can be calculated using rates in addition to using net numbers. 
+
+- Projection output: Components are neatly arranged which enables calculating
+the population balance ad hoc. Metrics for annual population change per demographic 
+group in absolute numbers (`delta_n`) and as percentages (`delta_perc`) are automatically
+caluclated and appear as columns in the output of `propop()`. Components were renamed 
+with the suffix `_n`; this helps to distinguish between numberof people (e.g. `emi_nat_n`) 
+and input parameters (e.g. `emi_int`).  
 
 - New helper functions for `propop()`: `project_population()` is a wrapper function,
 `advance_population()` ages the population by one year, `calculate_projection()`

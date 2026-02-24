@@ -4,6 +4,31 @@
       dput(propop_legacy(parameters = dplyr::filter(fso_parameters, scen ==
         "reference"), year_first = 2024, year_last = 2024, population = fso_population,
       subregional = FALSE, binational = TRUE))
+    Condition
+      Warning:
+      `project_raw()` was deprecated in propop 2.0.0.
+      i `project_raw()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_empty_vector()` was deprecated in propop 2.0.0.
+      i `create_empty_vector()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_empty_vector()` was deprecated in propop 2.0.0.
+      i `create_empty_vector()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_transition_matrix()` was deprecated in propop 2.0.0.
+      i `create_transition_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_fertility_matrix()` was deprecated in propop 2.0.0.
+      i `create_fertility_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_mortality_matrix()` was deprecated in propop 2.0.0.
+      i `create_mortality_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `create_birth_matrix()` was deprecated in propop 2.0.0.
+      i `create_birth_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
+      Warning:
+      `complement_projection()` was deprecated in propop 2.0.0.
+      i `complement_projection()` is still operational as part of `propop_legacy()` but won't be further maintained
     Output
       structure(list(year = c(2024, 2024, 2024, 2024, 2024, 2024, 2024, 
       2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 2024, 

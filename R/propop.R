@@ -126,16 +126,16 @@
 #'      population are also included in the output:
 #'      \item{births}{numeric, number of births (non-zero values are only
 #'      available for age = 0).}
-#'      \item{mor}{numeric, number of deaths.}
-#'      \item{emi_int}{numeric, number of people who emigrate
+#'      \item{mor_n}{numeric, number of deaths.}
+#'      \item{emi_int_n}{numeric, number of people who emigrate
 #'      to other countries.}
-#'      \item{emi_nat}{numeric, number of people who emigrate
+#'      \item{emi_nat_n}{numeric, number of people who emigrate
 #'      to other cantons.}
-#'      \item{imm_int}{numeric, number of people who immigrate
+#'      \item{imm_int_n}{numeric, number of people who immigrate
 #'      from other countries.}
-#'      \item{imm_nat}{numeric, number of people who immigrate
+#'      \item{imm_nat_n}{numeric, number of people who immigrate
 #'      from other cantons.}
-#'      \item{acq}{numeric, number of people who acquire Swiss citizenship
+#'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
 #'      (only returned if  `binational = TRUE`.)}
 #'
 #' @export
@@ -175,6 +175,7 @@ propop <- function(
     subregional = NULL,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
+
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>
@@ -679,6 +680,17 @@ propop <- function(
   })
   cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
+
+  cli::cli_h1("Please note")
+
+  # Temporary info
+  cli::cli_alert_info(paste0(
+    "As of propop v2.0.0, `propop()` uses tables instead of matrices to ",
+    "calculate projections. ", "The matrix-function was renamed to ",
+    "`propop_legacy()`. It is still operational but won't be further maintained."
+  ))
+
+  cli::cli_h1("")
 
   return(df_result)
 }
