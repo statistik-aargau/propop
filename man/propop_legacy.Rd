@@ -166,6 +166,9 @@ For more details on how to use this function to project the population
 development on the level of a canton, see
 \code{vignette("project_single_region", package = "propop")}.
 }
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+}
 \examples{
 # Run projection for the sample data (whole canton of Aargau)
 propop_legacy(

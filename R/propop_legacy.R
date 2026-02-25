@@ -1,5 +1,7 @@
 #' Project population development
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description
 #' Wrapper function to project population development using the cohort
 #' component method (see e.g., [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf)
@@ -170,6 +172,12 @@ propop_legacy <- function(
     subregional = FALSE,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
+  # Deprecate
+  lifecycle::deprecate_warn(
+    "2.0.0", "project_legacy()",
+    details =
+      "`project_legacy()` is still operational but won't be further maintained"
+  )
   # Check input ----
   # Check scenarios
   if (!is.null(scenarios)) {
