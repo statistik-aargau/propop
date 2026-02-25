@@ -6,6 +6,9 @@
       subregional = FALSE, binational = TRUE))
     Condition
       Warning:
+      `project_legacy()` was deprecated in propop 2.0.0.
+      i `project_legacy()` is still operational but won't be further maintained
+      Warning:
       `project_raw()` was deprecated in propop 2.0.0.
       i `project_raw()` is still operational as part of `propop_legacy()` but won't be further maintained
       Warning:
