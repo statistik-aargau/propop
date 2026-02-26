@@ -680,13 +680,12 @@ propop <- function(
   cli::cli_h1("Please note")
 
   # Temporary info
-  cli::cli_alert_info(paste0(
-    "As of propop v2.0.0, `propop()` uses tables instead of matrices to ",
-    "calculate projections. ", "The matrix-function was renamed to ",
-    "`propop_legacy()`. It is still operational but won't be further maintained."
-  ))
+  cli::cli_alert_info(
+    "As of propop v2.0.0, {.pkg propop()} uses tables instead of matrices to calculate projections.")
+  cli::cli_alert_info(
+    "The old function is still available as {.pkg propop_legacy()} but won't be further maintained.")
+  cli::cli_rule()
 
-  cli::cli_h1("")
 
   return(df_result)
 }
