@@ -78,7 +78,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [2.1s]
+#> ✔ Processing completed in [2s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -128,7 +128,7 @@ year. The components that are used to project the population growth from
 the start to the end of the year are also included in the output. Thus,
 all elements of the cohort component equation are directly available
 from the output. Note that the number of people who acquire the Swiss
-citizenship (`acq`) are added if the demographic group is Swiss and
+citizenship (`acq_n`) are added if the demographic group is Swiss and
 subtracted if the demographic group has a different nationality.  
 
 ## No distinction between nationalities
@@ -177,7 +177,7 @@ projection_int <- propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [714ms]
+#> ✔ Processing completed in [702ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

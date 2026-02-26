@@ -39,7 +39,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [1.4s]
+#> ✔ Processing completed in [1.3s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

@@ -126,10 +126,11 @@ rates (e.g.  mortality rate). The simplest approach is to use the same
 figures for the subregions as for the canton (unless the figures are
 implausible for theoretical or empirical reasons). The task is more
 demanding, though, if you want to alter rates for subregions or when you
-need to downscale input data expressed as “number of people”. While we
-don’t offer a solution to adjust rates (yet), the next two sections show
-two possibilities to distribute the cantonal “number of people”
-estimates among subregions.</p>
+need to downscale input data expressed as “number of people”.</p>
+<p>If you want to adjust birth rates, you may find the package <a href="https://github.com/statistik-aargau/propopbirth" class="external-link"><code>propopbirth</code></a>
+useful. To adjust other rates, check the next two sections. Each shows a
+possibility to distribute the cantonal “number of people” estimates
+among subregions.</p>
 <div class="section level3">
 <h3 id="distribution-of-people-according-to-population-size">Distribution of people according to population size<a class="anchor" aria-label="anchor" href="#distribution-of-people-according-to-population-size"></a>
 </h3>
@@ -141,7 +142,7 @@ represents 10% of the canton’s population, it should proportionally
 receive 10% of the canton’s incoming migrants. The approach described
 below is more sophisticated in that it uses the spatial units’ shares
 per demographic group but the core idea is the same.</p>
-<p>Let us look at a concrete, numeric example. For the sake of
+<p>Let’s look at a concrete, numeric example. For the sake of
 simplicity, we use the data included in the package to create small,
 fictitious input data with five regions:</p>
 <p><strong>Input parameters</strong> (after this step, the rates and
@@ -316,7 +317,7 @@ immigration (<code>imm_int_n_distr</code> and
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting population projection</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Processing...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[643ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[645ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -592,7 +593,7 @@ subregions is identical with the number of people in the larger unit
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting population projection</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Processing...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[644ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[634ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -699,7 +700,7 @@ in the section “Distribution of people according to past migration”.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Starting population projection</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Processing...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[585ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[575ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>

@@ -279,7 +279,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [1.1s]
+#> ✔ Processing completed in [1.2s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -332,7 +332,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [565ms]
+#> ✔ Processing completed in [567ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

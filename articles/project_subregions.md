@@ -35,9 +35,12 @@ municipalities) can be straightforward for data expressed as rates
 for the subregions as for the canton (unless the figures are implausible
 for theoretical or empirical reasons). The task is more demanding,
 though, if you want to alter rates for subregions or when you need to
-downscale input data expressed as “number of people”. While we don’t
-offer a solution to adjust rates (yet), the next two sections show two
-possibilities to distribute the cantonal “number of people” estimates
+downscale input data expressed as “number of people”.
+
+If you want to adjust birth rates, you may find the package
+[`propopbirth`](https://github.com/statistik-aargau/propopbirth) useful.
+To adjust other rates, check the next two sections. Each shows a
+possibility to distribute the cantonal “number of people” estimates
 among subregions.
 
 ### Distribution of people according to population size
@@ -51,7 +54,7 @@ receive 10% of the canton’s incoming migrants. The approach described
 below is more sophisticated in that it uses the spatial units’ shares
 per demographic group but the core idea is the same.
 
-Let us look at a concrete, numeric example. For the sake of simplicity,
+Let’s look at a concrete, numeric example. For the sake of simplicity,
 we use the data included in the package to create small, fictitious
 input data with five regions:
 
@@ -242,7 +245,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [643ms]
+#> ✔ Processing completed in [645ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -538,7 +541,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [644ms]
+#> ✔ Processing completed in [634ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -648,7 +651,7 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [585ms]
+#> ✔ Processing completed in [575ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
