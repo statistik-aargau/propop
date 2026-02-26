@@ -550,6 +550,11 @@ propop <- function(
 
   # Prepare projection ----
   # Projection period
+
+  cli::cli_h1("Starting population projection")
+  cli::cli_progress_step("Processing...",
+                         msg_done = "Processing completed in")
+
   proj_years <- year_first:year_last
   # filter for years within in the range between year_first and year_last
   parameters <- parameters |> filter(year %in% c(year_first:year_last))
@@ -560,15 +565,6 @@ propop <- function(
   list_parameters_scen <- split(parameters, parameters$scen)
 
   list_out <- lapply(list_parameters_scen, function(parameters_scen) {
-    ## Progress feedback ----
-    cli::cli_text(
-      "Running projection for: {.val { parameters |> distinct(spatial_unit) |> ",
-      "pull() |> paste(collapse = ", ")}}",
-      " (Scenarios: ",
-      "{.val { parameters |> dplyr::select(scen) |>",
-      "dplyr::mutate(scen = as.character(scen)) |>  dplyr::distinct()}}",
-      ")"
-    )
 
     # Split parameters for each scenario into a list by year to iterate across
     list_parameters <- split(parameters_scen, parameters_scen$year)
