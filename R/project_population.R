@@ -196,10 +196,6 @@ project_population <- function(
     # bind results of year t and year t+1
     bind_rows(population |> filter(year == unique(population_prev$year)))
 
-  ## Progress feedback ----
-  # Provide progress information
-  cli::cli_alert_success("Year: {.val { max(population_new$year) }}")
-
   # Project newborns of year t+1 ----
   newborns <-
     calculate_newborns(
