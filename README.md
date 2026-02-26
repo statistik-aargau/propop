@@ -63,15 +63,18 @@ and parameters).
 - Vignette 4 shows 
 [how to evaluate projections](https://statistik-aargau.github.io/propop/articles/evaluate.html) against benchmarks.
 
-## Features, limitations, future plans
+## Features 
 
 - `propop::propop()` works with either two nationalities (usually Swiss vs. 
 non-Swiss nationals) or without distinguishing between nationalities.  
-- However, `propop::propop()` currently requires *1-year age classes* (0-100+) 
-and two genders.     
 - The FSO projections are only published in five-year intervals, the most recent 
 ones being based on population records from 2023. `propop` enables you to run 
 projections with more recent population records.
+
+## Limitations 
+
+- `propop::propop()` currently requires *1-year age classes* (0-100+) 
+and two genders.    
 - This package was developed for use with *FSO parameters* (e.g., mortality rate,
 or emigration rate). Most parameters are only available for cantons and the 
 whole of Switzerland. If you wish to run projections at smaller scales (e.g., 
@@ -80,16 +83,22 @@ running the projection.
 [This vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)
 includes tips of how to prepare your input data.  
 - Similarly, if you wish to adjust parameters (e.g., mortality rates that 
-vary between subregions), you need to prepare the parameters accordingly. 
+vary between subregions), you need to prepare the parameters accordingly. To 
+adjust birth rates, you can use the package 
+[`propopbirth`](https://github.com/statistik-aargau/propopbirth).    
 - `propop::propop()`offers the possibility to account for varying 
 subregional migration patterns and migration between subregions. However, before
-using this feature, users must adjust or calculate the required parameters ([see this vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)). 
+using this feature, users must adjust or calculate the required parameters 
+([see this vignette](https://statistik-aargau.github.io/propop/articles/project_subregions.html)). 
 - Custom parameters (e.g., consideration of sub-cantonal spatial entities, 
 adjustments to reflect regional differences, or addition of subregional migration 
 parameter) can be passed through the `parameters` object to `propop::propop()`. 
 - The FSO uses additional *ex-post* adjustments to ensure that all the sums 
 involving different cantons add up, which leads to some differences
 between the projections from the FSO and `propop`. 
+
+## Future plans  
+ 
 - There are also *possible future features* that could increase the accuracy of 
 the projections. For example, considering the attractiveness of municipalities 
 or planned housing developments could help to better explain why population 
