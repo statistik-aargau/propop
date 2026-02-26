@@ -323,7 +323,7 @@ propop(
 #> ℹ Processing...
 #> ────────────────────────────────────────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [1.2s]
+#> ✔ Processing completed in [1.3s]
 #> 
 #> # A tibble: 4,848 × 17
 #>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n
@@ -396,7 +396,7 @@ propop(
 #> ℹ Processing...
 #> ────────────────────────────────────────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [635ms]
+#> ✔ Processing completed in [683ms]
 #> 
 #> # A tibble: 2,424 × 17
 #>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n

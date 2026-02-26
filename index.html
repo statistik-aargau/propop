@@ -113,22 +113,36 @@
 </ul>
 </div>
 <div class="section level2">
-<h2 id="features-limitations-future-plans">Features, limitations, future plans<a class="anchor" aria-label="anchor" href="#features-limitations-future-plans"></a>
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code> works with either two nationalities (usually Swiss vs.  non-Swiss nationals) or without distinguishing between nationalities.<br>
 </li>
-<li>However, <code><a href="reference/propop.html">propop::propop()</a></code> currently requires <em>1-year age classes</em> (0-100+) and two genders.<br>
-</li>
 <li>The FSO projections are only published in five-year intervals, the most recent ones being based on population records from 2023. <code>propop</code> enables you to run projections with more recent population records.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+</h2>
+<ul>
+<li>
+<code><a href="reference/propop.html">propop::propop()</a></code> currently requires <em>1-year age classes</em> (0-100+) and two genders.<br>
+</li>
 <li>This package was developed for use with <em>FSO parameters</em> (e.g., mortality rate, or emigration rate). Most parameters are only available for cantons and the whole of Switzerland. If you wish to run projections at smaller scales (e.g., districts), you need to prepare the parameters for each spatial entity before running the projection. <a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">This vignette</a> includes tips of how to prepare your input data.<br>
 </li>
-<li>Similarly, if you wish to adjust parameters (e.g., mortality rates that vary between subregions), you need to prepare the parameters accordingly.</li>
+<li>Similarly, if you wish to adjust parameters (e.g., mortality rates that vary between subregions), you need to prepare the parameters accordingly. To adjust birth rates, you can use the package <a href="https://github.com/statistik-aargau/propopbirth" class="external-link"><code>propopbirth</code></a>.<br>
+</li>
 <li>
 <code><a href="reference/propop.html">propop::propop()</a></code>offers the possibility to account for varying subregional migration patterns and migration between subregions. However, before using this feature, users must adjust or calculate the required parameters (<a href="https://statistik-aargau.github.io/propop/articles/project_subregions.html">see this vignette</a>).</li>
 <li>Custom parameters (e.g., consideration of sub-cantonal spatial entities, adjustments to reflect regional differences, or addition of subregional migration parameter) can be passed through the <code>parameters</code> object to <code><a href="reference/propop.html">propop::propop()</a></code>.</li>
 <li>The FSO uses additional <em>ex-post</em> adjustments to ensure that all the sums involving different cantons add up, which leads to some differences between the projections from the FSO and <code>propop</code>.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="future-plans">Future plans<a class="anchor" aria-label="anchor" href="#future-plans"></a>
+</h2>
+<ul>
 <li>There are also <em>possible future features</em> that could increase the accuracy of the projections. For example, considering the attractiveness of municipalities or planned housing developments could help to better explain why population growth varies between municipalities.</li>
 </ul>
 <p><strong>If you are interested in contributing to these or other developments, please get in touch with the package maintainer.</strong></p>

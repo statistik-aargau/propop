@@ -342,7 +342,7 @@ projection_2025 <- propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [9s]
+#> ℹ Processing...✔ Processing completed in [9.8s]
 ```
 
 ``` r

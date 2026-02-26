@@ -83,7 +83,7 @@ propop(
 #> ℹ Processing...
 #> ────────────────────────────────────────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [1.4s]
+#> ✔ Processing completed in [1.5s]
 #> 
 #> 
 #> ── Result of population equation components check ──────────────────────────────

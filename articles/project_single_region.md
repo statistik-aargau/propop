@@ -98,7 +98,7 @@ projection_canton_2030 <- propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [2s]
+#> ℹ Processing...✔ Processing completed in [2.2s]
 
 projection_canton_2030 |>
   # round to 2 digits
@@ -197,7 +197,7 @@ projection_int <- propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [762ms]
+#> ℹ Processing...✔ Processing completed in [812ms]
 
 projection_int |>
   # round to two digits

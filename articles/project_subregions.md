@@ -262,7 +262,7 @@ propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [751ms]
+#> ℹ Processing...✔ Processing completed in [828ms]
 #> # A tibble: 6,060 × 17
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
@@ -558,7 +558,7 @@ propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [680ms]
+#> ℹ Processing...✔ Processing completed in [753ms]
 #> # A tibble: 6,060 × 17
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
@@ -668,7 +668,7 @@ propop(
 #> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
 #> ℹ Processing...
 #> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [613ms]
+#> ℹ Processing...✔ Processing completed in [668ms]
 #> # A tibble: 6,060 × 18
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
