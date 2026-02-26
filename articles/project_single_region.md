@@ -75,50 +75,30 @@ projection_canton_2030 <- propop(
   subregional = FALSE,
   binational = TRUE
 )
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> ✔ Year: 2027
-#> ✔ Year: 2028
-#> ✔ Year: 2029
-#> ✔ Year: 2030
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> ✔ Year: 2027
-#> ✔ Year: 2028
-#> ✔ Year: 2029
-#> ✔ Year: 2030
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> ✔ Year: 2027
-#> ✔ Year: 2028
-#> ✔ Year: 2029
-#> ✔ Year: 2030
 #> 
-#> ── Settings used for the projection ────────────────────────────────────────────
-#> Scenario(s): "reference"
-#> Year of starting population: 2023
-#> Number of age groups: 101
-#> Fertile period: 16-50
-#> Share of female newborns: 0.488
-#> Size of starting population: 726894
-#> Projection period: 2024-2030
-#> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
-#> ────────────────────────────────────────────────────────────────────────────────
-#> Projected population size by 2030:
-#> - Scenario "reference": 781521
-#> ════════════════════════════════════════════════════════════════════════════════
+#> ── Starting population projection ──────────────────────────────────────────────
+#> ℹ Processing...
 #> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...── Settings used for the projection ────────────────────────────────────────────
+#> ℹ Processing...Scenario(s): "reference"
+#> ℹ Processing...Year of starting population: 2023
+#> ℹ Processing...Number of age groups: 101
+#> ℹ Processing...Fertile period: 16-50
+#> ℹ Processing...Share of female newborns: 0.488
+#> ℹ Processing...Size of starting population: 726894
+#> ℹ Processing...Projection period: 2024-2030
+#> ℹ Processing...Nationality-specific projection: "yes"
+#> ℹ Processing...Subregional migration: "yes"
+#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...Projected population size by 2030:
+#> ℹ Processing...- Scenario "reference": 781521
+#> ℹ Processing...════════════════════════════════════════════════════════════════════════════════
+#> ℹ Processing...
+#> ℹ Processing...── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> ℹ Processing...
+#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...✔ Processing completed in [2s]
 
 projection_canton_2030 |>
   # round to 2 digits
@@ -194,34 +174,30 @@ projection_int <- propop(
   subregional = FALSE,
   binational = FALSE
 )
-#> Running projection for: "Aargau" (Scenarios: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> ✔ Year: 2027
-#> ✔ Year: 2028
-#> ✔ Year: 2029
-#> ✔ Year: 2030
 #> 
-#> ── Settings used for the projection ────────────────────────────────────────────
-#> Scenario(s): "reference"
-#> Year of starting population: 2023
-#> Number of age groups: 101
-#> Fertile period: 16-50
-#> Share of female newborns: 0.488
-#> Size of starting population: 198599
-#> Projection period: 2024-2030
-#> Nationality-specific projection: "no"
-#> Subregional migration: "yes"
-#> ────────────────────────────────────────────────────────────────────────────────
-#> Projected population size by 2030:
-#> - Scenario "reference": 252660
-#> ════════════════════════════════════════════════════════════════════════════════
+#> ── Starting population projection ──────────────────────────────────────────────
+#> ℹ Processing...
 #> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...── Settings used for the projection ────────────────────────────────────────────
+#> ℹ Processing...Scenario(s): "reference"
+#> ℹ Processing...Year of starting population: 2023
+#> ℹ Processing...Number of age groups: 101
+#> ℹ Processing...Fertile period: 16-50
+#> ℹ Processing...Share of female newborns: 0.488
+#> ℹ Processing...Size of starting population: 198599
+#> ℹ Processing...Projection period: 2024-2030
+#> ℹ Processing...Nationality-specific projection: "no"
+#> ℹ Processing...Subregional migration: "yes"
+#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...Projected population size by 2030:
+#> ℹ Processing...- Scenario "reference": 252660
+#> ℹ Processing...════════════════════════════════════════════════════════════════════════════════
+#> ℹ Processing...
+#> ℹ Processing...── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> ℹ Processing...
+#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
+#> ℹ Processing...✔ Processing completed in [762ms]
 
 projection_int |>
   # round to two digits
