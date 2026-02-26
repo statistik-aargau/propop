@@ -242,27 +242,27 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
+#> ✔ Processing completed in [668ms]
 #> 
-#> ℹ Processing...── Settings used for the projection ────────────────────────────────────────────
-#> ℹ Processing...Scenario(s): "reference"
-#> ℹ Processing...Year of starting population: 2023
-#> ℹ Processing...Number of age groups: 101
-#> ℹ Processing...Fertile period: 16-50
-#> ℹ Processing...Share of female newborns: 0.488
-#> ℹ Processing...Size of starting population: 726903
-#> ℹ Processing...Projection period: 2024-2026
-#> ℹ Processing...Nationality-specific projection: "yes"
-#> ℹ Processing...Subregional migration: "yes"
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...Projected population size by 2026:
-#> ℹ Processing...- Scenario "reference": 750939
-#> ℹ Processing...════════════════════════════════════════════════════════════════════════════════
-#> ℹ Processing...
-#> ℹ Processing...── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> ℹ Processing...
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [828ms]
+#> ── Settings used for the projection ────────────────────────────────────────────
+#> Scenario(s): "reference"
+#> Year of starting population: 2023
+#> Number of age groups: 101
+#> Fertile period: 16-50
+#> Share of female newborns: 0.488
+#> Size of starting population: 726903
+#> Projection period: 2024-2026
+#> Nationality-specific projection: "yes"
+#> Subregional migration: "yes"
+#> ────────────────────────────────────────────────────────────────────────────────
+#> Projected population size by 2026:
+#> - Scenario "reference": 750939
+#> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 17
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
@@ -538,27 +538,27 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
+#> ✔ Processing completed in [665ms]
 #> 
-#> ℹ Processing...── Settings used for the projection ────────────────────────────────────────────
-#> ℹ Processing...Scenario(s): "reference"
-#> ℹ Processing...Year of starting population: 2023
-#> ℹ Processing...Number of age groups: 101
-#> ℹ Processing...Fertile period: 16-50
-#> ℹ Processing...Share of female newborns: 0.488
-#> ℹ Processing...Size of starting population: 726903
-#> ℹ Processing...Projection period: 2024-2026
-#> ℹ Processing...Nationality-specific projection: "yes"
-#> ℹ Processing...Subregional migration: "yes"
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...Projected population size by 2026:
-#> ℹ Processing...- Scenario "reference": 751167
-#> ℹ Processing...════════════════════════════════════════════════════════════════════════════════
-#> ℹ Processing...
-#> ℹ Processing...── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> ℹ Processing...
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [753ms]
+#> ── Settings used for the projection ────────────────────────────────────────────
+#> Scenario(s): "reference"
+#> Year of starting population: 2023
+#> Number of age groups: 101
+#> Fertile period: 16-50
+#> Share of female newborns: 0.488
+#> Size of starting population: 726903
+#> Projection period: 2024-2026
+#> Nationality-specific projection: "yes"
+#> Subregional migration: "yes"
+#> ────────────────────────────────────────────────────────────────────────────────
+#> Projected population size by 2026:
+#> - Scenario "reference": 751167
+#> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 17
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
@@ -648,27 +648,27 @@ propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
+#> ✔ Processing completed in [590ms]
 #> 
-#> ℹ Processing...── Settings used for the projection ────────────────────────────────────────────
-#> ℹ Processing...Scenario(s): "reference"
-#> ℹ Processing...Year of starting population: 2023
-#> ℹ Processing...Number of age groups: 101
-#> ℹ Processing...Fertile period: 16-50
-#> ℹ Processing...Share of female newborns: 0.488
-#> ℹ Processing...Size of starting population: 726903
-#> ℹ Processing...Projection period: 2024-2026
-#> ℹ Processing...Nationality-specific projection: "yes"
-#> ℹ Processing...Subregional migration: "yes"
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...Projected population size by 2026:
-#> ℹ Processing...- Scenario "reference": 751167
-#> ℹ Processing...════════════════════════════════════════════════════════════════════════════════
-#> ℹ Processing...
-#> ℹ Processing...── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ Processing...ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> ℹ Processing...
-#> ℹ Processing...────────────────────────────────────────────────────────────────────────────────
-#> ℹ Processing...✔ Processing completed in [668ms]
+#> ── Settings used for the projection ────────────────────────────────────────────
+#> Scenario(s): "reference"
+#> Year of starting population: 2023
+#> Number of age groups: 101
+#> Fertile period: 16-50
+#> Share of female newborns: 0.488
+#> Size of starting population: 726903
+#> Projection period: 2024-2026
+#> Nationality-specific projection: "yes"
+#> Subregional migration: "yes"
+#> ────────────────────────────────────────────────────────────────────────────────
+#> Projected population size by 2026:
+#> - Scenario "reference": 751167
+#> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 18
 #>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
