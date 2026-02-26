@@ -60,9 +60,9 @@ propop(
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
+#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
+#> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Result of population equation components check ──────────────────────────────
 #> ℹ Total rows checked: 4848

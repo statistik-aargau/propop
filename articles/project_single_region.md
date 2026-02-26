@@ -78,7 +78,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [2.2s]
+#> ✔ Processing completed in [2.1s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -96,9 +96,9 @@ projection_canton_2030 <- propop(
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
+#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
+#> ════════════════════════════════════════════════════════════════════════════════
 
 projection_canton_2030 |>
   # round to 2 digits
@@ -177,7 +177,7 @@ projection_int <- propop(
 #> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [768ms]
+#> ✔ Processing completed in [714ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -195,9 +195,9 @@ projection_int <- propop(
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
+#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
+#> ════════════════════════════════════════════════════════════════════════════════
 
 projection_int |>
   # round to two digits
