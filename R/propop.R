@@ -609,6 +609,8 @@ propop <- function(
       dplyr::select(-any_of(c("nat", "acq")))
   }
 
+  cli::cli_progress_done()
+
   # Feedback about arguments used
   cli::cli_h1("Settings used for the projection")
   cli::cli_text(
