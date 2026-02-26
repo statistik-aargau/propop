@@ -4,38 +4,39 @@
 
 ### Breaking changes
 
-- New function syntax for
+- The computations of the key function
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-  to run population projections with data frames instead of matrices,
-  using identical data input. The function also comes with a new
-  feature: distributing subregional migration can be calculated using
+  are now implemented using data frames and `purrr` / `dplyr` rather
+  than base `R` matrices. This change makes the computational steps and
+  intermediate results more accessible and easier to follow. Moreover,
+  the new tabular approach facilitates the integration of new features.
+  On the downside, the new approach takes approximately 25% longer to
+  run. The data input remains unchanged.
+
+- While implementing this alternative computation we fixed a minor bug
+  that had a tiny effect on the oldest age group. The function now
+  offers a new feature: subregional migration can be calculated using
   rates in addition to using net numbers.
 
-- Projection output: Components are neatly arranged which enables
-  calculating the population balance ad hoc. Metrics for annual
-  population change per demographic group in absolute numbers
-  (`delta_n`) and as percentages (`delta_perc`) are automatically
-  caluclated and appear as columns in the output of
-  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md).
-  Components were renamed with the suffix `_n`; this helps to
-  distinguish between numberof people (e.g. `emi_nat_n`) and input
-  parameters (e.g. `emi_int`).
+- Projection output: The components now include the suffix `_n`, which
+  more clearly  
+  distinguishes *input parameters* (e.g. `emi_int`) from *number of
+  people* (e.g. `emi_nat_n`).
 
 - New helper functions for
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md):
-  `project_population()` is a wrapper function, `advance_population()`
-  ages the population by one year, `calculate_projection()` fosters the
-  transition of the cohort to the next year and `calculate_newborns()`
-  computes births.
+  `project_population()` is a wrapper function; `advance_population()`
+  ages the population by one year; `calculate_projection()` advances the
+  cohort to the next year; `calculate_newborns()` computes births.
 
-- New tests for
+- New tests have been added for
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-  and helper functions as well as for comparing the output between
+  and helper functions, as well as for comparing the output of
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   and
-  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md),
-  sensitive to differences larger than three people in total by year
-  2055 for the Canton of Aargau.
+  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md).
+  The comparison is sensitive to differences larger than three people in
+  total by year 2055 (using data for the Canton of Aargau).
 
 ### Deprecated
 
