@@ -34,8 +34,9 @@ Other contributors:
   \item Andrea Plüss \email{andrea.pluess@ag.ch} [contributor]
   \item Nadine Herrmann [contributor]
   \item Lutz Benson [contributor]
-  \item Thomas Knecht [contributor]
   \item Eric Meyer [contributor]
+  \item Thomas Knecht [contributor]
+  \item Moana Stadelmann [contributor]
   \item Statistik Aargau [funder, copyright holder]
 }
 

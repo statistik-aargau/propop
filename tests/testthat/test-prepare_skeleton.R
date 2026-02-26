@@ -1,6 +1,5 @@
 # Test dimensions and type of output
 test_that("skeleton simple checks", {
-
   skip_on_ci()
 
   # create a skeleton for 1 scenario
@@ -29,12 +28,10 @@ test_that("skeleton simple checks", {
   # dimensions of output_table
   expect_equal(nrow(output_table), 3232)
   expect_false(any(is.na(output_table)))
-
-  })
+})
 
 
 test_that("skeleton snapshots", {
-
   skip_on_ci()
 
   # create a skeleton

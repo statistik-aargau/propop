@@ -39,7 +39,6 @@ reference:
     Functions for running population projections
   contents:
   - propop
-  - project_raw
 - title: "Evaluate projections"
   desc: >
     Functions to evaluate projection results
@@ -57,6 +56,12 @@ reference:
   desc: "Sample data from the Federal Statistical Office"
   contents:
   - starts_with("fso_")
+
+- title: "Deprecated functions"
+  desc: "Functions are still operational but won't be further maintained"
+  contents:
+  - propop_legacy
+  - project_raw
 
 news:
   - text: News

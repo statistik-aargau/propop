@@ -1,0 +1,123 @@
+# calculate newborns test
+
+    Code
+      constructive::construct(calculate_newborns_default)
+    Output
+      tibble::tibble(
+        year = 2024L,
+        scen = "reference",
+        spatial_unit = "Aargau",
+        nat = rep(c("ch", "int"), each = 2L),
+        sex = rep(c("m", "f"), 2),
+        births = c(2633.2254515827535, 2507.8337634121463, 1228.2781170922676, 1169.7886829450167),
+        age = 0,
+        birthrate = 0,
+        int_mothers = 0.2499218016890835,
+        mor = c(0.003395, 0.002766, 0.003226, 0.002525),
+        emi_int = c(0.002279, 0.00319, 0.008958, 0.004274),
+        emi_nat = c(0.007976, 0.008772, 0.004886, 0.003419),
+        acq = c(0, 0, 0.001629, 0.002564),
+        imm_int_n = c(5, 4, 17, 20),
+        imm_nat_n = c(47, 57, 20, 19),
+        n_jan = NA,
+        mor_n = c(8.99637530599991, 6.993834573008681, 4.001129639036716, 2.999173227592539),
+        emi_int_n = c(6.001120804157096, 7.999989705284747, 11.002915372912534, 4.999676830907002),
+        emi_nat_n = c(21.002606201824044, 21.998717772651347, 6.001366880112819, 3.9995075069890125),
+        acq_n = c(2.000865052743304, 2.9993381830710226, -2.000865052743304, -2.9993381830710226),
+        n_dec = c(2651.2262143235157, 2534.8405595442723, 1242.2718401474622, 1193.790987196457),
+      )
+
+---
+
+    Code
+      constructive::construct(calculate_newborns_net)
+    Output
+      tibble::tibble(
+        year = 2024L,
+        scen = "reference",
+        spatial_unit = "Aargau",
+        nat = rep(c("ch", "int"), each = 2L),
+        sex = rep(c("m", "f"), 2),
+        births = c(2633.2254515827535, 2507.8337634121463, 1228.2781170922676, 1169.7886829450167),
+        age = 0,
+        birthrate = 0,
+        int_mothers = 0.2499218016890835,
+        mor = c(0.003395, 0.002766, 0.003226, 0.002525),
+        emi_int = c(0.002279, 0.00319, 0.008958, 0.004274),
+        emi_nat = c(0.007976, 0.008772, 0.004886, 0.003419),
+        acq = c(0, 0, 0.001629, 0.002564),
+        imm_int_n = c(5, 4, 17, 20),
+        imm_nat_n = c(47, 57, 20, 19),
+        mig_sub = 1,
+        n_jan = NA,
+        mor_n = c(8.99637530599991, 6.993834573008681, 4.001129639036716, 2.999173227592539),
+        emi_int_n = c(6.001120804157096, 7.999989705284747, 11.002915372912534, 4.999676830907002),
+        emi_nat_n = c(21.002606201824044, 21.998717772651347, 6.001366880112819, 3.9995075069890125),
+        acq_n = c(2.000865052743304, 2.9993381830710226, -2.000865052743304, -2.9993381830710226),
+        n_dec = c(2652.2262143235157, 2535.8405595442723, 1243.2718401474622, 1194.790987196457),
+      )
+
+---
+
+    Code
+      constructive::construct(calculate_newborns_rate)
+    Output
+      tibble::tibble(
+        year = 2024L,
+        scen = "reference",
+        spatial_unit = "Aargau",
+        nat = rep(c("ch", "int"), each = 2L),
+        sex = rep(c("m", "f"), 2),
+        births = c(2633.2254515827535, 2507.8337634121463, 1228.2781170922676, 1169.7886829450167),
+        age = 0,
+        birthrate = 0,
+        int_mothers = 0.2499218016890835,
+        mor = c(0.003395, 0.002766, 0.003226, 0.002525),
+        emi_int = c(0.002279, 0.00319, 0.008958, 0.004274),
+        emi_nat = c(0.007976, 0.008772, 0.004886, 0.003419),
+        acq = c(0, 0, 0.001629, 0.002564),
+        imm_int_n = c(5, 4, 17, 20),
+        imm_nat_n = c(47, 57, 20, 19),
+        mig_sub = 1,
+        emi_sub = 0.7,
+        imm_sub = 0.3,
+        n_jan = NA,
+        mor_n = c(8.99637530599991, 6.993834573008681, 4.001129639036716, 2.999173227592539),
+        emi_int_n = c(6.001120804157096, 7.999989705284747, 11.002915372912534, 4.999676830907002),
+        emi_nat_n = c(21.002606201824044, 21.998717772651347, 6.001366880112819, 3.9995075069890125),
+        acq_n = c(2.000865052743304, 2.9993381830710226, -2.000865052743304, -2.9993381830710226),
+        n_dec = NA_real_,
+        emi_sub_n = NA_real_,
+        emi_sub_n_total = NA_real_,
+        imm_sub_n = NA_real_,
+      )
+
+# calculate newborns test only Swiss NA
+
+    Code
+      constructive::construct(calculate_newborns_na)
+    Output
+      tibble::tibble(
+        year = 2024L,
+        scen = "reference",
+        spatial_unit = "Aargau",
+        nat = rep(c("ch", "int"), each = 2L),
+        sex = rep(c("m", "f"), 2),
+        births = c(2633.2254515827535, 2507.8337634121463, 1228.2781170922676, 1169.7886829450167),
+        age = 0,
+        birthrate = NA_real_,
+        int_mothers = NA_real_,
+        mor = NA_real_,
+        emi_int = NA_real_,
+        emi_nat = NA_real_,
+        acq = NA_real_,
+        imm_int_n = NA_real_,
+        imm_nat_n = NA_real_,
+        n_jan = NA,
+        mor_n = NA_real_,
+        emi_int_n = NA_real_,
+        emi_nat_n = NA_real_,
+        acq_n = NA_real_,
+        n_dec = NA_real_,
+      )
+

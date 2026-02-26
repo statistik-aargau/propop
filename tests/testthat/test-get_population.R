@@ -1,7 +1,6 @@
 options(cli.default_handler = function(...) { })
 
 test_that("get population snapshots - 1 region 1 year", {
-
   # don't run on gitlab ci
   skip_on_ci()
 
@@ -17,7 +16,6 @@ test_that("get population snapshots - 1 region 1 year", {
 })
 
 test_that("get population snapshots - 2 regions & 2 years", {
-
   # don't run on gitlab ci
   skip_on_ci()
 

@@ -27,7 +27,7 @@
 #' benchmark `n_benchmark`.
 #'
 #'* `pe` is the percentage error and expresses the under- / over-projection
-#'in percent of the benchmark `n_benchmark`.
+#' in percent of the benchmark `n_benchmark`.
 #'
 #'* `ape` is the absolute percentage error; it is the absolute deviation
 #' in percent of the benchmark `n_benchmark`, thus only showing the extent of the
@@ -81,12 +81,6 @@ compute_measures <- function(combined, weight_groups = NULL) {
   assertthat::assert_that("year" %in% names(combined),
     msg = "column `year` is missing in combined"
   )
-  assertthat::assert_that("spatial_unit" %in% names(combined),
-    msg = "column `spatial_unit` is missing in combined"
-  )
-  assertthat::assert_that("nat" %in% names(combined),
-    msg = "column `nat` is missing in combined"
-  )
   assertthat::assert_that("sex" %in% names(combined),
     msg = "column `sex` is missing in combined"
   )
@@ -139,7 +133,7 @@ compute_measures <- function(combined, weight_groups = NULL) {
 
   # Replace Inf values with NA
   df <- df |>
-    dplyr::mutate(dplyr::across(everything(), ~replace(., is.infinite(.), NA)))
+    dplyr::mutate(dplyr::across(everything(), ~ replace(., is.infinite(.), NA)))
 
   # Check for missing values in output ----
   if (anyNA(df)) {

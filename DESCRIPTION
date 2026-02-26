@@ -1,6 +1,6 @@
 Package: propop
 Title: Project Population Growth in Switzerland using the Cohort Component Method
-Version: 1.4.1
+Version: 2.0.0
 Authors@R: c(
     person(
       "Norah", "Efosa", , "norah.efosa@ag.ch", 
@@ -36,12 +36,16 @@ Authors@R: c(
       "Lutz", "Benson",
       role = "ctb"
     ),
-   person(
+    person(
+      "Eric", "Meyer",
+      role = "ctb"
+    ),
+    person(
       "Thomas", "Knecht",
       role = "ctb"
     ),
     person(
-      "Eric", "Meyer",
+      "Moana", "Stadelmann",
       role = "ctb"
     ),
     person(
@@ -66,9 +70,10 @@ Imports:
     Matrix,
     stringi,
     tibble,
-    tidyr
+    tidyr,
+    vctrs
 Suggests: 
-    constructive (>= 1.0.1),
+    constructive (>= 1.3.0),
     devtools,
     DT,
     ggplot2,
@@ -78,7 +83,8 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vctrs
+    rlang,
+    lifecycle
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

@@ -1,5 +1,4 @@
 test_that("get_parameters snapshots - 1 region 2026-2050", {
-
   # don't run on gitlab ci
   skip_on_ci()
 
@@ -17,7 +16,6 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
 })
 
 test_that("get_parameters snapshots - 2 regions 2027-2028", {
-
   # don't run on gitlab ci
   skip_on_ci()
 

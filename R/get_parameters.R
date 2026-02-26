@@ -214,8 +214,10 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # Ensure structue ref-high is identical
   assertthat::assert_that(
-    identical(metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
-              metadata_tidy_high[, -ncol(metadata_tidy_high)]),
+    identical(
+      metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
+      metadata_tidy_high[, -ncol(metadata_tidy_high)]
+    ),
     msg = paste0(
       "The metadata of the following px objects differ: ",
       "px-x-0104020000_101 (reference) & ",
@@ -241,8 +243,10 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # Ensure structue ref-low is identical
   assertthat::assert_that(
-    identical(metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
-              metadata_tidy_low[, -ncol(metadata_tidy_low)]),
+    identical(
+      metadata_tidy_ref[, -ncol(metadata_tidy_ref)],
+      metadata_tidy_low[, -ncol(metadata_tidy_low)]
+    ),
     msg = paste0(
       "The metadata of the following px objects differ: ",
       "px-x-0104020000_101 (reference) & ",
@@ -254,18 +258,22 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   # Check if spatial units are available in cubes 101-103
   assertthat::assert_that(
     all(spatial_units
-        %in%
-          metadata_tidy_ref$valueTexts[
-            metadata_tidy_ref$text ==
-              "Kanton"]),
-    msg = paste0("At least one of the requested spatial units is not available.",
-                 " Check the spelling against those in the STATTAB cubes ",
-                 number_fso_ref, " / ", number_fso_high, " / ", number_fso_low,
-                 ". Inspecting the column 'valueTexts' in the following package ",
-                 "data may help to identify the correct spelling: ",
-                 "data('stattab_101_snap') / ",
-                 "data('stattab_102_snap') / ",
-                 "data('stattab_103_snap')"))
+    %in%
+      metadata_tidy_ref$valueTexts[
+        metadata_tidy_ref$text ==
+          "Kanton"
+      ]),
+    msg = paste0(
+      "At least one of the requested spatial units is not available.",
+      " Check the spelling against those in the STATTAB cubes ",
+      number_fso_ref, " / ", number_fso_high, " / ", number_fso_low,
+      ". Inspecting the column 'valueTexts' in the following package ",
+      "data may help to identify the correct spelling: ",
+      "data('stattab_101_snap') / ",
+      "data('stattab_102_snap') / ",
+      "data('stattab_103_snap')"
+    )
+  )
 
 
   # Specify the elements to download
@@ -303,18 +311,18 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   dim6 <- metadata_tidy_ref |>
     dplyr::filter(text == "Beobachtungseinheit" & # type of parameter types
-                    valueTexts %in% c(
-                      stringi::stri_unescape_unicode(
-                        "Bev\\u00f6lkerungsstand am 1. Januar"
-                      ),
-                      "Einwanderungen",
-                      "Auswanderungen",
-                      "Interkantonale Zuwanderungen",
-                      "Interkantonale Abwanderungen",
-                      stringi::stri_unescape_unicode(
-                        "Bev\\u00f6lkerungsstand am 31. Dezember"
-                      )
-                    ))
+      valueTexts %in% c(
+        stringi::stri_unescape_unicode(
+          "Bev\\u00f6lkerungsstand am 1. Januar"
+        ),
+        "Einwanderungen",
+        "Auswanderungen",
+        "Interkantonale Zuwanderungen",
+        "Interkantonale Abwanderungen",
+        stringi::stri_unescape_unicode(
+          "Bev\\u00f6lkerungsstand am 31. Dezember"
+        )
+      ))
 
   # build dimensions list object
   dimensions <- list(
@@ -370,7 +378,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # Rename column for consistency and easier handling
   fso_numbers_r <- fso_numbers_r |>
-    dplyr::rename(value = 7)|>
+    dplyr::rename(value = 7) |>
     dplyr::mutate(scen = "reference")
 
   # Assert that "Jahr" contains no NAs and matches required values exactly
@@ -416,7 +424,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # rename column for consistency and easier handling
   fso_numbers_h <- fso_numbers_h |>
-    dplyr::rename(value = 7)|>
+    dplyr::rename(value = 7) |>
     dplyr::mutate(scen = "high")
 
   # Assert that "Jahr" contains no NAs and matches required values exactly
@@ -463,7 +471,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   # rename column for consistency and easier handling
   fso_numbers_l <- fso_numbers_l |>
-    dplyr::rename(value = 7)|>
+    dplyr::rename(value = 7) |>
     dplyr::mutate(scen = "low")
 
   # Assert that "Jahr" contains no NAs and matches required values exactly
@@ -542,16 +550,19 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   # Check if spatial units are available
   assertthat::assert_that(
     all(spatial_units
-        %in%
-          metadata_tidy_109$valueTexts[
-            metadata_tidy_109$text ==
-              "Kanton"]) ,
-    msg = paste0("At least one of the requested spatial units is not available.",
-                 " Check the spelling against those in the STATTAB cube ",
-                 number_fso_rates, ". Inspecting the column 'valueTexts' in the",
-                 " following package data may help to identify the correct",
-                 "spelling: data('stattab_109_snap')"
-    ))
+    %in%
+      metadata_tidy_109$valueTexts[
+        metadata_tidy_109$text ==
+          "Kanton"
+      ]),
+    msg = paste0(
+      "At least one of the requested spatial units is not available.",
+      " Check the spelling against those in the STATTAB cube ",
+      number_fso_rates, ". Inspecting the column 'valueTexts' in the",
+      " following package data may help to identify the correct",
+      "spelling: data('stattab_109_snap')"
+    )
+  )
 
   # Specify the elements to download
   dim1 <- metadata_tidy_109 |>
@@ -588,13 +599,13 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     )
   dim7 <- metadata_tidy_109 |>
     dplyr::filter(text == "Beobachtungseinheit" & # type of parameter types
-                    valueTexts %in% c(
-                      "Geburtenziffern",
-                      "Prospektive Sterbewahrscheinlichkeiten",
-                      "Auswanderungsziffern",
-                      "Interkantonale Abwanderungsziffern",
-                      stringi::stri_unescape_unicode("Einb\\u00fcrgerungsziffern")
-                    )) # "Einbürgerungsziffern"))
+      valueTexts %in% c(
+        "Geburtenziffern",
+        "Prospektive Sterbewahrscheinlichkeiten",
+        "Auswanderungsziffern",
+        "Interkantonale Abwanderungsziffern",
+        stringi::stri_unescape_unicode("Einb\\u00fcrgerungsziffern")
+      )) # "Einbürgerungsziffern"))
 
   # build dimensions list object
   dimensions <- list(
@@ -643,8 +654,8 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       "Szenarien zur Bev\\u00f6lkerungsentwicklung der Kantone 2025-2055 - ",
       "Ziffern nach Kanton, Szenario-Variante, ",
       "Staatsangeh\\u00f6rigkeit (Kategorie), ",
-      "Geschlecht und Alter")
-    )
+      "Geschlecht und Alter"
+    ))
   )
 
   # Check columns by name
@@ -728,16 +739,19 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
   # Check if spatial units are available
   assertthat::assert_that(
     all(spatial_units
-        %in%
-          metadata_tidy_106$valueTexts[
-            metadata_tidy_106$text ==
-              "Kanton"]) ,
-    msg = paste0("At least one of the requested spatial units is not available.",
-                 " Check the spelling against those in the STATTAB cube ",
-                 number_fso_births, ". Inspecting the column 'valueTexts' in ",
-                 "the following package data may help to determine the correct",
-                 " spelling: data('stattab_106_snap')"
-    ))
+    %in%
+      metadata_tidy_106$valueTexts[
+        metadata_tidy_106$text ==
+          "Kanton"
+      ]),
+    msg = paste0(
+      "At least one of the requested spatial units is not available.",
+      " Check the spelling against those in the STATTAB cube ",
+      number_fso_births, ". Inspecting the column 'valueTexts' in ",
+      "the following package data may help to determine the correct",
+      " spelling: data('stattab_106_snap')"
+    )
+  )
 
   # Specify the elements to download
   dim1 <- metadata_tidy_106 |>
@@ -748,11 +762,11 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
 
   dim2 <- metadata_tidy_106 |>
     dplyr::filter(text == "Szenario-Variante" & # scenario
-                    valueTexts %in% c(
-                      "Referenzszenario AR-00-2025",
-                      "'hohes' Szenario BR-00-2025",
-                      "'tiefes' Szenario CR-00-2025"
-                    ))
+      valueTexts %in% c(
+        "Referenzszenario AR-00-2025",
+        "'hohes' Szenario BR-00-2025",
+        "'tiefes' Szenario CR-00-2025"
+      ))
   dim3 <- metadata_tidy_106 |>
     dplyr::filter(
       text == stringi::stri_unescape_unicode(
@@ -779,12 +793,12 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::filter(
       text == "Beobachtungseinheit" & # type of parameter types
         valueTexts %in%
-        c(
-          "Lebendgeburten",
-          stringi::stri_unescape_unicode(
-            "Lebendgeburten nach Alter und Staatsangeh\\u00f6rigkeit der Mutter"
+          c(
+            "Lebendgeburten",
+            stringi::stri_unescape_unicode(
+              "Lebendgeburten nach Alter und Staatsangeh\\u00f6rigkeit der Mutter"
+            )
           )
-        )
     ) # "Lebendgeburten nach Alter und Staatsangehörigkeit der Mutter"))
 
   # build dimensions list object
@@ -892,11 +906,16 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
       -c(Kanton, emi_n)
     )
 
+
+  # TODO
+  # Implement a consistent arrangement for the identifier-columns throughout input and output tables:
+  # year - spatial unit - scen - nat - sex - age
+
   # Feedback if years are outside current FSO projection period----
   if (year_first < 2024 |
-      year_first > 2055 |
-      year_last < 2024 |
-      year_last > 2055) {
+    year_first > 2055 |
+    year_last < 2024 |
+    year_last > 2055) {
     cli::cli_text(cli::col_red("Warning message:"))
     cli::cli_text("`year_first` or `year_last` is outside FSO's current
                     projection period (2024-2055).")

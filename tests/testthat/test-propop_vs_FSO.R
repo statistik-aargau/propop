@@ -1,7 +1,6 @@
 # Compare projection result from propop::propop() with FSO projections
 
 test_that("Projection output from propop matches FSO projection", {
-
   # don't run on gitlab ci
   skip_on_ci()
 
@@ -43,11 +42,13 @@ test_that("Projection output from propop matches FSO projection", {
   evaluation <- compute_measures(combined)
 
   # Fail if absolute percentage error is larger than threshold
-  expect_lte(max(abs(evaluation$error), na.rm = TRUE), 1,
-             paste0("The largest difference in number of ",
-                    "people is ",
-                    round(max(evaluation$error, na.rm = TRUE), digits = 0),
-                    ". The difference between the expected value and the observed value")
+  expect_lte(
+    max(abs(evaluation$error), na.rm = TRUE), 1,
+    paste0(
+      "The largest difference in number of ",
+      "people is ",
+      round(max(evaluation$error, na.rm = TRUE), digits = 0),
+      ". The difference between the expected value and the observed value"
+    )
   )
-
 })

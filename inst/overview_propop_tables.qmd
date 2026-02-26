@@ -1,0 +1,514 @@
+---
+title: "WIP: New function syntax for `propop::propop()`"
+subtitle: "Run projections with `tibbles`, `purrr` and `dplyr`"
+author: "Statistik Aargau (2025), Norah Efosa"
+date: November 2025
+format:
+  html:
+    embed-resources: true
+    link-external-icon: true
+    theme: lumen 
+    link-external-newwindow: true
+    toc: true
+    toc-location: left
+    toc-title: "Interactive toc"
+    toc-depth: 5
+editor_options: 
+  chunk_output_type: console
+cache: false
+---
+
+# Introduction
+
+The new function syntax of `propop::propop()` is a `dplyr`-version of the deprecated function `propop::propop_legacy()` (matrices).
+
+✅modular structure
+
+✅uses dplyr
+
+✅more flexibility for adding/removing columns and new modules
+
+✅`propop()` using tables replaced calculations with matrices entirely. The matrices-function code will be kept in the repo tagged as `deprecated`.
+
+```{r packages, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+# Load packages
+library(propop)
+library(dplyr)
+
+add_percent <- function(x) {
+  paste0(x, "%")
+}
+options(scipen = 999)
+```
+
+## Overview: `propop()` using tables
+
+### Function arguments
+
+The new function's arguments are identical to `propop::propop_legacy()`:
+
+(only the first four arguments in blue are mandatory)
+
+```{r, echo = TRUE, eval = FALSE}
+propop::propop_tables(
+  parameters,
+  population,
+  year_first,
+  year_last,
+  scenarios = NULL,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  # subregional = "net" for net migration
+  # subregional = "rate" for emi- and immigration rates
+  subregional = NULL,
+  binational = TRUE,
+  spatial_unit = "spatial_unit"
+)
+```
+
+### Structure
+
+![](overview_propop_tables.png)
+
+#### Excerpt from `propop()` using tables
+
+```{r, echo = TRUE, eval = FALSE}
+# [...]
+# Run projection ----
+# iterate across spatial units, scenarios and years
+df_result <- purrr::reduce(
+  .x = list_parameters,
+  .f = \(population, parameters) project_population(
+    population, parameters,
+    subregional = subregional
+  ),
+  .init = init_population
+)
+# [...]
+```
+
+### Performance for one region (Canton of Aargau)
+
+We use STAT-TAB data as described in the [vignette for projecting a single region](vignettes/project_single_region.Rmd):
+
+```{r message = FALSE, warning = FALSE, result = FALSE}
+# Run propop with tables (new feature)
+system.time({
+  result_tables <- propop::propop(
+    parameters = fso_parameters,
+    year_first = 2024,
+    year_last = 2055,
+    population = fso_population,
+    binational = TRUE
+  )
+})
+
+# Run propop with matrices (original)
+system.time({
+  result_matrices <- propop::propop_legacy(
+    parameters = fso_parameters,
+    year_first = 2024,
+    year_last = 2055,
+    population = fso_population,
+    binational = TRUE
+  )
+})
+```
+
+#### Comparison between `propop::propop_tables()` and `propop::propop()`
+
+```{r comparison-propop, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = FALSE}
+# Split results by scenario
+## Results from propop with matrices
+list_propop_matrices <- split(result_matrices, result_matrices$scen)
+## Results from propop with tables
+list_propop_tables <- split(result_tables, result_tables$scen)
+
+# Make custom age groups
+make_age_group <- function(.data) {
+  df_out <- .data |>
+    dplyr::mutate(
+      age = case_when(
+        age < 20 ~ "age_00_19",
+        age >= 20 & age < 40 ~ "age_20_39",
+        age >= 40 & age < 60 ~ "age_40_59",
+        age >= 60 & age < 80 ~ "age_60_79",
+        age >= 80 & age < 100 ~ "age_80_99",
+        age == 100 ~ "age_100_plus"
+      )
+    ) |>
+    dplyr::summarise(
+      n_dec = sum(n_dec, na.rm = TRUE),
+      .by = c(year, spatial_unit, scen, age, sex, nat)
+    )
+
+  return(df_out)
+}
+
+# Define function comparing the FSO results (= benchmark) to propop with
+# matrices/tables. (See function documentations of 'R/prepare_evaluation.R' and
+# 'R/compute_measures.R').
+compare_result <- function(
+    df_matrices,
+    df_tables) {
+  # Match projection length between model results
+  df_bench <- df_matrices |>
+    dplyr::filter(
+      year %in% c(2024:2055)
+    )
+  df_proj <- df_tables |>
+    dplyr::filter(
+      year %in% c(2024:2055)
+    )
+
+  # Compare results
+  df_result <- prepare_evaluation(
+    data_benchmark = df_bench,
+    n_benchmark = "n_dec",
+    data_projected = df_proj,
+    n_projected = "n_dec"
+  ) |>
+    compute_measures()
+
+  return(df_result)
+}
+
+comparison_matrices_tables <- purrr::map2(
+  list_propop_matrices |> purrr::map(~ .x |> make_age_group()),
+  list_propop_tables |> purrr::map(~ .x |> make_age_group()),
+  compare_result
+) |>
+  purrr::reduce(bind_rows)
+```
+
+```{r plot, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+# Plot abs numbers
+comparison_matrices_tables |>
+  dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = error, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::scale_x_continuous(breaks = c(2030, 2050)) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in number of people"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.position = "none",
+    axis.text.x = ggplot2::element_text(angle = 45)
+  ) +
+  ggplot2::facet_grid(scen ~ age)
+
+
+# Plot percentage error
+comparison_matrices_tables |>
+  dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in percent"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::scale_y_continuous(labels = add_percent) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.position = "none",
+    axis.text.x = ggplot2::element_text(angle = 45)
+  ) +
+  ggplot2::facet_grid(scen ~ age)
+```
+
+
+### Performance for five subregions
+
+```{r data-parameters, eval = TRUE} 
+#| code-fold: true
+#| code-summary: "Show/hide example code"
+# FSO parameters for fictitious subregions
+fso_parameters_sub <- fso_parameters |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters))) |>
+  dplyr::mutate(spatial_unit = as.character(spatial_unit))
+
+# Generate 5 random "cuts" to distribute the original population;
+# avoid extreme values with a range of 0.1 to 0.5
+cut_1 <- {
+  set.seed(1)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_2 <- {
+  set.seed(2)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_3 <- {
+  set.seed(3)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+cut_4 <- {
+  set.seed(4)
+  round(runif(1, min = 0.1, max = 0.5), digits = 2)
+}
+# make sure everything adds up to 100%
+cut_5 <- 1 - cut_1 - cut_2 - cut_3 - cut_4
+
+# Generate population data for five subregions
+df_population_sub <- fso_population |>
+  # duplicating rows 5 times
+  tidyr::uncount(5) |>
+  # create 5 subregions
+  dplyr::mutate(
+    spatial_unit = as.character(rep(1:5, times = nrow(fso_population)))
+  ) |>
+  dplyr::mutate(
+    # Distribute original population according to "cuts"
+    n = dplyr::case_match(
+      spatial_unit,
+      "1" ~ round(n * cut_1),
+      "2" ~ round(n * cut_2),
+      "3" ~ round(n * cut_3),
+      "4" ~ round(n * cut_4),
+      "5" ~ round(n * cut_5),
+      .default = NA
+    ),
+    .keep = "all"
+  )
+
+# Prepare subregional migration
+parameters_sub_mig <- fso_parameters_sub |>
+  # Create fictitious migration parameters
+  dplyr::mutate(
+    mig_sub = dplyr::case_when(
+      # Four regions with emigration, 1 region with immigration
+      spatial_unit == 1 ~ {
+        set.seed(1)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 2 ~ {
+        set.seed(2)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 3 ~ {
+        set.seed(25)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      spatial_unit == 4 ~ {
+        set.seed(12)
+        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
+      },
+      TRUE ~ NA
+    )
+  ) |>
+  dplyr::mutate(
+    mig_sub = dplyr::case_when(
+      spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub
+    ),
+    check = sum(mig_sub, na.rm = TRUE),
+    .by = c("nat", "sex", "age", "year", "scen")
+  ) |>
+  dplyr::select(
+    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
+    emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n, mig_sub
+  )
+
+# Calculate shares
+df_population_shares <- df_population_sub |>
+  dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
+  dplyr::mutate(
+    share = n / sum_n,
+    share = case_when(
+      sum_n == 0 ~ 0,
+      .default = share
+    )
+  )
+
+# Apply shares
+parameters_sub_size <- parameters_sub_mig |>
+  dplyr::left_join(
+    df_population_shares |>
+      dplyr::select("spatial_unit", "nat", "sex", "age", "share"),
+    by = c("spatial_unit", "nat", "sex", "age")
+  ) |>
+  dplyr::mutate(
+    # Calculate number of incoming people per demographic group and spatial unit
+    imm_int_n_distr = imm_int_n * share,
+    imm_nat_n_distr = imm_nat_n * share
+  ) |>
+  dplyr::mutate(
+    imm_int_n = imm_int_n_distr,
+    imm_nat_n = imm_nat_n_distr
+  )
+```
+
+
+```{r eval = TRUE, message = FALSE, warning = FALSE, result = FALSE, echo = TRUE}
+# Run propop with tables
+system.time({
+  result_tables_sub <- propop::propop(
+    parameters = parameters_sub_size,
+    year_first = 2024,
+    year_last = 2055,
+    population = df_population_sub,
+    subregional = "net",
+    binational = TRUE
+  )
+})
+
+# Run propop with matrices
+system.time({
+  result_matrices_sub <- propop::propop_legacy(
+    parameters = parameters_sub_size,
+    year_first = 2024,
+    year_last = 2055,
+    population = df_population_sub,
+    subregional = TRUE,
+    binational = TRUE
+  )
+})
+```
+
+```{r comparison-propop-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, result = TRUE, fig.height = 18, fig.width = 20}
+# Compare results
+list_propop_matrices_sub <- split(result_matrices_sub, result_matrices_sub$scen)
+list_propop_tables_sub <- split(result_tables_sub, result_tables_sub$scen)
+
+comparison_matrices_tables_sub <- purrr::map2(
+  list_propop_matrices_sub |> purrr::map(~ .x |> make_age_group()),
+  list_propop_tables_sub |> purrr::map(~ .x |> make_age_group()),
+  compare_result
+) |>
+  purrr::reduce(bind_rows)
+```
+
+```{r plot-sub, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, fig.height = 18, fig.width = 20}
+# Plot abs numbers
+comparison_matrices_tables_sub |>
+  dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = error, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in number of people"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen + spatial_unit ~ age)
+
+# Plot percentage error
+comparison_matrices_tables_sub |>
+  dplyr::mutate(
+    age = factor(age, levels = c(
+      "age_00_19", "age_20_39", "age_40_59", "age_60_79", "age_80_99",
+      "age_100_plus"
+    )),
+    scen = factor(scen, levels = c("low", "reference", "high"))
+  ) |>
+  dplyr::mutate(sex_nat = paste0(sex, "_", nat), age = factor(age)) |>
+  ggplot2::ggplot(ggplot2::aes(x = year, y = pe, color = age)) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::scale_color_manual(values = c(
+    "age_00_19" = "#007AB8",
+    "age_20_39" = "#ffa81f",
+    "age_40_59" = "#A05388",
+    "age_60_79" = "#ffe562",
+    "age_80_99" = "#96D4FF",
+    "age_100_plus" = "#FF82a9"
+  )) +
+  ggplot2::labs(
+    title = "Differences between propop and propop_tables (2024-2055)",
+    x = "Year",
+    y = "Difference in percent"
+  ) +
+  ggplot2::guides(
+    color = ggplot2::guide_legend(title = "age"),
+    pch = ggplot2::guide_legend(title = "nationality and sex")
+  ) +
+  ggplot2::scale_y_continuous(labels = add_percent) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_grid(scen + spatial_unit ~ age)
+```
+
+# Next steps
+
+**Fine tuning for rates (esp. people aged 80 years and older)** \
+☒ No bugs were found. Results for population components in the output still 
+    differ a bit (less than three people in 2055 for the Canton of Aargau) from the original (`propop_legacy()`), but only for components that
+     are based on rates. \
+☒ Comparison with FSO-results
+
+**Subregions**\
+☒ `propop()` using tables runs for subregions\
+☒ Two methods enabled for the subregional distribution of migration (net numbers or rates)\
+☒ Evaluate computation speed and accuracy (tests with real data)
+
+**Code cleaning, function-feedback, package tests**\
+☒ Code is more or less clean\
+☒ Function feedback is there\
+☒ Package tests (new crossover tests comparing results from matrices and tables)\
+☒ Recent changes decreased the computing speed of `propop()` using tables -> code was adapted and runs a bit faster now\
+☐ Documentation (e.g. a new vignette)?
+

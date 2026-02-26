@@ -1,7 +1,6 @@
 # run and compare projection for 1 and 5 region(s)
 
 test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
-
   skip_on_ci()
 
 

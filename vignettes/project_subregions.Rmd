@@ -83,20 +83,21 @@ subregions are still identical to those for the whole canton):
 ```{r data-parameters} 
 # FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
-  dplyr::filter(scen == "reference") |> 
+  dplyr::filter(scen == "reference") |>
   # duplicating rows 5 times
   tidyr::uncount(5) |>
   # create 5 subregions
-  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(
-    fso_parameters |> dplyr::filter(scen == "reference")))
-  ) |>
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |>
+    dplyr::filter(
+      scen == "reference"
+    )))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
 **Population** data: 
 
 ```{r data-population}
-# Generate 5 random "cuts" to distribute the original population; 
+# Generate 5 random "cuts" to distribute the original population;
 # use range 0.1-0.5 to avoid very small or very large regions
 cut_1 <- {
   set.seed(1)
@@ -158,7 +159,7 @@ df_population_shares |>
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(c("share"),
-                  backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
   )
 ```
 \ 
@@ -208,7 +209,7 @@ parameters_sub_size |>
   dplyr::mutate(difference = imm_int_n - check) |>
   dplyr::select(-scen) |>
   # Only use selection of years to save space
-  dplyr::filter(year < 2027) |> 
+  dplyr::filter(year < 2027) |>
   DT::datatable() |>
   DT::formatStyle(
     "imm_int_n",
@@ -238,7 +239,7 @@ Now we can run the projection:
 
 ```{r project-1}
 propop(
-  parameters = parameters_sub_size_clean, 
+  parameters = parameters_sub_size_clean,
   year_first = 2024,
   year_last = 2026,
   scenarios = "reference",
@@ -384,7 +385,8 @@ always adds up to 1:
 data_distr_hist_int |>
   dplyr::summarise(sum_share = round(
     sum(share, na.rm = TRUE),
-    digits = 1), .by = c(nat, sex, age)) |>
+    digits = 1
+  ), .by = c(nat, sex, age)) |>
   DT::datatable()
 ```
 
@@ -402,7 +404,7 @@ data_distr_hist_nat <- df_hist_imm |>
   dplyr::rename(share_imm_nat = share) |>
   # Drop unnecessary variables
   dplyr::select(-c(
-    "hist_imm_nat", "hist_imm_int", "age_group_5", "sum_5", "prop_5", 
+    "hist_imm_nat", "hist_imm_int", "age_group_5", "sum_5", "prop_5",
     "age_group_10", "sum_10", "prop_10", "use_age_group", "n", "n_sum"
   ))
 
@@ -415,8 +417,7 @@ data_distr_hist <- data_distr_hist_int |>
     "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
     "prop_10", "use_age_group", "n", "n_sum"
   )) |>
-  dplyr::left_join(
-    data_distr_hist_nat,
+  dplyr::left_join(data_distr_hist_nat,
     by = c("spatial_unit", "nat", "sex", "age")
   )
 
@@ -457,21 +458,21 @@ is identical with the number of people in the larger unit (whole canton):
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
-    sum_imm_int_sub = round(sum(imm_int_n, na.rm = TRUE), digits = 0), 
-    sum_imm_nat_sub = round(sum(imm_nat_n, na.rm = TRUE), digits = 0), 
-    .by = c(nat, sex, age, year)) |>
+    sum_imm_int_sub = round(sum(imm_int_n, na.rm = TRUE), digits = 0),
+    sum_imm_nat_sub = round(sum(imm_nat_n, na.rm = TRUE), digits = 0),
+    .by = c(nat, sex, age, year)
+  ) |>
   # join with original input data (for the whole canton)
-  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>  
-  # calculate difference between immigration at the level of subregions and canton 
+  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>
+  # calculate difference between immigration at the level of subregions and canton
   dplyr::mutate(
     diff_int = sum_imm_int_sub - imm_int_n,
     diff_nat = sum_imm_nat_sub - imm_nat_n,
-  ) 
+  )
 
 # All observed differences are equal to zero
 unique(check_sums_subregions$diff_int)
 unique(check_sums_subregions$diff_nat)
-
 ```
 \
 

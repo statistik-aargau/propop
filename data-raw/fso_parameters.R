@@ -17,4 +17,3 @@ fso_parameters <- fso_parameters_raw |>
 
 # Add data frames to package
 usethis::use_data(fso_parameters, overwrite = TRUE)
-

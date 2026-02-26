@@ -1,5 +1,7 @@
 #' Create transition matrix (helper function for project_raw)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description The transition matrix is used to calculate age-specific
 #' survival rates and population fluxes through emigration and acquisition
 #' of the Swiss citizenship.
@@ -38,6 +40,14 @@ create_transition_matrix <-
            emi_nat_int_m,
            acq_int_f,
            acq_int_m) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "create_transition_matrix()",
+      details = paste0(
+        "`create_transition_matrix()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
     # Set indices -------------------------------------------------------------
     index_row <-
       c(

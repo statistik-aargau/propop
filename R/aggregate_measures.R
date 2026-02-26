@@ -94,11 +94,12 @@ aggregate_measures <- function(data, weight_groups = NULL) {
   # Feedback data includes weight but no group_weight argument provided
   if ("weight" %in% colnames(data) & is.null(weight_groups)) {
     cli::cli_text(cli::col_red("Warning message:"))
-    cli::cli_alert_warning(paste0("`data` includes results for weighted ",
-                                  "groups but the `weight_groups` argument ",
-                                  "is empty. Did you forget to specify the ",
-                                  "same groups as in `compute_measures`?")
-    )
+    cli::cli_alert_warning(paste0(
+      "`data` includes results for weighted ",
+      "groups but the `weight_groups` argument ",
+      "is empty. Did you forget to specify the ",
+      "same groups as in `compute_measures`?"
+    ))
   }
 
   # Feedback when input contain `Inf` values
@@ -109,9 +110,11 @@ aggregate_measures <- function(data, weight_groups = NULL) {
       "{.val { data |> select_if(function(x) any(is.infinite(x))) |> names()}}."
     ))
     cli::cli_alert_info(paste0
-                        ("`Inf` values are probably caused by divisions ",
-                          "by zero (e.g., when `n_benchmark` = 0). Consider using ",
-                          "larger age groups that include more than 1 year."))
+    (
+      "`Inf` values are probably caused by divisions ",
+      "by zero (e.g., when `n_benchmark` = 0). Consider using ",
+      "larger age groups that include more than 1 year."
+    ))
   }
 
   # Feedback when input contains missing values
@@ -145,5 +148,4 @@ aggregate_measures <- function(data, weight_groups = NULL) {
   }
 
   return(results)
-
 }

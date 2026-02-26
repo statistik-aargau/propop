@@ -1,5 +1,7 @@
 #' Create fertility matrix (helper function for project_raw)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description The fertility matrix is used to calculate the age-specific
 #' number of offspring for females within the fertility range given by
 #' `fert_length`.
@@ -56,6 +58,14 @@ create_fertility_matrix <-
            emi_nat_int_m_0,
            acq_int_f_0,
            acq_int_m_0) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "create_fertility_matrix()",
+      details = paste0(
+        "`create_fertility_matrix()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
     # Set indices -------------------------------------------------------------
     index_row <-
       c(

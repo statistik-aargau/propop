@@ -1,5 +1,7 @@
 #' Project population development (raw results)
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description Core function that uses the cohort component method and matrix
 #' algebra to project population development (for more details, see
 #' [here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf)).
@@ -143,7 +145,7 @@
 #' # run projection
 #' project_raw(
 #'   parameters = fso_parameters |>
-#'  dplyr::filter(scen == "reference"),
+#'     dplyr::filter(scen == "reference"),
 #'   year_first = 2025,
 #'   year_last = 2026,
 #'   n = fso_population |> dplyr::pull(n),
@@ -160,6 +162,15 @@ project_raw <-
            share_born_female = 100 / 205,
            n,
            subregional) {
+    # Deprecate
+    lifecycle::deprecate_warn(
+      "2.0.0", "project_raw()",
+      details = paste0(
+        "`project_raw()` is still operational as part of `propop_legacy()` but ",
+        "won't be further maintained"
+      )
+    )
+
     # Check input ----
     ## Only 1 value in scenario
     assertthat::assert_that(
@@ -226,22 +237,30 @@ project_raw <-
     fert_last <- vctrs::vec_cast(fert_last, integer())
 
     assertthat::assert_that(is.integer(year_first),
-                            msg = "The argument 'year_first' must be numeric")
+      msg = "The argument 'year_first' must be numeric"
+    )
     assertthat::assert_that(is.integer(year_last),
-                            msg = "The argument 'year_last' must be numeric")
+      msg = "The argument 'year_last' must be numeric"
+    )
     assertthat::assert_that(is.integer(year_first),
       is.integer(year_last), year_first <= year_last,
       msg = "year_first must be smaller than or equal to year_last"
     )
     assertthat::assert_that(year_first %in% parameters$year,
-                            msg = paste0("The value provided for `year_first` ('",
-                            year_first,
-                            "') is not included in `parameters$year`."))
+      msg = paste0(
+        "The value provided for `year_first` ('",
+        year_first,
+        "') is not included in `parameters$year`."
+      )
+    )
 
     assertthat::assert_that(year_last %in% parameters$year,
-                            msg = paste0("The value provided for `year_last` ('",
-                                         year_last,
-                                         "') is not included in `parameters$year`."))
+      msg = paste0(
+        "The value provided for `year_last` ('",
+        year_last,
+        "') is not included in `parameters$year`."
+      )
+    )
 
     assertthat::assert_that(is.vector(age_groups),
       all(sapply(age_groups, is.numeric)),
@@ -938,10 +957,10 @@ project_raw <-
           emi_nat_int_f
         )
       assertthat::assert_that(length(EMI_NAT_vec) == length_pop_vec,
-                              msg = paste0(
-                                "Migration vector `EMI_NAT_vec` length is not equal to the length of",
-                                " the population vector."
-                              )
+        msg = paste0(
+          "Migration vector `EMI_NAT_vec` length is not equal to the length of",
+          " the population vector."
+        )
       )
       assertthat::assert_that(
         unique(!is.na(EMI_INT_vec)),
@@ -957,13 +976,13 @@ project_raw <-
           emi_nat_int_f_0, zeros
         )
       assertthat::assert_that(length(EMI_NAT0_vec) == length_pop_vec,
-                              msg = paste0(
-                                "Migration vector `EMI_NAT0_vec` length is not equal to the length of",
-                                " the population vector."
-                              )
+        msg = paste0(
+          "Migration vector `EMI_NAT0_vec` length is not equal to the length of",
+          " the population vector."
+        )
       )
       assertthat::assert_that(unique(!is.na(EMI_NAT0_vec)),
-                              msg = "Migration vector `EMI_NAT0_vec` contains NAs."
+        msg = "Migration vector `EMI_NAT0_vec` contains NAs."
       )
 
       #### Acquisition of the Swiss citizenship ----
@@ -1180,28 +1199,28 @@ project_raw <-
           0,
           EMI_NAT_vec[(age_groups * 3 + 1):(age_groups * 4 - 1)]
         ) *
-        Nminus1
+          Nminus1
       assertthat::assert_that(length(EMI_NAT) == length(empty_vector_NA),
-                              msg = paste0(
-                                "Auxiliary vector `EMI_NAT` is not equal to the length of",
-                                " the pre-defined empty vector."
-                              )
+        msg = paste0(
+          "Auxiliary vector `EMI_NAT` is not equal to the length of",
+          " the pre-defined empty vector."
+        )
       )
       assertthat::assert_that(any(!is.na(EMI_NAT)),
-                              msg = "Auxiliary vector `EMI_NAT` contains NAs."
+        msg = "Auxiliary vector `EMI_NAT` contains NAs."
       )
 
       # Children aged zero years
       EMI_NAT0[first_pos:last_pos] <-
         EMI_NAT0_vec * BIRTHS[first_pos:last_pos]
       assertthat::assert_that(length(EMI_NAT0) == length(empty_vector_NA),
-                              msg = paste0(
-                                "Auxiliary vector `EMI_NAT0` is not equal to the length of",
-                                " the pre-defined empty vector."
-                              )
+        msg = paste0(
+          "Auxiliary vector `EMI_NAT0` is not equal to the length of",
+          " the pre-defined empty vector."
+        )
       )
       assertthat::assert_that(any(!is.na(EMI_NAT0)),
-                              msg = "Auxiliary vector `EMI_NAT0` contains NAs."
+        msg = "Auxiliary vector `EMI_NAT0` contains NAs."
       )
 
 
@@ -1305,9 +1324,9 @@ project_raw <-
 
     # Feedback if years are outside current FSO projection period----
     if (year_first < 2024 |
-        year_first > 2055 |
-        year_last < 2024 |
-        year_last > 2055) {
+      year_first > 2055 |
+      year_last < 2024 |
+      year_last > 2055) {
       cli::cli_text(cli::col_red("Warning message:"))
       cli::cli_text("`year_first` or `year_last` is outside FSO's current
                     projection period (2025-2055).")

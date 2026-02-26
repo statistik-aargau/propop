@@ -1,6 +1,8 @@
 #' Add identifiers to the raw results from the projection and arrange components
 #' to build the population balance.
 #'
+#' `r lifecycle::badge("deprecated")`
+#'
 #' @description
 #' Adds information about demographic groups and years to make the raw results
 #' from `project_raw.R` more informative. Arranges components of the population
@@ -14,7 +16,20 @@
 #'    patterns (e.g., movement between municipalities within a canton)
 #'    are part of the projection.
 #'
-#' @returns See output described in propop::propop()
+#' @return data frame containing:
+#'    * five identifiers (age, sex, optionally: nationality, year,
+#'      spatial levels). These indicate to which demographic group and year the
+#'      results in the rows refer to.
+#'    * absolute population per demographic group and year (n).
+#'    * projection components that form the population of the next year.
+#'    * population balance (n_1) of the next projected year. The formula
+#'      sums up the components like so:
+#'      n_1 = n + births - deaths - international emigrants -
+#'      intercantonal emigrants + international immigrants +
+#'      intercantonal immigrants + naturalized citizens
+#'      (+ optionally: subregional migrants).
+#'    * annual population change per demographic group in absolute numbers
+#'      (delta_n) and as percentages (delta_perc).
 #'
 #' @autoglobal
 #' @noRd
@@ -22,6 +37,14 @@
 complement_projection <- function(skeleton,
                                   projection_raw,
                                   subregional) {
+  # Deprecate
+  lifecycle::deprecate_warn(
+    "2.0.0", "complement_projection()",
+    details = paste0(
+      "`complement_projection()` is still operational as part of `propop_legacy()` but ",
+      "won't be further maintained"
+    )
+  )
   # check structure of input
   assertthat::assert_that(
     is.numeric(skeleton$age),
@@ -48,7 +71,7 @@ complement_projection <- function(skeleton,
 
   assertthat::assert_that(
     "scen" %in% names(projection_raw),
-                          msg = "Column `scen` is missing in `projection_raw`."
+    msg = "Column `scen` is missing in `projection_raw`."
   )
 
   assertthat::assert_that(
@@ -93,8 +116,10 @@ complement_projection <- function(skeleton,
       new_age_group_100 = ifelse(age == 100, 100, NA),
       age = dplyr::case_when(age < 100 ~ age + 1, TRUE ~ age)
     ) |>
-    dplyr::mutate(n_jan = sum(n_jan),
-                  .by = c(year, scen, nat, sex, age, spatial_unit)) |>
+    dplyr::mutate(
+      n_jan = sum(n_jan),
+      .by = c(year, scen, nat, sex, age, spatial_unit)
+    ) |>
     dplyr::mutate(
       # adapt age range to 0-100 years
       age = age - 1,
@@ -106,13 +131,16 @@ complement_projection <- function(skeleton,
       n_jan = dplyr::case_when(age == 0 ~ 0, TRUE ~ n_jan),
       # add new Swiss citizens and subtract the same number of people from the
       # international group
-      acq = ifelse(nat == "ch", dplyr::lead(acq, 2 * 101), - acq),
+      acq = ifelse(nat == "ch", dplyr::lead(acq, 2 * 101), -acq),
     ) |>
     dplyr::mutate(
       # calculate population balance
       n_dec = n_jan + births - mor - emi_int - emi_nat + imm_int + imm_nat + acq,
-      n_dec = if ("mig_sub" %in% names(projection_result))
-        n_dec + mig_sub else n_dec,
+      n_dec = if ("mig_sub" %in% names(projection_result)) {
+        n_dec + mig_sub
+      } else {
+        n_dec
+      },
       # calculate the annual change per demographic group
       ## total number of people
       delta_n = round(n_dec - n_jan, 0),
@@ -125,7 +153,9 @@ complement_projection <- function(skeleton,
     dplyr::filter(year < max(year)) |>
     # clean the data
     dplyr::select(any_of(c(
-      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births", "mor", "emi_int", "emi_nat",
-      "imm_int", "imm_nat", "acq", "mig_sub", "n_dec", "delta_n", "delta_perc"
+      "year", "scen", "spatial_unit", "age", "sex", "nat", "n_jan", "births",
+      "mor_n" = "mor", "emi_int_n" = "emi_int", "emi_nat_n" = "emi_nat",
+      "imm_int_n" = "imm_int", "imm_nat_n" = "imm_nat", "acq_n" = "acq",
+      "mig_sub", "n_dec", "delta_n", "delta_perc"
     )))
 }
