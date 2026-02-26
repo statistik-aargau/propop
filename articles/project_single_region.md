@@ -58,8 +58,6 @@ whole for 1-year age groups for the period 2024-2055.
 The start and end of women’s fertile period, the proportion of babies
 born as female, and the share of babies born by mothers who are not
 Swiss are defined in
-[`propop::project_raw()`](https://statistik-aargau.github.io/propop/reference/project_raw.md)
-and passed to
 [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md).
 We use FSO’s standard values as default for these arguments.
 
@@ -77,7 +75,23 @@ projection_canton_2030 <- propop(
   subregional = FALSE,
   binational = TRUE
 )
-#> Running projection for: Aargau (Scenario: reference)
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> ✔ Year: 2024
+#> ✔ Year: 2025
+#> ✔ Year: 2026
+#> ✔ Year: 2027
+#> ✔ Year: 2028
+#> ✔ Year: 2029
+#> ✔ Year: 2030
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> ✔ Year: 2024
+#> ✔ Year: 2025
+#> ✔ Year: 2026
+#> ✔ Year: 2027
+#> ✔ Year: 2028
+#> ✔ Year: 2029
+#> ✔ Year: 2030
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -95,28 +109,36 @@ projection_canton_2030 <- propop(
 #> Size of starting population: 726894
 #> Projection period: 2024-2030
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 781521
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 
 projection_canton_2030 |>
   # round to 2 digits
   dplyr::mutate(across(n_jan:n_dec, \(x) sprintf(fmt = "%.0f", x))) |>
-  DT::datatable(filter = "top") |> 
+  DT::datatable(filter = "top") |>
   DT::formatStyle(
-  'n_jan',
-  backgroundColor = '#ffcc8f'
-) |> 
+    "n_jan",
+    backgroundColor = "#ffcc8f"
+  ) |>
   DT::formatStyle(
-  c("births", "mor", "emi_int", "emi_nat", "imm_int", "imm_nat", "acq"),
-  backgroundColor = '#96D4FF'
-) |> 
+    c("births", "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n"),
+    backgroundColor = "#96D4FF"
+  ) |>
   DT::formatStyle(
-  'n_dec',
-  backgroundColor = '#007AB8'
-)  
+    "n_dec",
+    backgroundColor = "#007AB8"
+  )
+#> Warning in instance$preRenderHook(instance): It seems your data is too big for
+#> client-side DataTables. You may consider server-side processing:
+#> https://rstudio.github.io/DT/server.html
 ```
 
   
@@ -147,15 +169,15 @@ Swiss and non-Swiss people).
 ``` r
 fso_parameters_int <- fso_parameters |>
   # drop Swiss people, keep reference scenario
-    dplyr::filter(nat == "int" & scen == "reference") |>
+  dplyr::filter(nat == "int" & scen == "reference") |>
   #   remove `nat`, `acq` and `births_int_ch` from `parameters`
-    dplyr::select(-c(nat, acq, int_mothers))
+  dplyr::select(-c(nat, acq, int_mothers))
 
-fso_population_int <- fso_population |> 
-# drop Swiss people
-    dplyr::filter(nat == "int") |>
-    # remove `nat` from `population`
-     dplyr::select(-nat)
+fso_population_int <- fso_population |>
+  # drop Swiss people
+  dplyr::filter(nat == "int") |>
+  # remove `nat` from `population`
+  dplyr::select(-nat)
 ```
 
 When calling
@@ -172,7 +194,7 @@ projection_int <- propop(
   subregional = FALSE,
   binational = FALSE
 )
-#> Running projection for: Aargau (Scenario: reference)
+#> Running projection for: "Aargau" (Scenarios: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -190,19 +212,16 @@ projection_int <- propop(
 #> Size of starting population: 198599
 #> Projection period: 2024-2030
 #> Nationality-specific projection: "no"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 252660
 #> ════════════════════════════════════════════════════════════════════════════════
-#> Warning message:
-#> When comparing `imm_int_n` from `parameters` with `imm_int` in the results
-#> (scenario = 'reference'), there is an unexpected discrepancy in the number of
-#> people for at least one demographic group in at least one year.
-#> Warning message:
-#> When comparing `imm_nat_n` from `parameters` with `imm_nat` in the results
-#> (scenario = 'reference'), there is an unexpected discrepancy in the number of
-#> people for at least one demographic group in at least one year.
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 
 projection_int |>
   # round to two digits

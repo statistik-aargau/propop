@@ -141,7 +141,7 @@ automatically adds relevant meta data to the results.
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,7 +169,7 @@ automatically adds relevant meta data to the results.
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Project population development (raw results)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/statistik-aargau/propop/blob/v1.4.1/R/project_raw.R" class="external-link"><code>R/project_raw.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/statistik-aargau/propop/blob/main/R/project_raw.R" class="external-link"><code>R/project_raw.R</code></a></small>
       <div class="d-none name"><code>project_raw.Rd</code></div>
     </div>
 
@@ -362,6 +362,10 @@ spatial units (typically cantons).</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="propop.html">propop()</a></code></p></div>
     </div>
@@ -382,8 +386,36 @@ spatial units (typically cantons).</p></dd>
 <span class="r-in"><span>  subregional <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`project_raw()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `project_raw()` is still operational as part of `propop_legacy()` but won't</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   be further maintained</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running projection for: <span style="color: #0000BB;">Aargau</span> (Scenario: <span style="color: #0000BB;">reference</span>)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`create_empty_vector()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `create_empty_vector()` is still operational as part of `propop_legacy()` but</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   won't be further maintained</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">propop</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/statistik-aargau/propop&gt;</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2025</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`create_transition_matrix()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `create_transition_matrix()` is still operational as part of</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   `propop_legacy()` but won't be further maintained</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">propop</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/statistik-aargau/propop&gt;</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`create_fertility_matrix()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `create_fertility_matrix()` is still operational as part of `propop_legacy()`</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   but won't be further maintained</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">propop</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/statistik-aargau/propop&gt;</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`create_mortality_matrix()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `create_mortality_matrix()` is still operational as part of `propop_legacy()`</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   but won't be further maintained</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">propop</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/statistik-aargau/propop&gt;</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`create_birth_matrix()` was deprecated in propop 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `create_birth_matrix()` is still operational as part of `propop_legacy()` but</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   won't be further maintained</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">propop</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/statistik-aargau/propop&gt;</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Year: <span style="color: #0000BB;">2026</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         scen spatial_unit    N   BIRTHS       MOR   EMI_INT  EMI_NAT IMM_INT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  reference       Aargau 2371 2467.882 8.0133597  4.007841 22.04313       5</span>

@@ -1,9 +1,12 @@
 # Project population development
 
 Wrapper function to project population development using the cohort
-component method. This function iterates across years and spatial units
-calling the function `project_population.R`, which performs the
-calculations.
+component method (see e.g.,
+[here](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf)
+and
+[here](https://github.com/statistik-aargau/propop-additional-resources/blob/358ffa280f3777af34d3ac4b2782c1171ed93beb/FSO_2020_Meth_scenarios%20cant.pdf)
+for more details). This function calls `project_raw.R`, which uses
+matrix algebra to implement the demographic balancing equations.
 
 You can either use your own parameters and starting population or
 download these data from the Swiss Federal Statistical Office (FSO). For
@@ -12,13 +15,13 @@ instructions on how to download this information from
 see
 [`vignette("prepare_data", package = "propop")`](https://statistik-aargau.github.io/propop/articles/prepare_data.md).
 
-The projection parameters need to be passed to `propop::propop()` as a
-**single data frame** (with the parameters as columns). The column
+The projection parameters need to be passed to `propop::propop_legacy()`
+as a **single data frame** (with the parameters as columns). The column
 types, names, and factor levels need to match the specifications listed
 below under `parameters`.
 
-If nothing else is indicated in argument `scenarios`, `propop()` runs
-and returns all **scenarios** provided via `parameters`.
+If nothing else is indicated in argument `scenarios`, `propop_legacy()`
+runs and returns all **scenarios** provided via `parameters`.
 
 For more details on how to use this function to project the population
 development on the level of a canton, see
@@ -27,7 +30,7 @@ development on the level of a canton, see
 ## Usage
 
 ``` r
-propop(
+propop_legacy(
   parameters,
   population,
   year_first,
@@ -37,7 +40,7 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100/205,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -149,18 +152,10 @@ propop(
 
 - subregional:
 
-  character or NULL, indicates if subregional migration patterns (e.g.,
+  boolean, `TRUE` indicates that subregional migration patterns (e.g.,
   movement between municipalities within a canton) are part of the
-  projection (default `subregional = NULL`). Requires input on the level
-  of subregions (in `parameters` and `population`). Two calculation
-  methods are supported to distribute people between subregions: With
-  `subregional = "net"`, the net migration between subregions is added
-  to the population balance. Net migration numbers must be specified in
-  a data column `mig_sub` in `parameters`. With `subregional = "rate"`,
-  the numbers for subregional emigrants are subtracted from the
-  population balance, then redistributed back to all subregional units
-  as subregional immigration; `parameters` must contain the columns
-  `emi_sub` and `imm_sub`.
+  projection. Requires input on the level of subregions (in `parameters`
+  and `population`).
 
 - binational:
 
@@ -264,33 +259,44 @@ population are also included in the output:
   numeric, number of people who acquire Swiss citizenship (only returned
   if `binational = TRUE`.)
 
+## Details
+
+**\[deprecated\]**
+
 ## Examples
 
 ``` r
 # Run projection for the sample data (whole canton of Aargau)
-propop(
+propop_legacy(
   parameters = fso_parameters,
   year_first = 2024,
   year_last = 2027,
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> Warning: `project_legacy()` was deprecated in propop 2.0.0.
+#> ℹ `project_legacy()` is still operational but won't be further maintained
+#> Running projection for: Aargau (Scenario: high)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
 #> ✔ Year: 2027
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> Running projection for: Aargau (Scenario: low)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
 #> ✔ Year: 2027
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> Running projection for: Aargau (Scenario: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
 #> ✔ Year: 2027
+#> Warning: `complement_projection()` was deprecated in propop 2.0.0.
+#> ℹ `complement_projection()` is still operational as part of `propop_legacy()`
+#>   but won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high", "low", and "reference"
@@ -308,42 +314,37 @@ propop(
 #> - Scenario "low": 748703
 #> - Scenario "reference": 758993
 #> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 4,848 × 17
-#>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr> <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0  2633.     0 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1     0   2371 1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2     0   2542 0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3     0   2891 0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4     0   2766 0         13.0 
-#>  6  2024 high  Aargau       ch    m         5     0   2794 0         12.0 
-#>  7  2024 high  Aargau       ch    m         6     0   2782 0         11.0 
-#>  8  2024 high  Aargau       ch    m         7     0   2787 0         10.00
-#>  9  2024 high  Aargau       ch    m         8     0   2726 0          9.00
-#> 10  2024 high  Aargau       ch    m         9     0   2837 0          9.00
+#>     year scen  spatial_unit   age sex   nat   n_jan births mor_n emi_int_n
+#>    <dbl> <fct> <fct>        <dbl> <fct> <fct> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 high  Aargau           0 m     ch        0  2633. 9.00       6.00
+#>  2  2024 high  Aargau           1 m     ch     2371     0  1.000     13.0 
+#>  3  2024 high  Aargau           2 m     ch     2542     0  0.998     13.0 
+#>  4  2024 high  Aargau           3 m     ch     2891     0  0.983     14.0 
+#>  5  2024 high  Aargau           4 m     ch     2766     0  0         13.0 
+#>  6  2024 high  Aargau           5 m     ch     2794     0  0         12.0 
+#>  7  2024 high  Aargau           6 m     ch     2782     0  0         11.0 
+#>  8  2024 high  Aargau           7 m     ch     2787     0  0         10.00
+#>  9  2024 high  Aargau           8 m     ch     2726     0  0          9.00
+#> 10  2024 high  Aargau           9 m     ch     2837     0  0          9.00
 #> # ℹ 4,838 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
-propop(
+propop_legacy(
   parameters = fso_parameters |>
     dplyr::filter(scen == "reference" | scen == "high"),
   year_first = 2024,
   year_last = 2026,
   scenarios = c("reference", "high"),
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high"))
+#> Running projection for: Aargau (Scenario: high)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
-#> Running projection for: "Aargau" (Scenarios: c("reference", "high"))
+#> Running projection for: Aargau (Scenario: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -360,27 +361,22 @@ propop(
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2026:
-#> - Scenario "high": 758422
+#> - Scenario "high": 758421
 #> - Scenario "reference": 751159
 #> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
-#> 
-#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 2,424 × 17
-#>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr> <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0  2633.     0 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1     0   2371 1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2     0   2542 0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3     0   2891 0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4     0   2766 0         13.0 
-#>  6  2024 high  Aargau       ch    m         5     0   2794 0         12.0 
-#>  7  2024 high  Aargau       ch    m         6     0   2782 0         11.0 
-#>  8  2024 high  Aargau       ch    m         7     0   2787 0         10.00
-#>  9  2024 high  Aargau       ch    m         8     0   2726 0          9.00
-#> 10  2024 high  Aargau       ch    m         9     0   2837 0          9.00
+#>     year scen  spatial_unit   age sex   nat   n_jan births mor_n emi_int_n
+#>    <dbl> <fct> <fct>        <dbl> <fct> <fct> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 high  Aargau           0 m     ch        0  2633. 9.00       6.00
+#>  2  2024 high  Aargau           1 m     ch     2371     0  1.000     13.0 
+#>  3  2024 high  Aargau           2 m     ch     2542     0  0.998     13.0 
+#>  4  2024 high  Aargau           3 m     ch     2891     0  0.983     14.0 
+#>  5  2024 high  Aargau           4 m     ch     2766     0  0         13.0 
+#>  6  2024 high  Aargau           5 m     ch     2794     0  0         12.0 
+#>  7  2024 high  Aargau           6 m     ch     2782     0  0         11.0 
+#>  8  2024 high  Aargau           7 m     ch     2787     0  0         10.00
+#>  9  2024 high  Aargau           8 m     ch     2726     0  0          9.00
+#> 10  2024 high  Aargau           9 m     ch     2837     0  0          9.00
 #> # ℹ 2,414 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>

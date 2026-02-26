@@ -18,16 +18,18 @@
 
 - **Lutz Benson**. Contributor.
 
+- **Eric Meyer**. Contributor.
+
 - **Thomas Knecht**. Contributor.
 
-- **Eric Meyer**. Contributor.
+- **Moana Stadelmann**. Contributor.
 
 - **Statistik Aargau**. Funder, copyright holder.
 
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/statistik-aargau/propop/blob/v1.4.1/inst/CITATION)
+[`inst/CITATION`](https://github.com/statistik-aargau/propop/blob/main/inst/CITATION)
 
 Efosa N, Gadient A, Cornioley T, Wunder J, Haffert N (2025). *propop:
 Project Population Growth in Switzerland using the Cohort Component

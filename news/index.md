@@ -1,5 +1,56 @@
 # Changelog
 
+## propop 2.0.0
+
+### Breaking changes
+
+- New function syntax for
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+  to run population projections with data frames instead of matrices,
+  using identical data input. The function also comes with a new
+  feature: distributing subregional migration can be calculated using
+  rates in addition to using net numbers.
+
+- Projection output: Components are neatly arranged which enables
+  calculating the population balance ad hoc. Metrics for annual
+  population change per demographic group in absolute numbers
+  (`delta_n`) and as percentages (`delta_perc`) are automatically
+  caluclated and appear as columns in the output of
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md).
+  Components were renamed with the suffix `_n`; this helps to
+  distinguish between numberof people (e.g. `emi_nat_n`) and input
+  parameters (e.g. `emi_int`).
+
+- New helper functions for
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md):
+  `project_population()` is a wrapper function, `advance_population()`
+  ages the population by one year, `calculate_projection()` fosters the
+  transition of the cohort to the next year and `calculate_newborns()`
+  computes births.
+
+- New tests for
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+  and helper functions as well as for comparing the output between
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+  and
+  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md),
+  sensitive to differences larger than three people in total by year
+  2055 for the Canton of Aargau.
+
+### Deprecated
+
+- The old function
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+  was renamed to
+  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md)
+  and was deprecated together with `complement_projection()`,
+  `create_transition_matrix()`, `create_birth_matrix()`,
+  `create_fertility_matrix()`, `create_mortality_matrix()`,
+  `create_empty_vector()` and
+  [`project_raw()`](https://statistik-aargau.github.io/propop/reference/project_raw.md).
+  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md)
+  and associated helper function will stay operational.
+
 ## propop 1.4.1
 
 - maintenance work; no breaking changes

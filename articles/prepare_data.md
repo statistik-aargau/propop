@@ -16,9 +16,7 @@ levels.*
 ## Required data
 
 If you don’t have the information and data required to run
-[`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-(or
-[`propop::project_raw()`](https://statistik-aargau.github.io/propop/reference/project_raw.md)),
+[`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md),
 you can download most of the data from
 [STAT-TAB](https://www.pxweb.bfs.admin.ch/pxweb). More specifically, the
 information from the following tables are needed:
@@ -44,10 +42,10 @@ is helpful to identify the required spelling(s).
 Here’s an example of how to get the population for the canton of Aargau:
 
 ``` r
-library(propop) 
+library(propop)
 ag_population <- get_population(
   number_fso = "px-x-0102010000_101",
-  year = 2023, 
+  year = 2023,
   spatial_units = "- Aargau"
 )
 ```

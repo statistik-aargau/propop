@@ -121,7 +121,7 @@ people,
 then calculates the error and several performance metrics:
 
 ``` r
-evaluation_1 <- compute_measures(combined) 
+evaluation_1 <- compute_measures(combined)
 #> Warning message:
 #> The following columns of the output have missing values:
 #> ! "pe" and "ape".
@@ -136,7 +136,7 @@ evaluation_1 |>
   dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     filter = "none",
-    options = list(dom = 't'),
+    options = list(dom = "t"),
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with 1-year age classes for the
@@ -153,16 +153,17 @@ the
 function:
 
 ``` r
-aggregate_measures(evaluation_1) |> 
+aggregate_measures(evaluation_1) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    options = list(dom = 't'),
+    options = list(dom = "t"),
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Evaluation measures of projection with one-year age classes, aggregated 
+      "Evaluation measures of projection with one-year age classes, aggregated
       across all observations."
-    ))
+    )
+  )
 #> Warning message:
 #> The following columns in `data` have missing values:
 #> ! "pe" and "ape".
@@ -214,7 +215,7 @@ combined_grouped
 #> # ℹ 38 more rows
 
 # Compute the performance measures
-evaluation_2 <- compute_measures(combined_grouped) 
+evaluation_2 <- compute_measures(combined_grouped)
 
 evaluation_2 |>
   # select demographic group
@@ -222,7 +223,7 @@ evaluation_2 |>
   # round to two digits
   dplyr::mutate(across(pe:ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    options = list(dom = 't'),
+    options = list(dom = "t"),
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with three age classes for the
@@ -238,16 +239,17 @@ You can again use
 to obtain a summary of the evaluation across all observations:
 
 ``` r
-aggregate_measures(evaluation_2) |> 
+aggregate_measures(evaluation_2) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    options = list(dom = 't'),
+    options = list(dom = "t"),
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Evaluation measures for projection with three age classes, aggregated 
+      "Evaluation measures for projection with three age classes, aggregated
       across all observations."
-    ))
+    )
+  )
 ```
 
 ### Using group weights
@@ -264,23 +266,23 @@ errors (`ape`) 0.39/0.36 become 0.24/0.07 when they are weighted by the
 total number of people per group (`w_ape`).
 
 ``` r
-evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age")) 
+evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age"))
 
 evaluation_3 |>
   dplyr::filter(year == 2019 & ape > .34 & ape < .39) |>
   dplyr::mutate(across(pe:w_ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
-    options = list(dom = 't'),
+    options = list(dom = "t"),
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Selected results showing the effect of using weights 
+      "Selected results showing the effect of using weights
       (ape versus w_ape)."
     ),
-  ) |> 
+  ) |>
   DT::formatStyle(
-    columns = c('ape', 'w_ape'),
-    backgroundColor = '#96D4FF'
-    )
+    columns = c("ape", "w_ape"),
+    backgroundColor = "#96D4FF"
+  )
 ```
 
 #### Aggregated evaluation
@@ -290,10 +292,10 @@ You can also use
 to obtain a summary of the evaluation with weighted groups:
 
 ``` r
-aggregate_measures(evaluation_3, weight_groups = c("age")) |> 
+aggregate_measures(evaluation_3, weight_groups = c("age")) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
-  DT::datatable(options = list(dom = 't'))
+  DT::datatable(options = list(dom = "t"))
 ```
 
 ### `propop` versus FSO
@@ -317,7 +319,73 @@ projection_2025 <- propop(
   subregional = FALSE,
   binational = TRUE
 )
-#> Running projection for: Aargau (Scenario: reference)
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> ✔ Year: 2024
+#> ✔ Year: 2025
+#> ✔ Year: 2026
+#> ✔ Year: 2027
+#> ✔ Year: 2028
+#> ✔ Year: 2029
+#> ✔ Year: 2030
+#> ✔ Year: 2031
+#> ✔ Year: 2032
+#> ✔ Year: 2033
+#> ✔ Year: 2034
+#> ✔ Year: 2035
+#> ✔ Year: 2036
+#> ✔ Year: 2037
+#> ✔ Year: 2038
+#> ✔ Year: 2039
+#> ✔ Year: 2040
+#> ✔ Year: 2041
+#> ✔ Year: 2042
+#> ✔ Year: 2043
+#> ✔ Year: 2044
+#> ✔ Year: 2045
+#> ✔ Year: 2046
+#> ✔ Year: 2047
+#> ✔ Year: 2048
+#> ✔ Year: 2049
+#> ✔ Year: 2050
+#> ✔ Year: 2051
+#> ✔ Year: 2052
+#> ✔ Year: 2053
+#> ✔ Year: 2054
+#> ✔ Year: 2055
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
+#> ✔ Year: 2024
+#> ✔ Year: 2025
+#> ✔ Year: 2026
+#> ✔ Year: 2027
+#> ✔ Year: 2028
+#> ✔ Year: 2029
+#> ✔ Year: 2030
+#> ✔ Year: 2031
+#> ✔ Year: 2032
+#> ✔ Year: 2033
+#> ✔ Year: 2034
+#> ✔ Year: 2035
+#> ✔ Year: 2036
+#> ✔ Year: 2037
+#> ✔ Year: 2038
+#> ✔ Year: 2039
+#> ✔ Year: 2040
+#> ✔ Year: 2041
+#> ✔ Year: 2042
+#> ✔ Year: 2043
+#> ✔ Year: 2044
+#> ✔ Year: 2045
+#> ✔ Year: 2046
+#> ✔ Year: 2047
+#> ✔ Year: 2048
+#> ✔ Year: 2049
+#> ✔ Year: 2050
+#> ✔ Year: 2051
+#> ✔ Year: 2052
+#> ✔ Year: 2053
+#> ✔ Year: 2054
+#> ✔ Year: 2055
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -360,11 +428,16 @@ projection_2025 <- propop(
 #> Size of starting population: 726894
 #> Projection period: 2024-2055
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
-#> - Scenario "reference": 893810
+#> - Scenario "reference": 893808
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 ```
 
 ``` r

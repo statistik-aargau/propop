@@ -231,6 +231,10 @@ and demographic groups (e.g., nationality (2) X sex (2) X age groups
 
   number of births.
 
+## Details
+
+**\[deprecated\]**
+
 ## See also
 
 [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
@@ -252,8 +256,36 @@ project_raw(
   subregional = FALSE
 ) |>
   head(10)
+#> Warning: `project_raw()` was deprecated in propop 2.0.0.
+#> ℹ `project_raw()` is still operational as part of `propop_legacy()` but won't
+#>   be further maintained
 #> Running projection for: Aargau (Scenario: reference)
+#> Warning: `create_empty_vector()` was deprecated in propop 2.0.0.
+#> ℹ `create_empty_vector()` is still operational as part of `propop_legacy()` but
+#>   won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
 #> ✔ Year: 2025
+#> Warning: `create_transition_matrix()` was deprecated in propop 2.0.0.
+#> ℹ `create_transition_matrix()` is still operational as part of
+#>   `propop_legacy()` but won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
+#> Warning: `create_fertility_matrix()` was deprecated in propop 2.0.0.
+#> ℹ `create_fertility_matrix()` is still operational as part of `propop_legacy()`
+#>   but won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
+#> Warning: `create_mortality_matrix()` was deprecated in propop 2.0.0.
+#> ℹ `create_mortality_matrix()` is still operational as part of `propop_legacy()`
+#>   but won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
+#> Warning: `create_birth_matrix()` was deprecated in propop 2.0.0.
+#> ℹ `create_birth_matrix()` is still operational as part of `propop_legacy()` but
+#>   won't be further maintained
+#> ℹ The deprecated feature was likely used in the propop package.
+#>   Please report the issue at <https://github.com/statistik-aargau/propop>.
 #> ✔ Year: 2026
 #>         scen spatial_unit    N   BIRTHS       MOR   EMI_INT  EMI_NAT IMM_INT
 #> 1  reference       Aargau 2371 2467.882 8.0133597  4.007841 22.04313       5

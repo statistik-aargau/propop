@@ -28,25 +28,25 @@ data frame containing summary statistics.
 
 ``` r
 propop(
-  parameters = fso_parameters,
-  year_first = 2024,
-  year_last = 2027,
-  population = fso_population,
-  subregional = FALSE,
-  binational = TRUE
+ parameters = fso_parameters,
+ year_first = 2024,
+ year_last = 2027,
+ population = fso_population,
+ subregional = FALSE,
+ binational = TRUE
 ) |>
-  check_balance()
-#> Running projection for: Aargau (Scenario: high)
+ check_balance()
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
 #> ✔ Year: 2027
-#> Running projection for: Aargau (Scenario: low)
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
 #> ✔ Year: 2027
-#> Running projection for: Aargau (Scenario: reference)
+#> Running projection for: "Aargau" (Scenarios: c("reference", "high", "low"))
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -61,13 +61,18 @@ propop(
 #> Size of starting population: 726894
 #> Projection period: 2024-2027
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
 #> - Scenario "high": 768888
 #> - Scenario "low": 748703
 #> - Scenario "reference": 758993
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> 
 #> ── Result of population equation components check ──────────────────────────────
 #> ℹ Total rows checked: 4848

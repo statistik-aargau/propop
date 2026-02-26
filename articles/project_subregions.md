@@ -61,20 +61,21 @@ subregions are still identical to those for the whole canton):
 ``` r
 # FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
-  dplyr::filter(scen == "reference") |> 
+  dplyr::filter(scen == "reference") |>
   # duplicating rows 5 times
   tidyr::uncount(5) |>
   # create 5 subregions
-  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(
-    fso_parameters |> dplyr::filter(scen == "reference")))
-  ) |>
+  dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |>
+    dplyr::filter(
+      scen == "reference"
+    )))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
 **Population** data:
 
 ``` r
-# Generate 5 random "cuts" to distribute the original population; 
+# Generate 5 random "cuts" to distribute the original population;
 # use range 0.1-0.5 to avoid very small or very large regions
 cut_1 <- {
   set.seed(1)
@@ -141,7 +142,7 @@ df_population_shares |>
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(c("share"),
-                  backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
   )
 ```
 
@@ -193,7 +194,7 @@ parameters_sub_size |>
   dplyr::mutate(difference = imm_int_n - check) |>
   dplyr::select(-scen) |>
   # Only use selection of years to save space
-  dplyr::filter(year < 2027) |> 
+  dplyr::filter(year < 2027) |>
   DT::datatable() |>
   DT::formatStyle(
     "imm_int_n",
@@ -226,7 +227,7 @@ Now we can run the projection:
 
 ``` r
 propop(
-  parameters = parameters_sub_size_clean, 
+  parameters = parameters_sub_size_clean,
   year_first = 2024,
   year_last = 2026,
   scenarios = "reference",
@@ -238,23 +239,7 @@ propop(
   binational = TRUE,
   subregional = FALSE
 )
-#> Running projection for: 1 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 2 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 3 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 4 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 5 (Scenario: reference)
+#> Running projection for: "1", "2", "3", "4", and "5" (Scenarios: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -268,27 +253,32 @@ propop(
 #> Size of starting population: 726903
 #> Projection period: 2024-2026
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2026:
 #> - Scenario "reference": 750939
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 17
-#>     year scen  spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat
-#>    <dbl> <fct> <fct>        <dbl> <fct> <fct> <dbl>  <dbl> <dbl>   <dbl>   <dbl>
-#>  1  2024 refe… 1                0 m     ch        0   517. 1.89    0.630    4.41
-#>  2  2024 refe… 1                1 m     ch      498     0  0.210   2.32    10.3 
-#>  3  2024 refe… 1                2 m     ch      534     0  0.209   2.31    11.8 
-#>  4  2024 refe… 1                3 m     ch      607     0  0.206   2.52    11.3 
-#>  5  2024 refe… 1                4 m     ch      581     0  0       2.31     9.24
-#>  6  2024 refe… 1                5 m     ch      587     0  0       2.10     7.98
-#>  7  2024 refe… 1                6 m     ch      584     0  0       2.10     6.93
-#>  8  2024 refe… 1                7 m     ch      585     0  0       1.89     6.09
-#>  9  2024 refe… 1                8 m     ch      572     0  0       1.68     5.04
-#> 10  2024 refe… 1                9 m     ch      596     0  0       1.68     4.62
+#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0   517.     0 1.89      0.630
+#>  2  2024 reference 1            ch    m         1     0    498 0.210     2.32 
+#>  3  2024 reference 1            ch    m         2     0    534 0.209     2.31 
+#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
+#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
+#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
+#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
+#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
+#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
+#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
 #> # ℹ 6,050 more rows
-#> # ℹ 6 more variables: imm_int <dbl>, imm_nat <dbl>, acq <dbl>, n_dec <dbl>,
-#> #   delta_n <dbl>, delta_perc <dbl>
+#> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
+#> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
 
 ### Distribution of people according to past migration
@@ -427,7 +417,8 @@ spatial units always adds up to 1:
 data_distr_hist_int |>
   dplyr::summarise(sum_share = round(
     sum(share, na.rm = TRUE),
-    digits = 1), .by = c(nat, sex, age)) |>
+    digits = 1
+  ), .by = c(nat, sex, age)) |>
   DT::datatable()
 ```
 
@@ -446,7 +437,7 @@ data_distr_hist_nat <- df_hist_imm |>
   dplyr::rename(share_imm_nat = share) |>
   # Drop unnecessary variables
   dplyr::select(-c(
-    "hist_imm_nat", "hist_imm_int", "age_group_5", "sum_5", "prop_5", 
+    "hist_imm_nat", "hist_imm_int", "age_group_5", "sum_5", "prop_5",
     "age_group_10", "sum_10", "prop_10", "use_age_group", "n", "n_sum"
   ))
 
@@ -459,8 +450,7 @@ data_distr_hist <- data_distr_hist_int |>
     "hist_imm_nat", "hist_imm_int", "age_group_5", "age_group_10", "sum_10",
     "prop_10", "use_age_group", "n", "n_sum"
   )) |>
-  dplyr::left_join(
-    data_distr_hist_nat,
+  dplyr::left_join(data_distr_hist_nat,
     by = c("spatial_unit", "nat", "sex", "age")
   )
 
@@ -502,16 +492,17 @@ subregions is identical with the number of people in the larger unit
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
-    sum_imm_int_sub = round(sum(imm_int_n, na.rm = TRUE), digits = 0), 
-    sum_imm_nat_sub = round(sum(imm_nat_n, na.rm = TRUE), digits = 0), 
-    .by = c(nat, sex, age, year)) |>
+    sum_imm_int_sub = round(sum(imm_int_n, na.rm = TRUE), digits = 0),
+    sum_imm_nat_sub = round(sum(imm_nat_n, na.rm = TRUE), digits = 0),
+    .by = c(nat, sex, age, year)
+  ) |>
   # join with original input data (for the whole canton)
-  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>  
-  # calculate difference between immigration at the level of subregions and canton 
+  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>
+  # calculate difference between immigration at the level of subregions and canton
   dplyr::mutate(
     diff_int = sum_imm_int_sub - imm_int_n,
     diff_nat = sum_imm_nat_sub - imm_nat_n,
-  ) 
+  )
 
 # All observed differences are equal to zero
 unique(check_sums_subregions$diff_int)
@@ -544,23 +535,7 @@ propop(
   binational = TRUE,
   subregional = FALSE
 )
-#> Running projection for: 1 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 2 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 3 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 4 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 5 (Scenario: reference)
+#> Running projection for: "1", "2", "3", "4", and "5" (Scenarios: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -574,27 +549,32 @@ propop(
 #> Size of starting population: 726903
 #> Projection period: 2024-2026
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "no"
+#> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2026:
 #> - Scenario "reference": 751167
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 17
-#>     year scen  spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat
-#>    <dbl> <fct> <fct>        <dbl> <fct> <fct> <dbl>  <dbl> <dbl>   <dbl>   <dbl>
-#>  1  2024 refe… 1                0 m     ch        0   514. 1.85    0.626    4.38
-#>  2  2024 refe… 1                1 m     ch      498     0  0.208   2.32    10.3 
-#>  3  2024 refe… 1                2 m     ch      534     0  0.207   2.31    11.8 
-#>  4  2024 refe… 1                3 m     ch      607     0  0.206   2.52    11.3 
-#>  5  2024 refe… 1                4 m     ch      581     0  0       2.31     9.24
-#>  6  2024 refe… 1                5 m     ch      587     0  0       2.10     7.98
-#>  7  2024 refe… 1                6 m     ch      584     0  0       2.10     6.93
-#>  8  2024 refe… 1                7 m     ch      585     0  0       1.89     6.09
-#>  9  2024 refe… 1                8 m     ch      572     0  0       1.68     5.04
-#> 10  2024 refe… 1                9 m     ch      596     0  0       1.68     4.62
+#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0   514.     0 1.85      0.626
+#>  2  2024 reference 1            ch    m         1     0    498 0.208     2.32 
+#>  3  2024 reference 1            ch    m         2     0    534 0.207     2.31 
+#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
+#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
+#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
+#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
+#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
+#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
+#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
 #> # ℹ 6,050 more rows
-#> # ℹ 6 more variables: imm_int <dbl>, imm_nat <dbl>, acq <dbl>, n_dec <dbl>,
-#> #   delta_n <dbl>, delta_perc <dbl>
+#> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
+#> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
 
 ## Migration between subregions
@@ -665,23 +645,7 @@ propop(
   binational = TRUE,
   subregional = TRUE
 )
-#> Running projection for: 1 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 2 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 3 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 4 (Scenario: reference)
-#> ✔ Year: 2024
-#> ✔ Year: 2025
-#> ✔ Year: 2026
-#> Running projection for: 5 (Scenario: reference)
+#> Running projection for: "1", "2", "3", "4", and "5" (Scenarios: reference)
 #> ✔ Year: 2024
 #> ✔ Year: 2025
 #> ✔ Year: 2026
@@ -700,20 +664,25 @@ propop(
 #> Projected population size by 2026:
 #> - Scenario "reference": 751167
 #> ════════════════════════════════════════════════════════════════════════════════
+#> 
+#> ── Please note ─────────────────────────────────────────────────────────────────
+#> ℹ As of propop v2.0.0, `propop()` uses tables instead of matrices to calculate projections. The matrix-function was renamed to `propop_legacy()`. It is still operational but won't be further maintained.
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
 #> # A tibble: 6,060 × 18
-#>     year scen  spatial_unit   age sex   nat   n_jan births   mor emi_int emi_nat
-#>    <dbl> <fct> <fct>        <dbl> <fct> <fct> <dbl>  <dbl> <dbl>   <dbl>   <dbl>
-#>  1  2024 refe… 1                0 m     ch        0   514. 1.85    0.626    4.38
-#>  2  2024 refe… 1                1 m     ch      498     0  0.208   2.32    10.3 
-#>  3  2024 refe… 1                2 m     ch      534     0  0.207   2.31    11.8 
-#>  4  2024 refe… 1                3 m     ch      607     0  0.206   2.52    11.3 
-#>  5  2024 refe… 1                4 m     ch      581     0  0       2.31     9.24
-#>  6  2024 refe… 1                5 m     ch      587     0  0       2.10     7.98
-#>  7  2024 refe… 1                6 m     ch      584     0  0       2.10     6.93
-#>  8  2024 refe… 1                7 m     ch      585     0  0       1.89     6.09
-#>  9  2024 refe… 1                8 m     ch      572     0  0       1.68     5.04
-#> 10  2024 refe… 1                9 m     ch      596     0  0       1.68     4.62
+#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0   514.     0 1.85      0.626
+#>  2  2024 reference 1            ch    m         1     0    498 0.208     2.32 
+#>  3  2024 reference 1            ch    m         2     0    534 0.207     2.31 
+#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
+#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
+#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
+#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
+#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
+#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
+#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
 #> # ℹ 6,050 more rows
-#> # ℹ 7 more variables: imm_int <dbl>, imm_nat <dbl>, acq <dbl>, mig_sub <dbl>,
-#> #   n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
+#> # ℹ 8 more variables: emi_nat_n <dbl>, mig_sub <dbl>, imm_int_n <dbl>,
+#> #   imm_nat_n <dbl>, acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```

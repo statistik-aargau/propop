@@ -38,8 +38,10 @@ Other contributors:
 
 - Lutz Benson \[contributor\]
 
+- Eric Meyer \[contributor\]
+
 - Thomas Knecht \[contributor\]
 
-- Eric Meyer \[contributor\]
+- Moana Stadelmann \[contributor\]
 
 - Statistik Aargau \[funder, copyright holder\]

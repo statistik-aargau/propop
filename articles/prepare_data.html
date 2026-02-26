@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Prepare data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/statistik-aargau/propop/blob/v1.4.1/vignettes/prepare_data.Rmd" class="external-link"><code>vignettes/prepare_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/statistik-aargau/propop/blob/main/vignettes/prepare_data.Rmd" class="external-link"><code>vignettes/prepare_data.Rmd</code></a></small>
       <div class="d-none name"><code>prepare_data.Rmd</code></div>
     </div>
 
@@ -104,8 +104,7 @@ levels.</em></p>
 <h2 id="required-data">Required data<a class="anchor" aria-label="anchor" href="#required-data"></a>
 </h2>
 <p>If you don’t have the information and data required to run
-<code><a href="../reference/propop.html">propop::propop()</a></code> (or <code><a href="../reference/project_raw.html">propop::project_raw()</a></code>),
-you can download most of the data from <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">STAT-TAB</a>. More
+<code><a href="../reference/propop.html">propop::propop()</a></code>, you can download most of the data from <a href="https://www.pxweb.bfs.admin.ch/pxweb" class="external-link">STAT-TAB</a>. More
 specifically, the information from the following tables are needed:</p>
 <table style="width:99%;" class="table">
 <caption>Overview of required FSO tables (STAT-TAB)</caption>
@@ -193,10 +192,10 @@ required spelling(s).</p>
 <p>Here’s an example of how to get the population for the canton of
 Aargau:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span></span>
 <span><span class="va">ag_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_population.html">get_population</a></span><span class="op">(</span></span>
 <span>  number_fso <span class="op">=</span> <span class="st">"px-x-0102010000_101"</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2023</span>, </span>
+<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  spatial_units <span class="op">=</span> <span class="st">"- Aargau"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Get the parameters for a sample canton (mind using the same spelling
