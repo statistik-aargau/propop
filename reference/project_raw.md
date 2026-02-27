@@ -249,7 +249,7 @@ data(fso_population)
 # run projection
 project_raw(
   parameters = fso_parameters |>
- dplyr::filter(scen == "reference"),
+    dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2026,
   n = fso_population |> dplyr::pull(n),

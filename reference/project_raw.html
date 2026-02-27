@@ -379,7 +379,7 @@ spatial units (typically cantons).</p></dd>
 <span class="r-in"><span><span class="co"># run projection</span></span></span>
 <span class="r-in"><span><span class="fu">project_raw</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  parameters <span class="op">=</span> <span class="va">fso_parameters</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scen</span> <span class="op">==</span> <span class="st">"reference"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  year_first <span class="op">=</span> <span class="fl">2025</span>,</span></span>
 <span class="r-in"><span>  year_last <span class="op">=</span> <span class="fl">2026</span>,</span></span>
 <span class="r-in"><span>  n <span class="op">=</span> <span class="va">fso_population</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>,</span></span>

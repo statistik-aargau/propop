@@ -28,18 +28,18 @@ data frame containing summary statistics.
 
 ``` r
 propop(
- parameters = fso_parameters,
- year_first = 2024,
- year_last = 2027,
- population = fso_population,
- subregional = FALSE,
- binational = TRUE
+  parameters = fso_parameters,
+  year_first = 2024,
+  year_last = 2027,
+  population = fso_population,
+  subregional = FALSE,
+  binational = TRUE
 ) |>
- check_balance()
+  check_balance()
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.4s]
+#> ✔ Processing completed in [1.3s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
