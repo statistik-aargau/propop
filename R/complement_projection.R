@@ -148,6 +148,11 @@ complement_projection <- function(skeleton,
       delta_perc = round((delta_n / n_jan) * 100, 3),
       # percentages for newborns are NAs
       delta_perc = ifelse(age == 0, NA, delta_perc),
+      # percentages if `n_jan`and `n_dec` are both zero
+      delta_perc = case_when(
+        (round(n_jan, 0) == 0 & round(n_dec, 0) == 0) ~ 0,
+        .default = delta_perc
+      ),
       year = year + 1
     ) |>
     dplyr::filter(year < max(year)) |>
