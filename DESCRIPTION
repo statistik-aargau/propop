@@ -71,7 +71,8 @@ Imports:
     stringi,
     tibble,
     tidyr,
-    vctrs
+    vctrs,
+    progressr
 Suggests: 
     constructive (>= 1.3.0),
     devtools,

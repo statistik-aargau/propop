@@ -175,6 +175,11 @@ propop <- function(
     subregional = NULL,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
+  ## Progress feedback ----
+  length_scen <- length(parameters |> distinct(scen) |> pull())
+
+  cli::cli_h1("Running projection for {.val {length_scen}} scenario(s).")
+
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>
@@ -562,26 +567,38 @@ propop <- function(
   init_population <- population |> rename(n_dec = n)
 
   # Split parameters by scenario
-  list_parameters_scen <- split(parameters, parameters$scen)
+ list_parameters_scen <- split(parameters, parameters$scen)
 
-  list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+ list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+   # Split parameters for each scenario into a list by year to iterate across
+   list_parameters <- split(parameters_scen, parameters_scen$year)
 
-    # Split parameters for each scenario into a list by year to iterate across
-    list_parameters <- split(parameters_scen, parameters_scen$year)
+   # Progress bar
+   progressr::with_progress({
 
-    # Run projection ----
-    # iterate across years
-    df_result <- purrr::reduce(
-      .x = list_parameters,
-      .f = \(population, parameters) project_population(
-        population, parameters,
-        subregional = subregional
-      ),
-      .init = init_population
-    ) |>
-      # remove initial population's year
-      filter(year != unique(init_population$year))
-  })
+     # define progress bar steps
+     p <- progressr::progressor(steps = (length(year_first:year_last)))
+
+     # Run projection ----
+     # iterate across years
+     df_result <- purrr::reduce(
+       .x = list_parameters,
+       .f = \(population, parameters) {
+         # progress bar status
+         progressr::handlers("cli")
+         p()
+         # projection
+         project_population(
+           population, parameters,
+           subregional = subregional
+         )
+       },
+       .init = init_population
+     ) |>
+       # remove initial population's year
+       filter(year != unique(init_population$year))
+   })
+ })
 
   # Combine all groups back into one data frame
   df_result <- do.call(rbind, list_out) |>
