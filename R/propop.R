@@ -555,9 +555,7 @@ propop <- function(
 
   # Prepare projection ----
   # Projection period
-
-  cli::cli_h1("Starting population projection")
-  cli::cli_progress_step("Processing...",
+  cli::cli_progress_step("Process...",
                          msg_done = "Processing completed in")
 
   proj_years <- year_first:year_last
@@ -585,8 +583,10 @@ propop <- function(
        .x = list_parameters,
        .f = \(population, parameters) {
          # progress bar status
-         progressr::handlers("cli")
-         p()
+         suppressWarnings({
+           progressr::handlers("cli")
+           p()
+         })
          # projection
          project_population(
            population, parameters,
