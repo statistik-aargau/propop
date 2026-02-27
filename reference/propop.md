@@ -277,9 +277,11 @@ propop(
   binational = TRUE
 )
 #> 
+#> ── Running projection for 3 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [1.2s]
+#> ✔ Processing completed in [1.1s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -330,9 +332,11 @@ propop(
   binational = TRUE
 )
 #> 
+#> ── Running projection for 2 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [567ms]
+#> ✔ Processing completed in [598ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

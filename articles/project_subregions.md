@@ -243,9 +243,11 @@ propop(
   subregional = FALSE
 )
 #> 
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [645ms]
+#> ✔ Processing completed in [654ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -539,9 +541,11 @@ propop(
   subregional = FALSE
 )
 #> 
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [634ms]
+#> ✔ Processing completed in [629ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -649,9 +653,11 @@ propop(
   subregional = TRUE
 )
 #> 
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [575ms]
+#> ✔ Processing completed in [579ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

@@ -320,9 +320,11 @@ projection_2025 <- propop(
   binational = TRUE
 )
 #> 
+#> ── Running projection for 3 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [9.5s]
+#> ✔ Processing completed in [9.7s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

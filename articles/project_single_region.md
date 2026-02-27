@@ -76,9 +76,11 @@ projection_canton_2030 <- propop(
   binational = TRUE
 )
 #> 
+#> ── Running projection for 3 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [2s]
+#> ✔ Processing completed in [2.2s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -175,9 +177,11 @@ projection_int <- propop(
   binational = FALSE
 )
 #> 
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
+#> 
 #> ── Starting population projection ──────────────────────────────────────────────
 #> ℹ Processing...
-#> ✔ Processing completed in [702ms]
+#> ✔ Processing completed in [759ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
