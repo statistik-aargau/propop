@@ -244,10 +244,8 @@ propop(
 )
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
-#> ✔ Processing completed in [649ms]
+#> ℹ Process...
+#> ✔ Processing completed in [637ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -542,10 +540,8 @@ propop(
 )
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
-#> ✔ Processing completed in [664ms]
+#> ℹ Process...
+#> ✔ Processing completed in [640ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -654,10 +650,8 @@ propop(
 )
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
-#> ✔ Processing completed in [591ms]
+#> ℹ Process...
+#> ✔ Processing completed in [562ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

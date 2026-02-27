@@ -278,10 +278,8 @@ propop(
 )
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
-#> ✔ Processing completed in [1.1s]
+#> ℹ Process...
+#> ✔ Processing completed in [1.2s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -333,10 +331,8 @@ propop(
 )
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
-#> ✔ Processing completed in [593ms]
+#> ℹ Process...
+#> ✔ Processing completed in [573ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

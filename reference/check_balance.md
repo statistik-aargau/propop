@@ -38,9 +38,7 @@ propop(
  check_balance()
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
-#> 
-#> ── Starting population projection ──────────────────────────────────────────────
-#> ℹ Processing...
+#> ℹ Process...
 #> ✔ Processing completed in [1.4s]
 #> 
 #> 
