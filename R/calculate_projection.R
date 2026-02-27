@@ -113,10 +113,13 @@ calculate_projection <- function(.data, subregional = subregional) {
     # prune columns
     select(-c(mor_n_int, mor_n_ch, mor))
 
-  # Optional Step 5: Subregional migration ----
+  # Step 5: Subregional migration ----
   if (!is.null(subregional) && subregional == "net") {
     # Add net saldo for subregional migration
-    df_out |> mutate(n_dec = n_dec + mig_sub)
+    df_out |> mutate(
+      n_dec = n_dec + mig_sub,
+      n_dec = case_when(n_dec < 0 ~ 0, .default = n_dec)
+    )
   } else if (!is.null(subregional) && subregional == "rate") {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
@@ -144,10 +147,12 @@ calculate_projection <- function(.data, subregional = subregional) {
       ) |>
       dplyr::mutate(
         imm_sub_n = imm_sub * emi_sub_n_total,
-        n_dec = n_dec + imm_sub_n
+        n_dec = n_dec + imm_sub_n,
+        n_dec = case_when(n_dec < 0 ~ 0, .default = n_dec)
       )
   } else {
     # No subregional migration
-    return(df_out)
+    df_out |>
+      mutate(n_dec = case_when(n_dec < 0 ~ 0, .default = n_dec))
   }
 }

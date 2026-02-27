@@ -30,6 +30,14 @@ together with `complement_projection()`, `create_transition_matrix()`,
 `create_empty_vector()` and `project_raw()`. `propop_legacy()` and associated
 helper function will stay operational.
 
+## Bugfix
+- The population at the end of the each projected year (`n_dec`) must not contain
+negative population numbers. If that's the case, negative numbers are replaced
+by zeros before projecting the next year. It is unlikely that larger population 
+groups such as on the cantonal level are affected by this bug. However, 
+smaller demographic units may be affected for certain groups, e.g. elderly people 
+with very low population numbers but high mortality rates.
+
 # propop 1.4.1
 - maintenance work; no breaking changes
 
