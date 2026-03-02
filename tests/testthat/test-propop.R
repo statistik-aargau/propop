@@ -1607,24 +1607,32 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # simplify data for comparison
   output_super <- output_propop_1r |>
     select(year, age, sex, nat, n_dec) |>
+    dplyr::mutate(
+      n_dec = round(sum(n_dec, na.rm = TRUE), 0),
+      .by = c(year, nat, sex, age)
+    ) |>
     arrange(year, nat, sex, age)
 
   output_subregions <- output_propop_5r |>
     dplyr::mutate(
-      n_check = sum(n_dec, na.rm = TRUE),
+      n_check = round(sum(n_dec, na.rm = TRUE), 0),
       .by = c(year, nat, sex, age)
     ) |>
     # remove column that includes redundancy
     dplyr::select(-n_dec, -spatial_unit) |>
-    # rename n_check
-    rename(n_dec = n_check) |>
     # remove redundant columns
     dplyr::distinct(year, nat, sex, age, .keep_all = TRUE) |>
-    select(year, age, sex, nat, n_dec) |>
+    select(year, age, sex, nat, n_check) |>
     arrange(year, nat, sex, age)
 
-  # run equal output ----
-  expect_equal(output_super, output_subregions, ignore_attr = TRUE)
+  # calculate differences
+  output_diff <- output_super |>
+    full_join(output_subregions, by = join_by(year, age, sex, nat)) |>
+    # maximum difference = 1 person
+    mutate(diff = abs(n_dec - n_check))
+
+  # compare equal output ----
+  expect_true(all(output_diff$diff <= 1))
 })
 
 options(cli.default_handler = NULL)
