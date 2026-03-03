@@ -616,7 +616,12 @@ propop <- function(
         (round(n_jan, 0) == 0 & round(n_dec, 0) == 0) ~ 0,
         .default = delta_perc
       )
-    )
+    ) |>
+    select(any_of(c(
+      "year", "scen", "spatial_unit", "nat", "sex", "age", "n_jan", "births",
+      "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n",  "acq_n",
+      "mig_sub", "emi_sub_n", "imm_sub_n", "n_dec", "delta_n", "delta_perc"
+    )))
 
   # Remove row names
   rownames(df_result) <- NULL
