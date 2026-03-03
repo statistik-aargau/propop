@@ -279,7 +279,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.2s]
+#> ✔ Processing completed in [1.1s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -304,18 +304,18 @@ propop(
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 4,848 × 17
-#>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr> <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0  2633.     0 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1     0   2371 1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2     0   2542 0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3     0   2891 0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4     0   2766 0         13.0 
-#>  6  2024 high  Aargau       ch    m         5     0   2794 0         12.0 
-#>  7  2024 high  Aargau       ch    m         6     0   2782 0         11.0 
-#>  8  2024 high  Aargau       ch    m         7     0   2787 0         10.00
-#>  9  2024 high  Aargau       ch    m         8     0   2726 0          9.00
-#> 10  2024 high  Aargau       ch    m         9     0   2837 0          9.00
+#>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
+#>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 high  Aargau       ch    m         0     0  2633. 9.00       6.00
+#>  2  2024 high  Aargau       ch    m         1  2371     0  1.000     13.0 
+#>  3  2024 high  Aargau       ch    m         2  2542     0  0.998     13.0 
+#>  4  2024 high  Aargau       ch    m         3  2891     0  0.983     14.0 
+#>  5  2024 high  Aargau       ch    m         4  2766     0  0         13.0 
+#>  6  2024 high  Aargau       ch    m         5  2794     0  0         12.0 
+#>  7  2024 high  Aargau       ch    m         6  2782     0  0         11.0 
+#>  8  2024 high  Aargau       ch    m         7  2787     0  0         10.00
+#>  9  2024 high  Aargau       ch    m         8  2726     0  0          9.00
+#> 10  2024 high  Aargau       ch    m         9  2837     0  0          9.00
 #> # ℹ 4,838 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
@@ -332,7 +332,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [611ms]
+#> ✔ Processing completed in [575ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -356,18 +356,18 @@ propop(
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 2,424 × 17
-#>     year scen  spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr> <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0  2633.     0 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1     0   2371 1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2     0   2542 0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3     0   2891 0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4     0   2766 0         13.0 
-#>  6  2024 high  Aargau       ch    m         5     0   2794 0         12.0 
-#>  7  2024 high  Aargau       ch    m         6     0   2782 0         11.0 
-#>  8  2024 high  Aargau       ch    m         7     0   2787 0         10.00
-#>  9  2024 high  Aargau       ch    m         8     0   2726 0          9.00
-#> 10  2024 high  Aargau       ch    m         9     0   2837 0          9.00
+#>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
+#>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 high  Aargau       ch    m         0     0  2633. 9.00       6.00
+#>  2  2024 high  Aargau       ch    m         1  2371     0  1.000     13.0 
+#>  3  2024 high  Aargau       ch    m         2  2542     0  0.998     13.0 
+#>  4  2024 high  Aargau       ch    m         3  2891     0  0.983     14.0 
+#>  5  2024 high  Aargau       ch    m         4  2766     0  0         13.0 
+#>  6  2024 high  Aargau       ch    m         5  2794     0  0         12.0 
+#>  7  2024 high  Aargau       ch    m         6  2782     0  0         11.0 
+#>  8  2024 high  Aargau       ch    m         7  2787     0  0         10.00
+#>  9  2024 high  Aargau       ch    m         8  2726     0  0          9.00
+#> 10  2024 high  Aargau       ch    m         9  2837     0  0          9.00
 #> # ℹ 2,414 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>

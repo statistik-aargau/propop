@@ -245,7 +245,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [712ms]
+#> ✔ Processing completed in [701ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -267,18 +267,18 @@ propop(
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 6,060 × 17
-#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0   517.     0 1.89      0.630
-#>  2  2024 reference 1            ch    m         1     0    498 0.210     2.32 
-#>  3  2024 reference 1            ch    m         2     0    534 0.209     2.31 
-#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
-#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
-#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
-#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
-#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
-#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
-#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
+#>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0     0   517. 1.89      0.630
+#>  2  2024 reference 1            ch    m         1   498     0  0.210     2.32 
+#>  3  2024 reference 1            ch    m         2   534     0  0.209     2.31 
+#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
+#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
+#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
+#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
+#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
+#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
+#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
 #> # ℹ 6,050 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
@@ -541,7 +541,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [703ms]
+#> ✔ Processing completed in [661ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -563,18 +563,18 @@ propop(
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 6,060 × 17
-#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0   514.     0 1.85      0.626
-#>  2  2024 reference 1            ch    m         1     0    498 0.208     2.32 
-#>  3  2024 reference 1            ch    m         2     0    534 0.207     2.31 
-#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
-#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
-#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
-#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
-#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
-#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
-#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
+#>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0     0   514. 1.85      0.626
+#>  2  2024 reference 1            ch    m         1   498     0  0.208     2.32 
+#>  3  2024 reference 1            ch    m         2   534     0  0.207     2.31 
+#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
+#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
+#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
+#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
+#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
+#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
+#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
 #> # ℹ 6,050 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
@@ -651,7 +651,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [609ms]
+#> ✔ Processing completed in [571ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -673,19 +673,19 @@ propop(
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 6,060 × 18
-#>     year scen      spatial_unit nat   sex     age births n_jan mor_n emi_int_n
-#>    <int> <chr>     <chr>        <fct> <fct> <dbl>  <dbl> <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0   514.     0 1.85      0.626
-#>  2  2024 reference 1            ch    m         1     0    498 0.208     2.32 
-#>  3  2024 reference 1            ch    m         2     0    534 0.207     2.31 
-#>  4  2024 reference 1            ch    m         3     0    607 0.206     2.52 
-#>  5  2024 reference 1            ch    m         4     0    581 0         2.31 
-#>  6  2024 reference 1            ch    m         5     0    587 0         2.10 
-#>  7  2024 reference 1            ch    m         6     0    584 0         2.10 
-#>  8  2024 reference 1            ch    m         7     0    585 0         1.89 
-#>  9  2024 reference 1            ch    m         8     0    572 0         1.68 
-#> 10  2024 reference 1            ch    m         9     0    596 0         1.68 
+#>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
+#>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
+#>  1  2024 reference 1            ch    m         0     0   514. 1.85      0.626
+#>  2  2024 reference 1            ch    m         1   498     0  0.208     2.32 
+#>  3  2024 reference 1            ch    m         2   534     0  0.207     2.31 
+#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
+#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
+#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
+#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
+#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
+#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
+#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
 #> # ℹ 6,050 more rows
-#> # ℹ 8 more variables: emi_nat_n <dbl>, mig_sub <dbl>, imm_int_n <dbl>,
-#> #   imm_nat_n <dbl>, acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
+#> # ℹ 8 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
+#> #   acq_n <dbl>, mig_sub <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
