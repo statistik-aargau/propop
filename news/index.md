@@ -14,9 +14,10 @@
   run. The data input remains unchanged.
 
 - While implementing this alternative computation we fixed a minor bug
-  that had a tiny effect on the oldest age group. The function now
-  offers a new feature: subregional migration can be calculated using
-  rates in addition to using net numbers.
+  that had a tiny effect on the oldest age group.
+
+- The function now offers a new feature: subregional migration can be
+  calculated using rates in addition to using net numbers.
 
 - Projection output: The components now include the suffix `_n`, which
   more clearly  
