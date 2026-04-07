@@ -162,7 +162,7 @@ calculate_newborns <- function(
     df_newborns_out <- df_newborns_out |>
       mutate(
         # emigration to other subregional units
-        emi_sub_n = n_jan * (emi_sub * (1 - (mor / 2))),
+        emi_sub_n = births * (emi_sub * (1 - (mor / 2))),
         # calculate the population balance
         n_dec = n_dec - emi_sub_n
       )
