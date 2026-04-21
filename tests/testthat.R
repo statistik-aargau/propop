@@ -8,6 +8,4 @@
 
 library(testthat)
 
-options(constructive_opts_template = list(constructive::opts_tbl_df(recycle = FALSE)))
-
 test_check("propop")
