@@ -479,8 +479,24 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # Run snapshot 1 region ----
-  attr(output_propop_1r, "out.attrs") <- NULL
-  expect_snapshot(dput(output_propop_1r))
+  # Remove attributes to obtain a stable snapshot
+  adapted_dput <- function(x) {
+    # Remove attributes
+    attr(x, "out.attrs") <- NULL
+
+    # Normalize factor attribute order
+    x[] <- lapply(x, function(col) {
+      if (is.factor(col)) factor(col, levels = levels(col))
+      else col
+    })
+
+    # Force consistent class attribute position by rebuilding the tibble
+    x <- tibble::as_tibble(as.data.frame(x))
+
+    dput(x)
+  }
+
+  expect_snapshot(adapted_dput(output_propop_1r))
 
   # Prepare snapshot for 5 subregions -----
 
