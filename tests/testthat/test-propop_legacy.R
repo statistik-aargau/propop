@@ -479,9 +479,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # Run snapshot 1 region ----
+  attr(output_propop_1r, "out.attrs") <- NULL
   expect_snapshot(dput(output_propop_1r))
-
-
 
   # Prepare snapshot for 5 subregions -----
 
@@ -1135,6 +1134,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # run snapshot 5 subregions ----
+  attr(output_propop_5r, "out.attrs") <- NULL
   expect_snapshot(dput(output_propop_5r))
 
 
