@@ -498,17 +498,27 @@ propop(
 
 # Migration between subregions
 
-In `propop` you may account for migration between subregions. To adjust the 
-population size in each subregion according to past migration, the column 
-`mig_sub` (= migration in subregions) is required in the parameter data frame.
+In `propop` you may account for migration between subregions by specifying so 
+in the `propop()` argument `subregional = `. You can choose between two mathematical 
+approaches, using either net migration numbers (`subregional = net`) or migration 
+rates (`subregional = rate`). For both approaches, extra columns in the parameter 
+data frame are required.
 
-Here we add `mig_sub` as a *fictitious* parameter the parameter input file. 
+The following examples explain how to adjust the population size in each subregion 
+according to past migration.
+
+## Subregional net migration
+
+If you want to use **net migration numbers**, the column `mig_sub` is required in the 
+parameter data frame.
+
+Here we add `mig_sub` as a *fictitious* parameter in the parameter input file. 
 
 > In real life you may use population register records as we described in the
 section "Distribution of people according to past migration". 
 
 ```{r, eval = TRUE}
-parameters_sub_mig <- fso_parameters_sub_distr_hist |>
+parameters_net <- fso_parameters_sub_distr_hist |> 
   # Create fictitious migration parameters
   dplyr::mutate(
     mig_sub = dplyr::case_when(
@@ -546,11 +556,11 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
 ```
 
 Now that all required input files are available, we can set `subregional` to
-`TRUE` and use `propop::propop()`:
+`net` and use `propop::propop()`:
 
 ```{r project-3, eval = TRUE}
 propop(
-  parameters = parameters_sub_mig,
+  parameters = parameters_net,
   year_first = 2024,
   year_last = 2026,
   age_groups = 101,
@@ -559,6 +569,37 @@ propop(
   share_born_female = 100 / 205,
   population = df_population,
   binational = TRUE,
-  subregional = TRUE
+  subregional = "net"
+)
+```
+
+
+## Subregional migration rates
+
+If you prefer working with **migration rates**, columns for the emigration rate 
+(`emi_sub`) and for the immigration rate (`imm_sub`) is needed.
+
+Here we add `emi_sub` and `imm_sub` as *fictitious* parameters in the parameter input file. 
+
+> In real life you may use population register records as we described in the
+section "Distribution of people according to past migration". 
+
+[TODO]
+
+Now that all required input files are available, we can set `subregional` to
+`rate` and use `propop::propop()`:
+
+```{r project-4, eval = FALSE}
+propop(
+  parameters = parameters_rate,
+  year_first = 2024,
+  year_last = 2026,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = "rate"
 )
 ```
