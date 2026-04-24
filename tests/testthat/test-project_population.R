@@ -16,7 +16,7 @@ test_that("calculate project population", {
   # population |>
   #   constructive::construct()
   population_short <- tibble::tibble(
-    year = rep(2023L, 404L),
+    year = rep(2024L, 404L),
     spatial_unit = rep("Aargau", 404L),
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -56,10 +56,10 @@ test_that("calculate project population", {
 
   ### Parameters for one spatial unit ----
   # fso_parameters |>
-  #   filter(year == 2024) |>
+  #   filter(year == 2025) |>
   #   constructive::construct()
   parameters_short_1 <- tibble::tibble(
-    year = rep(2024, 404L),
+    year = rep(2025, 404L),
     scen = rep("reference", 404L),
     spatial_unit = rep("Aargau", 404L),
     nat = rep(c("ch", "int"), each = 202L),
@@ -1318,7 +1318,7 @@ test_that("calculate project population", {
   # expect to be different
   expect_failure(expect_equal(
     project_population_default_1 |>
-      filter(year == 2024) |>
+      filter(year == 2025) |>
       select(-c(year)),
     project_population_default_2 |>
       filter(year == 2025) |>
@@ -1334,7 +1334,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
   ## FSO parameters ----
   # fso_parameters |>
-  #   dplyr::filter(year == 2024 & scen == "reference") |>
+  #   dplyr::filter(year == 2025 & scen == "reference") |>
   #   constructive::construct()
 
   parameters_short_1r <- tibble::tibble(
@@ -1373,7 +1373,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
       199, 234, 207, 226, 204, 156, 152, 94, 93, 60, 60, 34, 30, 21, 21, 13, 10, 4,
       3, 3
     ),
-    year = rep(2024, 404L),
+    year = rep(2025, 404L),
     scen = rep("reference", 404L),
     spatial_unit = rep("Aargau", 404L),
     birthrate = rep(
@@ -1739,7 +1739,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     binational = TRUE,
     subregional = FALSE
   ) |>
-    filter(year == 2024)
+    filter(year == 2025)
 
   # Check if components add up
   balance_check <- check_balance(output_propop_1r)
@@ -1762,7 +1762,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
   ## FSO parameters with fictitious subregions ----
   # fso_parameters |>
-  #   dplyr::filter(year == 2024 & scen == "reference") |>
+  #   dplyr::filter(year == 2025 & scen == "reference") |>
   #   # Create fictitious intra-cantonal migration parameter
   #   dplyr::rowwise() |>
   #   dplyr::mutate(
@@ -1821,7 +1821,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
       ),
       rep(rep(c(5L, 10L), 4), c(300L, 1L, 91L, 1L, 2L, 1L, 3L, 1L))
     ),
-    year = rep(2024, 2020L),
+    year = rep(2025, 2020L),
     scen = rep("reference", 2020L),
     spatial_unit = rep(c("1", "2", "3", "4", "5"), 404),
     birthrate = rep(
@@ -2393,7 +2393,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     binational = TRUE,
     subregional = "net"
   ) |>
-    filter(year == 2024)
+    filter(year == 2025)
 
   # Check if components add up
   balance_check <- check_balance(output_propop_5r)
@@ -2421,7 +2421,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     binational = TRUE,
     subregional = NULL
   ) |>
-    filter(year == 2024)
+    filter(year == 2025)
 
   # Check if components add up
   balance_check <- check_balance(output_propop_5r_F)

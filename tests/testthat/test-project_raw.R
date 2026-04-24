@@ -370,7 +370,7 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
   #   constructive::construct()
   # nolint end
   population_short <- tibble::tibble(
-    year = rep(2024, 404L),
+    year = rep(2025, 404L),
     spatial_unit = rep("Aargau", 404L),
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -920,7 +920,7 @@ test_that("project_raw 0-50 year olds 1 vs. 5 regions", {
   # nolint end
 
   population_short_subregions <- tibble::tibble(
-    year = rep(2024, 2020L),
+    year = rep(2025, 2020L),
     spatial_unit = rep("Aargau", 2020L),
     nat = rep(c("ch", "int"), each = 1010L),
     sex = rep(rep(c("m", "f"), 2), each = 505L),
