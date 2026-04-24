@@ -13,10 +13,10 @@ test_that("calculate projection test", {
   #     population_aged,
   #     by = c("year", "spatial_unit", "nat", "sex", "age")
   #   ) |>
-  #   filter(year == 2024) |>
+  #   filter(year == 2025) |>
   #   constructive::construct()
   population_and_parameters_short <- tibble::tibble(
-    year = rep(2024L, 400L),
+    year = rep(2025L, 400L),
     scen = rep("high", 400L),
     spatial_unit = rep("Aargau", 400L),
     nat = rep(c("ch", "int"), each = 200L),

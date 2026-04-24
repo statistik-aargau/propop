@@ -22,7 +22,7 @@ checks if the sum is equal to the population at the end of the year (\code{n_dec
 \examples{
 propop(
   parameters = fso_parameters,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2027,
   population = fso_population,
   subregional = FALSE,

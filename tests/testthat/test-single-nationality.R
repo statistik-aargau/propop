@@ -220,7 +220,7 @@ test_that("propop single nation fails if 1 level is missing in `nat`", {
   #   constructive::construct()
 
   pop_ch <- tibble::tibble(
-    year = rep(2024, 202L),
+    year = rep(2025, 202L),
     spatial_unit = rep("Aargau", 202L),
     nat = rep("ch", 202L),
     sex = rep(c("m", "f"), each = 101L),
@@ -672,7 +672,7 @@ test_that("propop single nation projection with 1 region", {
   #   constructive::construct()
 
   pop_sub_F_binat_F_CH <- tibble::tibble(
-    year = rep(2024, 202L),
+    year = rep(2025, 202L),
     spatial_unit = rep("Aargau", 202L),
     sex = rep(c("m", "f"), each = 101L),
     age = rep(seq(0, 100, by = 1), 2),
@@ -707,7 +707,7 @@ test_that("propop single nation projection with 1 region", {
   #   constructive::construct()
 
   pop_sub_F_binat_F_INT <- tibble::tibble(
-    year = rep(2024, 202L),
+    year = rep(2025, 202L),
     spatial_unit = rep("Aargau", 202L),
     sex = rep(c("m", "f"), each = 101L),
     age = rep(seq(0, 100, by = 1), 2),
@@ -1120,7 +1120,7 @@ test_that("propop single nation projection with 5 regions", {
   #   constructive::construct()
 
   population_sub_CH <- tibble::tibble(
-    year = rep(2024, 1010L),
+    year = rep(2025, 1010L),
     spatial_unit = rep(c("1", "2", "3", "4", "5"), 202),
     sex = rep(c("m", "f"), each = 505L),
     age = rep(rep(seq(0, 100, by = 1), 2), each = 5L),

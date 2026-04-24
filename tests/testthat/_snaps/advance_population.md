@@ -4,11 +4,11 @@
       constructive::construct(population_prev_short_default)
     Output
       tibble::tibble(
-        year = 2023L,
+        year = rep(2023L, 400L),
         nat = rep(c("ch", "int"), each = 200L),
         sex = factor(rep(rep(c("m", "f"), 2), each = 100L), levels = c("m", "f")),
         age = rep(seq(1, 100, by = 1), 4),
-        spatial_unit = "Aargau",
+        spatial_unit = rep("Aargau", 400L),
         n_jan = c(
           2371, 2542, 2891, 2766, 2794, 2782, 2787, 2726, 2837, 2866, 2760, 2766, 2799,
           2823, 2707, 2768, 2660, 2744, 2759, 2767, 2730, 2686, 2639, 2872, 2812, 2874,
