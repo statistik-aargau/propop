@@ -10,11 +10,13 @@ test_that("Simple propop test for ci", {
       parameters = fso_parameters |>
         dplyr::filter(scen == "reference"),
       year_first = 2024,
-      year_last = 2024,
+      year_last = 2026,
       population = fso_population,
       subregional = FALSE,
       binational = TRUE
-    )
+    ) |>
+      dplyr::select(n_dec) |>
+      dplyr::pull()
   ))
 })
 
