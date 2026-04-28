@@ -8,6 +8,10 @@
         emi_int_ch_m_0 = 0.002, emi_int_int_f_0 = 0.003, emi_int_int_m_0 = 0.004,
         emi_nat_ch_f = 0.001, emi_nat_ch_m = 0.002, emi_nat_int_f = 0.004,
         emi_nat_int_m = 0.0023, acq_int_f_0 = 0.01, acq_int_m_0 = 0.01))
+    Condition
+      Warning:
+      `create_fertility_matrix()` was deprecated in propop 2.0.0.
+      i `create_fertility_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
     Output
       new(
         "dgCMatrix" |>
