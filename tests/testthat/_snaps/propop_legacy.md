@@ -4,58 +4,6 @@
       dput(dplyr::pull(dplyr::select(propop_legacy(parameters = dplyr::filter(
         fso_parameters, scen == "reference"), year_first = 2024, year_last = 2026,
       population = fso_population, subregional = FALSE, binational = TRUE), n_dec)))
-    Condition
-      Warning:
-      `project_legacy()` was deprecated in propop 2.0.0.
-      i `project_legacy()` is still operational but won't be further maintained
-      Warning:
-      `project_raw()` was deprecated in propop 2.0.0.
-      i `project_raw()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_empty_vector()` was deprecated in propop 2.0.0.
-      i `create_empty_vector()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_empty_vector()` was deprecated in propop 2.0.0.
-      i `create_empty_vector()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_transition_matrix()` was deprecated in propop 2.0.0.
-      i `create_transition_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_fertility_matrix()` was deprecated in propop 2.0.0.
-      i `create_fertility_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_mortality_matrix()` was deprecated in propop 2.0.0.
-      i `create_mortality_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_birth_matrix()` was deprecated in propop 2.0.0.
-      i `create_birth_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_transition_matrix()` was deprecated in propop 2.0.0.
-      i `create_transition_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_fertility_matrix()` was deprecated in propop 2.0.0.
-      i `create_fertility_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_mortality_matrix()` was deprecated in propop 2.0.0.
-      i `create_mortality_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_birth_matrix()` was deprecated in propop 2.0.0.
-      i `create_birth_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_transition_matrix()` was deprecated in propop 2.0.0.
-      i `create_transition_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_fertility_matrix()` was deprecated in propop 2.0.0.
-      i `create_fertility_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_mortality_matrix()` was deprecated in propop 2.0.0.
-      i `create_mortality_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `create_birth_matrix()` was deprecated in propop 2.0.0.
-      i `create_birth_matrix()` is still operational as part of `propop_legacy()` but won't be further maintained
-      Warning:
-      `complement_projection()` was deprecated in propop 2.0.0.
-      i `complement_projection()` is still operational as part of `propop_legacy()` but won't be further maintained
     Output
       c(2480.64976327032, 2457.17289056598, 2595.04674950346, 2935.01506179652, 
       2804.00128, 2826.999509, 2813.998795, 2816.002131, 2759.999518, 
