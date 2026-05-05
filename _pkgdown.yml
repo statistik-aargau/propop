@@ -34,6 +34,7 @@ reference:
   contents:
   - get_parameters
   - get_population
+  - calculate_emi_mean
 - title: "Run projections"
   desc: >
     Functions for running population projections
