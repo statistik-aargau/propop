@@ -509,15 +509,14 @@ rates (`subregional = rate`). For both approaches, extra columns in the paramete
 data frame are required. We recommend using the rate approach because the net 
 approach may lead to negative number of people in very small groups.
 
-The following two sections illustrate how to use the rate and net approach to  
-account for migration between subregions.
+The following two sections illustrate how to use the rate and net approach.
 
 
 ## Subregional migration rates
 
 ### Preparation
 
-To use the **rate** method in {propop}, the parameters data frame must include 
+To use the **rate** method in `propop`, the parameters data frame must include 
 emigration and immigration rates:   
 
 - The **emigration rate** (`emi_sub`) is the typical proportion of a chosen spatial 
@@ -526,28 +525,19 @@ moves away from a location each year. One way to estimate this value is to calcu
 the annual emigration proportion for the group in past years and then take the mean 
 of these annual rates. For example, if 2 out of 10 people moved away in year 1 and 
 3 out of 10 moved away in year 2, the estimate would be (0.2 + 0.3) / 2 = 0.25.
+The function `propop::calculate_emi_mean()` makes it easy to compute `emi_sub`.  
 - The **immigration share** (`imm_sub`) represents, for each spatial unit, 
 the proportion of all within-region migrants who settle there. This value 
 can be calculated using past migration. The level of detail can range from low 
 (e.g., one estimate per district for everyone in 10-year age groups) 
 to high (e.g., a separate estimate for each age / sex / nationality group in 
-every municipality).
-
-### Redistribution
-
-When running {propop}, the rate‑based method reallocates individuals each year 
-for the chosen spatial and demographic resolution in three steps: 
-
-1. The number of people who move to another location within the region is computed
-based on `emi_sub`.    
-1. This total number of people is summed up.  
-1. This sum is then distributed among the locations using `imm_sub`. 
-
-### Data and functions
+every municipality). To implement this step, the function `propop::calculate_shares()`
+may be useful.  
 
 The required <span style="color: #ffd700; font-weight:bold;">data</span> and available 
 <span style="color: #00bfff; font-weight:bold;">functions</span> 
 to implement the rate approach are visualized in the following figure: 
+
 
 ```{r diagram-rate-method-propop, results='asis', echo=FALSE}
 
@@ -565,14 +555,14 @@ calc_emi [label =  'calc_\nemi_\nmean']
 
 data2 [label = 'emi_sub\n= average\n emigration\n per group', shape = folder, fillcolor = gold]
 
-calc_hist [label =  'calc_\nhist_\n_shares']
+calc_hist [label =  'calc_\nhist_\nshares']
 
-data3 [label = 'imm_sub\n= immigration\n share per group', shape = folder, fillcolor = gold]
+data3 [label = 'imm_sub\n= immigration\n share\nper group', shape = folder, fillcolor = gold]
 
 propop [label =  'propop']
 
 
-result [label= 'Result', shape = folder, fillcolor = gold]
+result [label= 'Population\nprojection\nresult', shape = folder, fillcolor = gold]
 
 # edge definitions with the node IDs
 # {data1 data2}  -> process -> statistical -> result
@@ -580,10 +570,22 @@ result [label= 'Result', shape = folder, fillcolor = gold]
 {data1}  -> calc_emi -> data2 -> propop 
 {data1}  ->calc_hist -> data3 -> propop -> result
 
-}", height = 100, width = 800)
+}", height = 200, width = 800)
 
 
 ```
+
+### Redistribution
+
+When running `propop()`, the rate‑based method reallocates individuals each year 
+for the chosen spatial and demographic resolution in three steps: 
+
+1. The number of people who move to another location within the region is computed
+based on `emi_sub` and the group's size at the beginning of the year (`n_jan`).  
+1. These emigrants are added up and put into a distribution "pool".  
+1. The people in this pool are then distributed among the locations using `imm_sub`. 
+
+This procedure is repeated in each year of the projection.   
 
 ### Numerical example
 
@@ -600,6 +602,8 @@ Now that all required input files are available, we can set `subregional` to
 `rate` and use `propop::propop()`:
 
 ```{r project-4, eval = FALSE}
+load("~/git/propop/data/ag_population_subregional.rda")
+
 propop(
   parameters = parameters_rate,
   year_first = 2024,
