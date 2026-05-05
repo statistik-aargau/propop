@@ -10,7 +10,7 @@ vignette: >
   %\VignetteIndexEntry{Projections for subregions}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+  editor_options: 
   markdown: 
     wrap: 84
   chunk_output_type: console
@@ -23,14 +23,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ```{r setup, message = FALSE, warning=FALSE}
 library(propop)
 ```
-
-
-
-
 
 # Overview
 
@@ -94,9 +89,9 @@ fso_parameters_sub <- fso_parameters |>
   tidyr::uncount(5) |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |>
-    dplyr::filter(
-      scen == "reference"
-    )))) |>
+                                                       dplyr::filter(
+                                                         scen == "reference"
+                                                       )))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
@@ -165,7 +160,7 @@ df_population_shares |>
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(c("share"),
-    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+                  backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
   )
 ```
 \ 
@@ -424,7 +419,7 @@ data_distr_hist <- data_distr_hist_int |>
     "prop_10", "use_age_group", "n", "n_sum"
   )) |>
   dplyr::left_join(data_distr_hist_nat,
-    by = c("spatial_unit", "nat", "sex", "age")
+                   by = c("spatial_unit", "nat", "sex", "age")
   )
 
 # Add shares to the data frame that holds the projection parameters
@@ -548,14 +543,14 @@ graph [layout = dot, rankdir = LR]
 # define the global styles of the nodes. We can override these in box if we wish
 node [shape = rectangle, style = \"filled,rounded\", fillcolor = deepskyblue, fontname = Helvetica]
 
-data1 [label = 'Past migration\n= individual\n migration\n events', shape = folder, fillcolor = gold]
+data1 [label = 'Aggregated\npast migration', shape = folder, fillcolor = gold]
 # data2 [label = 'Dataset 2', shape = folder, fillcolor = gold]
 
-calc_emi [label =  'calc_\nemi_\nmean']
+calc_emi [label =  'calculate\n_emi_\nmean']
 
-data2 [label = 'emi_sub\n= average\n emigration\n per group', shape = folder, fillcolor = gold]
+data2 [label = 'emi_rate\n= average\n emigration\n per group', shape = folder, fillcolor = gold]
 
-calc_hist [label =  'calc_\nhist_\nshares']
+calc_hist [label =  'calculate\n_hist_\nshares']
 
 data3 [label = 'imm_sub\n= immigration\n share\nper group', shape = folder, fillcolor = gold]
 
@@ -589,23 +584,39 @@ This procedure is repeated in each year of the projection.
 
 ### Numerical example
 
-To illustrate the rate approach, we add `emi_sub` and `imm_sub` as fictitious parameters in the parameter input file. 
+To illustrate the rate approach, we start with aggregated past migration records 
+(2022–2025) for five regions in the Canton of Aargau. We first use `calculate_emi_mean()` 
+to calculate `emi_rate`.  
 
-> In real life you may use population register records as we described in the
-section `Distribution of people according to past migration`. 
+Now that all required input files are available, we can set `subregional` to
+`rate` and use `propop::propop()`:
 
-[TODO]
 
+# CONTINUE HERE
+
+```{r emi-mean}
+data("ag_migration_subregional") 
+
+# Compute mean for each demographic group
+parameters_rate <- calculate_emi_mean(
+  past_migration = ag_migration_subregional,
+  n_jan = n_jan,
+  births = births, 
+  emi_n = emi_n,
+  spatial_unit = spatial_unit,
+  year_n = NULL
+)
+```
 
 
 Now that all required input files are available, we can set `subregional` to
 `rate` and use `propop::propop()`:
 
 ```{r project-4, eval = FALSE}
-load("~/git/propop/data/ag_population_subregional.rda")
+data("ag_population_subregional")
 
 propop(
-  parameters = parameters_rate,
+  parameters = ag_population_subregional,
   year_first = 2024,
   year_last = 2026,
   age_groups = 101,
