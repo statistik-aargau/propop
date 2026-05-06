@@ -2,52 +2,52 @@
 % Please edit documentation in R/calculate_shares.R
 \name{calculate_shares}
 \alias{calculate_shares}
-\title{Calculate shares for distributing people among subregions}
+\title{Calculate shares for distributing immigration among subregions}
 \usage{
-calculate_shares(data, col, age_group = "default")
+calculate_shares(
+  hist_data,
+  imm_n,
+  year_range = NULL,
+  age_group = 10,
+  binational = TRUE,
+  two_sex = TRUE
+)
 }
 \arguments{
-\item{data}{data frame, historical records (e.g., immigration from
-other cantons or countries) aggregated across demographic groups.}
+\item{hist_data}{data frame, historical records (e.g., immigration from
+other cantons, countries or subregions). Required columns are: \code{year},
+\code{spatial_unit}, \code{age} and a column that contains historical migration
+records aggregated by age demographic group. The columns \code{nat} and \code{sex}
+are optional.}
 
-\item{col}{character, name of the column which contains the
-data for historical occurrences.}
+\item{imm_n}{character, name of the column which contains the
+data for aggregated historical migration records.}
 
-\item{age_group}{character \bold{(optional)}, either 1-year, 5-year, or
-10-year age group used as basis for calculating shares. If the argument is
-not specified, the default attempts to avoid age groups without any
-observations.
-It prioritizes age groups based on their resolution (1-year age groups =
-most informative and highest priority, 10-year age groups = least informative
-and lowest priority).
-Users can override the default and enforce the use of a specific age group
-for all demographic groups by setting the argument to "age_group_5" or
-"age_group_10".}
+\item{year_range}{\bold{(optional)} vector, years taken into consideration to
+calculate historic shares. Default uses all years present in the data.}
+
+\item{age_group}{\bold{(optional)} integer, divides continuous age values into
+intervals for calculating shares. If the argument is not specified,
+the default uses 1-year age groups.}
+
+\item{binational}{\bold{(optional)} boolean, \code{TRUE} indicates that the calculation
+discriminates between two groups of nationalities. \code{FALSE} indicates
+that the calculation does not distinguish between nationalities.}
 }
 \value{
-Returns the input data frame with the following new columns:
-\itemize{
-\item \code{age_group_5}: character, indicates the 5-year age group to which the 1-year
-age group is assigned to.
-\item \code{age_group_10}: character, indicates the 10-year age group to which the
-1-year age group is assigned to.
-\item \code{sum_5}: numeric, total number of people in the 5-year age group.
-\item \code{prop_5}: numeric, proportion of the the 5-year age group total that
-is allocated to each 1-year age group.
-\item \code{sum_10}: numeric, total number of people in the 10-year age group.
-\item \code{prop_10}: numeric, proportion of the the 10-year age group total that
-is allocated to each 1-year age group.
-\item \code{use_age_group}: character, preference for 1-year, 5-year, or 10-year age
-group. Defaults to \code{age_group_1} if at least one observation was recorded in
-all 5 years belonging to the respective 5-year age groups.
-\item \code{n}: numeric, number of people to be used according to \code{use_age_group} to
-compute the share.
-\item \code{n_sum}: numeric, total per demographic group and across all spatial units.
-\item \code{share}: numeric, the spatial unit's share relative to the total of people
-within the same demographic group (across all spatial units; i.e.,
-\code{n} / \code{n_sum}).
-}
+A data frame that includes the average share by demographic group.
 }
 \description{
-Calculate shares for distributing people among subregions
+Calculate shares for distributing immigration among subregions
+}
+\examples{
+# Calculate shares to distribute subregional immigration among spatial units
+calculate_shares(
+  hist_data = ag_migration_subregional,
+  imm_n = "imm_n",
+  year_range = c(2022:2024),
+  age_group = 10,
+  binational = TRUE,
+  two_sex = TRUE
+)
 }

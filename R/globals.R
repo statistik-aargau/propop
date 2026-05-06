@@ -77,14 +77,11 @@ utils::globalVariables(c(
   "imm_sub", # <calculate_projection>
   "emi_sub_n_total", # <calculate_projection>
   "imm_sub_n", # <calculate_projection>
+  "year", # <calculate_shares>
   "age", # <calculate_shares>
-  "sum_5", # <calculate_shares>
-  "sum_10", # <calculate_shares>
-  "prop_5", # <calculate_shares>
-  "prop_10", # <calculate_shares>
-  "nat", # <calculate_shares>
-  "sex", # <calculate_shares>
-  "n_sum", # <calculate_shares>
+  "spatial_unit", # <calculate_shares>
+  "sum_imm_n", # <calculate_shares>
+  "share", # <calculate_shares>
   "n_jan", # <check_balance>
   "births", # <check_balance>
   "mor_n", # <check_balance>
