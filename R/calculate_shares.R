@@ -2,7 +2,7 @@
 #'
 #' @description Calculates historical immigration shares across spatial units within
 #'        a region. These shares are used to allocate emigrants moving from one
-#'        subregion to another subregion (which can be done with `calculate_emi_mean`).
+#'        subregion to another subregion (which can be done with `calculate_emi_rate`).
 #'
 #' @param hist_data data frame, historical records (e.g., immigration from
 #'        other cantons, countries or subregions). Required columns are: `year`,
@@ -25,7 +25,7 @@
 #'
 #' @seealso
 #' [propop()] for details on how to account for subregional migration using the rate method,
-#' [calculate_emi_mean()] for calculating the associated emigration rate `emi_sub`.
+#' [calculate_emi_rate()] for calculating the associated emigration rate `emi_sub`.
 #'
 #'
 #' @export

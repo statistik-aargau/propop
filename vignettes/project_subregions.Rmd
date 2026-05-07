@@ -520,7 +520,7 @@ moves away from a location each year. One way to estimate this value is to calcu
 the annual emigration proportion for the group in past years and then take the mean 
 of these annual rates. For example, if 2 out of 10 people moved away in year 1 and 
 3 out of 10 moved away in year 2, the estimate would be (0.2 + 0.3) / 2 = 0.25.
-The function `propop::calculate_emi_mean()` makes it easy to compute `emi_sub`.  
+The function `propop::calculate_emi_rate()` makes it easy to compute `emi_sub`.  
 - The **immigration share** (`imm_sub`) represents, for each spatial unit, 
 the proportion of all within-region migrants who settle there. This value 
 can be calculated using past migration. The level of detail can range from low 
@@ -585,7 +585,7 @@ This procedure is repeated in each year of the projection.
 ### Numerical example
 
 To illustrate the rate approach, we start with aggregated past migration records 
-(2022–2025) for five regions in the Canton of Aargau. We first use `calculate_emi_mean()` 
+(2022–2025) for five regions in the Canton of Aargau. We first use `calculate_emi_rate()` 
 to calculate `emi_rate`.  
 
 Now that all required input files are available, we can set `subregional` to
@@ -598,7 +598,7 @@ Now that all required input files are available, we can set `subregional` to
 data("ag_migration_subregional") 
 
 # Compute mean for each demographic group
-parameters_rate <- calculate_emi_mean(
+parameters_rate <- calculate_emi_rate(
   hist_data = ag_migration_subregional,
   n_jan = n_jan,
   births = births, 

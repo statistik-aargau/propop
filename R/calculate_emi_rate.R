@@ -28,7 +28,7 @@
 #'
 #' @examples
 #' # Compute mean emigration rate
-#' calculate_emi_mean(
+#' calculate_emi_rate(
 #' hist_data = ag_migration_subregional,
 #' n_jan = n_jan,
 #' births = births,
@@ -37,7 +37,7 @@
 #' year_n = NULL
 #' )
 
-calculate_emi_mean <- function(
+calculate_emi_rate <- function(
     hist_data,
     n_jan,
     births,
