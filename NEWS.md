@@ -1,3 +1,9 @@
+# propop 2.1.0
+- `propop::propop()` offers a new method for subregional migration. The new method
+uses **migration rates** rather than **net migration** (number of people). 
+- To make using the rate method easier, there are two new functions -- 
+`calculate_emi_rate()` and `calculate_shares()`.
+
 # propop 2.0.0
 ## Breaking changes
 - The computations of the key function `propop()` are now implemented using data frames
