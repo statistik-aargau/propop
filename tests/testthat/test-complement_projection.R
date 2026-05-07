@@ -4,8 +4,8 @@ test_that("snapshot test complement_projection()", {
   # create skeleton with variable labels and levels
   # prepare_skeleton(
   #   age_groups = 101,
-  #   year_first = 2024,
-  #   year_last = 2024,
+  #   year_first = 2025,
+  #   year_last = 2025,
   #   spatial_unit = "Canton"
   # ) |>
   #   constructive::construct()
@@ -14,7 +14,7 @@ test_that("snapshot test complement_projection()", {
     age = rep(0:100, 8),
     sex = factor(rep(rep(c("m", "f"), 4), each = 101L), levels = c("m", "f")),
     nat = factor(rep(rep(c("ch", "int"), 2), each = 202L)),
-    year = rep(2023:2024, each = 404L)
+    year = rep(2024:2025, each = 404L)
   ) |>
     structure(
       out.attrs = list(
@@ -39,7 +39,7 @@ test_that("snapshot test complement_projection()", {
           ),
           sex = c("sex=m", "sex=f"),
           nat = c("nat=ch", "nat=int"),
-          year = c("year=2023", "year=2024")
+          year = c("year=2024", "year=2025")
         )
       )
     )
@@ -389,7 +389,7 @@ test_that("snapshot test complement_projection()", {
         167.84834999999998, 146.750088, 137.447226, 118.09990400000001,
         104.47142400000001, 86.210173, 78.293655, 68.06599800000001, 60.85368,
         53.917856, 50.585879999999996, 46.910664000000004, 45.65025, 43.768944,
-        39.82024, 37.940032, 34.457138, 34.776782000000004, 36.604158000000005,
+        39.82025, 37.940032, 34.457138, 34.776782000000004, 36.604158000000005,
         34.431776, 33.85228, 33.340728, 34.51943, 36.986748, 37.243077, 37.304465,
         38.762254999999996, 37.980796, 37.923135, 36.889635, 36.999989,
         35.235400000000006, 33.831738, 31.402284, 38.119697, 33.473924,

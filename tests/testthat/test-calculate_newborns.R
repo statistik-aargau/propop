@@ -10,10 +10,10 @@ test_that("calculate newborns test", {
 
   ### Population for one spatial unit ----
   # population_new |>
-  #   filter(year == 2024) |>
+  #   filter(year == 2025) |>
   #   constructive::construct()
   population_new_short <- tibble::tibble(
-    year = rep(2024L, 400L),
+    year = rep(2025L, 400L),
     scen = rep("reference", 400L),
     spatial_unit = rep("Aargau", 400L),
     nat = rep(c("ch", "int"), each = 200L),
@@ -742,7 +742,7 @@ test_that("calculate newborns test", {
   # parameters |>
   #   constructive::construct()
   parameters_short <- tibble::tibble(
-    year = rep(2024L, 404L),
+    year = rep(2025L, 404L),
     scen = rep("reference", 404L),
     spatial_unit = rep("Aargau", 404L),
     nat = rep(c("ch", "int"), each = 202L),
@@ -1065,10 +1065,10 @@ test_that("calculate newborns test only Swiss NA", {
 
   ### Population for one spatial unit ----
   # population_new |>
-  #   filter(year == 2024) |>
+  #   filter(year == 2025) |>
   #   constructive::construct()
   population_new_na <- tibble::tibble(
-    year = rep(2024L, 400L),
+    year = rep(2025L, 400L),
     scen = rep("reference", 400L),
     spatial_unit = rep("Aargau", 400L),
     nat = rep(c("ch", "int"), each = 200L),
@@ -1797,7 +1797,7 @@ test_that("calculate newborns test only Swiss NA", {
   # parameters |>
   #   constructive::construct()
   parameters_short <- tibble::tibble(
-    year = rep(2024L, 404L),
+    year = rep(2025L, 404L),
     scen = rep("high", 404L),
     spatial_unit = rep("Aargau", 404L),
     nat = rep(c("ch", "int"), each = 202L),

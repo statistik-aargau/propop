@@ -241,7 +241,7 @@ Now we can run the projection:
 ```{r project-1}
 propop(
   parameters = parameters_sub_size_clean,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -482,7 +482,7 @@ Now everything is ready to run the projection:
 ```{r project-2}
 propop(
   parameters = fso_parameters_sub_distr_hist,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -687,8 +687,8 @@ Now that all required input files are available, we can set `subregional` to
 
 ```{r project-3, eval = TRUE}
 propop(
-  parameters = parameters_net,
-  year_first = 2024,
+  parameters = parameters_sub_mig,
+  year_first = 2025,
   year_last = 2026,
   age_groups = 101,
   fert_first = 16,
