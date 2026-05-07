@@ -6,7 +6,7 @@ library(rsvg)
 
 
 # Specify filepath
-filepath <- paste0("./inst/rate_method.png")
+filepath <- paste0("./man/figures/rate_method.png")
 
 # Create flowchart
 graph <- DiagrammeR::grViz("digraph {
