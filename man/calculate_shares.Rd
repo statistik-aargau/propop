@@ -5,16 +5,16 @@
 \title{Calculate shares for distributing immigration among subregions}
 \usage{
 calculate_shares(
-  hist_data,
+  past_migration,
   imm_n,
   year_range = NULL,
-  age_group = 10,
+  age_group = 1,
   binational = TRUE,
   two_sex = TRUE
 )
 }
 \arguments{
-\item{hist_data}{data frame, historical records (e.g., immigration from
+\item{past_migration}{data frame, historical records (e.g., immigration from
 other cantons, countries or subregions). Required columns are: \code{year},
 \code{spatial_unit}, \code{age} and a column that contains aggregated historical
 migration records. The columns \code{nat} and \code{sex} are optional.}
@@ -32,6 +32,10 @@ the default uses 1-year age groups.}
 \item{binational}{\bold{(optional)} boolean, \code{TRUE} indicates that the calculation
 discriminates between two groups of nationalities. \code{FALSE} indicates
 that the calculation does not distinguish between nationalities.}
+
+\item{two_sex}{\bold{(optional)} boolean, \code{TRUE} indicates that the calculation
+discriminates between two sexes. \code{FALSE} indicates that the calculation
+does not distinguish between sexes.}
 }
 \value{
 A data frame that includes the average share per demographic group and spatial
@@ -46,7 +50,7 @@ subregion to another subregion (which can be done with \code{calculate_emi_rate}
 \examples{
 # Calculate shares to distribute subregional immigration among spatial units
 calculate_shares(
-  hist_data = ag_migration_subregional,
+  past_migration = ag_migration_subregional,
   imm_n = "imm_n",
   year_range = c(2022:2024),
   age_group = 10,
