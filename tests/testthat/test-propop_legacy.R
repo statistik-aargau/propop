@@ -9,8 +9,8 @@ test_that("Simple propop test for ci", {
     propop_legacy(
       parameters = fso_parameters |>
         dplyr::filter(scen == "reference"),
-      year_first = 2024,
-      year_last = 2026,
+      year_first = 2025,
+      year_last = 2027,
       population = fso_population,
       subregional = FALSE,
       binational = TRUE
@@ -1299,7 +1299,7 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
       # remove non-Swiss nationals
       parameters = fso_parameters,
       year_first = 2025,
-      year_last = 2025,
+      year_last = 2026,
       fert_first = 16,
       fert_last = 50,
       share_born_female = 100 / 205,
