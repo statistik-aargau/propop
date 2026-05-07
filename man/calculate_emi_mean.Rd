@@ -2,10 +2,10 @@
 % Please edit documentation in R/calculate_emi_mean.R
 \name{calculate_emi_mean}
 \alias{calculate_emi_mean}
-\title{Get mean historical subregional emigration to municipalities within the canton}
+\title{Calculate average past emigration to spatial units within the region}
 \usage{
 calculate_emi_mean(
-  past_migration,
+  hist_data,
   n_jan,
   births,
   emi_n,
@@ -14,7 +14,7 @@ calculate_emi_mean(
 )
 }
 \arguments{
-\item{past_migration}{data frame, containing aggregated migration records.
+\item{hist_data}{data frame, containing aggregated migration records.
 The data frame must include one row for each combination of year,
 spatial unit, nationality, sex, and age.}
 
@@ -32,21 +32,27 @@ spatial unit and demographic group.}
 \item{year_n}{numeric, number of years to be considered for computing the mean.}
 }
 \value{
-A data frame that includes the average emigration rate.
+A data frame that includes the average emigration rate per demographic group
+and spatial unit. \code{emi_rate} can be used as \code{emi_sub} parameter when
+\code{propop::propop()} uses \code{subregional = "rate"}.
 }
 \description{
-The function calculates the mean of past emigration to other
-municipalities within the canton for all municipalities and all possible
-combinations of age group, sex, and nationality.
+Calculates the mean of past emigration to other places
+within the region for all spatial units and for all combinations of
+age group, sex, and nationality.
 }
 \examples{
 # Compute mean emigration rate
 calculate_emi_mean(
-past_migration = ag_migration_subregional,
+hist_data = ag_migration_subregional,
 n_jan = n_jan,
 births = births,
 emi_n = emi_n,
 spatial_unit = spatial_unit,
 year_n = NULL
 )
+}
+\seealso{
+\code{\link[=propop]{propop()}} for details on how to account for subregional migration using the rate method,
+\code{\link[=calculate_shares]{calculate_shares()}} for calculating the associated immigration share \code{imm_sub}.
 }

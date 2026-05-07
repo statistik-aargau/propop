@@ -599,7 +599,7 @@ data("ag_migration_subregional")
 
 # Compute mean for each demographic group
 parameters_rate <- calculate_emi_mean(
-  past_migration = ag_migration_subregional,
+  hist_data = ag_migration_subregional,
   n_jan = n_jan,
   births = births, 
   emi_n = emi_n,

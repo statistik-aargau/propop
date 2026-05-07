@@ -1,14 +1,17 @@
 #' Calculate shares for distributing immigration among subregions
 #'
+#' @description Calculates historical immigration shares across spatial units within
+#'        a region. These shares are used to allocate emigrants moving from one
+#'        subregion to another subregion (which can be done with `calculate_emi_mean`).
+#'
 #' @param hist_data data frame, historical records (e.g., immigration from
 #'        other cantons, countries or subregions). Required columns are: `year`,
-#'        `spatial_unit`, `age` and a column that contains historical migration
-#'        records aggregated by age demographic group. The columns `nat` and `sex`
-#'        are optional.
+#'        `spatial_unit`, `age` and a column that contains aggregated historical
+#'        migration records. The columns `nat` and `sex` are optional.
 #' @param imm_n character, name of the column which contains the
 #'        data for aggregated historical migration records.
 #' @param year_range \bold{(optional)} vector, years taken into consideration to
-#'        calculate historic shares. Default uses all years present in the data.
+#'        calculate historical shares. Default uses all years present in the data.
 #' @param age_group \bold{(optional)} integer, divides continuous age values into
 #'        intervals for calculating shares. If the argument is not specified,
 #'        the default uses 1-year age groups.
@@ -16,7 +19,14 @@
 #'        discriminates between two groups of nationalities. `FALSE` indicates
 #'        that the calculation does not distinguish between nationalities.
 #' @returns
-#' A data frame that includes the average share by demographic group.
+#' A data frame that includes the average share per demographic group and spatial
+#' unit. `imm_share` can be used as `imm_sub` parameter when `propop::propop()` uses
+#' `subregional = "rate"`.
+#'
+#' @seealso
+#' [propop()] for details on how to account for subregional migration using the rate method,
+#' [calculate_emi_mean()] for calculating the associated emigration rate `emi_sub`.
+#'
 #'
 #' @export
 #'
@@ -43,13 +53,13 @@ calculate_shares <- function(
   # Test input ----
   ## Presence of mandatory columns ----
   assertthat::assert_that("year" %in% names(hist_data),
-    msg = "column `year` is missing in `hist_data`."
+                          msg = "column `year` is missing in `hist_data`."
   )
   assertthat::assert_that("spatial_unit" %in% names(hist_data),
-    msg = "column `spatial_unit` is missing in `hist_data`."
+                          msg = "column `spatial_unit` is missing in `hist_data`."
   )
   assertthat::assert_that("age" %in% names(hist_data),
-    msg = "column `age` is missing in `hist_data`."
+                          msg = "column `age` is missing in `hist_data`."
   )
   assertthat::assert_that(
     imm_n %in% names(hist_data),
@@ -67,31 +77,31 @@ calculate_shares <- function(
 
   # levels in spatial unit
   assertthat::assert_that(length(unique(as.factor(hist_data$spatial_unit))) > 1,
-    msg = "Levels for spatial_units in `hist_data` must be larger than 1 level."
+                          msg = "Levels for spatial_units in `hist_data` must be larger than 1 level."
   )
 
   ## Optional arguments ----
   # Past years (default uses all years in `hist_data`)
   if (isTRUE(!is.null(year_range))){
     assertthat::assert_that(all(year_range %in% c(unique(hist_data$year))),
-      msg = paste0("Vector for `year_range` does not correspond to ",
-      "available years in `hist_data`."
-    ))
+                            msg = paste0("Vector for `year_range` does not correspond to ",
+                                         "available years in `hist_data`."
+                            ))
   } else {
     year_range <- unique(hist_data$year)
   }
 
   # Age group contains no digits after the comma
   assertthat::assert_that(grepl("^[^.]*\\.?0*$", age_group),
-    msg = paste0("Value for `age_group` must not contain any digits after the comma.")
+                          msg = paste0("Value for `age_group` must not contain any digits after the comma.")
   )
   assertthat::assert_that(age_group > 0,
-    msg = paste0("Value for `age_group` must be larger than zero.")
+                          msg = paste0("Value for `age_group` must be larger than zero.")
   )
 
   # Nationality
   assertthat::assert_that(isTRUE(binational) | isFALSE(binational),
-    msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
+                          msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
   )
 
   if (binational == TRUE){
@@ -107,7 +117,7 @@ calculate_shares <- function(
         "Column `nat` in `hist_data` must include the factor levels",
         " `ch` and `int`. \nMissing values (NA), other values, or only one ",
         "factor level are not allowed. ",
-        "\nIf historic migration shares should not be projected for two",
+        "\nIf historical migration shares should not be projected for two",
         " nationalities, \nplease remove the column 'nat' from the data."
       )
     )
@@ -125,7 +135,7 @@ calculate_shares <- function(
   }
   # Sex
   assertthat::assert_that(isTRUE(two_sex) | isFALSE(two_sex),
-    msg = paste0("Value for `", two_sex, "` must be either `TRUE` or `FALSE`")
+                          msg = paste0("Value for `", two_sex, "` must be either `TRUE` or `FALSE`")
   )
   if (two_sex == TRUE) {
     assertthat::assert_that(
@@ -140,7 +150,7 @@ calculate_shares <- function(
         "Column `sex` in `hist_data` must include the factor levels",
         " `f` and `m`. \nMissing values (NA), other values, or only one ",
         "factor level are not allowed. ",
-        "\nIf historic migration shares should not be projected for two",
+        "\nIf historical migration shares should not be projected for two",
         " nationalities, \nplease remove the column 'sex' from the data."
       )
     )
@@ -168,7 +178,7 @@ calculate_shares <- function(
     # convert spatial units to character
     mutate(spatial_unit = as.character(spatial_unit))
 
-  # Column that contains historic records must be numeric
+  # Column that contains historical records must be numeric
   assertthat::assert_that(
     is.numeric(df_clean$imm_n),
     msg = paste0("Values in column `", imm_n, "` must be numeric.")
@@ -237,15 +247,15 @@ calculate_shares <- function(
     ) |>
     mutate(
       # calculate shares
-      share = imm_n / sum_imm_n,
+      imm_share = imm_n / sum_imm_n,
       # If no observations exist in a demographic group and its' larger age group,
       # values are filled with zeros to avoid NAs
-      share = case_when((imm_n == 0 & sum_imm_n == 0) ~ 0, .default = share)
+      imm_share = case_when((imm_n == 0 & sum_imm_n == 0) ~ 0, .default = imm_share)
     ) |>
     # prune columns
     select(any_of(c(
       "year", "spatial_unit", "age", "age_group", "age_group_n", "nat", "sex",
-      "imm_n", "sum_imm_n", "prop_imm", "share"
+      "imm_n", "sum_imm_n", "prop_imm", "imm_share"
     )))
 
   # Ensure there are no missing values

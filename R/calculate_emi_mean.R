@@ -1,10 +1,10 @@
-#' Get mean historical subregional emigration to municipalities within the canton
+#' Calculate average past emigration to spatial units within the region
 #'
-#' @description The function calculates the mean of past emigration to other
-#'   municipalities within the canton for all municipalities and all possible
-#'   combinations of age group, sex, and nationality.
+#' @description Calculates the mean of past emigration to other places
+#'   within the region for all spatial units and for all combinations of
+#'   age group, sex, and nationality.
 #'
-#' @param past_migration data frame, containing aggregated migration records.
+#' @param hist_data data frame, containing aggregated migration records.
 #'        The data frame must include one row for each combination of year,
 #'        spatial unit, nationality, sex, and age.
 #' @param n_jan character, column containing the starting population (typically
@@ -16,13 +16,20 @@
 #' @param spatial_unit character, column containing the spatial units.
 #' @param year_n numeric, number of years to be considered for computing the mean.
 #'
-#' @return A data frame that includes the average emigration rate.
+#' @returns
+#' A data frame that includes the average emigration rate per demographic group
+#' and spatial unit. `emi_rate` can be used as `emi_sub` parameter when
+#' `propop::propop()` uses `subregional = "rate"`.
+#'
+#' @seealso
+#' [propop()] for details on how to account for subregional migration using the rate method,
+#' [calculate_shares()] for calculating the associated immigration share `imm_sub`.
 #' @export
 #'
 #' @examples
 #' # Compute mean emigration rate
 #' calculate_emi_mean(
-#' past_migration = ag_migration_subregional,
+#' hist_data = ag_migration_subregional,
 #' n_jan = n_jan,
 #' births = births,
 #' emi_n = emi_n,
@@ -31,7 +38,7 @@
 #' )
 
 calculate_emi_mean <- function(
-    past_migration,
+    hist_data,
     n_jan,
     births,
     emi_n,
@@ -45,16 +52,16 @@ calculate_emi_mean <- function(
                      rlang::as_name(rlang::ensym(n_jan)), rlang::as_name(rlang::ensym(births)),
                      rlang::as_name(rlang::ensym(emi_n)))
 
-  missing_cols <- setdiff(required_cols, names(past_migration))
+  missing_cols <- setdiff(required_cols, names(hist_data))
   assertthat::assert_that(length(missing_cols) == 0, msg = paste("Missing columns:", paste(missing_cols, collapse = ", ")))
 
   # Check if there are missing values
   # If only some years are used, NAs in other years are not problematic
-  if (anyNA(past_migration)) {
+  if (anyNA(hist_data)) {
     cli::cli_text(cli::col_red("Warning message:"))
-    cli::cli_text("The following columns of `past_migration` have missing values:")
+    cli::cli_text("The following columns of `hist_data` have missing values:")
     cli::cli_alert_warning(cli::col_magenta(
-      "{.val { past_migration |>
+      "{.val { hist_data |>
       select(where(function(x) any(is.na(x)))) |>
       names()}}."
     ))
@@ -63,21 +70,21 @@ calculate_emi_mean <- function(
 
   # If year is not indicated, use all years
   if (is.null(year_n)) {
-    year_n <- max(past_migration$year) - min(past_migration$year) + 1
+    year_n <- max(hist_data$year) - min(hist_data$year) + 1
   }
 
 
   # Ensure plausible value for year_n
-  assertthat::assert_that(year_n <= max(past_migration$year) - min(past_migration$year) + 1,
+  assertthat::assert_that(year_n <= max(hist_data$year) - min(hist_data$year) + 1,
                           msg = "`year_n` cannot be larger than the available number of years")
 
   assertthat::assert_that(year_n >= 1,
                           msg = "`year_n` must be 1 or larger")
 
-  year_last <- max(past_migration$year)
+  year_last <- max(hist_data$year)
   emi_var <- rlang::as_label(rlang::ensym(emi_n))
 
-  df <- past_migration |>
+  df <- hist_data |>
     filter(year %in% (year_last - year_n + 1):year_last)
 
   n_spatial_units <- df |> dplyr::distinct({{ spatial_unit }}) |> nrow()
@@ -88,7 +95,7 @@ calculate_emi_mean <- function(
     msg = "Unexpected number of rows: expected year_n * n_spatial_units * 404."
   )
 
-    df_result <- df |>
+  df_result <- df |>
     mutate(
       # Use number of births as starting population for 0-year olds
       n_base = if_else(age == 0, {{births}}, {{n_jan}}),

@@ -16,15 +16,14 @@ calculate_shares(
 \arguments{
 \item{hist_data}{data frame, historical records (e.g., immigration from
 other cantons, countries or subregions). Required columns are: \code{year},
-\code{spatial_unit}, \code{age} and a column that contains historical migration
-records aggregated by age demographic group. The columns \code{nat} and \code{sex}
-are optional.}
+\code{spatial_unit}, \code{age} and a column that contains aggregated historical
+migration records. The columns \code{nat} and \code{sex} are optional.}
 
 \item{imm_n}{character, name of the column which contains the
 data for aggregated historical migration records.}
 
 \item{year_range}{\bold{(optional)} vector, years taken into consideration to
-calculate historic shares. Default uses all years present in the data.}
+calculate historical shares. Default uses all years present in the data.}
 
 \item{age_group}{\bold{(optional)} integer, divides continuous age values into
 intervals for calculating shares. If the argument is not specified,
@@ -35,10 +34,14 @@ discriminates between two groups of nationalities. \code{FALSE} indicates
 that the calculation does not distinguish between nationalities.}
 }
 \value{
-A data frame that includes the average share by demographic group.
+A data frame that includes the average share per demographic group and spatial
+unit. \code{imm_share} can be used as \code{imm_sub} parameter when \code{propop::propop()} uses
+\code{subregional = "rate"}.
 }
 \description{
-Calculate shares for distributing immigration among subregions
+Calculates historical immigration shares across spatial units within
+a region. These shares are used to allocate emigrants moving from one
+subregion to another subregion (which can be done with \code{calculate_emi_mean}).
 }
 \examples{
 # Calculate shares to distribute subregional immigration among spatial units
@@ -50,4 +53,8 @@ calculate_shares(
   binational = TRUE,
   two_sex = TRUE
 )
+}
+\seealso{
+\code{\link[=propop]{propop()}} for details on how to account for subregional migration using the rate method,
+\code{\link[=calculate_emi_mean]{calculate_emi_mean()}} for calculating the associated emigration rate \code{emi_sub}.
 }
