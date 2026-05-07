@@ -294,7 +294,7 @@ calculate_emi_rate <- function(
   df_result <- df_rate_mean |>
     dplyr::mutate(
       spatial_unit = as.character(spatial_unit),
-      age = as.character(age),
+      # age = as.character(age),
       method = paste0(method, " ", year_range_string)
     ) |>
     # prune columns

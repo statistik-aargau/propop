@@ -23,6 +23,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+<div style="border: 2px solid #f0c36d; background: linear-gradient(135deg, #fff8e6, #fffdf4); color: #7a5a00; padding: 16px 20px; border-radius: 12px; font-weight: 700; font-family: sans-serif; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  ⚠️ Work in progress
+</div>
+
+
 ```{r setup, message = FALSE, warning=FALSE}
 library(propop)
 ```
@@ -354,7 +359,7 @@ The final outcome `share` indicates the proportion of the historical total per
 demographic group (`n_sum`) that is to be allocated to the respective
 spatial unit (`share =  n / n_sum`).
 
-```{r result-historical-immigration}
+```{r result-historical-immigration, eval = FALSE}
 data_distr_hist_int <- df_hist_imm |>
   calculate_shares(col = "hist_imm_int", age_group = "age_group_5")
 
@@ -382,7 +387,7 @@ Note that summarizing the shares of a demographic group across all spatial units
 always adds up to 1:
 
 
-```{r share-check}
+```{r share-check, eval = FALSE}
 data_distr_hist_int |>
   dplyr::summarise(sum_share = round(
     sum(share, na.rm = TRUE),
@@ -396,7 +401,7 @@ From now on, the procedure is identical to the first approach that distributed
 the number of people according to population size. That is, the share is 
 multiplied with the numbers that the FSO estimated for the whole canton.
 
-```{r parameters-distributed}
+```{r parameters-distributed, eval = FALSE}
 # In addition to international immigration shares and numbers
 # we also need the shares and numbers for national immigration
 data_distr_hist_nat <- df_hist_imm |>
@@ -455,7 +460,7 @@ fso_parameters_sub_distr_hist |>
 A quick double-check confirms that the sums of the migration in the subregions 
 is identical with the number of people in the larger unit (whole canton):
 
-```{r sum-check}
+```{r sum-check, eval = FALSE}
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
@@ -479,7 +484,7 @@ unique(check_sums_subregions$diff_nat)
 
 Now everything is ready to run the projection: 
 
-```{r project-2}
+```{r project-2, eval = FALSE}
 propop(
   parameters = fso_parameters_sub_distr_hist,
   year_first = 2025,
@@ -591,32 +596,55 @@ to calculate `emi_rate`.
 Now that all required input files are available, we can set `subregional` to
 `rate` and use `propop::propop()`:
 
-
-# CONTINUE HERE
-
-```{r emi-mean}
+```{r emi-rate}
 data("ag_migration_subregional") 
 
 # Compute mean for each demographic group
-parameters_rate <- calculate_emi_rate(
-  hist_data = ag_migration_subregional,
+emi_rate <- calculate_emi_rate(
+  past_migration = ag_migration_subregional,
   n_jan = n_jan,
-  births = births, 
+  births = births,
   emi_n = emi_n,
   spatial_unit = spatial_unit,
-  year_n = NULL
+  method = "median"
 )
 ```
 
+```{r imm_share}
+imm_share <- calculate_shares(
+  past_migration = ag_migration_subregional,
+  imm_n = "imm_n"
+)
+```
 
-Now that all required input files are available, we can set `subregional` to
-`rate` and use `propop::propop()`:
+Now we only need to add the emi_sub and imm_sub to the data frame that contains
+the parameters. Then we set `subregional` to `rate` and run `propop::propop()`:
 
-```{r project-4, eval = FALSE}
+```{r project-rate, eval = FALSE}
 data("ag_population_subregional")
+data("fso_parameters")
+
+parameters <- fso_parameters |> 
+  dplyr::left_join(emi_rate |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   emi_rate) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") |> 
+  dplyr::left_join(imm_share |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   imm_share) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") 
+
 
 propop(
-  parameters = ag_population_subregional,
+  parameters = parameters,
   year_first = 2024,
   year_last = 2026,
   age_groups = 101,
@@ -644,7 +672,7 @@ Here we add `mig_sub` as a *fictitious* parameter in the parameter input file.
 > In real life you may use population register records as we described in the
 section `Distribution of people according to past migration`. 
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 parameters_net <- fso_parameters_sub_distr_hist |> 
   # Create fictitious migration parameters
   dplyr::mutate(
@@ -685,7 +713,7 @@ parameters_net <- fso_parameters_sub_distr_hist |>
 Now that all required input files are available, we can set `subregional` to
 `net` and use `propop::propop()`:
 
-```{r project-3, eval = TRUE}
+```{r project-3, eval = FALSE}
 propop(
   parameters = parameters_sub_mig,
   year_first = 2025,
