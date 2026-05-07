@@ -539,7 +539,7 @@ The required <span style="color: #ffd700; font-weight:bold;">data</span> and ava
 to implement the rate approach are visualized in the following figure: 
 
 
-![](../inst/rate_method.png)
+![](../man/figures/rate_method.png)
 
 
 ### Redistribution
