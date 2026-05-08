@@ -8,7 +8,7 @@ Functions for downloading and preparing data
   : Get projection parameters from FSO
 - [`get_population()`](https://statistik-aargau.github.io/propop/reference/get_population.md)
   : Get population data from FSO
-- [`calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+- [`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
   : Get mean historical subregional emigration to municipalities within
   the canton
 
@@ -38,7 +38,7 @@ Example for distributing international immigration
 
 - [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
   : Calculate shares for distributing immigration among subregions
-- [`calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+- [`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
   : Get mean historical subregional emigration to municipalities within
   the canton
 - [`ag_population_subregional`](https://statistik-aargau.github.io/propop/reference/ag_population_subregional.md)

@@ -6,7 +6,7 @@
   offers a new method for subregional migration. The new method uses
   **migration rates** rather than **net migration** (number of people).
 - To make using the rate method easier, there are two new functions –
-  [`calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+  [`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
   and
   [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md).
 

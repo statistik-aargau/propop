@@ -260,7 +260,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [458ms]
+#> ✔ Processing completed in [461ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -584,7 +584,7 @@ include emigration and immigration rates:
   annual rates. For example, if 2 out of 10 people moved away in year 1
   and 3 out of 10 moved away in year 2, the estimate would be (0.2 +
   0.3) / 2 = 0.25. The function
-  [`propop::calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+  [`propop::calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
   makes it easy to compute `emi_sub`.  
 - The **immigration share** (`imm_sub`) represents, for each spatial
   unit, the proportion of all within-region migrants who settle there.
@@ -622,7 +622,7 @@ This procedure is repeated in each year of the projection.
 To illustrate the rate approach, we start with aggregated past migration
 records (2022–2025) for five regions in the Canton of Aargau. We first
 use
-[`calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+[`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
 to calculate `emi_rate`.
 
 Now that all required input files are available, we can set
@@ -634,7 +634,7 @@ Now that all required input files are available, we can set
 data("ag_migration_subregional") 
 
 # Compute mean for each demographic group
-emi_rate <- calculate_emi_rate(
+emi_rate <- calculate_rate(
   past_migration = ag_migration_subregional,
   n_jan = n_jan,
   births = births,
