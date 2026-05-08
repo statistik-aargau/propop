@@ -130,7 +130,7 @@ calculate_shares <- function(
     assertthat::assert_that(
       !"nat" %in% names(past_migration),
       msg = paste0(
-        "Argument `two_sex` is `FALSE` suggesting that the calculation \nshould",
+        "Argument `binational` is `FALSE` suggesting that the calculation \nshould",
         " not discriminate between nationalities. \nHowever, `past_migration` includes",
         " column `nat` suggesting multiple nationalities. \nPlease change argument",
         " `binational` or remove column `nat` from `past_migration`."

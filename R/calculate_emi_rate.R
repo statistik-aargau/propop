@@ -134,7 +134,7 @@ calculate_emi_rate <- function(
     assertthat::assert_that(
       !"nat" %in% names(past_migration),
       msg = paste0(
-        "Argument `two_sex` is `FALSE` suggesting that the calculation \nshould",
+        "Argument `binational` is `FALSE` suggesting that the calculation \nshould",
         " not discriminate between nationalities. \nHowever, `past_migration` includes",
         " column `nat` suggesting multiple nationalities. \nPlease change argument",
         " `binational` or remove column `nat` from `past_migration`."
@@ -170,8 +170,8 @@ calculate_emi_rate <- function(
       !"sex" %in% names(past_migration),
       msg = paste0(
         "Argument `two_sex` is `FALSE` suggesting that the calculation \nshould",
-        " not discriminate between nationalities. \nHowever, `past_migration` includes",
-        " column `sex` suggesting multiple nationalities. \nPlease change argument",
+        " not discriminate between levels of `sex`. \nHowever, `past_migration` includes",
+        " column `sex` suggesting multiple levels of `sex`. \nPlease change argument",
         " `two_sex` or remove column `sex` from `past_migration`."
       )
     )
