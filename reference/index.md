@@ -18,18 +18,17 @@ Functions for running population projections
 
 ## Distribute migration
 
-Data and functions for subregional migration
+Functions and example data for subregional migration
 
+- [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
+  : Calculate shares for distributing immigration among subregions
+- [`calculate_rates()`](https://statistik-aargau.github.io/propop/reference/calculate_rates.md)
+  : Calculate emigration rates to subregions
 - [`ag_population_subregional`](https://statistik-aargau.github.io/propop/reference/ag_population_subregional.md)
   : Population data for the canton of Aargau (five subregions)
 - [`ag_migration_subregional`](https://statistik-aargau.github.io/propop/reference/ag_migration_subregional.md)
   : Subregional migration records for the canton of Aargau (five
   subregions)
-- [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
-  : Calculate shares for distributing immigration among subregions
-- [`calculate_rates()`](https://statistik-aargau.github.io/propop/reference/calculate_rates.md)
-  : Get mean historical subregional emigration to municipalities within
-  the canton
 
 ## Evaluate projections
 

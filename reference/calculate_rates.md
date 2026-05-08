@@ -1,4 +1,4 @@
-# Get mean historical subregional emigration to municipalities within the canton
+# Calculate emigration rates to subregions
 
 The function calculates the mean of past emigration to other
 municipalities within the canton for all municipalities and all possible
