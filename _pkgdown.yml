@@ -36,12 +36,12 @@ reference:
   - get_population
 - title: "Run projections"
   desc: >
-    Functions for running population projections
+    Function for running population projections
   contents:
   - propop
 - title: "Distribute migration"
   desc: >
-    Functions and example data for subregional migration
+    Functions and example data for distributing migration
   contents:
   - calculate_shares
   - calculate_rates
