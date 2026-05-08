@@ -330,7 +330,7 @@ immigration (<code>imm_int_n_distr</code> and
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[461ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[467ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -625,7 +625,7 @@ calculate the annual emigration proportion for the group in past years
 and then take the mean of these annual rates. For example, if 2 out of
 10 people moved away in year 1 and 3 out of 10 moved away in year 2, the
 estimate would be (0.2 + 0.3) / 2 = 0.25. The function
-<code><a href="../reference/calculate_rate.html">propop::calculate_rate()</a></code> makes it easy to compute
+<code><a href="../reference/calculate_rates.html">propop::calculate_rates()</a></code> makes it easy to compute
 <code>emi_sub</code>.<br>
 </li>
 <li>The <strong>immigration share</strong> (<code>imm_sub</code>)
@@ -666,7 +666,7 @@ using <code>imm_sub</code>.</li>
 </h4>
 <p>To illustrate the rate approach, we start with aggregated past
 migration records (2022–2025) for five regions in the Canton of Aargau.
-We first use <code><a href="../reference/calculate_rate.html">calculate_rate()</a></code> to calculate
+We first use <code><a href="../reference/calculate_rates.html">calculate_rates()</a></code> to calculate
 <code>emi_rate</code>.</p>
 <p>Now that all required input files are available, we can set
 <code>subregional</code> to <code>rate</code> and use
@@ -675,7 +675,7 @@ We first use <code><a href="../reference/calculate_rate.html">calculate_rate()</
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ag_migration_subregional"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># Compute mean for each demographic group</span></span>
-<span><span class="va">emi_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_rate.html">calculate_rate</a></span><span class="op">(</span></span>
+<span><span class="va">emi_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_rates.html">calculate_rates</a></span><span class="op">(</span></span>
 <span>  past_migration <span class="op">=</span> <span class="va">ag_migration_subregional</span>,</span>
 <span>  n_jan <span class="op">=</span> <span class="va">n_jan</span>,</span>
 <span>  births <span class="op">=</span> <span class="va">births</span>,</span>

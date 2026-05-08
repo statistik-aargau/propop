@@ -3,7 +3,7 @@
 Calculates historical immigration shares across spatial units within a
 region. These shares are used to allocate emigrants moving from one
 subregion to another subregion (which can be done with
-`calculate_rate`).
+`calculate_rates`).
 
 ## Usage
 
@@ -67,7 +67,7 @@ uses `subregional = "rate"`.
 [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
 for details on how to account for subregional migration using the rate
 method,
-[`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
+[`calculate_rates()`](https://statistik-aargau.github.io/propop/reference/calculate_rates.md)
 for calculating the associated emigration rate `emi_sub`.
 
 ## Examples

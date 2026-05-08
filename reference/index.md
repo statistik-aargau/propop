@@ -2,15 +2,12 @@
 
 ## Prepare data
 
-Functions for downloading and preparing data
+Functions for downloading data
 
 - [`get_parameters()`](https://statistik-aargau.github.io/propop/reference/get_parameters.md)
   : Get projection parameters from FSO
 - [`get_population()`](https://statistik-aargau.github.io/propop/reference/get_population.md)
   : Get population data from FSO
-- [`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
-  : Get mean historical subregional emigration to municipalities within
-  the canton
 
 ## Run projections
 
@@ -18,6 +15,21 @@ Functions for running population projections
 
 - [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   : Project population development
+
+## Distribute migration
+
+Data and functions for subregional migration
+
+- [`ag_population_subregional`](https://statistik-aargau.github.io/propop/reference/ag_population_subregional.md)
+  : Population data for the canton of Aargau (five subregions)
+- [`ag_migration_subregional`](https://statistik-aargau.github.io/propop/reference/ag_migration_subregional.md)
+  : Subregional migration records for the canton of Aargau (five
+  subregions)
+- [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
+  : Calculate shares for distributing immigration among subregions
+- [`calculate_rates()`](https://statistik-aargau.github.io/propop/reference/calculate_rates.md)
+  : Get mean historical subregional emigration to municipalities within
+  the canton
 
 ## Evaluate projections
 
@@ -31,21 +43,6 @@ Functions to evaluate projection results
   : Compute evaluation measures
 - [`aggregate_measures()`](https://statistik-aargau.github.io/propop/reference/aggregate_measures.md)
   : Aggregate evaluation measures
-
-## Distribute migration
-
-Example for distributing international immigration
-
-- [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
-  : Calculate shares for distributing immigration among subregions
-- [`calculate_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_rate.md)
-  : Get mean historical subregional emigration to municipalities within
-  the canton
-- [`ag_population_subregional`](https://statistik-aargau.github.io/propop/reference/ag_population_subregional.md)
-  : Population data for the canton of Aargau (five subregions)
-- [`ag_migration_subregional`](https://statistik-aargau.github.io/propop/reference/ag_migration_subregional.md)
-  : Subregional migration records for the canton of Aargau (five
-  subregions)
 
 ## Sample data
 
