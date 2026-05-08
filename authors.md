@@ -29,7 +29,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/statistik-aargau/propop/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/statistik-aargau/propop/blob/v2.1.0/inst/CITATION)
 
 Efosa N, Gadient A, Cornioley T, Wunder J, Haffert N (2025). *propop:
 Project Population Growth in Switzerland using the Cohort Component
