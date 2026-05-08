@@ -1,4 +1,4 @@
-# calculate_emi_rate snapshot - mean, age_group=5, binational, two_sex
+# calculate_rate snapshot - mean, age_group=5, binational, two_sex
 
     Code
       print(tail(result, 100))
@@ -19,7 +19,7 @@
       # i 90 more rows
       # i 2 more variables: emi_rate <dbl>, method <chr>
 
-# calculate_emi_rate snapshot - median, age_group=7, 2023 & 2025, one sex
+# calculate_rate snapshot - median, age_group=7, 2023 & 2025, one sex
 
     Code
       print(tail(result2, 100))

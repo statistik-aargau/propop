@@ -19,13 +19,13 @@ node [shape = rectangle, style = \"filled,rounded\", fillcolor = deepskyblue, fo
 data1 [label = 'Aggregated\npast migration', shape = folder, fillcolor = gold]
 # data2 [label = 'Dataset 2', shape = folder, fillcolor = gold]
 
-calc_emi [label =  'calculate\n_emi_\nmean']
+calc_emi [label =  'calculate\n_rate']
 
-data2 [label = 'emi_rate\n= average\n emigration\n per group', shape = folder, fillcolor = gold]
+data2 [label = 'emi_rate\n= emigration\nrate\n per group', shape = folder, fillcolor = gold]
 
-calc_hist [label =  'calculate\n_hist_\nshares']
+calc_hist [label =  'calculate\n_shares']
 
-data3 [label = 'imm_sub\n= immigration\n share\nper group', shape = folder, fillcolor = gold]
+data3 [label = 'imm_share\n= immigration\n share\nper group', shape = folder, fillcolor = gold]
 
 propop [label =  'propop']
 
