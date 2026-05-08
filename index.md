@@ -15,7 +15,7 @@ vignette](https://statistik-aargau.github.io/propop/articles/project_single_regi
 The package was developed for use with [projection
 scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html)
 from the Swiss Federal Statistical Office (FSO). The current scenarios
-are available for the years 2024-2055. As starting population, you can
+are available for the years 2025-2055. As starting population, you can
 either use [population data from the
 FSO](https://www.pxweb.bfs.admin.ch/pxweb) or your own population data.
 
@@ -41,6 +41,7 @@ To install the current github version of the package, make sure you have
 devtools installed and type:
 
 ``` r
+
 devtools::install_github("statistik-aargau/propop")
 ```
 
@@ -119,6 +120,7 @@ with the example data included in the package (canton of Aargau), use
 the following code:
 
 ``` r
+
 library(propop)
 projection_canton_2030 <- propop(
 parameters = fso_parameters,

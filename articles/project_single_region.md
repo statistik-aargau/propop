@@ -1,6 +1,7 @@
 # Projections for a single region
 
 ``` r
+
 library(propop)
 
 # load package data
@@ -30,7 +31,7 @@ input:
 
 - a data frame containing model **parameters**, that is, information
   about how key demographic variables such as mortality are expected to
-  develop in the future; these are available for 2024-2055.
+  develop in the future; these are available for 2025-2055.
 
 - some global arguments which do not change over time or across
   demographic groups (e.g., proportion of female to male newborns).
@@ -53,7 +54,7 @@ Aargau from 2023 and the FSO parameters from the [population development
 scenarios
 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html).
 Using these resources, we can project the population for the canton as a
-whole for 1-year age groups for the period 2024-2055.
+whole for 1-year age groups for the period 2025-2055.
 
 The start and end of women’s fertile period, the proportion of babies
 born as female, and the share of babies born by mothers who are not
@@ -66,10 +67,11 @@ If the argument `scenarios` is not specified,
 returns a projection for all scenarios available in `parameters`.  
 
 ``` r
+
 projection_canton_2030 <- propop(
   parameters = fso_parameters,
   scenarios = "reference",
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2030,
   population = fso_population,
   subregional = FALSE,
@@ -78,21 +80,21 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [2.1s]
+#> ✔ Processing completed in [1.8s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 726894
-#> Projection period: 2024-2030
+#> Size of starting population: 735808
+#> Projection period: 2025-2030
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 781521
+#> - Scenario "reference": 781883
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
@@ -147,6 +149,7 @@ a single value for the joint population when parameters differ between
 Swiss and non-Swiss people).
 
 ``` r
+
 fso_parameters_int <- fso_parameters |>
   # drop Swiss people, keep reference scenario
   dplyr::filter(nat == "int" & scen == "reference") |>
@@ -165,10 +168,11 @@ When calling
 you need to set `binational = FALSE`.
 
 ``` r
+
 projection_int <- propop(
   parameters = fso_parameters_int,
   scenarios = "reference",
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2030,
   population = fso_population_int,
   subregional = FALSE,
@@ -177,21 +181,21 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [694ms]
+#> ✔ Processing completed in [628ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 198599
-#> Projection period: 2024-2030
+#> Size of starting population: 204787
+#> Projection period: 2025-2030
 #> Nationality-specific projection: "no"
 #> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 252660
+#> - Scenario "reference": 250954
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────

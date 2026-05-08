@@ -288,16 +288,16 @@ project_raw(
 #>   Please report the issue at <https://github.com/statistik-aargau/propop>.
 #> ✔ Year: 2026
 #>         scen spatial_unit    N   BIRTHS       MOR   EMI_INT  EMI_NAT IMM_INT
-#> 1  reference       Aargau 2371 2467.882 8.0133597  4.007841 22.04313       5
-#> 2  reference       Aargau 2542    0.000 0.9568541 10.513014 48.73828      17
-#> 3  reference       Aargau 2891    0.000 1.0356512 11.403412 55.98247      16
-#> 4  reference       Aargau 2766    0.000 1.0947324 12.254949 54.58786      16
-#> 5  reference       Aargau 2794    0.000 0.0000000 11.310174 44.29472      15
-#> 6  reference       Aargau 2782    0.000 0.0000000  9.963404 38.86175      14
-#> 7  reference       Aargau 2787    0.000 0.0000000  9.839934 33.45911      14
-#> 8  reference       Aargau 2726    0.000 0.0000000  8.912826 28.72282      13
-#> 9  reference       Aargau 2837    0.000 0.0000000  7.744566 24.20143      12
-#> 10 reference       Aargau 2866    0.000 0.0000000  8.224463 21.58673      11
+#> 1  reference       Aargau 2369 2466.937 8.0103347  4.006305 22.03468       5
+#> 2  reference       Aargau 2402    0.000 0.9560952 10.504146 48.69716      17
+#> 3  reference       Aargau 2576    0.000 0.9795734 10.775372 52.89925      16
+#> 4  reference       Aargau 2916    0.000 0.9757636 10.919664 48.64003      16
+#> 5  reference       Aargau 2793    0.000 0.0000000 11.923524 46.69682      15
+#> 6  reference       Aargau 2807    0.000 0.0000000  9.959838 38.84784      14
+#> 7  reference       Aargau 2794    0.000 0.0000000  9.928359 33.75979      14
+#> 8  reference       Aargau 2828    0.000 0.0000000  8.935212 28.79496      13
+#> 9  reference       Aargau 2757    0.000 0.0000000  8.034348 25.10698      12
+#> 10 reference       Aargau 2853    0.000 0.0000000  7.992543 20.97801      11
 #>    IMM_NAT ACQ MIG_SUB
 #> 1       51   0       0
 #> 2       94   0       0

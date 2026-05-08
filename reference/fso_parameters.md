@@ -6,7 +6,7 @@ required to project the development of four demographic groups for a
 selected canton (Aargau). The parameters are from the [model published
 in
 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
-The sample data include three scenarios for the years 2024-2055.
+The sample data include three scenarios for the years 2025-2055.
 
 ## Usage
 
@@ -18,7 +18,7 @@ fso_parameters
 
 The example data include the required parameters for each demographic
 group (nationality (2) X sex (2) X age classes (101)) for the years
-2024-2055.
+2025-2055.
 
 ## Source
 

@@ -1,6 +1,7 @@
 # Evaluate projections
 
 ``` r
+
 library(propop)
 ```
 
@@ -30,6 +31,7 @@ starting population and the **population records** from 2019-2022 as
 benchmark data.
 
 ``` r
+
 data_benchmark <- get_population(
   number_fso = "px-x-0102010000_101",
   year = 2018,
@@ -43,6 +45,7 @@ available anymore; i.e., this code will fail from 2025 onwards if you
 try it for the years 2019-2050):
 
 ``` r
+
 data_parameters <- get_parameters(
   year_first = 2019,
   year_last = 2050,
@@ -53,6 +56,7 @@ data_parameters <- get_parameters(
 Run the population projection for 2019-2022:
 
 ``` r
+
 data_projected <- propop(
   parameters = data_parameters,
   year_first = 2019,
@@ -88,6 +92,7 @@ each demographic group and year as data frame columns next to each
 other:
 
 ``` r
+
 # Combine and pre-process the data
 combined <- prepare_evaluation(
   # only keep years from projected period
@@ -121,6 +126,7 @@ people,
 then calculates the error and several performance metrics:
 
 ``` r
+
 evaluation_1 <- compute_measures(combined)
 #> Warning message:
 #> The following columns of the output have missing values:
@@ -153,6 +159,7 @@ the
 function:
 
 ``` r
+
 aggregate_measures(evaluation_1) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
@@ -187,6 +194,7 @@ for the commonly used age groups 0-19 year olds, 20-64 year olds, and
 over 64 year olds using the option `age_groups = "age_groups_3"`.
 
 ``` r
+
 # Combine and pre-process the data
 combined_grouped <- prepare_evaluation(
   # only keep years from projected period
@@ -239,6 +247,7 @@ You can again use
 to obtain a summary of the evaluation across all observations:
 
 ``` r
+
 aggregate_measures(evaluation_2) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
@@ -266,6 +275,7 @@ errors (`ape`) 0.39/0.36 become 0.24/0.07 when they are weighted by the
 total number of people per group (`w_ape`).
 
 ``` r
+
 evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age"))
 
 evaluation_3 |>
@@ -292,6 +302,7 @@ You can also use
 to obtain a summary of the evaluation with weighted groups:
 
 ``` r
+
 aggregate_measures(evaluation_3, weight_groups = c("age")) |>
   # round to two digits
   dplyr::mutate(across(mpe:ape_under_5, \(x) sprintf(fmt = "%.2f", x))) |>
@@ -305,9 +316,10 @@ can also use the evaluation function to check how close the `propop`
 projection comes to FSO’s projection from the 2025 model.
 
 ``` r
+
 projection_2025 <- propop(
   parameters = fso_parameters,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2055,
   scenarios = "reference",
   age_groups = 101,
@@ -322,21 +334,21 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [9.2s]
+#> ✔ Processing completed in [8.9s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 726894
-#> Projection period: 2024-2055
+#> Size of starting population: 735808
+#> Projection period: 2025-2055
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
-#> - Scenario "reference": 893808
+#> - Scenario "reference": 893942
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
@@ -346,6 +358,7 @@ projection_2025 <- propop(
 ```
 
 ``` r
+
 fso_propop <- prepare_evaluation(
   data_benchmark = fso_parameters |>
     dplyr::filter(scen == "reference" & year > 2023) |>

@@ -23,7 +23,7 @@ information from the following tables are needed:
 
 [TABLE]
 
-Overview of required FSO tables (STAT-TAB)
+Overview of required FSO tables (STAT-TAB) {.table style="width:99%;"}
 
 ## Convenient way to get FSO data
 
@@ -42,6 +42,7 @@ is helpful to identify the required spelling(s).
 Here’s an example of how to get the population for the canton of Aargau:
 
 ``` r
+
 library(propop)
 ag_population <- get_population(
   number_fso = "px-x-0102010000_101",
@@ -54,8 +55,9 @@ Get the parameters for a sample canton (mind using the same spelling as
 in the FSO tables; see comment above):
 
 ``` r
+
 ag_parameters <- get_parameters(
-  year = 2024,
+  year = 2025,
   year_last = 2026,
   spatial_units = "Aargau"
 )
@@ -64,13 +66,14 @@ ag_parameters <- get_parameters(
 The projection can be run as follows:
 
 ``` r
+
 # select reference scenario
 ag_parameters_ref <- ag_parameters |>
   dplyr::filter(scen == "reference")
 
 propop(
   parameters = ag_parameters_ref,
-  year = 2024,
+  year = 2025,
   year_last = 2026,
   age_groups = 101,
   fert_first = 16,

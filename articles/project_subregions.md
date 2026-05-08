@@ -1,6 +1,9 @@
 # Projections for subregions
 
+⚠️ Work in progress
+
 ``` r
+
 library(propop)
 ```
 
@@ -9,14 +12,15 @@ library(propop)
 This vignette explains how to use
 [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
 to perform population projections for multiple regions and particularly
-for subregions within a larger spatial entity (e.g., municipalities
-within a canton). It discusses two **challenges** that arise when
-conducting such projections and presents potential strategies for
+for subregions within a larger spatial entity (e.g., municipalities or
+districts within a canton). It discusses two **challenges** that arise
+when conducting such projections and presents potential strategies for
 addressing them:
 
-1.  How to obtain the **required input data** for spatial entities below
-    the level of cantons?
-2.  How to account for **migration between subregions**?
+1.  Obtain the **required input data** for spatial entities below the
+    level of cantons (section `Projection parameters for subregions`).
+2.  Account for **migration between subregions** (section
+    `Migration between subregions`).
 
 For more background and general information about the required input
 data, see [this
@@ -31,17 +35,21 @@ available for cantons but not for spatial entities at smaller scales.
 
 Supplying input data for spatial units at the sub-cantonal level (e.g. 
 municipalities) can be straightforward for data expressed as rates
-(e.g.  mortality rate). The simplest approach is to use the same figures
+(e.g.  mortality rate): The simplest approach is to use the same figures
 for the subregions as for the canton (unless the figures are implausible
-for theoretical or empirical reasons). The task is more demanding,
-though, if you want to alter rates for subregions or when you need to
-downscale input data expressed as “number of people”.
+for theoretical or empirical reasons).
 
-If you want to adjust birth rates, you may find the package
-[`propopbirth`](https://github.com/statistik-aargau/propopbirth) useful.
-To adjust other rates, check the next two sections. Each shows a
-possibility to distribute the cantonal “number of people” estimates
-among subregions.
+The task is more demanding, though, if you want to **alter rates** for
+subregions or when you need to downscale input data expressed as
+**“number of people”**.
+
+- To adjust the cantonal “number of people” estimates among subregions,
+  check the next two subsections.  
+- If you want to adjust birth rates, you may find the dedicated package
+  [`propopbirth`](https://github.com/statistik-aargau/propopbirth)
+  useful.  
+- For adjusting other rates, the procedure described in section
+  `Migration between subregions` could be useful.
 
 ### Distribution of people according to population size
 
@@ -62,6 +70,7 @@ input data with five regions:
 subregions are still identical to those for the whole canton):
 
 ``` r
+
 # FSO parameters for fictitious subregions
 fso_parameters_sub <- fso_parameters |>
   dplyr::filter(scen == "reference") |>
@@ -69,15 +78,16 @@ fso_parameters_sub <- fso_parameters |>
   tidyr::uncount(5) |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |>
-    dplyr::filter(
-      scen == "reference"
-    )))) |>
+                                                       dplyr::filter(
+                                                         scen == "reference"
+                                                       )))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
 **Population** data:
 
 ``` r
+
 # Generate 5 random "cuts" to distribute the original population;
 # use range 0.1-0.5 to avoid very small or very large regions
 cut_1 <- {
@@ -135,6 +145,7 @@ Note that the sum of all five region’s shares is 1 (e.g., 0.21 + 0.17 +
 0.17 + 0.33 + 0.12 = 1).
 
 ``` r
+
 # Calculate shares
 df_population_shares <- df_population |>
   dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
@@ -145,7 +156,7 @@ df_population_shares |>
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(c("share"),
-    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+                  backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
   )
 ```
 
@@ -165,6 +176,7 @@ is multiplied by the share (`share`), which in this approach is
 identical for both types of immigration.
 
 ``` r
+
 parameters_sub_size <- fso_parameters_sub |>
   dplyr::left_join(
     df_population_shares |>
@@ -185,6 +197,7 @@ from other countries. In the table below, the blue columns `check` and
 i.e., the original figures provided by the FSO for the whole canton).
 
 ``` r
+
 parameters_sub_size |>
   dplyr::mutate(
     check = round(sum(imm_int_n_distr), 0),
@@ -217,6 +230,7 @@ new `imm_int_n` and `imm_nat_n`. Otherwise,
 won’t recognize the parameters.
 
 ``` r
+
 parameters_sub_size_clean <- parameters_sub_size |>
   dplyr::mutate(
     # Rename variables
@@ -229,9 +243,10 @@ parameters_sub_size_clean <- parameters_sub_size |>
 Now we can run the projection:
 
 ``` r
+
 propop(
   parameters = parameters_sub_size_clean,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -245,41 +260,41 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [638ms]
+#> ✔ Processing completed in [446ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 726903
-#> Projection period: 2024-2026
+#> Size of starting population: 735791
+#> Projection period: 2025-2026
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "yes"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2026:
-#> - Scenario "reference": 750939
+#> - Scenario "reference": 751542
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
 #> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 6,060 × 17
+#> # A tibble: 4,040 × 17
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
 #>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0     0   517. 1.89      0.630
-#>  2  2024 reference 1            ch    m         1   498     0  0.210     2.32 
-#>  3  2024 reference 1            ch    m         2   534     0  0.209     2.31 
-#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
-#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
-#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
-#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
-#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
-#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
-#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
-#> # ℹ 6,050 more rows
+#>  1  2025 reference 1            ch    m         0     0   518. 1.68      0.841
+#>  2  2025 reference 1            ch    m         1   497     0  0.201     2.20 
+#>  3  2025 reference 1            ch    m         2   504     0  0.206     2.26 
+#>  4  2025 reference 1            ch    m         3   541     0  0.205     2.29 
+#>  5  2025 reference 1            ch    m         4   612     0  0         2.50 
+#>  6  2025 reference 1            ch    m         5   587     0  0         2.09 
+#>  7  2025 reference 1            ch    m         6   589     0  0         2.08 
+#>  8  2025 reference 1            ch    m         7   587     0  0         1.88 
+#>  9  2025 reference 1            ch    m         8   594     0  0         1.69 
+#> 10  2025 reference 1            ch    m         9   579     0  0         1.68 
+#> # ℹ 4,030 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
@@ -309,6 +324,7 @@ exist for demographic groups.
 > The fictitious data assumes that we have already performed this step.
 
 ``` r
+
 set.seed(145)
 
 # Immigration records
@@ -340,6 +356,7 @@ immigration from abroad (`hist_imm_nat`) and from other cantons
 (`hist_imm_nat`), aggregated per demographic group:
 
 ``` r
+
 df_hist_imm |>
   DT::datatable()
 ```
@@ -390,6 +407,7 @@ total per demographic group (`n_sum`) that is to be allocated to the
 respective spatial unit (`share = n / n_sum`).
 
 ``` r
+
 data_distr_hist_int <- df_hist_imm |>
   calculate_shares(col = "hist_imm_int", age_group = "age_group_5")
 
@@ -417,6 +435,7 @@ Note that summarizing the shares of a demographic group across all
 spatial units always adds up to 1:
 
 ``` r
+
 data_distr_hist_int |>
   dplyr::summarise(sum_share = round(
     sum(share, na.rm = TRUE),
@@ -432,6 +451,7 @@ the share is multiplied with the numbers that the FSO estimated for the
 whole canton.
 
 ``` r
+
 # In addition to international immigration shares and numbers
 # we also need the shares and numbers for national immigration
 data_distr_hist_nat <- df_hist_imm |>
@@ -454,7 +474,7 @@ data_distr_hist <- data_distr_hist_int |>
     "prop_10", "use_age_group", "n", "n_sum"
   )) |>
   dplyr::left_join(data_distr_hist_nat,
-    by = c("spatial_unit", "nat", "sex", "age")
+                   by = c("spatial_unit", "nat", "sex", "age")
   )
 
 # Add shares to the data frame that holds the projection parameters
@@ -492,6 +512,7 @@ subregions is identical with the number of people in the larger unit
 (whole canton):
 
 ``` r
+
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
@@ -509,15 +530,7 @@ check_sums_subregions <- fso_parameters_sub_distr_hist |>
 
 # All observed differences are equal to zero
 unique(check_sums_subregions$diff_int)
-#>  [1]   0  -1   1  -7   6  -4   7  -6   5  -5   4  -3   3  -2   2 -14  14 -11  13
-#> [20] -12  11  10 -10  -9   9   8  -8 -13 -17  17 -21  20 -25  25 -29  28 -32  32
-#> [39] -35  34 -36  36 -38  37 -39  39 -40  38 -37 -34 -33 -31  31  29 -28 -26  27
-#> [58] -23  23 -22  22  21 -19 -18  19 -16  16  12 -30  30 -27  26 -24  24 -20  18
-#> [77]  15  33 -15  35
 unique(check_sums_subregions$diff_nat)
-#>  [1]   0   7  -7   8  -1   1  -6   3  -8   6   2  -4  -3  -2   4 -11  -9   5  -5
-#> [20]   9 -10  10  11  12 -12  13 -13  14  16 -14 -15  17  15 -16  18 -17 -18 -19
-#> [39]  19 -20  20 -21  22  23
 ```
 
   
@@ -525,9 +538,10 @@ unique(check_sums_subregions$diff_nat)
 Now everything is ready to run the projection:
 
 ``` r
+
 propop(
   parameters = fso_parameters_sub_distr_hist,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -538,63 +552,167 @@ propop(
   binational = TRUE,
   subregional = FALSE
 )
-#> 
-#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
-#> ℹ Process...
-#> ✔ Processing completed in [579ms]
-#> 
-#> ── Settings used for the projection ────────────────────────────────────────────
-#> Scenario(s): "reference"
-#> Year of starting population: 2023
-#> Number of age groups: 101
-#> Fertile period: 16-50
-#> Share of female newborns: 0.488
-#> Size of starting population: 726903
-#> Projection period: 2024-2026
-#> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
-#> ────────────────────────────────────────────────────────────────────────────────
-#> Projected population size by 2026:
-#> - Scenario "reference": 751167
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
-#> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 6,060 × 17
-#>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
-#>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0     0   514. 1.85      0.626
-#>  2  2024 reference 1            ch    m         1   498     0  0.208     2.32 
-#>  3  2024 reference 1            ch    m         2   534     0  0.207     2.31 
-#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
-#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
-#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
-#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
-#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
-#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
-#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
-#> # ℹ 6,050 more rows
-#> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
-#> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
 
 ## Migration between subregions
 
-In `propop` you may account for migration between subregions. To adjust
-the population size in each subregion according to past migration, the
-column `mig_sub` (= migration in subregions) is required in the
-parameter data frame.
+In `propop` you may account for migration between subregions by
+specifying so in the
+[`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+argument `subregional =`. You can choose between two mathematical
+approaches, using either net migration numbers (`subregional = net`) or
+migration rates (`subregional = rate`). For both approaches, extra
+columns in the parameter data frame are required. We recommend using the
+rate approach because the net approach may lead to negative number of
+people in very small groups.
 
-Here we add `mig_sub` as a *fictitious* parameter the parameter input
+The following two sections illustrate how to use the rate and net
+approach.
+
+### Subregional migration rates
+
+#### Preparation
+
+To use the **rate** method in `propop`, the parameters data frame must
+include emigration and immigration rates:
+
+- The **emigration rate** (`emi_sub`) is the typical proportion of a
+  chosen spatial resolution (e.g., per municipality) and group (e.g.,
+  per 1-year age class) that moves away from a location each year. One
+  way to estimate this value is to calculate the annual emigration
+  proportion for the group in past years and then take the mean of these
+  annual rates. For example, if 2 out of 10 people moved away in year 1
+  and 3 out of 10 moved away in year 2, the estimate would be (0.2 +
+  0.3) / 2 = 0.25. The function
+  [`propop::calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+  makes it easy to compute `emi_sub`.  
+- The **immigration share** (`imm_sub`) represents, for each spatial
+  unit, the proportion of all within-region migrants who settle there.
+  This value can be calculated using past migration. The level of detail
+  can range from low (e.g., one estimate per district for everyone in
+  10-year age groups) to high (e.g., a separate estimate for each age /
+  sex / nationality group in every municipality). To implement this
+  step, the function
+  [`propop::calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
+  may be useful.
+
+The required data and available functions to implement the rate approach
+are visualized in the following figure:
+
+![](../reference/figures/rate_method.png)
+
+#### Redistribution
+
+When running
+[`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md),
+the rate‑based method reallocates individuals each year for the chosen
+spatial and demographic resolution in three steps:
+
+1.  The number of people who move to another location within the region
+    is computed based on `emi_sub` and the group’s size at the beginning
+    of the year (`n_jan`).  
+2.  These emigrants are added up and put into a distribution “pool”.  
+3.  The people in this pool are then distributed among the locations
+    using `imm_sub`.
+
+This procedure is repeated in each year of the projection.
+
+#### Numerical example
+
+To illustrate the rate approach, we start with aggregated past migration
+records (2022–2025) for five regions in the Canton of Aargau. We first
+use
+[`calculate_emi_rate()`](https://statistik-aargau.github.io/propop/reference/calculate_emi_rate.md)
+to calculate `emi_rate`.
+
+Now that all required input files are available, we can set
+`subregional` to `rate` and use
+[`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md):
+
+``` r
+
+data("ag_migration_subregional") 
+
+# Compute mean for each demographic group
+emi_rate <- calculate_emi_rate(
+  past_migration = ag_migration_subregional,
+  n_jan = n_jan,
+  births = births,
+  emi_n = emi_n,
+  spatial_unit = spatial_unit,
+  method = "median"
+)
+```
+
+``` r
+
+imm_share <- calculate_shares(
+  past_migration = ag_migration_subregional,
+  imm_n = "imm_n"
+)
+```
+
+Now we only need to add the emi_sub and imm_sub to the data frame that
+contains the parameters. Then we set `subregional` to `rate` and run
+[`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md):
+
+``` r
+
+data("ag_population_subregional")
+data("fso_parameters")
+
+parameters <- fso_parameters |> 
+  dplyr::left_join(emi_rate |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   emi_rate) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") |> 
+  dplyr::left_join(imm_share |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   imm_share) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") 
+
+
+propop(
+  parameters = parameters,
+  year_first = 2024,
+  year_last = 2026,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = "rate"
+)
+```
+
+### Subregional net migration
+
+If you want to use **net migration numbers**, the column `mig_sub` is
+required in the parameter data frame. `mig_sub` is the net migration
+between subregions (e.g., municipalities, districts) within the main
+superordinate projection unit (e.g., a canton). `mig_sub` needs to be
+provided by the user (e.g., by computing the median net migration of the
+past 10 years to capture the recent trends and carry it forward into the
+future).
+
+Here we add `mig_sub` as a *fictitious* parameter in the parameter input
 file.
 
 > In real life you may use population register records as we described
-> in the section “Distribution of people according to past migration”.
+> in the section `Distribution of people according to past migration`.
 
 ``` r
-parameters_sub_mig <- fso_parameters_sub_distr_hist |>
+
+parameters_net <- fso_parameters_sub_distr_hist |> 
   # Create fictitious migration parameters
   dplyr::mutate(
     mig_sub = dplyr::case_when(
@@ -632,13 +750,14 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
 ```
 
 Now that all required input files are available, we can set
-`subregional` to `TRUE` and use
+`subregional` to `net` and use
 [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md):
 
 ``` r
+
 propop(
   parameters = parameters_sub_mig,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   age_groups = 101,
   fert_first = 16,
@@ -646,46 +765,6 @@ propop(
   share_born_female = 100 / 205,
   population = df_population,
   binational = TRUE,
-  subregional = TRUE
+  subregional = "net"
 )
-#> 
-#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
-#> ℹ Process...
-#> ✔ Processing completed in [579ms]
-#> 
-#> ── Settings used for the projection ────────────────────────────────────────────
-#> Scenario(s): "reference"
-#> Year of starting population: 2023
-#> Number of age groups: 101
-#> Fertile period: 16-50
-#> Share of female newborns: 0.488
-#> Size of starting population: 726903
-#> Projection period: 2024-2026
-#> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
-#> ────────────────────────────────────────────────────────────────────────────────
-#> Projected population size by 2026:
-#> - Scenario "reference": 751167
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
-#> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 6,060 × 18
-#>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
-#>    <int> <chr>     <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2024 reference 1            ch    m         0     0   514. 1.85      0.626
-#>  2  2024 reference 1            ch    m         1   498     0  0.208     2.32 
-#>  3  2024 reference 1            ch    m         2   534     0  0.207     2.31 
-#>  4  2024 reference 1            ch    m         3   607     0  0.206     2.52 
-#>  5  2024 reference 1            ch    m         4   581     0  0         2.31 
-#>  6  2024 reference 1            ch    m         5   587     0  0         2.10 
-#>  7  2024 reference 1            ch    m         6   584     0  0         2.10 
-#>  8  2024 reference 1            ch    m         7   585     0  0         1.89 
-#>  9  2024 reference 1            ch    m         8   572     0  0         1.68 
-#> 10  2024 reference 1            ch    m         9   596     0  0         1.68 
-#> # ℹ 6,050 more rows
-#> # ℹ 8 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
-#> #   acq_n <dbl>, mig_sub <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```

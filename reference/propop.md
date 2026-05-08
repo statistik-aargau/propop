@@ -270,7 +270,7 @@ population are also included in the output:
 # Run projection for the sample data (whole canton of Aargau)
 propop(
   parameters = fso_parameters,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2027,
   population = fso_population,
   subregional = NULL,
@@ -279,50 +279,50 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.1s]
+#> ✔ Processing completed in [849ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high", "low", and "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 726894
-#> Projection period: 2024-2027
+#> Size of starting population: 735808
+#> Projection period: 2025-2027
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
-#> - Scenario "high": 768888
-#> - Scenario "low": 748703
-#> - Scenario "reference": 758993
+#> - Scenario "high": 767384
+#> - Scenario "low": 751337
+#> - Scenario "reference": 759508
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
 #> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 4,848 × 17
+#> # A tibble: 3,636 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
 #>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0     0  2633. 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1  2371     0  1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2  2542     0  0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3  2891     0  0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4  2766     0  0         13.0 
-#>  6  2024 high  Aargau       ch    m         5  2794     0  0         12.0 
-#>  7  2024 high  Aargau       ch    m         6  2782     0  0         11.0 
-#>  8  2024 high  Aargau       ch    m         7  2787     0  0         10.00
-#>  9  2024 high  Aargau       ch    m         8  2726     0  0          9.00
-#> 10  2024 high  Aargau       ch    m         9  2837     0  0          9.00
-#> # ℹ 4,838 more rows
+#>  1  2025 high  Aargau       ch    m         0     0  2668. 8.98       5.99
+#>  2  2025 high  Aargau       ch    m         1  2369     0  0.898     12.5 
+#>  3  2025 high  Aargau       ch    m         2  2402     0  0.976     11.7 
+#>  4  2025 high  Aargau       ch    m         3  2576     0  0.973     12.9 
+#>  5  2025 high  Aargau       ch    m         4  2916     0  0         12.9 
+#>  6  2025 high  Aargau       ch    m         5  2793     0  0         11.9 
+#>  7  2025 high  Aargau       ch    m         6  2807     0  0         10.9 
+#>  8  2025 high  Aargau       ch    m         7  2794     0  0         10.9 
+#>  9  2025 high  Aargau       ch    m         8  2828     0  0         10.0 
+#> 10  2025 high  Aargau       ch    m         9  2757     0  0          8.97
+#> # ℹ 3,626 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 propop(
   parameters = fso_parameters |>
     dplyr::filter(scen == "reference" | scen == "high"),
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = c("reference", "high"),
   population = fso_population,
@@ -332,43 +332,43 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [569ms]
+#> ✔ Processing completed in [391ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high" and "reference"
-#> Year of starting population: 2023
+#> Year of starting population: 2024
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 726894
-#> Projection period: 2024-2026
+#> Size of starting population: 735808
+#> Projection period: 2025-2026
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2026:
-#> - Scenario "high": 758422
-#> - Scenario "reference": 751159
+#> - Scenario "high": 756901
+#> - Scenario "reference": 751731
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
 #> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
 #> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 2,424 × 17
+#> # A tibble: 1,616 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
 #>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2024 high  Aargau       ch    m         0     0  2633. 9.00       6.00
-#>  2  2024 high  Aargau       ch    m         1  2371     0  1.000     13.0 
-#>  3  2024 high  Aargau       ch    m         2  2542     0  0.998     13.0 
-#>  4  2024 high  Aargau       ch    m         3  2891     0  0.983     14.0 
-#>  5  2024 high  Aargau       ch    m         4  2766     0  0         13.0 
-#>  6  2024 high  Aargau       ch    m         5  2794     0  0         12.0 
-#>  7  2024 high  Aargau       ch    m         6  2782     0  0         11.0 
-#>  8  2024 high  Aargau       ch    m         7  2787     0  0         10.00
-#>  9  2024 high  Aargau       ch    m         8  2726     0  0          9.00
-#> 10  2024 high  Aargau       ch    m         9  2837     0  0          9.00
-#> # ℹ 2,414 more rows
+#>  1  2025 high  Aargau       ch    m         0     0  2668. 8.98       5.99
+#>  2  2025 high  Aargau       ch    m         1  2369     0  0.898     12.5 
+#>  3  2025 high  Aargau       ch    m         2  2402     0  0.976     11.7 
+#>  4  2025 high  Aargau       ch    m         3  2576     0  0.973     12.9 
+#>  5  2025 high  Aargau       ch    m         4  2916     0  0         12.9 
+#>  6  2025 high  Aargau       ch    m         5  2793     0  0         11.9 
+#>  7  2025 high  Aargau       ch    m         6  2807     0  0         10.9 
+#>  8  2025 high  Aargau       ch    m         7  2794     0  0         10.9 
+#>  9  2025 high  Aargau       ch    m         8  2828     0  0         10.0 
+#> 10  2025 high  Aargau       ch    m         9  2757     0  0          8.97
+#> # ℹ 1,606 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```
