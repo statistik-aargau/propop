@@ -30,16 +30,23 @@ reference:
 - lazy: TRUE
 - title: "Prepare data"
   desc: >
-    Functions for downloading and preparing data
+    Functions for downloading data
   contents:
   - get_parameters
   - get_population
-  - calculate_rate
 - title: "Run projections"
   desc: >
     Functions for running population projections
   contents:
   - propop
+- title: "Distribute migration"
+  desc: >
+    Data and functions for subregional migration
+  contents:
+  - ag_population_subregional
+  - ag_migration_subregional
+  - calculate_shares
+  - calculate_rates
 - title: "Evaluate projections"
   desc: >
     Functions to evaluate projection results
@@ -48,19 +55,10 @@ reference:
   - prepare_evaluation
   - compute_measures
   - aggregate_measures
-- title: "Distribute migration"
-  desc: >
-    Example for distributing international immigration
-  contents:
-  - calculate_shares
-  - calculate_rate
-  - ag_population_subregional
-  - ag_migration_subregional
 - title: "Sample data"
   desc: "Sample data from the Federal Statistical Office"
   contents:
   - starts_with("fso_")
-
 - title: "Deprecated functions"
   desc: "Functions are still operational but won't be further maintained"
   contents:
