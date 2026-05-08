@@ -6,7 +6,7 @@
       tibble::tibble(
         year = rep(2024:2025, each = 404L),
         scen = rep(c(NA, "reference"), each = 404L),
-        spatial_unit = rep("Aargau", 808L),
+        spatial_unit = "Aargau",
         nat = factor(rep(rep(c("ch", "int"), 202), each = 2L)),
         sex = factor(rep(c("f", "m"), 404), levels = c("m", "f")),
         age = rep(rep(seq(0, 100, by = 1), 2), each = 4L),
@@ -582,7 +582,7 @@
       tibble::tibble(
         year = rep(2024:2025, c(404L, 1616L)),
         scen = rep(c(NA, "high", "low", "reference"), c(404L, 404L, 404L, 808L)),
-        spatial_unit = rep("Aargau", 2020L),
+        spatial_unit = "Aargau",
         nat = factor(rep(rep(c("ch", "int"), 404), rep(c(2L, 4L), c(606L, 202L)))),
         sex = factor(
           c(
@@ -2726,9 +2726,9 @@
       constructive::construct(output_propop_1r)
     Output
       tibble::tibble(
-        year = rep(2025L, 404L),
-        scen = rep("reference", 404L),
-        spatial_unit = rep("Aargau", 404L),
+        year = 2025L,
+        scen = "reference",
+        spatial_unit = "Aargau",
         nat = factor(rep(rep(c("ch", "int"), 101), each = 2L)),
         sex = factor(rep(c("f", "m"), 202), levels = c("m", "f")),
         age = rep(seq(0, 100, by = 1), each = 4L),
@@ -3202,8 +3202,8 @@
       constructive::construct(output_propop_5r)
     Output
       tibble::tibble(
-        year = rep(2025L, 2020L),
-        scen = rep("reference", 2020L),
+        year = 2025L,
+        scen = "reference",
         spatial_unit = rep(c("1", "2", "3", "4", "5"), each = 404L),
         nat = factor(rep(rep(c("ch", "int"), 505), each = 2L)),
         sex = factor(rep(c("f", "m"), 1010), levels = c("m", "f")),

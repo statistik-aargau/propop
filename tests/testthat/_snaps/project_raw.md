@@ -478,7 +478,7 @@
           ),
           rep(c(202L, 1L, 18L, 1L, 28L, 404L), c(1L, 83L, 1L, 73L, 1L, 1L))
         ),
-        MIG_SUB = numeric(808)
+        MIG_SUB = 0
       )
 
 ---
@@ -487,7 +487,7 @@
       constructive::construct(output_table_subregions)
     Output
       data.frame(
-        scen = factor(rep("reference", 4040L)),
+        scen = factor("reference"),
         spatial_unit = factor(rep(c("1", "2", "3", "4", "5"), each = 808L)),
         N = c(
           738, 744, 736, 778, 880, 841, 848, 844, 845, 828, 861, 870, 840, 844, 854,
