@@ -99,6 +99,7 @@ utils::globalVariables(c(
   "mig_sub", # <check_balance>
   "n_dec", # <check_balance>
   "mig_sub", # <complement_projection>
+  "n", # <complement_projection>
   "age", # <complement_projection>
   "n_jan", # <complement_projection>
   "year", # <complement_projection>
@@ -198,6 +199,7 @@ utils::globalVariables(c(
   "nat", # <propop>
   "sex", # <propop>
   "year", # <propop>
+  "n", # <propop>
   "age", # <propop>
   "n_dec", # <propop>
   "n_jan", # <propop>
@@ -208,6 +210,7 @@ utils::globalVariables(c(
   "sex", # <propop_legacy>
   "year", # <propop_legacy>
   "age", # <propop_legacy>
+  "n", # <propop_legacy>
   "scen", # <propop_legacy>
   "n_dec", # <propop_legacy>
   "total", # <propop_legacy>
