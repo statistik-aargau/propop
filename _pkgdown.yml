@@ -41,12 +41,12 @@ reference:
   - propop
 - title: "Distribute migration"
   desc: >
-    Data and functions for subregional migration
+    Functions and example data for subregional migration
   contents:
-  - ag_population_subregional
-  - ag_migration_subregional
   - calculate_shares
   - calculate_rates
+  - ag_population_subregional
+  - ag_migration_subregional
 - title: "Evaluate projections"
   desc: >
     Functions to evaluate projection results

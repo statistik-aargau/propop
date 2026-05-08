@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_rate.R
 \name{calculate_rates}
 \alias{calculate_rates}
-\title{Get mean historical subregional emigration to municipalities within the canton}
+\title{Calculate emigration rates to subregions}
 \usage{
 calculate_rates(
   past_migration,
