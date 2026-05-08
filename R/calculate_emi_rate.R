@@ -30,6 +30,7 @@
 #'
 #' @return A data frame that includes the average emigration rate.
 #' @export
+#' @autoglobal
 #'
 #' @examples
 #' # Compute mean emigration rate

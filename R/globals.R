@@ -14,6 +14,10 @@ utils::globalVariables(c(
   "n_projected", # <aggregate_measures>
   "n_measure", # <aggregate_measures>
   "wmape", # <aggregate_measures>
+  "year", # <calculate_emi_rate>
+  "age", # <calculate_emi_rate>
+  "n_base", # <calculate_emi_rate>
+  "emi_rate", # <calculate_emi_rate>
   "int_mothers", # <calculate_newborns>
   "nat", # <calculate_newborns>
   "births_int_int", # <calculate_newborns>
