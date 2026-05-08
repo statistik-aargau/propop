@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' # Compute mean emigration rate
-#'calculate_rate(
+#'calculate_rates(
 #'  past_migration = ag_migration_subregional,
 #'  n_jan = n_jan,
 #'  births = births,
@@ -47,7 +47,7 @@
 #'  two_sex = TRUE
 #')
 
-calculate_rate <- function(
+calculate_rates <- function(
     past_migration,
     n_jan,
     births,

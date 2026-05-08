@@ -1,8 +1,8 @@
 
 
-test_that("calculate_rate snapshot - mean, age_group=5, binational, two_sex", {
+test_that("calculate_rates snapshot - mean, age_group=5, binational, two_sex", {
 
-  result <- calculate_rate(
+  result <- calculate_rates(
     past_migration = ag_migration_subregional,
     n_jan         = n_jan,
     births        = births,
@@ -18,9 +18,9 @@ test_that("calculate_rate snapshot - mean, age_group=5, binational, two_sex", {
   expect_snapshot(print(tail(result, 100)))
 })
 
-test_that("calculate_rate snapshot - median, age_group=7, 2023 & 2025, one sex", {
+test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex", {
 
-  result2 <- calculate_rate(
+  result2 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
     n_jan         = n_jan,
@@ -38,9 +38,9 @@ test_that("calculate_rate snapshot - median, age_group=7, 2023 & 2025, one sex",
 })
 
 
-test_that("calculate_rate snapshots should differ - median vs. mean", {
+test_that("calculate_rates snapshots should differ - median vs. mean", {
 
-  result2 <- calculate_rate(
+  result2 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
     n_jan         = n_jan,
@@ -54,7 +54,7 @@ test_that("calculate_rate snapshots should differ - median vs. mean", {
     two_sex       = FALSE
   )
 
-  result3 <- calculate_rate(
+  result3 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
     n_jan         = n_jan,

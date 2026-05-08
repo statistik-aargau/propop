@@ -45,7 +45,7 @@ unit. \code{imm_share} can be used as \code{imm_sub} parameter when \code{propop
 \description{
 Calculates historical immigration shares across spatial units within
 a region. These shares are used to allocate emigrants moving from one
-subregion to another subregion (which can be done with \code{calculate_rate}).
+subregion to another subregion (which can be done with \code{calculate_rates}).
 }
 \examples{
 # Calculate shares to distribute subregional immigration among spatial units
@@ -60,5 +60,5 @@ calculate_shares(
 }
 \seealso{
 \code{\link[=propop]{propop()}} for details on how to account for subregional migration using the rate method,
-\code{\link[=calculate_rate]{calculate_rate()}} for calculating the associated emigration rate \code{emi_sub}.
+\code{\link[=calculate_rates]{calculate_rates()}} for calculating the associated emigration rate \code{emi_sub}.
 }

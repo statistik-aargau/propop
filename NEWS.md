@@ -2,7 +2,7 @@
 - `propop::propop()` offers a new method for subregional migration. The new method
 uses **migration rates** rather than **net migration** (number of people). 
 - To make using the rate method easier, there are two new functions -- 
-`calculate_rate()` and `calculate_shares()`.
+`calculate_rates()` and `calculate_shares()`.
 
 # propop 2.0.0
 ## Breaking changes
