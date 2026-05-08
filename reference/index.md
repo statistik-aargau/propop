@@ -11,14 +11,14 @@ Functions for downloading data
 
 ## Run projections
 
-Functions for running population projections
+Function for running population projections
 
 - [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   : Project population development
 
 ## Distribute migration
 
-Functions and example data for subregional migration
+Functions and example data for distributing migration
 
 - [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
   : Calculate shares for distributing immigration among subregions
