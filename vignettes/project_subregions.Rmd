@@ -1,5 +1,7 @@
 ---
 title: "Projections for subregions"
+date: 2026-05-05
+number-sections: true
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -8,7 +10,7 @@ vignette: >
   %\VignetteIndexEntry{Projections for subregions}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+  editor_options: 
   markdown: 
     wrap: 84
   chunk_output_type: console
@@ -21,26 +23,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, warning=FALSE, message = FALSE, echo = FALSE}
+<div style="border: 2px solid #f0c36d; background: linear-gradient(135deg, #fff8e6, #fffdf4); color: #7a5a00; padding: 16px 20px; border-radius: 12px; font-weight: 700; font-family: sans-serif; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  ⚠️ Work in progress
+</div>
+
+
+```{r setup, message = FALSE, warning=FALSE}
 library(propop)
 ```
-
-```{r setup-display, eval = FALSE}
-library(propop)
-```
-
 
 # Overview
 
 This vignette explains how to use `propop::propop()` to perform population 
 projections for multiple regions and particularly for subregions within a larger
-spatial entity (e.g., municipalities within a canton). 
+spatial entity (e.g., municipalities or districts within a canton). 
 It discusses two **challenges** that arise when conducting such projections and 
 presents potential strategies for addressing them:  
 
-1. How to obtain the **required input data** for spatial entities below 
-the level of cantons?
-2. How to account for **migration between subregions**? 
+1. Obtain the **required input data** for spatial entities below 
+the level of cantons  (section ` Projection parameters for subregions`).
+2. Account for **migration between subregions** (section `Migration between subregions`). 
 
 For more background and general information about the required input data, see 
 [this vignette](project_single_region.html)). 
@@ -54,15 +56,17 @@ for spatial entities at smaller scales.
 
 Supplying input data for spatial units at the sub-cantonal level (e.g. 
 municipalities) can be straightforward for data expressed as rates (e.g. 
-mortality rate). The simplest approach is to use the same figures for the 
+mortality rate): The simplest approach is to use the same figures for the 
 subregions as for the canton (unless the figures are implausible for 
-theoretical or empirical reasons). The task is more demanding, though, if 
-you want to alter rates for subregions or when you need to downscale input data 
-expressed as "number of people".   
+theoretical or empirical reasons). 
 
-If you want to adjust birth rates, you may find the package [`propopbirth`](https://github.com/statistik-aargau/propopbirth) useful. To adjust
-other rates, check the next two sections. Each shows a possibility to distribute 
-the cantonal "number of people" estimates among subregions.
+The task is more demanding, though, if you want to **alter rates** for subregions or 
+when you need to downscale input data expressed as **"number of people"**.   
+
+- To adjust the cantonal "number of people" estimates among subregions, check the 
+next two subsections.  
+- If you want to adjust birth rates, you may find the dedicated package [`propopbirth`](https://github.com/statistik-aargau/propopbirth) useful.   
+- For adjusting other rates, the procedure described in section `Migration between subregions` could be useful.  
 
 ## Distribution of people according to population size
 
@@ -90,9 +94,9 @@ fso_parameters_sub <- fso_parameters |>
   tidyr::uncount(5) |>
   # create 5 subregions
   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_parameters |>
-    dplyr::filter(
-      scen == "reference"
-    )))) |>
+                                                       dplyr::filter(
+                                                         scen == "reference"
+                                                       )))) |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit))
 ```
 
@@ -161,7 +165,7 @@ df_population_shares |>
   dplyr::mutate(share = round(share, 3)) |>
   DT::datatable() |>
   DT::formatStyle(c("share"),
-    backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
+                  backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "")
   )
 ```
 \ 
@@ -242,7 +246,7 @@ Now we can run the projection:
 ```{r project-1}
 propop(
   parameters = parameters_sub_size_clean,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -355,7 +359,7 @@ The final outcome `share` indicates the proportion of the historical total per
 demographic group (`n_sum`) that is to be allocated to the respective
 spatial unit (`share =  n / n_sum`).
 
-```{r result-historical-immigration}
+```{r result-historical-immigration, eval = FALSE}
 data_distr_hist_int <- df_hist_imm |>
   calculate_shares(col = "hist_imm_int", age_group = "age_group_5")
 
@@ -383,7 +387,7 @@ Note that summarizing the shares of a demographic group across all spatial units
 always adds up to 1:
 
 
-```{r share-check}
+```{r share-check, eval = FALSE}
 data_distr_hist_int |>
   dplyr::summarise(sum_share = round(
     sum(share, na.rm = TRUE),
@@ -397,7 +401,7 @@ From now on, the procedure is identical to the first approach that distributed
 the number of people according to population size. That is, the share is 
 multiplied with the numbers that the FSO estimated for the whole canton.
 
-```{r parameters-distributed}
+```{r parameters-distributed, eval = FALSE}
 # In addition to international immigration shares and numbers
 # we also need the shares and numbers for national immigration
 data_distr_hist_nat <- df_hist_imm |>
@@ -420,7 +424,7 @@ data_distr_hist <- data_distr_hist_int |>
     "prop_10", "use_age_group", "n", "n_sum"
   )) |>
   dplyr::left_join(data_distr_hist_nat,
-    by = c("spatial_unit", "nat", "sex", "age")
+                   by = c("spatial_unit", "nat", "sex", "age")
   )
 
 # Add shares to the data frame that holds the projection parameters
@@ -456,7 +460,7 @@ fso_parameters_sub_distr_hist |>
 A quick double-check confirms that the sums of the migration in the subregions 
 is identical with the number of people in the larger unit (whole canton):
 
-```{r sum-check}
+```{r sum-check, eval = FALSE}
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
@@ -480,10 +484,10 @@ unique(check_sums_subregions$diff_nat)
 
 Now everything is ready to run the projection: 
 
-```{r project-2}
+```{r project-2, eval = FALSE}
 propop(
   parameters = fso_parameters_sub_distr_hist,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   scenarios = "reference",
   age_groups = 101,
@@ -498,17 +502,145 @@ propop(
 
 # Migration between subregions
 
-In `propop` you may account for migration between subregions. To adjust the 
-population size in each subregion according to past migration, the column 
-`mig_sub` (= migration in subregions) is required in the parameter data frame.
+In `propop` you may account for migration between subregions by specifying so 
+in the `propop()` argument `subregional = `. You can choose between two mathematical 
+approaches, using either net migration numbers (`subregional = net`) or migration 
+rates (`subregional = rate`). For both approaches, extra columns in the parameter 
+data frame are required. We recommend using the rate approach because the net 
+approach may lead to negative number of people in very small groups.
 
-Here we add `mig_sub` as a *fictitious* parameter the parameter input file. 
+The following two sections illustrate how to use the rate and net approach.
+
+
+## Subregional migration rates
+
+### Preparation
+
+To use the **rate** method in `propop`, the parameters data frame must include 
+emigration and immigration rates:   
+
+- The **emigration rate** (`emi_sub`) is the typical proportion of a chosen spatial 
+resolution (e.g., per municipality) and group (e.g., per 1-year age class) that
+moves away from a location each year. One way to estimate this value is to calculate 
+the annual emigration proportion for the group in past years and then take the mean 
+of these annual rates. For example, if 2 out of 10 people moved away in year 1 and 
+3 out of 10 moved away in year 2, the estimate would be (0.2 + 0.3) / 2 = 0.25.
+The function `propop::calculate_emi_rate()` makes it easy to compute `emi_sub`.  
+- The **immigration share** (`imm_sub`) represents, for each spatial unit, 
+the proportion of all within-region migrants who settle there. This value 
+can be calculated using past migration. The level of detail can range from low 
+(e.g., one estimate per district for everyone in 10-year age groups) 
+to high (e.g., a separate estimate for each age / sex / nationality group in 
+every municipality). To implement this step, the function `propop::calculate_shares()`
+may be useful.  
+
+The required <span style="color: #ffd700; font-weight:bold;">data</span> and available 
+<span style="color: #00bfff; font-weight:bold;">functions</span> 
+to implement the rate approach are visualized in the following figure: 
+
+
+![](../man/figures/rate_method.png)
+
+
+### Redistribution
+
+When running `propop()`, the rate‑based method reallocates individuals each year 
+for the chosen spatial and demographic resolution in three steps: 
+
+1. The number of people who move to another location within the region is computed
+based on `emi_sub` and the group's size at the beginning of the year (`n_jan`).  
+1. These emigrants are added up and put into a distribution "pool".  
+1. The people in this pool are then distributed among the locations using `imm_sub`. 
+
+This procedure is repeated in each year of the projection.   
+
+### Numerical example
+
+To illustrate the rate approach, we start with aggregated past migration records 
+(2022–2025) for five regions in the Canton of Aargau. We first use `calculate_emi_rate()` 
+to calculate `emi_rate`.  
+
+Now that all required input files are available, we can set `subregional` to
+`rate` and use `propop::propop()`:
+
+```{r emi-rate}
+data("ag_migration_subregional") 
+
+# Compute mean for each demographic group
+emi_rate <- calculate_emi_rate(
+  past_migration = ag_migration_subregional,
+  n_jan = n_jan,
+  births = births,
+  emi_n = emi_n,
+  spatial_unit = spatial_unit,
+  method = "median"
+)
+```
+
+```{r imm_share}
+imm_share <- calculate_shares(
+  past_migration = ag_migration_subregional,
+  imm_n = "imm_n"
+)
+```
+
+Now we only need to add the emi_sub and imm_sub to the data frame that contains
+the parameters. Then we set `subregional` to `rate` and run `propop::propop()`:
+
+```{r project-rate, eval = FALSE}
+data("ag_population_subregional")
+data("fso_parameters")
+
+parameters <- fso_parameters |> 
+  dplyr::left_join(emi_rate |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   emi_rate) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") |> 
+  dplyr::left_join(imm_share |> 
+                     dplyr::select(spatial_unit, 
+                                   age, 
+                                   nat, 
+                                   sex,
+                                   imm_share) |> 
+                     dplyr::distinct(),
+                   relationship = "many-to-many") 
+
+
+propop(
+  parameters = parameters,
+  year_first = 2024,
+  year_last = 2026,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  population = df_population,
+  binational = TRUE,
+  subregional = "rate"
+)
+```
+
+
+## Subregional net migration
+
+If you want to use **net migration numbers**, the column `mig_sub` is required 
+in the parameter data frame. `mig_sub` is the net migration between subregions 
+(e.g., municipalities, districts) within the main superordinate projection unit 
+(e.g., a canton). `mig_sub` needs to be provided by the user (e.g., by computing
+the median net migration of the past 10 years to capture the recent trends and 
+carry it forward into the future). 
+
+Here we add `mig_sub` as a *fictitious* parameter in the parameter input file. 
 
 > In real life you may use population register records as we described in the
-section "Distribution of people according to past migration". 
+section `Distribution of people according to past migration`. 
 
-```{r, eval = TRUE}
-parameters_sub_mig <- fso_parameters_sub_distr_hist |>
+```{r, eval = FALSE}
+parameters_net <- fso_parameters_sub_distr_hist |> 
   # Create fictitious migration parameters
   dplyr::mutate(
     mig_sub = dplyr::case_when(
@@ -546,12 +678,12 @@ parameters_sub_mig <- fso_parameters_sub_distr_hist |>
 ```
 
 Now that all required input files are available, we can set `subregional` to
-`TRUE` and use `propop::propop()`:
+`net` and use `propop::propop()`:
 
-```{r project-3, eval = TRUE}
+```{r project-3, eval = FALSE}
 propop(
   parameters = parameters_sub_mig,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2026,
   age_groups = 101,
   fert_first = 16,
@@ -559,6 +691,6 @@ propop(
   share_born_female = 100 / 205,
   population = df_population,
   binational = TRUE,
-  subregional = TRUE
+  subregional = "net"
 )
 ```

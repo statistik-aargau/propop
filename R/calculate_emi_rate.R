@@ -1,15 +1,21 @@
-#' Calculate shares for distributing immigration among subregions
+#' Get mean historical subregional emigration to municipalities within the canton
 #'
-#' @description Calculates historical immigration shares across spatial units within
-#'        a region. These shares are used to allocate emigrants moving from one
-#'        subregion to another subregion (which can be done with `calculate_emi_rate`).
+#' @description The function calculates the mean of past emigration to other
+#'   municipalities within the canton for all municipalities and all possible
+#'   combinations of age group, sex, and nationality.
 #'
-#' @param past_migration data frame, historical records (e.g., immigration from
-#'        other cantons, countries or subregions). Required columns are: `year`,
-#'        `spatial_unit`, `age` and a column that contains aggregated historical
-#'        migration records. The columns `nat` and `sex` are optional.
-#' @param imm_n character, name of the column which contains the
-#'        data for aggregated historical migration records.
+#' @param past_migration data frame, containing aggregated migration records.
+#'        The data frame must include one row for each combination of year,
+#'        spatial unit, nationality, sex, and age.
+#' @param n_jan character, column containing the starting population (typically
+#'        the number of people per group in January).
+#' @param births character, column containing the number of births in the group
+#'        of 0-year olds.
+#' @param emi_n character, column containing the total number of people emigrating per
+#'        spatial unit and demographic group.
+#' @param spatial_unit character, column containing the spatial units.
+#' @param method character, method to calculate average shares, i.e. `mean` or
+#'        `median`.
 #' @param year_range \bold{(optional)} vector, years taken into consideration to
 #'        calculate historical shares. Default uses all years present in the data.
 #' @param age_group \bold{(optional)} integer, divides continuous age values into
@@ -21,69 +27,68 @@
 #' @param two_sex \bold{(optional)} boolean, `TRUE` indicates that the calculation
 #'        discriminates between two sexes. `FALSE` indicates that the calculation
 #'        does not distinguish between sexes.
-#' @returns
-#' A data frame that includes the average share per demographic group and spatial
-#' unit. `imm_share` can be used as `imm_sub` parameter when `propop::propop()` uses
-#' `subregional = "rate"`.
 #'
-#' @seealso
-#' [propop()] for details on how to account for subregional migration using the rate method,
-#' [calculate_emi_rate()] for calculating the associated emigration rate `emi_sub`.
-#'
-#'
+#' @return A data frame that includes the average emigration rate.
 #' @export
-#'
 #' @autoglobal
 #'
 #' @examples
-#' # Calculate shares to distribute subregional immigration among spatial units
-#' calculate_shares(
-#'   past_migration = ag_migration_subregional,
-#'   imm_n = "imm_n",
-#'   year_range = c(2022:2024),
-#'   age_group = 10,
-#'   binational = TRUE,
-#'   two_sex = TRUE
-#' )
-calculate_shares <- function(
+#' # Compute mean emigration rate
+#'calculate_emi_rate(
+#'  past_migration = ag_migration_subregional,
+#'  n_jan = n_jan,
+#'  births = births,
+#'  emi_n = emi_n,
+#'  spatial_unit = spatial_unit,
+#'  method = "mean",
+#'  year_range = c(2022:2024),
+#'  age_group = 5,
+#'  binational = TRUE,
+#'  two_sex = TRUE
+#')
+
+calculate_emi_rate <- function(
     past_migration,
-    imm_n,
+    n_jan,
+    births,
+    emi_n,
+    spatial_unit,
+    method,
     year_range = NULL,
     age_group = 1,
     binational = TRUE,
-    two_sex = TRUE) {
-
-  # Test input ----
-  ## Presence of mandatory columns ----
-  assertthat::assert_that("year" %in% names(past_migration),
-    msg = "column `year` is missing in `past_migration`."
-  )
-  assertthat::assert_that("spatial_unit" %in% names(past_migration),
-    msg = "column `spatial_unit` is missing in `past_migration`."
-  )
-  assertthat::assert_that("age" %in% names(past_migration),
-    msg = "column `age` is missing in `past_migration`."
-  )
-  assertthat::assert_that(
-    imm_n %in% names(past_migration),
-    msg = paste0("column `imm_n` is missing in `past_migration`.")
-  )
-  ## Data types and content ----
-  assertthat::assert_that(
-    is.numeric(past_migration$year),
-    msg = paste0("Values in column `", year, "` must be numeric.")
-  )
-  assertthat::assert_that(
-    is.numeric(past_migration$age),
-    msg = paste0("Values in column `", age, "` must be numeric.")
+    two_sex = TRUE
+) {
+  # Ensure all required columns exist
+  required_cols <- c(
+    "year", "age", rlang::as_name(rlang::ensym(spatial_unit)),
+    rlang::as_name(rlang::ensym(n_jan)), rlang::as_name(rlang::ensym(births)),
+    rlang::as_name(rlang::ensym(emi_n))
   )
 
-  # levels in spatial unit
-  assertthat::assert_that(length(unique(as.factor(past_migration$spatial_unit))) > 1,
-    msg = "Levels for spatial_units in `past_migration` must be larger than 1 level."
+  missing_cols <- setdiff(required_cols, names(past_migration))
+  assertthat::assert_that(length(missing_cols) == 0,
+    msg = paste("Missing columns:", paste(missing_cols, collapse = ", "))
   )
 
-  ## Optional arguments ----
+  # Check if there are missing values
+  # If only some years are used, NAs in other years are not problematic
+  if (anyNA(past_migration)) {
+    cli::cli_text(cli::col_red("Warning message:"))
+    cli::cli_text("The following columns of `past_migration` have missing values:")
+    cli::cli_alert_warning(cli::col_magenta(
+      "{.val { past_migration |>
+      select(where(function(x) any(is.na(x)))) |>
+      names()}}."
+    ))
+  }
+
+  # Ensure method is either `mean` or `median`
+  assertthat::assert_that(method %in% c("mean", "median"),
+    msg = "method must be either `mean` or `median`."
+  )
+
+  # Check optional arguments
   # Past years (default uses all years in `past_migration`)
   if (isTRUE(!is.null(year_range))){
     assertthat::assert_that(all(year_range %in% c(unique(past_migration$year))),
@@ -137,10 +142,12 @@ calculate_shares <- function(
       )
     )
   }
+
   # Sex
   assertthat::assert_that(isTRUE(two_sex) | isFALSE(two_sex),
     msg = paste0("Value for `", two_sex, "` must be either `TRUE` or `FALSE`")
   )
+
   if (two_sex == TRUE) {
     assertthat::assert_that(
       "sex" %in% names(past_migration),
@@ -164,34 +171,32 @@ calculate_shares <- function(
       !"sex" %in% names(past_migration),
       msg = paste0(
         "Argument `two_sex` is `FALSE` suggesting that the calculation \nshould",
-        " not discriminate between nationalities. \nHowever, `past_migration` includes",
-        " column `sex` suggesting multiple nationalities. \nPlease change argument",
+        " not discriminate between levels of `sex`. \nHowever, `past_migration` includes",
+        " column `sex` suggesting multiple levels of `sex`. \nPlease change argument",
         " `two_sex` or remove column `sex` from `past_migration`."
       )
     )
   }
 
+
   # Clean data ----
   df_clean <- past_migration |>
     # filter years
     filter(year %in% year_range) |>
-    # rename column with absolute migration numbers
-    rename(imm_n = rlang::as_name(rlang::ensym(imm_n))) |>
     # select relevant columns
-    select(any_of(c("year", "spatial_unit", "age", "nat", "sex", "imm_n"))) |>
-    # convert spatial units to character
-    mutate(spatial_unit = as.character(spatial_unit))
-
-  # Column that contains historical records must be numeric
-  assertthat::assert_that(
-    is.numeric(df_clean$imm_n),
-    msg = paste0("Values in column `", imm_n, "` must be numeric.")
-  )
+    select(
+      year, spatial_unit, age, any_of(c("nat", "sex")), {{n_jan}}, {{births}},
+      {{emi_n}}
+    ) |>
+    # Use number of births as starting population for 0-year olds
+    mutate(n_base = if_else(age == 0, {{births}}, {{n_jan}})) |>
+    rename(spatial_unit = {{spatial_unit}})
 
 
   # Prepare age groups ----
   if (age_group == 1) {
-    df_prep <- df_clean
+    df_prep <- df_clean |>
+      mutate(age_group = as.character(age))
   } else if (age_group > 1){
     # Define breaks for age groups
     age_length = age_group
@@ -231,16 +236,6 @@ calculate_shares <- function(
           .default = age_group
         ),
         age_group = stringr::str_replace(age_group, "99", "100_"))
-
-    # Number of 1-year age groups within larger age groups
-    df_age_group_n <- df_prep |>
-      filter(year == year_range[1]) |>
-      select(age, age_group) |>
-      distinct() |>
-      count(age_group, name = "age_group_n")
-
-    df_prep <- df_prep |>
-      left_join(df_age_group_n, by = "age_group")
   }
 
   # Make a concise string from `year_range`
@@ -262,26 +257,51 @@ calculate_shares <- function(
 
   year_range_string <- format_years(year_range)
 
+  # Calculate mean rates ----
+  df_rate <- df_prep |>
+    mutate(
+      emi_rate = case_when(
+        # 1. If nobody left share should be 0.
+        {{emi_n}} == 0 ~ 0,
+        # 2. If nobody was in population in January and somebody left share should
+        #    be 1 as "everybody" left.
+        n_base == 0 ~ 1,
+        # 3. In all other cases share of persons leaving is calculated as ratio
+        #    between people leaving and population in January.
+        .default = pmin({{emi_n}} / n_base, 1)
+      )
+    )
 
-  # Calculate mean shares ----
-  df_result <- df_prep |>
-    mutate(
-      # total number of people in 5-year age groups
-      sum_imm_n = sum(imm_n),
-      .by = any_of(c("spatial_unit", "nat", "sex", "age_group"))
-    ) |>
-    mutate(
-      # calculate shares
-      imm_share = imm_n / sum_imm_n,
-      # If no observations exist in a demographic group and its' larger age group,
-      # values are filled with zeros to avoid NAs
-      imm_share = case_when((imm_n == 0 & sum_imm_n == 0) ~ 0, .default = imm_share),
-      method = paste0("share ", year_range_string)
+  # Columns to summarize across
+  cols_summarize <- df_rate |>
+    select(spatial_unit, age_group, any_of(c("sex", "nat"))) |>
+    colnames()
+
+  if (method == "mean") {
+    df_rate_mean <- df_rate |>
+      mutate(
+        .by = c(cols_summarize),
+        emi_rate = mean(emi_rate, na.rm = TRUE)
+      )
+  } else if (method == "median") {
+    df_rate_mean <- df_rate |>
+      mutate(
+        .by = c(cols_summarize),
+        emi_rate = median(emi_rate, na.rm = TRUE)
+      )
+  }
+
+  # Finalize output ----
+  df_result <- df_rate_mean |>
+    dplyr::mutate(
+      spatial_unit = as.character(spatial_unit),
+      # age = as.character(age),
+      method = paste0(method, " ", year_range_string)
     ) |>
     # prune columns
     select(
-      year, spatial_unit, age, any_of(c("age_group", "nat", "sex")), imm_n,
-      sum_imm_n, imm_share, method
+      year, spatial_unit, age, any_of(c("age_group", "nat", "sex")), {{n_jan}},
+      {{births}}, n_base, {{emi_n}}, emi_rate, method
     )
 
   # Ensure there are no missing values

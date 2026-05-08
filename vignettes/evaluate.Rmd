@@ -292,7 +292,7 @@ FSO's projection from the 2025 model.
 ``` {r project-canton-2025}
 projection_2025 <- propop(
   parameters = fso_parameters,
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2055,
   scenarios = "reference",
   age_groups = 101,
@@ -347,7 +347,7 @@ ggplot(fso_propop) +
   geom_jitter(aes(x = year, y = pe, color = age), size = 0.8) +
   scale_color_manual(values = c("age_00_19" = "#ffa81f", "age_20_64" = "#96D4FF", "age_65_plus" = "#A05388")) +
   labs(
-    title = "Differences between FSO and propop projections for each demographic group (2024-2055)",
+    title = "Differences between FSO and propop projections for each demographic group (2025-2055)",
     x = "Year",
     y = "Difference in percent"
   ) +

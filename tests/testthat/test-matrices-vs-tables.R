@@ -6,7 +6,7 @@ test_that("Three scenarios", {
   ## Tables version ----
   scen_tables <- propop(
     parameters = fso_parameters,
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population,
     binational = TRUE
@@ -15,7 +15,7 @@ test_that("Three scenarios", {
   ## Matrices version ----
   scen_matrices <- propop_legacy(
     parameters = fso_parameters,
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population,
     binational = TRUE
@@ -42,7 +42,7 @@ test_that("Default settings", {
   ## Tables version ----
   default_tables <- propop(
     parameters = fso_parameters |> dplyr::filter(scen == "reference"),
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population,
     binational = TRUE
@@ -51,7 +51,7 @@ test_that("Default settings", {
   ## Matrices version ----
   default_matrices <- propop_legacy(
     parameters = fso_parameters |> dplyr::filter(scen == "reference"),
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population,
     binational = TRUE
@@ -79,7 +79,7 @@ test_that("One nationality", {
     parameters = fso_parameters |>
       dplyr::filter(scen == "reference", nat == "ch") |>
       select(-nat),
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population |>
       dplyr::filter(nat == "ch") |>
@@ -92,7 +92,7 @@ test_that("One nationality", {
     parameters = fso_parameters |>
       dplyr::filter(scen == "reference", nat == "ch") |>
       select(-nat),
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2055,
     population = fso_population |>
       dplyr::filter(nat == "ch") |>
@@ -123,7 +123,7 @@ test_that("Five subregions", {
   # Prepare snapshot for 5 subregions -----
   ## FSO parameters with fictitious subregions ----
   # fso_parameters |>
-  #   dplyr::filter(year == 2024 & scen == "reference") |>
+  #   dplyr::filter(year == 2025 & scen == "reference") |>
   #   # Create fictitious intra-cantonal migration parameter
   #   dplyr::rowwise() |>
   #   dplyr::mutate(
@@ -182,7 +182,7 @@ test_that("Five subregions", {
       ),
       rep(rep(c(5L, 10L), 4), c(300L, 1L, 91L, 1L, 2L, 1L, 3L, 1L))
     ),
-    year = rep(2024, 2020L),
+    year = rep(2025, 2020L),
     scen = rep("reference", 2020L),
     spatial_unit = rep(c("1", "2", "3", "4", "5"), 404),
     birthrate = rep(
@@ -747,8 +747,8 @@ test_that("Five subregions", {
   ## Tables version ----
   subregions_tables <- propop(
     parameters = parameters_short_5r,
-    year_first = 2024,
-    year_last = 2024,
+    year_first = 2025,
+    year_last = 2025,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -761,8 +761,8 @@ test_that("Five subregions", {
   ## Matrices version ----
   subregions_matrices <- propop_legacy(
     parameters = parameters_short_5r,
-    year_first = 2024,
-    year_last = 2024,
+    year_first = 2025,
+    year_last = 2025,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,

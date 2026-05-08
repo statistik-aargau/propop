@@ -8,7 +8,7 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
   skip_if_not(as.logical(Sys.getenv("RUN_EXPENSIVE_TESTS")))
 
   one_snapshot <- get_parameters(
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2028,
     spatial_units = "Aargau"
   )

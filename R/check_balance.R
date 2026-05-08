@@ -16,7 +16,7 @@
 #' @examples
 #' propop(
 #'   parameters = fso_parameters,
-#'   year_first = 2024,
+#'   year_first = 2025,
 #'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,

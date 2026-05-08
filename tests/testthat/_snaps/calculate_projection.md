@@ -4,7 +4,7 @@
       constructive::construct(population_and_parameters_short_default)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "high",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 200L),
@@ -619,7 +619,7 @@
       constructive::construct(population_and_parameters_short_net)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "high",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 200L),
@@ -1235,7 +1235,7 @@
       constructive::construct(population_and_parameters_short_rate)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "high",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 200L),

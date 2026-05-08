@@ -4,7 +4,7 @@
       constructive::construct(propop_default)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = factor(rep(rep(c("ch", "int"), 2), each = 101L)),
@@ -548,7 +548,7 @@
       constructive::construct(output_propop_1r)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = factor(rep(rep(c("ch", "int"), 2), each = 101L)),
@@ -1092,7 +1092,7 @@
       constructive::construct(output_propop_5r)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = rep(c("1", "2", "3", "4", "5"), each = 404L),
         nat = factor(rep(rep(c("ch", "int"), 10), each = 101L)),

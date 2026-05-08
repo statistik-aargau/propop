@@ -4,7 +4,7 @@
       constructive::construct(calculate_newborns_default)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 2L),
@@ -33,7 +33,7 @@
       constructive::construct(calculate_newborns_net)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 2L),
@@ -63,7 +63,7 @@
       constructive::construct(calculate_newborns_rate)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 2L),
@@ -98,7 +98,7 @@
       constructive::construct(calculate_newborns_na)
     Output
       tibble::tibble(
-        year = 2024L,
+        year = 2025L,
         scen = "reference",
         spatial_unit = "Aargau",
         nat = rep(c("ch", "int"), each = 2L),

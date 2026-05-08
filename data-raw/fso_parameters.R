@@ -6,7 +6,7 @@
 #' Update description in folder propop/R/
 
 fso_parameters_raw <- get_parameters(
-  year_first = 2024,
+  year_first = 2025,
   year_last = 2055,
   spatial_units = c("Aargau")
 )

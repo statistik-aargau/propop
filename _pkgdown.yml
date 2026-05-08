@@ -34,6 +34,7 @@ reference:
   contents:
   - get_parameters
   - get_population
+  - calculate_emi_rate
 - title: "Run projections"
   desc: >
     Functions for running population projections
@@ -52,6 +53,9 @@ reference:
     Example for distributing international immigration
   contents:
   - calculate_shares
+  - calculate_emi_rate
+  - ag_population_subregional
+  - ag_migration_subregional
 - title: "Sample data"
   desc: "Sample data from the Federal Statistical Office"
   contents:

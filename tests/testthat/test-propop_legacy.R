@@ -9,8 +9,8 @@ test_that("Simple propop test for ci", {
     propop_legacy(
       parameters = fso_parameters |>
         dplyr::filter(scen == "reference"),
-      year_first = 2024,
-      year_last = 2026,
+      year_first = 2025,
+      year_last = 2027,
       population = fso_population,
       subregional = FALSE,
       binational = TRUE
@@ -25,7 +25,7 @@ test_that("Simple propop test for ci", {
 test_that("N_totals of scenarios are ordered plausibly", {
   n_ordered <- propop_legacy(
     parameters = fso_parameters,
-    year_first = 2024,
+    year_first = 2025,
     year_last = 2025,
     population = fso_population,
     subregional = FALSE,
@@ -59,7 +59,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
   ## FSO parameters ----
   # fso_parameters |>
-  #   dplyr::filter(year == 2024 & scen == "reference") |>
+  #   dplyr::filter(year == 2025 & scen == "reference") |>
   #   constructive::construct()
 
   parameters_short_1r <- tibble::tibble(
@@ -98,7 +98,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
       199, 234, 207, 226, 204, 156, 152, 94, 93, 60, 60, 34, 30, 21, 21, 13, 10, 4,
       3, 3
     ),
-    year = rep(2024, 404L),
+    year = rep(2025, 404L),
     scen = rep("reference", 404L),
     spatial_unit = rep("Aargau", 404L),
     birthrate = rep(
@@ -457,8 +457,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   ## Run propop with 1 region ----
   output_propop_1r <- propop_legacy(
     parameters = parameters_short_1r,
-    year_first = 2024,
-    year_last = 2024,
+    year_first = 2025,
+    year_last = 2025,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -489,7 +489,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
   ## FSO parameters with fictitious subregions ----
   # fso_parameters |>
-  #   dplyr::filter(year == 2024 & scen == "reference") |>
+  #   dplyr::filter(year == 2025 & scen == "reference") |>
   #   # Create fictitious intra-cantonal migration parameter
   #   dplyr::rowwise() |>
   #   dplyr::mutate(
@@ -548,7 +548,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
       ),
       rep(rep(c(5L, 10L), 4), c(300L, 1L, 91L, 1L, 2L, 1L, 3L, 1L))
     ),
-    year = rep(2024, 2020L),
+    year = rep(2025, 2020L),
     scen = rep("reference", 2020L),
     spatial_unit = rep(c("1", "2", "3", "4", "5"), 404),
     birthrate = rep(
@@ -1113,8 +1113,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # run propop 5 regions with subregional migration ----
   output_propop_5r <- propop_legacy(
     parameters = parameters_short_5r,
-    year_first = 2024,
-    year_last = 2024,
+    year_first = 2025,
+    year_last = 2025,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -1143,8 +1143,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # run propop 5 regions without subregional migration ----
   output_propop_5r_F <- propop_legacy(
     parameters = parameters_short_5r,
-    year_first = 2024,
-    year_last = 2024,
+    year_first = 2025,
+    year_last = 2025,
     age_groups = 101,
     fert_first = 16,
     fert_last = 50,
@@ -1242,8 +1242,8 @@ test_that("Error when binational is FALSE but column `nat` is present", {
   expect_error(
     propop_legacy(
       parameters = fso_parameters,
-      year_first = 2024,
-      year_last = 2024,
+      year_first = 2025,
+      year_last = 2025,
       fert_first = 16,
       fert_last = 50,
       share_born_female = 100 / 205,
@@ -1262,8 +1262,8 @@ test_that("Error when only 1 nationality in parameters", {
       parameters = fso_parameters |>
         # remove non-Swiss nationals
         dplyr::filter(nat != "int"),
-      year_first = 2024,
-      year_last = 2024,
+      year_first = 2025,
+      year_last = 2025,
       fert_first = 16,
       fert_last = 50,
       share_born_female = 100 / 205,
@@ -1279,8 +1279,8 @@ test_that("Error when only 1 nationality in population", {
     propop_legacy(
       # remove non-Swiss nationals
       parameters = fso_parameters,
-      year_first = 2024,
-      year_last = 2024,
+      year_first = 2025,
+      year_last = 2025,
       fert_first = 16,
       fert_last = 50,
       share_born_female = 100 / 205,
@@ -1298,8 +1298,8 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
     propop_legacy(
       # remove non-Swiss nationals
       parameters = fso_parameters,
-      year_first = 2024,
-      year_last = 2024,
+      year_first = 2025,
+      year_last = 2026,
       fert_first = 16,
       fert_last = 50,
       share_born_female = 100 / 205,
