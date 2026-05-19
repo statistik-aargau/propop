@@ -283,6 +283,9 @@ propop <- function(
   )
 
   ## Nationality ----
+  assertthat::assert_that(isTRUE(binational) | isFALSE(binational),
+    msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
+  )
   # Two groups in column `nat`
   if (binational == TRUE) {
     # Check if column `nat` is present in both, `parameters` and `population`
@@ -434,17 +437,27 @@ propop <- function(
 
   ## Optional parameter when requested ----
   # Subregional migration
+  assertthat::assert_that(
+    is.null(subregional) || subregional %in% c("net", "rate"),
+    msg = '`subregional` must be "net", "rate", or NULL'
+  )
   if (!is.null(subregional) && subregional == "net") {
     assertthat::assert_that("mig_sub" %in% names(parameters),
-      msg = "Column `mig_sub` is missing in parameters."
-    )
+      msg = paste0(
+        "Column `mig_sub` is missing in parameters but is required for ",
+        "subregional migration."
+    ))
   } else if (!is.null(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
-      msg = "Column `emi_sub` is missing in parameters."
-    )
+      msg = paste0(
+        "Column `emi_sub` is missing in parameters but is required for ",
+      "subregional migration."
+    ))
     assertthat::assert_that("imm_sub" %in% names(parameters),
-      msg = "Column `imm_sub` is missing in parameters."
-    )
+      msg = paste0(
+        "Column `imm_sub` is missing in parameters but is required for ",
+        "subregional migration."
+    ))
   } else {
     parameters <- parameters
   }
@@ -673,14 +686,11 @@ propop <- function(
     "-",
     "{.val {year_last}}"
   )
-  cli::cli_text(
-    "Nationality-specific projection: ",
-    "{.val {if (binational) 'yes' else 'no'}}"
-  )
-  cli::cli_text(
-    "Subregional migration: ",
-    "{.val {if (is.null(subregional)) 'no' else 'yes'}}"
-  )
+  binational_feedback  <- if (isTRUE(binational)) "yes" else "no"
+  subregional_feedback <- if (is.null(subregional)) "no" else subregional
+
+  cli::cli_text("Nationality-specific projection: {.val {binational_feedback}}")
+  cli::cli_text("Subregional migration: {.val {subregional_feedback}}")
   cli::cli_rule()
   cli::cli_text(
     "{.emph Projected} population size by ",
