@@ -436,12 +436,12 @@ data_distr_hist_nat <- df_hist_imm |>
   # Use unambiguous name
   dplyr::rename(share_imm_nat = imm_share) |> 
   # Remove unnecessary variables
-  dplyr::select(-sum_imm_n, -total_imm_n, -method)
+  dplyr::select(-sum_imm_n, -total_imm_n, -method, -age_group)
 
 # Join both data frames that include immigration shares
 data_distr_hist <- data_distr_hist_int |>
   # Remove unnecessary variables
-  dplyr::select(-sum_imm_n, -total_imm_n, -method) |> 
+  dplyr::select(-sum_imm_n, -total_imm_n, -method, -age_group) |> 
   # Use unambiguous name
   dplyr::rename(share_imm_int = imm_share) |>
   dplyr::left_join(data_distr_hist_nat,
@@ -505,8 +505,6 @@ unique(check_sums_subregions$diff_nat)
 \
 
 
-
-
 -------------------- CONTINUE -----------------------
 ------------- Projection is incorrect ---------------
 
@@ -523,7 +521,7 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  population = df_population_shares,
+  population = ag_population_subregional,
   binational = TRUE,
   subregional = FALSE
 )
