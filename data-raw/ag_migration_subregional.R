@@ -5,6 +5,7 @@
 # Store data from csv as package data
 ag_migration_subregional <-
   data.table::fread("data-raw/ag_migration_subregional.csv") |>
+  dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
   as_tibble()
 
 usethis::use_data(ag_migration_subregional, overwrite = TRUE)
