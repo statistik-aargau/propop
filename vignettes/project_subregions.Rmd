@@ -423,6 +423,7 @@ From now on, the procedure is identical to the first approach that distributed
 the number of people according to population size. That is, the share is 
 multiplied with the numbers that the FSO estimated for the whole canton.
 
+
 ```{r parameters-distributed, eval = TRUE}
 # TODO Continue here, check this carefully 
 # In addition to international immigration shares and numbers
@@ -433,10 +434,14 @@ data_distr_hist_nat <- df_hist_imm |>
                    binational = TRUE,
                    two_sex = TRUE) |>
   # Use unambiguous name
-  dplyr::rename(share_imm_nat = imm_share)
+  dplyr::rename(share_imm_nat = imm_share) |> 
+  # Remove unnecessary variables
+  dplyr::select(-sum_imm_n, -total_imm_n, -method)
 
-# Join both data frames holding shares
+# Join both data frames that include immigration shares
 data_distr_hist <- data_distr_hist_int |>
+  # Remove unnecessary variables
+  dplyr::select(-sum_imm_n, -total_imm_n, -method) |> 
   # Use unambiguous name
   dplyr::rename(share_imm_int = imm_share) |>
   dplyr::left_join(data_distr_hist_nat,
@@ -450,8 +455,7 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub |>
       dplyr::select(
         "spatial_unit", "nat", "sex", "age", "share_imm_int", "share_imm_nat"
       ),
-    by = c("spatial_unit", "nat", "sex", "age"),
-    relationship = "many-to-one"
+    by = c("spatial_unit", "nat", "sex", "age")
   ) |>
   # Compute `n` for subregions, assign values directly to imm_int_n and imm_nat_n
   dplyr::mutate(
@@ -473,10 +477,11 @@ fso_parameters_sub_distr_hist |>
 ```
 
 \
-A quick double-check confirms that the sums of the migration in the subregions 
-is identical with the number of people in the larger unit (whole canton):
+As it should be, the sums of the migration in the subregions is identical with 
+the number of the immigrants that the FSO expects for the whole canton (input 
+parameter):
 
-```{r sum-check, eval = TRUE}
+```{r sum-check, eval = TRUE, echo = TRUE}
 check_sums_subregions <- fso_parameters_sub_distr_hist |>
   # add up number of people in different spatial units
   dplyr::summarise(
@@ -485,7 +490,8 @@ check_sums_subregions <- fso_parameters_sub_distr_hist |>
     .by = c(nat, sex, age, year)
   ) |>
   # join with original input data (for the whole canton)
-  dplyr::left_join(fso_parameters, by = c("nat", "sex", "age", "year")) |>
+  dplyr::left_join(fso_parameters |> 
+                     dplyr::filter(scen == "reference"), by = c("nat", "sex", "age", "year")) |>
   # calculate difference between immigration at the level of subregions and canton
   dplyr::mutate(
     diff_int = sum_imm_int_sub - imm_int_n,
@@ -498,9 +504,16 @@ unique(check_sums_subregions$diff_nat)
 ```
 \
 
+
+
+
+-------------------- CONTINUE -----------------------
+------------- Projection is incorrect ---------------
+
+
 Now everything is ready to run the projection: 
 
-```{r project-2, eval = FALSE}
+```{r project-2, eval = TRUE}
 propop(
   parameters = fso_parameters_sub_distr_hist,
   year_first = 2025,
@@ -510,11 +523,12 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  population = df_population,
+  population = df_population_shares,
   binational = TRUE,
   subregional = FALSE
 )
 ```
+
 
 # Migration between subregions
 
