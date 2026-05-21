@@ -85,6 +85,7 @@ utils::globalVariables(c(
   "age", # <calculate_shares>
   "spatial_unit", # <calculate_shares>
   "sum_imm_n", # <calculate_shares>
+  "total_imm_n", # <calculate_shares>
   "imm_share", # <calculate_shares>
   "method", # <calculate_shares>
   "n_jan", # <check_balance>
