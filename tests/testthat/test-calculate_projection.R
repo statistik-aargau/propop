@@ -294,7 +294,7 @@ test_that("calculate projection test", {
   # One subregion ----
   # snapshot of default option default
   population_and_parameters_short_default <- population_and_parameters_short |>
-    calculate_projection(subregional = NULL)
+    calculate_projection(subregional = FALSE)
 
   expect_snapshot(constructive::construct(population_and_parameters_short_default))
 
