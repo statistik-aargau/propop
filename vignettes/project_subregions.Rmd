@@ -1,6 +1,5 @@
 ---
 title: "Projections for subregions"
-date: 2026-05-05
 number-sections: true
 output: 
   rmarkdown::html_vignette:
@@ -22,13 +21,6 @@ collapse = TRUE,
 comment = "#>"
 )
 ```
-
-<div style="border: 2px solid #f0c36d; background: linear-gradient(135deg, #fff8e6, #fffdf4); color: #7a5a00; padding: 16px 20px; border-radius: 12px; font-weight: 700; font-family: sans-serif; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-⚠️ Work in progress
-</div>
-
-\ 
-
 
 ```{r setup, message = FALSE, warning=FALSE, echo = FALSE}
 library(propop)
@@ -74,7 +66,7 @@ when you need to downscale input data expressed as **"number of people"**.
 - To adjust the cantonal "number of people" estimates among subregions, check the 
 next two subsections.  
 - If you want to adjust birth rates, you may find the dedicated package [`propopbirth`](https://github.com/statistik-aargau/propopbirth) useful.   
-- For adjusting other rates, the procedure described in section `Migration between subregions` could be useful.  
+- For adjusting other rates, the procedure described in section [Migration between subregions](#between-subregions) could be useful.  
 
 ## Distribution of people according to population size
 
@@ -115,9 +107,8 @@ fso_parameters_sub <- fso_parameters |>
   # create 5 subregions
   dplyr::mutate(
     spatial_unit = as.character(
-      rep(1:5, 
-          length.out = dplyr::n())) 
-  )
+      rep(1:5, length.out = dplyr::n())
+  ))
 ```
 
 
@@ -135,7 +126,7 @@ df_population_shares <- ag_population_subregional |>
 ```
 
 The following example for 29-year old international males shows that the sum of 
-all five region's historical shares is 1.
+all five region's shares is 1.
 
 ```{r show-table-1, message=FALSE, echo = FALSE}
 # Display table
@@ -187,7 +178,7 @@ figures provided by the FSO for the whole canton -- with the sum of the distribu
 parameter `imm_int_n_distr`. The table confirms that the `group_sum` 
 <span style="color: #96D4FF;">in the blue columns</span>
 is equal to the original number of people `imm_int_n` 
-<span style="color: #ffcc8f;">in the orange columns.</span>
+<span style="color: #ffcc8f;">in the orange column.</span>
 
 ```{r distr-pop-size-group_sum, echo = FALSE}
 parameters_sub_size |>
@@ -236,7 +227,7 @@ parameters_sub_size_clean <- parameters_sub_size |>
     imm_int_n = imm_int_n_distr,
     imm_nat_n = imm_nat_n_distr
   ) |>
-  dplyr::select(-share, -imm_int_n_distr)
+  dplyr::select(-c(share, imm_int_n_distr, imm_nat_n_distr))
 ```
 
 Now we can run the projection:
@@ -267,86 +258,16 @@ input) and thereby enables adjusting each parameter independently (rather than
 using the same share for adapting all parameters). This is very useful, for example, 
 if immigration from other cantons differs from immigration from other countries.
 
-To illustrate this approach, we use international immigration as an example and 
-create a fictitious data frame with data for the years 2024 to 2025 for five 
-regions. 
+To illustrate this approach, we use data included in the package.  
 
-> With *real data,* the same can be achieved by summarizing the 
-historical migration data. Since real migration usually varies from 
-year to year, we advise calculating an average across several years. 
-The fictitious data assumes that we have already performed this step. 
+> You can obtain such data by summarizing historical migration records. 
 
-
-```{r data}
-set.seed(145)
-
-# Immigration records for three years
-df_hist_imm_2023 <- tibble::tibble(
-  # five fictitious spatial units
-  spatial_unit = rep(c("1", "2", "3", "4", "5"), each = 101 * 4),
-  # two nationalities
-  nat = rep(rep(c("ch", "int"), each = 2 * 101), times = 5),
-  # two levels for sex
-  sex = rep(rep(c("m", "f"), each = 101), times = 5 * 2),
-  # age groups from 0 to 100
-  age = rep(0:100, times = 5 * 4)
-) |>
-  dplyr::mutate(
-    # random numbers between zero and 50 are created to mimic historical
-    # immigration records observed in Aargau
-    hist_imm_nat = sample(0:50, dplyr::n(), replace = TRUE),
-    hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
-    year = 2023
-  )
-
-set.seed(110)
-
-df_hist_imm_2024 <- tibble::tibble(
-  # five fictitious spatial units
-  spatial_unit = rep(c("1", "2", "3", "4", "5"), each = 101 * 4),
-  # two nationalities
-  nat = rep(rep(c("ch", "int"), each = 2 * 101), times = 5),
-  # two levels for sex
-  sex = rep(rep(c("m", "f"), each = 101), times = 5 * 2),
-  # age groups from 0 to 100
-  age = rep(0:100, times = 5 * 4)
-) |>
-  dplyr::mutate(
-    hist_imm_nat = sample(0:50, dplyr::n(), replace = TRUE),
-    hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
-    year = 2024
-  )
-
-set.seed(160)
-
-df_hist_imm_2025 <- tibble::tibble(
-  # five fictitious spatial units
-  spatial_unit = rep(c("1", "2", "3", "4", "5"), each = 101 * 4),
-  # two nationalities
-  nat = rep(rep(c("ch", "int"), each = 2 * 101), times = 5),
-  # two levels for sex
-  sex = rep(rep(c("m", "f"), each = 101), times = 5 * 2),
-  # age groups from 0 to 100
-  age = rep(0:100, times = 5 * 4)
-) |>
-  dplyr::mutate(
-    hist_imm_nat = sample(0:50, dplyr::n(), replace = TRUE),
-    hist_imm_int = sample(0:50, dplyr::n(), replace = TRUE),
-    year = 2025
-  )
-
-
-
-df_hist_imm <- rbind(df_hist_imm_2023, df_hist_imm_2024, df_hist_imm_2025)
-
-```
-
-The resulting data frame includes two columns with (fictitious) immigration 
-from abroad (` hist_imm_nat`) and from other cantons (`hist_imm_nat`) to the 
-five regions. The table below includes 40-year old Swiss women as a sample group:
+The data frame includes two columns with historic immigration from abroad (`hist_imm_int_n`) 
+and from other cantons (`hist_imm_nat_n`) to the five regions and from four past years (2022 to 2025). The table below includes 40-year old Swiss women as a sample group:
 
 ```{r data-historical-immigration, echo = FALSE, message=FALSE}
-df_hist_imm |>
+ag_migration_subregional |>
+  dplyr::select(year, spatial_unit, age, nat, sex, hist_imm_nat_n, hist_imm_int_n) |> 
   dplyr::filter(nat == "ch" & sex == "f" & age == "40") |> 
   dplyr::relocate(year, .before = 1) |> 
   DT::datatable(
@@ -383,11 +304,11 @@ To use `propop::calculate_shares()`, you need to provide a data frame containing
 
 
 ```{r result-historical-immigration, eval = TRUE}
-data_distr_hist_int <- df_hist_imm |> 
+data_distr_hist_int <- ag_migration_subregional |> 
   calculate_shares(
-    imm_n = "hist_imm_int", 
+    imm_n = "hist_imm_int_n", 
     age_group = 5,
-    year_range = 2024:2025,
+    year_range = 2022:2025,
     binational = TRUE,
     two_sex = TRUE)
 ```
@@ -429,67 +350,55 @@ data_distr_hist_int |>
   )
 ```
 
-<!-- \  -->
+\
 
-<!-- Note that summarizing the shares of a demographic group across all spatial units  -->
-<!-- always adds up to 1: -->
+Note that summarizing the shares of a demographic group across all spatial units
+always adds up to 1:
 
-<!-- ```{r share-check, eval = TRUE} -->
-<!-- data_distr_hist_int |> -->
-<!--   dplyr::select(spatial_unit, age_group, nat, sex, imm_share) |>  -->
-<!--   dplyr::distinct() |>  -->
-<!--   dplyr::summarise(sum_share = round( -->
-<!--     sum(imm_share, na.rm = TRUE), -->
-<!--     digits = 2 -->
-<!--   ), .by = c(nat, sex, age_group)) |> -->
-<!--   DT::datatable() -->
-<!-- ``` -->
+```{r share-check, eval = TRUE}
+data_distr_hist_int |>
+  dplyr::select(spatial_unit, age_group, nat, sex, imm_share) |>
+  dplyr::distinct() |>
+  dplyr::summarise(sum_share = round(
+    sum(imm_share, na.rm = TRUE),
+    digits = 2
+  ), .by = c(nat, sex, age_group)) |>
+  DT::datatable()
+```
 
 \
 From now on, the procedure is identical to the first approach that distributed
 the number of people according to population size. That is, the share is 
-multiplied with the numbers that the FSO estimated for the whole canton.
+multiplied with the numbers that the FSO estimated for the whole canton. 
 
 
 ```{r parameters-distributed, eval = TRUE}
-# TODO Continue here, check this carefully 
-# In addition to international immigration shares and numbers
-# we also need the shares and numbers for national immigration
-data_distr_hist_nat <- df_hist_imm |>
-  calculate_shares(imm_n = "hist_imm_nat", 
-                   age_group = 5,
-                   binational = TRUE,
-                   two_sex = TRUE) |>
-  # Use unambiguous name
-  dplyr::rename(share_imm_nat = imm_share) |> 
-  # Remove unnecessary variables
-  dplyr::select(-sum_imm_n, -total_imm_n, -method, -age_group)
-
-# Join both data frames that include immigration shares
-data_distr_hist <- data_distr_hist_int |>
-  # Remove unnecessary variables
-  dplyr::select(-sum_imm_n, -total_imm_n, -method, -age_group) |> 
-  # Use unambiguous name
-  dplyr::rename(share_imm_int = imm_share) |>
-  dplyr::left_join(data_distr_hist_nat,
-                   by = c("spatial_unit", "nat", "sex", "age")
-  )
+# Calculate the historic shares for immigration from other cantons
+data_distr_hist_nat <- ag_migration_subregional |> 
+  calculate_shares(
+    imm_n = "hist_imm_nat_n", 
+    age_group = 5,
+    year_range = 2022:2025,
+    binational = TRUE,
+    two_sex = TRUE)
 
 # Add shares to the data frame that holds the projection parameters
 fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   dplyr::left_join(
-    data_distr_hist |>
-      dplyr::select(
-        "spatial_unit", "nat", "sex", "age", "share_imm_int", "share_imm_nat"
-      ),
-    by = c("spatial_unit", "nat", "sex", "age")
+    data_distr_hist_int |>
+      dplyr::select(spatial_unit, nat, sex, age, share_imm_int = imm_share),
+    by = dplyr::join_by(spatial_unit, nat, sex, age)
   ) |>
-  # Compute `n` for subregions
+  dplyr::left_join(
+    data_distr_hist_nat |>
+      dplyr::select(spatial_unit, nat, sex, age, share_imm_nat = imm_share),
+    by = dplyr::join_by(spatial_unit, nat, sex, age)
+  ) |>
+  # Compute immigration-`n` for subregions
   dplyr::mutate(
     imm_int_n_distr = imm_int_n * share_imm_int,
     imm_nat_n_distr = imm_nat_n * share_imm_nat
   )
-
   
 ```
 
@@ -503,25 +412,11 @@ is equal to the original number of people `imm_int_n`
 
 
 ```{r distr-pop-size-group_sum2, echo = FALSE}
-# # Old check
-# # Show result
-# fso_parameters_sub_distr_hist |>
-#   # Remove variables for better overview
-#   dplyr::select(-fso_projection_n, -scen) |>
-#   head(100) |>
-#   dplyr::mutate(across(
-#     c("int_mothers":"imm_nat_n_distr"), \(x) sprintf(fmt = "%.3f", x)
-#   )) |>
-# DT::datatable()
-
 fso_parameters_sub_distr_hist |>
   dplyr::select(year, nat, sex, age, spatial_unit,
                 imm_int_n, 
                 share_imm_int, 
-                imm_int_n_distr, 
-                imm_nat_n, 
-                share_imm_nat, 
-                imm_nat_n_distr
+                imm_int_n_distr
                 ) |> 
   dplyr::mutate(
     group_sum_int = round(sum(imm_int_n_distr), 0),
@@ -533,9 +428,7 @@ fso_parameters_sub_distr_hist |>
     imm_int_n
   ), \(x) round(x, 3))) |>
   dplyr::mutate(share_imm_int = round(share_imm_int, 3),
-                imm_int_n_distr = round(imm_int_n_distr, 3),
-                share_imm_nat = round(share_imm_int, 3),
-                imm_nat_n_distr = round(imm_nat_n_distr, 3)
+                imm_int_n_distr = round(imm_int_n_distr, 3)
                 ) |>
   dplyr::arrange(year, age, sex, nat) |> 
   dplyr::filter(sex == "m" & nat == "int" & age == "29") |>
@@ -558,31 +451,31 @@ fso_parameters_sub_distr_hist |>
 ```
 \
 
-This also holds for other groups: The difference between the total migration 
-in the subregions and the whole canton (input parameter) is always equal to zero.
+<!-- This also holds for other groups: The difference between the total migration  -->
+<!-- in the subregions and the whole canton (input parameter) is always equal to zero. -->
 
-```{r sum-check, eval = TRUE, echo = TRUE}
-check_sums_subregions <- fso_parameters_sub_distr_hist |>
-  # add up number of people in different spatial units
-  dplyr::summarise(
-    sum_imm_int_sub = round(sum(imm_int_n_distr, na.rm = TRUE), digits = 0),
-    sum_imm_nat_sub = round(sum(imm_nat_n_distr, na.rm = TRUE), digits = 0),
-    .by = c(nat, sex, age, year)
-  ) |>
-  # join with original input data (for the whole canton)
-  dplyr::left_join(fso_parameters |> 
-                     dplyr::filter(scen == "reference"), by = c("nat", "sex", "age", "year")) |>
-  # calculate difference between immigration at the level of subregions and canton
-  dplyr::mutate(
-    diff_int = sum_imm_int_sub - imm_int_n,
-    diff_nat = sum_imm_nat_sub - imm_nat_n,
-  )
+<!-- ```{r sum-check, eval = TRUE, echo = TRUE} -->
+<!-- check_sums_subregions <- fso_parameters_sub_distr_hist |> -->
+<!--   # add up number of people in different spatial units -->
+<!--   dplyr::summarise( -->
+<!--     sum_imm_int_sub = round(sum(imm_int_n_distr, na.rm = TRUE), digits = 0), -->
+<!--     sum_imm_nat_sub = round(sum(imm_nat_n_distr, na.rm = TRUE), digits = 0), -->
+<!--     .by = c(nat, sex, age, year) -->
+<!--   ) |> -->
+<!--   # join with original input data (for the whole canton) -->
+<!--   dplyr::left_join(fso_parameters |>  -->
+<!--                      dplyr::filter(scen == "reference"), by = c("nat", "sex", "age", "year")) |> -->
+<!--   # calculate difference between immigration at the level of subregions and canton -->
+<!--   dplyr::mutate( -->
+<!--     diff_int = sum_imm_int_sub - imm_int_n, -->
+<!--     diff_nat = sum_imm_nat_sub - imm_nat_n, -->
+<!--   ) -->
 
-# All observed differences are equal to zero
-unique(check_sums_subregions$diff_int)
-unique(check_sums_subregions$diff_nat)
-```
-\
+<!-- # All observed differences are equal to zero -->
+<!-- unique(check_sums_subregions$diff_int) -->
+<!-- unique(check_sums_subregions$diff_nat) -->
+<!-- ``` -->
+<!-- \ -->
 
 To proceed with the projection, we rename the columns with the distributed 
 immigration (`imm_int_n_distr` and `imm_nat_n_distr`) to
@@ -694,7 +587,7 @@ emi_rate <- calculate_rates(
   past_migration = ag_migration_subregional,
   n_jan = n_jan,
   births = births,
-  emi_n = emi_n,
+  emi_n = hist_emi_sub_n,
   spatial_unit = spatial_unit,
   age_group = 10,
   method = "median"
@@ -713,8 +606,8 @@ migration patterns (see also section on
 ```{r imm_share}
 imm_share <- calculate_shares(
   past_migration = ag_migration_subregional,
-  imm_n = "imm_n",
-    age_group = 10
+  imm_n = "hist_imm_sub_n",
+  age_group = 10
 ) 
 
 imm_share 
@@ -728,26 +621,21 @@ to run the projection).
 ```{r prep-project-rate, eval = TRUE}
 data("ag_population_subregional")
 
-parameters <- fso_parameters_sub_distr_hist |> 
-  dplyr::left_join(emi_rate |> 
-                     dplyr::select(spatial_unit, 
-                                   age, 
-                                   nat, 
-                                   sex,
-                                   emi_rate) |> 
-                     dplyr::distinct(),
-                   relationship = "many-to-many") |> 
-  dplyr::left_join(imm_share |> 
-                     dplyr::select(spatial_unit, 
-                                   age, 
-                                   nat, 
-                                   sex,
-                                   imm_share) |> 
-                     dplyr::distinct(),
-                   relationship = "many-to-many") |> 
+parameters_rate <- fso_parameters_sub_distr_hist |> 
+  dplyr::left_join(
+    emi_rate |> 
+      dplyr::select(spatial_unit, age, nat, sex, emi_rate) |> 
+      dplyr::distinct(),
+    by = dplyr::join_by(nat, sex, age, spatial_unit),
+    relationship = "many-to-many") |> 
+  dplyr::left_join(
+    imm_share |> 
+      dplyr::select(spatial_unit, age, nat,sex, imm_share) |> 
+      dplyr::distinct(),
+    by = dplyr::join_by(nat, sex, age, spatial_unit),
+    relationship = "many-to-many") |> 
   # Use names expected in propop()
-  dplyr::rename(emi_sub = emi_rate, 
-                imm_sub = imm_share)
+  dplyr::rename(emi_sub = emi_rate, imm_sub = imm_share)
 ```
 
 Then we set `subregional` to `rate` and run `propop::propop()`:
@@ -755,7 +643,7 @@ Then we set `subregional` to `rate` and run `propop::propop()`:
 
 ```{r project-rate, eval = TRUE}
 propop(
-  parameters = parameters,
+  parameters = parameters_rate,
   year_first = 2026,
   year_last = 2027,
   age_groups = 101,
@@ -778,50 +666,90 @@ in the parameter data frame. `mig_sub` is the net migration between subregions
 the median net migration of the past 10 years to capture the recent trends and 
 carry it forward into the future). 
 
-Here we add `mig_sub` as a *fictitious* parameter in the parameter input file. 
+The data for the example calculation is included in the package (`ag_migration_subregional`).
 
-> In real life you may use population register records as we described in the
+> To obtain such data you may summarize population register records as we described in the
 section `Distribution of people according to past migration`. 
 
+First, we calculate the historical shares of past immigration and emigration.
+
 ```{r, eval = TRUE}
-parameters_net <- fso_parameters_sub_distr_hist |> 
-  # Create fictitious migration parameters
-  dplyr::mutate(
-    mig_sub = dplyr::case_when(
-      # Four regions with emigration, 1 region with immigration
-      spatial_unit == 1 ~ {
-        set.seed(1)
-        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-      },
-      spatial_unit == 2 ~ {
-        set.seed(2)
-        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-      },
-      spatial_unit == 3 ~ {
-        set.seed(25)
-        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-      },
-      spatial_unit == 4 ~ {
-        set.seed(12)
-        round(rnorm(1, mean = 0, sd = 0.2), digits = 4)
-      },
-      TRUE ~ NA
-    )
-  ) |>
-  dplyr::mutate(
-    mig_sub = dplyr::case_when(
-      spatial_unit == 5 ~ 0 - sum(mig_sub, na.rm = TRUE), TRUE ~ mig_sub
-    ),
-    # check = sum(mig_sub, na.rm = TRUE),
-    .by = c("nat", "sex", "age", "year", "scen")
-  ) |>
-  dplyr::select(
-    nat, sex, age, year, scen, spatial_unit, birthrate, int_mothers, mor,
-    emi_int, emi_nat, imm_int_n, imm_nat_n, acq, emi_nat_n, mig_nat_n, mig_sub
+# Historic subregional immigration
+subregional_imm_share <- ag_migration_subregional |> 
+  dplyr::select(year, spatial_unit, age, nat, sex, hist_imm_sub_n) |> 
+  calculate_shares(
+    imm_n = "hist_imm_sub_n", 
+    age_group = 5,
+    year_range = 2022:2025,
+    binational = TRUE,
+    two_sex = TRUE
+  )
+
+# Historic subregional emigration
+subregional_emi_share <- ag_migration_subregional |> 
+  dplyr::select(year, spatial_unit, age, nat, sex, hist_emi_sub_n) |>
+  calculate_shares(
+    imm_n = "hist_emi_sub_n", 
+    age_group = 5,
+    year_range = 2022:2025,
+    binational = TRUE,
+    two_sex = TRUE
   )
 ```
 
-Now that all required input files are available, we can set `subregional` to
+Then, we compute the net migration by combining the historic shares and subtracting the aggregated subregional emigration (`hist_emi_sub_n`) from subregional immigration (`hist_imm_sub_n`).
+
+```{r, eval = TRUE}
+subregional_net_migration <- dplyr::full_join(
+  subregional_imm_share |> 
+    dplyr::select(
+      spatial_unit, age, nat, sex, sum_imm_sub_n = sum_imm_n, 
+      total_imm_sub_n = total_imm_n, imm_sub_share = imm_share
+    ),
+  subregional_emi_share |> 
+    dplyr::select(
+      spatial_unit, age, nat, sex, sum_emi_sub_n = sum_imm_n, 
+      total_emi_sub_n = total_imm_n, emi_sub_share = imm_share
+    ),
+  by = dplyr::join_by(spatial_unit, age, nat, sex)
+  ) |> 
+  # calculate net migration
+  dplyr::mutate(sum_mig_sub_n = sum_imm_sub_n - sum_emi_sub_n)
+```
+
+In the next step, we calculate the median net migration across four years. For that,
+
+```{r, eval = TRUE}
+# TODO review calculation
+subregional_net_migration_median <- subregional_net_migration |> 
+  dplyr::group_by(spatial_unit, age, sex, nat) |>
+  dplyr::summarise(
+    mig_sub_median = median(sum_mig_sub_n),
+    imm_sub_median = median(sum_imm_sub_n),
+    .groups = "drop"
+  ) |>
+  dplyr::mutate(sum_imm_sub_median = sum(imm_sub_median, na.rm = TRUE)) |>
+  dplyr::ungroup() |>
+  # surplus in migration is distributed according to share from total
+  # immigration within the canton
+  dplyr::mutate(
+    mig_sub_share = imm_sub_median / sum_imm_sub_median,
+    mig_sub = mig_sub_median - sum(mig_sub_median, na.rm = TRUE) * mig_sub_share
+  )
+```
+
+Now we can add `mig_sub` as a column to the parameters.
+
+```{r, eval = TRUE}
+parameters_net <- fso_parameters_sub |> 
+  dplyr::left_join(
+    subregional_net_migration_median |> 
+      dplyr::select(spatial_unit, age, nat, sex, mig_sub),
+    by = dplyr::join_by(spatial_unit, age, nat, sex)
+  )
+```
+
+All required input files are available and we can set `subregional` to
 `net` and use `propop::propop()`:
 
 ```{r project-3, eval = TRUE}
