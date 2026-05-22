@@ -25,7 +25,7 @@
 #'        100 / 205 (FSO standard value).
 #' @param subregional character or NULL, indicates if subregional migration
 #'        patterns (e.g., movement between municipalities within a canton) are
-#'        part of the projection (default `subregional = NULL`). Requires input
+#'        part of the projection (default `subregional = FALSE`). Requires input
 #'        on the level of subregions (in `parameters` and `population`).
 #'        Two calculation methods are supported to distribute people between
 #'        subregions: With `subregional = "net"`, the net migration between
@@ -84,7 +84,7 @@ project_population <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = NULL,
+    subregional = FALSE,
     binational = TRUE) {
   # Checks ----
   ## Mandatory parameters ----

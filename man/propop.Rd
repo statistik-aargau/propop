@@ -14,7 +14,7 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100/205,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -89,7 +89,7 @@ currently be set to \verb{= 101} (FSO standard number of age groups).}
 
 \item{subregional}{character or NULL, indicates if subregional migration
 patterns (e.g., movement between municipalities within a canton) are
-part of the projection (default \code{subregional = NULL}). Requires input
+part of the projection (default \code{subregional = FALSE}). Requires input
 on the level of subregions (in \code{parameters} and \code{population}).
 Two calculation methods are supported to distribute people between
 subregions: With \code{subregional = "net"}, the net migration between
@@ -179,7 +179,7 @@ propop(
   year_first = 2025,
   year_last = 2027,
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
 propop(
@@ -189,7 +189,7 @@ propop(
   year_last = 2026,
   scenarios = c("reference", "high"),
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
 }

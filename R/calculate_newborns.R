@@ -18,7 +18,7 @@
 #'        100 / 205 (FSO standard value).
 #' @param subregional character or NULL, indicates if subregional migration patterns
 #'        (e.g., movement between municipalities within a canton) are part of
-#'        the projection (default `subregional = NULL`). Two calculation methods
+#'        the projection (default `subregional = FALSE`). Two calculation methods
 #'        are supported to distribute people between subregions:
 #'        With `subregional = "net"`, the net migration between subregions is
 #'        added to the population balance. Net migration must be specified in

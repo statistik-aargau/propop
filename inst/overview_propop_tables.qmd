@@ -62,7 +62,7 @@ propop::propop_tables(
   share_born_female = 100 / 205,
   # subregional = "net" for net migration
   # subregional = "rate" for emi- and immigration rates
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )

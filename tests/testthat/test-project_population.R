@@ -2419,7 +2419,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     share_born_female = 100 / 205,
     population = population_short_5r,
     binational = TRUE,
-    subregional = NULL
+    subregional = FALSE
   ) |>
     filter(year == 2025)
 
