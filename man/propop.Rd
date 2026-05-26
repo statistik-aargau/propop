@@ -87,7 +87,7 @@ currently be set to \verb{= 101} (FSO standard number of age groups).}
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
 100 / 205 (FSO standard value).}
 
-\item{subregional}{character or NULL, indicates if subregional migration
+\item{subregional}{character or FALSE, indicates if subregional migration
 patterns (e.g., movement between municipalities within a canton) are
 part of the projection (default \code{subregional = FALSE}). Requires input
 on the level of subregions (in \code{parameters} and \code{population}).
