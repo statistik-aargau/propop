@@ -767,18 +767,18 @@ subregional_net_migration_median <- subregional_net_migration |>
 
 
 
- # # Define breaks for age groups
- #    age_length = 1
- #    age_to = 101
- #    age_breaks = c(-Inf, seq(age_length - 1, age_to - 1, by = age_length), Inf)
- #    age_labels = c(paste0(
- #      seq(0, age_to - 1, by = age_length),
- #      "_",
- #      c(seq(age_length - 1, age_to - 1, by = age_length), 100)
- #    ))
+ # Define breaks for age groups
+    age_length = 5
+    age_to = 101
+    age_breaks = c(-Inf, seq(age_length - 1, age_to - 1, by = age_length), Inf)
+    age_labels = c(paste0(
+      seq(0, age_to - 1, by = age_length),
+      "_",
+      c(seq(age_length - 1, age_to - 1, by = age_length), 100)
+    ))
 
 # 
-# subregional_net_migration_median |> 
+# subregional_net_migration_median |>
 #   mutate(# aggregate 100+ year old people
 #         age = case_when(age > 100 ~ 100, .default = age),
 #         # create age groups
@@ -788,9 +788,9 @@ subregional_net_migration_median <- subregional_net_migration |>
 #           labels = age_labels,
 #           include.lowest = TRUE
 #         ),
-#         age_group = paste0("age_", age_group)) |> 
-#   group_by(age_group, nat, sex) |> 
-#   summarise(mig_sub = sum(mig_sub)) |> 
+#         age_group = paste0("age_", age_group)) |>
+#   group_by(age_group, nat, sex) |>
+#   summarise(mig_sub = sum(mig_sub)) |>
 #   View()
 
 
@@ -801,7 +801,7 @@ subregional_net_migration_median <- subregional_net_migration |>
 Now we can add `mig_sub` as a column to the parameters.
 
 ```{r, eval = TRUE}
-parameters_net <- fso_parameters_sub |> 
+parameters_net <- fso_parameters_sub_distr_hist |> 
   dplyr::left_join(
     subregional_net_migration_median |> 
       dplyr::select(spatial_unit, age, nat, sex, mig_sub),
@@ -816,13 +816,13 @@ All required input files are available and we can set `subregional` to
 propop(
   parameters = parameters_net,
   year_first = 2026,
-  year_last = 2027,
+  year_last = 2026,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100 / 205,
-  population = df_population_shares,
+  population = ag_population_subregional,
   binational = TRUE,
   subregional = "net"
-)
+) 
 ```
