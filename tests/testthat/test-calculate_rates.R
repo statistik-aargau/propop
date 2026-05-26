@@ -6,7 +6,7 @@ test_that("calculate_rates snapshot - mean, age_group=5, binational, two_sex", {
     past_migration = ag_migration_subregional,
     n_jan         = n_jan,
     births        = births,
-    emi_n         = emi_n,
+    emi_n         = hist_emi_sub_n,
     spatial_unit  = spatial_unit,
     method        = "mean",
     year_range    = c(2024, 2025),
@@ -15,7 +15,7 @@ test_that("calculate_rates snapshot - mean, age_group=5, binational, two_sex", {
     two_sex       = TRUE
   )
 
-  expect_snapshot(print(tail(result, 100)))
+  expect_snapshot(print(as.data.frame(result)))
 })
 
 test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex", {
@@ -25,7 +25,7 @@ test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex"
       dplyr::select(-sex),
     n_jan         = n_jan,
     births        = births,
-    emi_n         = emi_n,
+    emi_n         = hist_emi_sub_n,
     spatial_unit  = spatial_unit,
     method        = "median",
     year_range    = c(2022, 2025),
@@ -34,7 +34,7 @@ test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex"
     two_sex       = FALSE
   )
 
-  expect_snapshot(print(tail(result2, 100)))
+  expect_snapshot(print(as.data.frame(result2)))
 })
 
 
@@ -45,7 +45,7 @@ test_that("calculate_rates snapshots should differ - median vs. mean", {
       dplyr::select(-sex),
     n_jan         = n_jan,
     births        = births,
-    emi_n         = emi_n,
+    emi_n         = hist_emi_sub_n,
     spatial_unit  = spatial_unit,
     method        = "median",
     year_range    = c(2022, 2025),
@@ -59,7 +59,7 @@ test_that("calculate_rates snapshots should differ - median vs. mean", {
       dplyr::select(-sex),
     n_jan         = n_jan,
     births        = births,
-    emi_n         = emi_n,
+    emi_n         = hist_emi_sub_n,
     spatial_unit  = spatial_unit,
     method        = "mean",
     year_range    = c(2022, 2025),
