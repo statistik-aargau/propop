@@ -191,7 +191,8 @@ calculate_shares <- function(
 
   # Prepare age groups ----
   if (age_group == 1) {
-    df_prep <- df_clean
+    df_prep <- df_clean |>
+      mutate(age_group = as.character(age))
   } else if (age_group > 1){
     # Define breaks for age groups
     age_length = age_group
