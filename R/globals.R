@@ -80,6 +80,7 @@ utils::globalVariables(c(
   "year", # <calculate_rates>
   "age", # <calculate_rates>
   "n_base", # <calculate_rates>
+  "emi_rate_year", # <calculate_rates>
   "emi_rate", # <calculate_rates>
   "year", # <calculate_shares>
   "age", # <calculate_shares>
