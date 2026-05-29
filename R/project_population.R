@@ -124,11 +124,11 @@ project_population <- function(
 
   ## Optional parameter when requested ----
   # Subregional migration
-  if (!is.null(subregional) && subregional == "net") {
+  if (!isFALSE(subregional) && subregional == "net") {
     assertthat::assert_that("mig_sub" %in% names(parameters),
       msg = "Column `mig_sub` is missing in parameters."
     )
-  } else if (!is.null(subregional) && subregional == "rate") {
+  } else if (!isFALSE(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
       msg = "Column `emi_sub` is missing in parameters."
     )

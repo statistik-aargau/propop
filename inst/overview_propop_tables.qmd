@@ -404,7 +404,7 @@ system.time({
     year_first = 2024,
     year_last = 2055,
     population = df_population_sub,
-    subregional = TRUE,
+    subregional = "rate",
     binational = TRUE
   )
 })

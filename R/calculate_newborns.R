@@ -153,10 +153,10 @@ calculate_newborns <- function(
     )
 
   # Subregional migration ----
-  if (!is.null(subregional) && subregional == "net") {
+  if (!isFALSE(subregional) && subregional == "net") {
     # Add net saldo for subregional migration
     df_newborns_out |> mutate(n_dec = n_dec + mig_sub)
-  } else if (!is.null(subregional) && subregional == "rate") {
+  } else if (!isFALSE(subregional) && subregional == "rate") {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
     df_newborns_out <- df_newborns_out |>
