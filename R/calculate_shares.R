@@ -30,7 +30,6 @@
 #' [propop()] for details on how to account for subregional migration using the rate method,
 #' [calculate_rates()] for calculating the associated emigration rate `emi_sub`.
 #'
-#'
 #' @export
 #'
 #' @autoglobal
@@ -39,7 +38,7 @@
 #' # Calculate shares to distribute subregional immigration among spatial units
 #' calculate_shares(
 #'   past_migration = ag_migration_subregional,
-#'   imm_n = "imm_n",
+#'   imm_n = hist_imm_sub_n,
 #'   year_range = c(2022:2024),
 #'   age_group = 10,
 #'   binational = TRUE,
@@ -53,6 +52,10 @@ calculate_shares <- function(
     binational = TRUE,
     two_sex = TRUE) {
 
+  # Capture imm_n as symbol and resolve to string for validation and messaging
+  imm_n_sym <- rlang::ensym(imm_n)
+  imm_n_str <- rlang::as_name(imm_n_sym)
+
   # Test input ----
   ## Presence of mandatory columns ----
   assertthat::assert_that("year" %in% names(past_migration),
@@ -65,9 +68,10 @@ calculate_shares <- function(
                           msg = "column `age` is missing in `past_migration`."
   )
   assertthat::assert_that(
-    imm_n %in% names(past_migration),
-    msg = paste0("column `imm_n` is missing in `past_migration`.")
+    imm_n_str %in% names(past_migration),
+    msg = paste0("column `", imm_n_str, "` is missing in `past_migration`.")
   )
+
   ## Data types and content ----
   assertthat::assert_that(
     is.numeric(past_migration$year),
@@ -173,21 +177,19 @@ calculate_shares <- function(
 
   # Clean data ----
   df_clean <- past_migration |>
-    # filter years
     filter(year %in% year_range) |>
     # rename column with absolute migration numbers
-    rename(imm_n = rlang::as_name(rlang::ensym(imm_n))) |>
-    # select relevant columns
+    rename(imm_n = !!imm_n_sym) |>
     select(any_of(c("year", "spatial_unit", "age", "nat", "sex", "imm_n"))) |>
     # convert spatial units to character
     mutate(spatial_unit = as.character(spatial_unit))
 
+
   # Column that contains historical records must be numeric
   assertthat::assert_that(
     is.numeric(df_clean$imm_n),
-    msg = paste0("Values in column `", imm_n, "` must be numeric.")
+    msg = paste0("Values in column `", imm_n_str, "` must be numeric.")
   )
-
 
   # Prepare age groups ----
   if (age_group == 1) {
