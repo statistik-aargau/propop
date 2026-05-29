@@ -261,7 +261,7 @@ five regions. The table below shows the result for a sample group:
 ```{r data-historical-immigration, echo = FALSE, message=FALSE}
 ag_migration_subregional |>
   dplyr::select(year, spatial_unit, age, nat, sex, hist_imm_nat_n, hist_imm_int_n) |> 
-  dplyr::filter(sex == "m" & nat == "int" & age == "29" & year == 2026) |>
+  dplyr::filter(sex == "m" & nat == "int" & age == "29") |>
   dplyr::relocate(year, .before = 1) |> 
   DT::datatable(
     rownames = FALSE,
