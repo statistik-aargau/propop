@@ -38,7 +38,7 @@
 #'  past_migration = ag_migration_subregional,
 #'  n_jan = n_jan,
 #'  births = births,
-#'  emi_n = emi_n,
+#'  emi_n = hist_emi_sub_n,
 #'  spatial_unit = spatial_unit,
 #'  method = "mean",
 #'  year_range = c(2022:2024),
@@ -260,7 +260,7 @@ calculate_rates <- function(
   # Calculate mean rates ----
   df_rate <- df_prep |>
     mutate(
-      emi_rate = case_when(
+      emi_rate_year = case_when(
         # 1. If nobody left share should be 0.
         {{emi_n}} == 0 ~ 0,
         # 2. If nobody was in population in January and somebody left share should
@@ -281,13 +281,13 @@ calculate_rates <- function(
     df_rate_mean <- df_rate |>
       mutate(
         .by = c(cols_summarize),
-        emi_rate = mean(emi_rate, na.rm = TRUE)
+        emi_rate = mean(emi_rate_year, na.rm = TRUE)
       )
   } else if (method == "median") {
     df_rate_mean <- df_rate |>
       mutate(
         .by = c(cols_summarize),
-        emi_rate = median(emi_rate, na.rm = TRUE)
+        emi_rate = median(emi_rate_year, na.rm = TRUE)
       )
   }
 
@@ -301,7 +301,7 @@ calculate_rates <- function(
     # prune columns
     select(
       year, spatial_unit, age, any_of(c("age_group", "nat", "sex")), {{n_jan}},
-      {{births}}, n_base, {{emi_n}}, emi_rate, method
+      {{births}}, n_base, {{emi_n}}, emi_rate_year, emi_rate, method
     )
 
   # Ensure there are no missing values
