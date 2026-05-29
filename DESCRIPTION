@@ -85,7 +85,8 @@ Suggests:
     stringr,
     testthat,
     rlang,
-    lifecycle
+    lifecycle,
+    colorspace
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
