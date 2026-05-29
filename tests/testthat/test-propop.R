@@ -409,7 +409,7 @@ test_that("Simple propop test", {
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = NULL,
+    subregional = FALSE,
     binational = TRUE,
     spatial_unit = "spatial_unit"
   )
@@ -424,7 +424,7 @@ test_that("N_totals of scenarios are ordered plausibly", {
     year_first = 2025,
     year_last = 2025,
     population = fso_population,
-    subregional = NULL,
+    subregional = FALSE,
     binational = TRUE
   ) |>
     # Get end total per scenario
@@ -1546,7 +1546,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     share_born_female = 100 / 205,
     population = population_short_5r,
     binational = TRUE,
-    subregional = NULL
+    subregional = FALSE
   )
 
   # Check if components add up

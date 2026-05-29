@@ -1,7 +1,12 @@
 #' Calculate shares for distributing immigration among subregions
 #'
-#' @description Calculates historical immigration shares across spatial units within
-#'        a region. These shares are used to allocate emigrants moving from one
+#' @description Calculates historical immigration shares across spatial units
+#'        within a region. \cr
+#'        To compute the shares, the counts are summed within
+#'        each spatial unit and across all spatial units combined, across all
+#'        years. Dividing the spatial unit count by the total gives the group's
+#'        share.\cr
+#'        These shares are used to allocate emigrants moving from one
 #'        subregion to another subregion (which can be done with `calculate_rates`).
 #'
 #' @param past_migration data frame, historical records (e.g., immigration from
@@ -30,7 +35,6 @@
 #' [propop()] for details on how to account for subregional migration using the rate method,
 #' [calculate_rates()] for calculating the associated emigration rate `emi_sub`.
 #'
-#'
 #' @export
 #'
 #' @autoglobal
@@ -39,7 +43,7 @@
 #' # Calculate shares to distribute subregional immigration among spatial units
 #' calculate_shares(
 #'   past_migration = ag_migration_subregional,
-#'   imm_n = "imm_n",
+#'   imm_n = hist_imm_sub_n,
 #'   year_range = c(2022:2024),
 #'   age_group = 10,
 #'   binational = TRUE,
@@ -53,21 +57,26 @@ calculate_shares <- function(
     binational = TRUE,
     two_sex = TRUE) {
 
+  # Capture imm_n as symbol and resolve to string for validation and messaging
+  imm_n_sym <- rlang::ensym(imm_n)
+  imm_n_str <- rlang::as_name(imm_n_sym)
+
   # Test input ----
   ## Presence of mandatory columns ----
   assertthat::assert_that("year" %in% names(past_migration),
-    msg = "column `year` is missing in `past_migration`."
+                          msg = "column `year` is missing in `past_migration`."
   )
   assertthat::assert_that("spatial_unit" %in% names(past_migration),
-    msg = "column `spatial_unit` is missing in `past_migration`."
+                          msg = "column `spatial_unit` is missing in `past_migration`."
   )
   assertthat::assert_that("age" %in% names(past_migration),
-    msg = "column `age` is missing in `past_migration`."
+                          msg = "column `age` is missing in `past_migration`."
   )
   assertthat::assert_that(
-    imm_n %in% names(past_migration),
-    msg = paste0("column `imm_n` is missing in `past_migration`.")
+    imm_n_str %in% names(past_migration),
+    msg = paste0("column `", imm_n_str, "` is missing in `past_migration`.")
   )
+
   ## Data types and content ----
   assertthat::assert_that(
     is.numeric(past_migration$year),
@@ -80,32 +89,32 @@ calculate_shares <- function(
 
   # levels in spatial unit
   assertthat::assert_that(length(unique(as.factor(past_migration$spatial_unit))) > 1,
-    msg = "Levels for spatial_units in `past_migration` must be larger than 1 level."
+                          msg = "Levels for spatial_units in `past_migration` must be larger than 1 level."
   )
 
   ## Optional arguments ----
   # Past years (default uses all years in `past_migration`)
   if (isTRUE(!is.null(year_range))){
     assertthat::assert_that(all(year_range %in% c(unique(past_migration$year))),
-      msg = paste0(
-        "Vector for `year_range` does not correspond to available years in ",
-        "`past_migration`."
-      ))
+                            msg = paste0(
+                              "Vector for `year_range` does not correspond to available years in ",
+                              "`past_migration`."
+                            ))
   } else {
     year_range <- unique(past_migration$year)
   }
 
   # Age group contains no digits after the comma
   assertthat::assert_that(grepl("^[^.]*\\.?0*$", age_group),
-    msg = paste0("Value for `age_group` must not contain any digits after the comma.")
+                          msg = paste0("Value for `age_group` must not contain any digits after the comma.")
   )
   assertthat::assert_that(age_group > 0,
-    msg = paste0("Value for `age_group` must be larger than zero.")
+                          msg = paste0("Value for `age_group` must be larger than zero.")
   )
 
   # Nationality
   assertthat::assert_that(isTRUE(binational) | isFALSE(binational),
-    msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
+                          msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
   )
 
   if (binational == TRUE){
@@ -139,7 +148,7 @@ calculate_shares <- function(
   }
   # Sex
   assertthat::assert_that(isTRUE(two_sex) | isFALSE(two_sex),
-    msg = paste0("Value for `", two_sex, "` must be either `TRUE` or `FALSE`")
+                          msg = paste0("Value for `", two_sex, "` must be either `TRUE` or `FALSE`")
   )
   if (two_sex == TRUE) {
     assertthat::assert_that(
@@ -173,11 +182,9 @@ calculate_shares <- function(
 
   # Clean data ----
   df_clean <- past_migration |>
-    # filter years
     filter(year %in% year_range) |>
     # rename column with absolute migration numbers
-    rename(imm_n = rlang::as_name(rlang::ensym(imm_n))) |>
-    # select relevant columns
+    rename(imm_n = !!imm_n_sym) |>
     select(any_of(c("year", "spatial_unit", "age", "nat", "sex", "imm_n"))) |>
     # convert spatial units to character
     mutate(spatial_unit = as.character(spatial_unit))
@@ -185,13 +192,13 @@ calculate_shares <- function(
   # Column that contains historical records must be numeric
   assertthat::assert_that(
     is.numeric(df_clean$imm_n),
-    msg = paste0("Values in column `", imm_n, "` must be numeric.")
+    msg = paste0("Values in column `", imm_n_str, "` must be numeric.")
   )
-
 
   # Prepare age groups ----
   if (age_group == 1) {
-    df_prep <- df_clean
+    df_prep <- df_clean |>
+      mutate(age_group = as.character(age))
   } else if (age_group > 1){
     # Define breaks for age groups
     age_length = age_group
@@ -262,27 +269,32 @@ calculate_shares <- function(
 
   year_range_string <- format_years(year_range)
 
-
   # Calculate mean shares ----
   df_result <- df_prep |>
+    # Step 1: Immigration for specified age group within spatial unit (across all years)
     mutate(
-      # total number of people in 5-year age groups
       sum_imm_n = sum(imm_n),
       .by = any_of(c("spatial_unit", "nat", "sex", "age_group"))
     ) |>
+    # Step 2: Share of each spatial unit out of the global total
     mutate(
-      # calculate shares
-      imm_share = imm_n / sum_imm_n,
-      # If no observations exist in a demographic group and its' larger age group,
-      # values are filled with zeros to avoid NAs
-      imm_share = case_when((imm_n == 0 & sum_imm_n == 0) ~ 0, .default = imm_share),
+      total_imm_n = sum(imm_n),
+      .by = any_of(c("nat", "sex", "age_group"))
+    ) |>
+    mutate(
+      imm_share = sum_imm_n / total_imm_n,
+      imm_share = case_when(
+        (sum_imm_n == 0 & total_imm_n == 0) ~ 0,
+        .default = imm_share
+      ),
       method = paste0("share ", year_range_string)
     ) |>
-    # prune columns
+    # Trim so that only unique values are included
     select(
-      year, spatial_unit, age, any_of(c("age_group", "nat", "sex")), imm_n,
-      sum_imm_n, imm_share, method
-    )
+      spatial_unit, age, any_of(c("age_group", "nat", "sex")),
+      sum_imm_n, total_imm_n, imm_share, method
+    ) |>
+    distinct()
 
   # Ensure there are no missing values
   assertthat::assert_that(
@@ -291,6 +303,10 @@ calculate_shares <- function(
       "'df_result' contains missing values in columns:",
       paste(names(which(colSums(is.na(df_result)) > 0)), collapse = ", "))
   )
+
+  # TODO Ensure that the sum of distributed shares is equal to FSO input
+
+  # TODO Ensure that the shares in the spatial regions add up to 1
 
   return(df_result)
 }

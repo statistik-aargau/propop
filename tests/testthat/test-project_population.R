@@ -7,7 +7,7 @@ test_that("calculate project population", {
   share_born_female <- 100 / 205
 
   ## One spatial unit ----
-  subregional <- NULL
+  subregional <- FALSE
 
   ## Two nationalities ----
   binational <- TRUE
@@ -304,7 +304,6 @@ test_that("calculate project population", {
       2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     ),
   )
-
 
   # first projection ----
   project_population_default_1 <- project_population(
@@ -1756,8 +1755,6 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # Run snapshot 1 region ----
   expect_snapshot(constructive::construct(output_propop_1r))
 
-
-
   # Prepare snapshot for 5 subregions -----
 
   ## FSO parameters with fictitious subregions ----
@@ -2419,7 +2416,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
     share_born_female = 100 / 205,
     population = population_short_5r,
     binational = TRUE,
-    subregional = NULL
+    subregional = FALSE
   ) |>
     filter(year == 2025)
 

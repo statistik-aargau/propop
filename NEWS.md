@@ -1,3 +1,8 @@
+# propop 2.1.1
+- Extensive revision of vignette on projections with subregions, including
+documentation of the new "rate" method.  
+- Bug fixed in `calculate_shares()`.  
+
 # propop 2.1.0
 - `propop::propop()` offers a new method for subregional migration. The new method
 uses **migration rates** rather than **net migration** (number of people). 

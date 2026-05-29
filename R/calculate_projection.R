@@ -5,7 +5,7 @@
 #' @param .data data frame, population and parameters for one year.
 #' @param subregional character or NULL, indicates if subregional migration
 #'        patterns (e.g., movement between municipalities within a canton) are
-#'        part of the projection (default `subregional = NULL`). Requires input
+#'        part of the projection (default `subregional = FALSE`). Requires input
 #'        on the level of subregions (in `parameters` and `population`).
 #'        Two calculation methods are supported to distribute people between
 #'        subregions: With `subregional = "net"`, the net migration between
@@ -114,10 +114,10 @@ calculate_projection <- function(.data, subregional = subregional) {
     select(-c(mor_n_int, mor_n_ch, mor))
 
   # Optional Step 5: Subregional migration ----
-  if (!is.null(subregional) && subregional == "net") {
+  if (!isFALSE(subregional) && subregional == "net") {
     # Add net saldo for subregional migration
     df_out |> mutate(n_dec = n_dec + mig_sub)
-  } else if (!is.null(subregional) && subregional == "rate") {
+  } else if (!isFALSE(subregional) && subregional == "rate") {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
     df_out <- df_out |>

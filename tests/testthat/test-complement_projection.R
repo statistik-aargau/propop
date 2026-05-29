@@ -539,7 +539,7 @@ test_that("snapshot test complement_projection()", {
   )
 
   # run complement_projection
-  output_table <- complement_projection(empty_df, raw_df, subregional = TRUE)
+  output_table <- complement_projection(empty_df, raw_df, subregional = "rate")
 
   # run tests
   expect_snapshot(constructive::construct(output_table))

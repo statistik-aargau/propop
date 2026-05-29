@@ -18,7 +18,7 @@
 #'        100 / 205 (FSO standard value).
 #' @param subregional character or NULL, indicates if subregional migration patterns
 #'        (e.g., movement between municipalities within a canton) are part of
-#'        the projection (default `subregional = NULL`). Two calculation methods
+#'        the projection (default `subregional = FALSE`). Two calculation methods
 #'        are supported to distribute people between subregions:
 #'        With `subregional = "net"`, the net migration between subregions is
 #'        added to the population balance. Net migration must be specified in
@@ -153,10 +153,10 @@ calculate_newborns <- function(
     )
 
   # Subregional migration ----
-  if (!is.null(subregional) && subregional == "net") {
+  if (!isFALSE(subregional) && subregional == "net") {
     # Add net saldo for subregional migration
     df_newborns_out |> mutate(n_dec = n_dec + mig_sub)
-  } else if (!is.null(subregional) && subregional == "rate") {
+  } else if (!isFALSE(subregional) && subregional == "rate") {
     # Redistribute subregional emigration back to all subregional units as
     # subregional immigration
     df_newborns_out <- df_newborns_out |>

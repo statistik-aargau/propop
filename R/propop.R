@@ -78,9 +78,9 @@
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
-#' @param subregional character or NULL, indicates if subregional migration
+#' @param subregional character or FALSE, indicates if subregional migration
 #'        patterns (e.g., movement between municipalities within a canton) are
-#'        part of the projection (default `subregional = NULL`). Requires input
+#'        part of the projection (default `subregional = FALSE`). Requires input
 #'        on the level of subregions (in `parameters` and `population`).
 #'        Two calculation methods are supported to distribute people between
 #'        subregions: With `subregional = "net"`, the net migration between
@@ -149,7 +149,7 @@
 #'   year_first = 2025,
 #'   year_last = 2027,
 #'   population = fso_population,
-#'   subregional = NULL,
+#'   subregional = FALSE,
 #'   binational = TRUE
 #' )
 #' propop(
@@ -159,7 +159,7 @@
 #'   year_last = 2026,
 #'   scenarios = c("reference", "high"),
 #'   population = fso_population,
-#'   subregional = NULL,
+#'   subregional = FALSE,
 #'   binational = TRUE
 #' )
 propop <- function(
@@ -172,7 +172,7 @@ propop <- function(
     fert_first = 16,
     fert_last = 50,
     share_born_female = 100 / 205,
-    subregional = NULL,
+    subregional = FALSE,
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   ## Progress feedback ----
@@ -283,6 +283,9 @@ propop <- function(
   )
 
   ## Nationality ----
+  assertthat::assert_that(isTRUE(binational) | isFALSE(binational),
+    msg = paste0("Value for `binational` must be either `TRUE` or `FALSE`")
+  )
   # Two groups in column `nat`
   if (binational == TRUE) {
     # Check if column `nat` is present in both, `parameters` and `population`
@@ -434,17 +437,27 @@ propop <- function(
 
   ## Optional parameter when requested ----
   # Subregional migration
-  if (!is.null(subregional) && subregional == "net") {
+  assertthat::assert_that(
+    isFALSE(subregional) || subregional %in% c("net", "rate"),
+    msg = '`subregional` must be "net", "rate", or FALSE'
+  )
+  if (!isFALSE(subregional) && subregional == "net") {
     assertthat::assert_that("mig_sub" %in% names(parameters),
-      msg = "Column `mig_sub` is missing in parameters."
-    )
-  } else if (!is.null(subregional) && subregional == "rate") {
+      msg = paste0(
+        "Column `mig_sub` is missing in parameters but is required for ",
+        "subregional migration."
+    ))
+  } else if (!isFALSE(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
-      msg = "Column `emi_sub` is missing in parameters."
-    )
+      msg = paste0(
+        "Column `emi_sub` is missing in parameters but is required for ",
+      "subregional migration."
+    ))
     assertthat::assert_that("imm_sub" %in% names(parameters),
-      msg = "Column `imm_sub` is missing in parameters."
-    )
+      msg = paste0(
+        "Column `imm_sub` is missing in parameters but is required for ",
+        "subregional migration."
+    ))
   } else {
     parameters <- parameters
   }
@@ -673,14 +686,11 @@ propop <- function(
     "-",
     "{.val {year_last}}"
   )
-  cli::cli_text(
-    "Nationality-specific projection: ",
-    "{.val {if (binational) 'yes' else 'no'}}"
-  )
-  cli::cli_text(
-    "Subregional migration: ",
-    "{.val {if (is.null(subregional)) 'no' else 'yes'}}"
-  )
+  binational_feedback  <- if (isTRUE(binational)) "yes" else "no"
+  subregional_feedback <- if (isFALSE(subregional)) "no" else subregional
+
+  cli::cli_text("Nationality-specific projection: {.val {binational_feedback}}")
+  cli::cli_text("Subregional migration: {.val {subregional_feedback}}")
   cli::cli_rule()
   cli::cli_text(
     "{.emph Projected} population size by ",

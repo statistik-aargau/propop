@@ -996,7 +996,7 @@ test_that("calculate newborns test", {
     fert_first = fert_first,
     fert_last = fert_last,
     share_born_female = share_born_female,
-    subregional = subregional
+    subregional = TRUE
   )
 
   expect_snapshot(constructive::construct(calculate_newborns_default))
@@ -2052,7 +2052,7 @@ test_that("calculate newborns test only Swiss NA", {
     fert_first = fert_first,
     fert_last = fert_last,
     share_born_female = share_born_female,
-    subregional = subregional
+    subregional = TRUE
   )
 
   expect_snapshot(constructive::construct(calculate_newborns_na))
