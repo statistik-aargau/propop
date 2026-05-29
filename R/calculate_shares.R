@@ -1,7 +1,12 @@
 #' Calculate shares for distributing immigration among subregions
 #'
-#' @description Calculates historical immigration shares across spatial units within
-#'        a region. These shares are used to allocate emigrants moving from one
+#' @description Calculates historical immigration shares across spatial units
+#'        within a region. \cr
+#'        To compute the shares, the counts are summed within
+#'        each spatial unit and across all spatial units combined, across all
+#'        years. Dividing the spatial unit count by the total gives the group's
+#'        share.\cr
+#'        These shares are used to allocate emigrants moving from one
 #'        subregion to another subregion (which can be done with `calculate_rates`).
 #'
 #' @param past_migration data frame, historical records (e.g., immigration from
@@ -184,7 +189,6 @@ calculate_shares <- function(
     # convert spatial units to character
     mutate(spatial_unit = as.character(spatial_unit))
 
-
   # Column that contains historical records must be numeric
   assertthat::assert_that(
     is.numeric(df_clean$imm_n),
@@ -264,7 +268,6 @@ calculate_shares <- function(
   }
 
   year_range_string <- format_years(year_range)
-
 
   # Calculate mean shares ----
   df_result <- df_prep |>
