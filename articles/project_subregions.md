@@ -176,7 +176,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [429ms]
+#> ✔ Processing completed in [448ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -330,9 +330,7 @@ Using the same sample group as above, it can be seen that
 `group_sum_int` in the blue columns is equal to the original number of
 people `imm_int_n` in the orange columns.
 
-  
-
-To proceed with the projection, we rename the columns containing the
+  To proceed with the projection, we rename the columns containing the
 distributed immigration values (`imm_int_n_distr` and `imm_nat_n_distr`)
 to `imm_int_n` and `imm_nat_n`. Otherwise,
 [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
@@ -369,7 +367,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [372ms]
+#> ✔ Processing completed in [392ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -490,7 +488,7 @@ To illustrate the rate approach, we start with aggregated past migration
 records (2024–2025) for five regions in the Canton of Aargau. We first
 use
 [`calculate_rates()`](https://statistik-aargau.github.io/propop/reference/calculate_rates.md)
-to calculate “the rate for each demographic group and year
+to calculate the rate for each demographic group and year
 (`emi_rate_year`) and the mean of these shares over time (`emi_rate`).
 To make it easy to follow the calculation, we aggregate into 2-year age
 groups and only use two years.
@@ -512,7 +510,7 @@ emi_rate <- calculate_rates(
 ) 
 ```
 
-  The table below shows the average emigration rate (`emi_rate`) for 28-
+The table below shows the average emigration rate (`emi_rate`) for 28-
 and 29-year old international men in the five spatial units (highlighted
 in different colours).
 
@@ -533,7 +531,7 @@ imm_share <- calculate_shares(
 ) 
 ```
 
-  The table below shows the result for the group of 28- and 29- year old
+The table below shows the result for the group of 28- and 29- year old
 international men. It includes the number of immigrants for each 2-year
 age group and spatial unit (`sum_imm_n`), the total number of immigrants
 across all spatial units (`total_imm_n`), and the share for each group
@@ -582,7 +580,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [6.5s]
+#> ✔ Processing completed in [6.7s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -729,7 +727,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [5.8s]
+#> ✔ Processing completed in [6.1s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

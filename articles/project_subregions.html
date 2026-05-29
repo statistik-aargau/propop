@@ -190,15 +190,16 @@ all spatial units in the respective demographic group
 <span><span class="va">df_population_shares</span> <span class="op">&lt;-</span> <span class="va">ag_population_subregional</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sum_n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="va">sum_n</span><span class="op">)</span></span></code></pre></div>
-<!-- The following example for 29-year old international males shows that the sum of  -->
+<!-- The following example for 29-year old international males shows that the sum of -->
 <!-- all five region's shares is 1. -->
 <!-- ```{r show-table-1, message=FALSE, echo = FALSE} -->
 <!-- # Display table -->
-<!-- df_population_shares |> -->
+<!-- check <- df_population_shares |> -->
 <!--   dplyr::mutate(share = round(share, 3)) |> -->
-<!--   dplyr::arrange(year, age, sex, nat) |>  -->
+<!--   dplyr::arrange(year, age, sex, nat) |> -->
 <!--   dplyr::filter(sex == "m" & nat == "int" & age == "29") |> -->
-<!--   dplyr::slice_head(n = 5) |>  -->
+<!--   dplyr::slice_head(n = 5)  -->
+<!-- check |> -->
 <!--   DT::datatable( -->
 <!--   rownames = FALSE, -->
 <!--   options = list( -->
@@ -208,6 +209,7 @@ all spatial units in the respective demographic group
 <!--   DT::formatStyle(c("share"), -->
 <!--                   backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "") -->
 <!--   ) -->
+<!-- sum(check$share) -->
 <!-- ``` -->
 <p>Now all required data are available. We can proceed to distribute the
 input variables expressed as “number of people” among the
@@ -276,7 +278,7 @@ recognise the parameters.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[429ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[448ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -421,32 +423,8 @@ columns</span> is equal to the original number of people
 <code>imm_int_n</code> <span style="color: #ffcc8f;">in the orange
 columns.</span></p>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-1fb4450895fe099f74a1" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"filter":"none","vertical":false,"data":[[2026,2026,2026,2026,2026],["int","int","int","int","int"],["m","m","m","m","m"],[29,29,29,29,29],["1","2","3","4","5"],[165,165,165,165,165],[0.235,0.256,0.135,0.188,0.186],[38.811,42.286,22.232,31.024,30.647],[165,165,165,165,165]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>year<\/th>\n      <th>nat<\/th>\n      <th>sex<\/th>\n      <th>age<\/th>\n      <th>spatial_unit<\/th>\n      <th>imm_int_n<\/th>\n      <th>share_imm_int<\/th>\n      <th>imm_int_n_distr<\/th>\n      <th>group_sum_int<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","paging":false,"columnDefs":[{"className":"dt-right","targets":[0,3,5,6,7,8]},{"name":"year","targets":0},{"name":"nat","targets":1},{"name":"sex","targets":2},{"name":"age","targets":3},{"name":"spatial_unit","targets":4},{"name":"imm_int_n","targets":5},{"name":"share_imm_int","targets":6},{"name":"imm_int_n_distr","targets":7},{"name":"group_sum_int","targets":8}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':'#ffcc8f'});\nvar value=data[8]; $(this.api().cell(row, 8).node()).css({'background-color':'#96D4FF'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><p><br></p>
-<!-- This also holds for other groups: The difference between the total migration  -->
-<!-- in the subregions and the whole canton (input parameter) is always equal to zero. -->
-<!-- ```{r sum-check, eval = TRUE, echo = TRUE} -->
-<!-- check_sums_subregions <- fso_parameters_sub_distr_hist |> -->
-<!--   # add up number of people in different spatial units -->
-<!--   dplyr::summarise( -->
-<!--     sum_imm_int_sub = round(sum(imm_int_n_distr, na.rm = TRUE), digits = 0), -->
-<!--     sum_imm_nat_sub = round(sum(imm_nat_n_distr, na.rm = TRUE), digits = 0), -->
-<!--     .by = c(nat, sex, age, year) -->
-<!--   ) |> -->
-<!--   # join with original input data (for the whole canton) -->
-<!--   dplyr::left_join(fso_parameters |>  -->
-<!--                      dplyr::filter(scen == "reference"), by = c("nat", "sex", "age", "year")) |> -->
-<!--   # calculate difference between immigration at the level of subregions and canton -->
-<!--   dplyr::mutate( -->
-<!--     diff_int = sum_imm_int_sub - imm_int_n, -->
-<!--     diff_nat = sum_imm_nat_sub - imm_nat_n, -->
-<!--   ) -->
-<!-- # All observed differences are equal to zero -->
-<!-- unique(check_sums_subregions$diff_int) -->
-<!-- unique(check_sums_subregions$diff_nat) -->
-<!-- ``` -->
-<!-- \ -->
-<p>To proceed with the projection, we rename the columns containing the
-distributed immigration values (<code>imm_int_n_distr</code> and
+<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"filter":"none","vertical":false,"data":[[2026,2026,2026,2026,2026],["int","int","int","int","int"],["m","m","m","m","m"],[29,29,29,29,29],["1","2","3","4","5"],[165,165,165,165,165],[0.235,0.256,0.135,0.188,0.186],[38.811,42.286,22.232,31.024,30.647],[165,165,165,165,165]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>year<\/th>\n      <th>nat<\/th>\n      <th>sex<\/th>\n      <th>age<\/th>\n      <th>spatial_unit<\/th>\n      <th>imm_int_n<\/th>\n      <th>share_imm_int<\/th>\n      <th>imm_int_n_distr<\/th>\n      <th>group_sum_int<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","paging":false,"columnDefs":[{"className":"dt-right","targets":[0,3,5,6,7,8]},{"name":"year","targets":0},{"name":"nat","targets":1},{"name":"sex","targets":2},{"name":"age","targets":3},{"name":"spatial_unit","targets":4},{"name":"imm_int_n","targets":5},{"name":"share_imm_int","targets":6},{"name":"imm_int_n_distr","targets":7},{"name":"group_sum_int","targets":8}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':'#ffcc8f'});\nvar value=data[8]; $(this.api().cell(row, 8).node()).css({'background-color':'#96D4FF'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script><p>  To proceed with the projection, we rename the columns containing
+the distributed immigration values (<code>imm_int_n_distr</code> and
 <code>imm_nat_n_distr</code>) to <code>imm_int_n</code> and
 <code>imm_nat_n</code>. Otherwise, <code><a href="../reference/propop.html">propop()</a></code> will not
 recognise the parameters.</p>
@@ -476,7 +454,7 @@ recognise the parameters.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[372ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[392ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -599,7 +577,7 @@ according to <code>imm_sub</code>.</li>
 </h4>
 <p>To illustrate the rate approach, we start with aggregated past
 migration records (2024–2025) for five regions in the Canton of Aargau.
-We first use <code><a href="../reference/calculate_rates.html">calculate_rates()</a></code> to calculate “the rate for
+We first use <code><a href="../reference/calculate_rates.html">calculate_rates()</a></code> to calculate the rate for
 each demographic group and year (<code>emi_rate_year</code>) and the
 mean of these shares over time (<code>emi_rate</code>). To make it easy
 to follow the calculation, we aggregate into 2-year age groups and only
@@ -618,7 +596,7 @@ use two years.</p>
 <span>  age_group <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"mean"</span></span>
 <span><span class="op">)</span> </span></code></pre></div>
-<p>  The table below shows the average emigration rate
+<p>The table below shows the average emigration rate
 (<code>emi_rate</code>) for 28- and 29-year old international men in the
 five spatial units (highlighted in different colours).</p>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-10b3b7155e8045a1b2ad" style="width:100%;height:auto;"></div>
@@ -634,7 +612,7 @@ migration</a>).</p>
 <span>  imm_n <span class="op">=</span> <span class="st">"hist_imm_sub_n"</span>,</span>
 <span>  age_group <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span> </span></code></pre></div>
-<p>  The table below shows the result for the group of 28- and 29- year
+<p>The table below shows the result for the group of 28- and 29- year
 old international men. It includes the number of immigrants for each
 2-year age group and spatial unit (<code>sum_imm_n</code>), the total
 number of immigrants across all spatial units
@@ -678,7 +656,7 @@ can re-use <code>fso_parameters_sub_distr_hist</code>).</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[6.5s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[6.7s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -810,7 +788,7 @@ the parameters:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[5.8s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[6.1s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
