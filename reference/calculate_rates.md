@@ -88,7 +88,7 @@ calculate_rates(
  past_migration = ag_migration_subregional,
  n_jan = n_jan,
  births = births,
- emi_n = emi_n,
+ emi_n = hist_emi_sub_n,
  spatial_unit = spatial_unit,
  method = "mean",
  year_range = c(2022:2024),
@@ -96,19 +96,20 @@ calculate_rates(
  binational = TRUE,
  two_sex = TRUE
 )
-#> # A tibble: 6,060 × 12
-#>     year spatial_unit   age age_group nat   sex   n_jan births n_base emi_n
-#>    <int> <chr>        <dbl> <chr>     <chr> <chr> <int>  <int>  <int> <int>
-#>  1  2022 1                0 age_0_4   ch    m         0    480    480    24
-#>  2  2022 1                1 age_0_4   ch    m       552      0    552    62
-#>  3  2022 1                2 age_0_4   ch    m       526      0    526    38
-#>  4  2022 1                3 age_0_4   ch    m       501      0    501    35
-#>  5  2022 1                4 age_0_4   ch    m       478      0    478    30
-#>  6  2022 1                5 age_5_9   ch    m       464      0    464    21
-#>  7  2022 1                6 age_5_9   ch    m       464      0    464     9
-#>  8  2022 1                7 age_5_9   ch    m       465      0    465    14
-#>  9  2022 1                8 age_5_9   ch    m       469      0    469     8
-#> 10  2022 1                9 age_5_9   ch    m       453      0    453     9
+#> # A tibble: 6,060 × 13
+#>     year spatial_unit   age age_group nat   sex   n_jan births n_base
+#>    <int> <chr>        <dbl> <chr>     <chr> <chr> <int>  <int>  <int>
+#>  1  2022 1                0 age_0_4   ch    m         0    480    480
+#>  2  2022 1                1 age_0_4   ch    m       552      0    552
+#>  3  2022 1                2 age_0_4   ch    m       526      0    526
+#>  4  2022 1                3 age_0_4   ch    m       501      0    501
+#>  5  2022 1                4 age_0_4   ch    m       478      0    478
+#>  6  2022 1                5 age_5_9   ch    m       464      0    464
+#>  7  2022 1                6 age_5_9   ch    m       464      0    464
+#>  8  2022 1                7 age_5_9   ch    m       465      0    465
+#>  9  2022 1                8 age_5_9   ch    m       469      0    469
+#> 10  2022 1                9 age_5_9   ch    m       453      0    453
 #> # ℹ 6,050 more rows
-#> # ℹ 2 more variables: emi_rate <dbl>, method <chr>
+#> # ℹ 4 more variables: hist_emi_sub_n <int>, emi_rate_year <dbl>,
+#> #   emi_rate <dbl>, method <chr>
 ```

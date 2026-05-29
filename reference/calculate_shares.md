@@ -1,9 +1,12 @@
 # Calculate shares for distributing immigration among subregions
 
 Calculates historical immigration shares across spatial units within a
-region. These shares are used to allocate emigrants moving from one
-subregion to another subregion (which can be done with
-`calculate_rates`).
+region.  
+To compute the shares, the counts are summed within each spatial unit
+and across all spatial units combined, across all years. Dividing the
+spatial unit count by the total gives the group's share.  
+These shares are used to allocate emigrants moving from one subregion to
+another subregion (which can be done with `calculate_rates`).
 
 ## Usage
 
@@ -76,25 +79,25 @@ for calculating the associated emigration rate `emi_sub`.
 # Calculate shares to distribute subregional immigration among spatial units
 calculate_shares(
   past_migration = ag_migration_subregional,
-  imm_n = "imm_n",
+  imm_n = hist_imm_sub_n,
   year_range = c(2022:2024),
   age_group = 10,
   binational = TRUE,
   two_sex = TRUE
 )
-#> # A tibble: 6,060 × 10
-#>     year spatial_unit   age age_group nat   sex   imm_n sum_imm_n imm_share
-#>    <int> <chr>        <dbl> <chr>     <chr> <chr> <int>     <int>     <dbl>
-#>  1  2022 1                0 age_0_9   ch    m         8       435    0.0184
-#>  2  2022 1                1 age_0_9   ch    m        37       435    0.0851
-#>  3  2022 1                2 age_0_9   ch    m        29       435    0.0667
-#>  4  2022 1                3 age_0_9   ch    m        20       435    0.0460
-#>  5  2022 1                4 age_0_9   ch    m        18       435    0.0414
-#>  6  2022 1                5 age_0_9   ch    m        11       435    0.0253
-#>  7  2022 1                6 age_0_9   ch    m         8       435    0.0184
-#>  8  2022 1                7 age_0_9   ch    m        11       435    0.0253
-#>  9  2022 1                8 age_0_9   ch    m         7       435    0.0161
-#> 10  2022 1                9 age_0_9   ch    m         8       435    0.0184
-#> # ℹ 6,050 more rows
+#> # A tibble: 2,020 × 9
+#>    spatial_unit   age age_group nat   sex   sum_imm_n total_imm_n imm_share
+#>    <chr>        <dbl> <chr>     <chr> <chr>     <int>       <int>     <dbl>
+#>  1 1                0 age_0_9   ch    m           435        2944     0.148
+#>  2 1                1 age_0_9   ch    m           435        2944     0.148
+#>  3 1                2 age_0_9   ch    m           435        2944     0.148
+#>  4 1                3 age_0_9   ch    m           435        2944     0.148
+#>  5 1                4 age_0_9   ch    m           435        2944     0.148
+#>  6 1                5 age_0_9   ch    m           435        2944     0.148
+#>  7 1                6 age_0_9   ch    m           435        2944     0.148
+#>  8 1                7 age_0_9   ch    m           435        2944     0.148
+#>  9 1                8 age_0_9   ch    m           435        2944     0.148
+#> 10 1                9 age_0_9   ch    m           435        2944     0.148
+#> # ℹ 2,010 more rows
 #> # ℹ 1 more variable: method <chr>
 ```

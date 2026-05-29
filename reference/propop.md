@@ -37,7 +37,7 @@ propop(
   fert_first = 16,
   fert_last = 50,
   share_born_female = 100/205,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE,
   spatial_unit = "spatial_unit"
 )
@@ -149,18 +149,18 @@ propop(
 
 - subregional:
 
-  character or NULL, indicates if subregional migration patterns (e.g.,
+  character or FALSE, indicates if subregional migration patterns (e.g.,
   movement between municipalities within a canton) are part of the
-  projection (default `subregional = NULL`). Requires input on the level
-  of subregions (in `parameters` and `population`). Two calculation
-  methods are supported to distribute people between subregions: With
-  `subregional = "net"`, the net migration between subregions is added
-  to the population balance. Net migration numbers must be specified in
-  a data column `mig_sub` in `parameters`. With `subregional = "rate"`,
-  the numbers for subregional emigrants are subtracted from the
-  population balance, then redistributed back to all subregional units
-  as subregional immigration; `parameters` must contain the columns
-  `emi_sub` and `imm_sub`.
+  projection (default `subregional = FALSE`). Requires input on the
+  level of subregions (in `parameters` and `population`). Two
+  calculation methods are supported to distribute people between
+  subregions: With `subregional = "net"`, the net migration between
+  subregions is added to the population balance. Net migration numbers
+  must be specified in a data column `mig_sub` in `parameters`. With
+  `subregional = "rate"`, the numbers for subregional emigrants are
+  subtracted from the population balance, then redistributed back to all
+  subregional units as subregional immigration; `parameters` must
+  contain the columns `emi_sub` and `imm_sub`.
 
 - binational:
 
@@ -273,13 +273,13 @@ propop(
   year_first = 2025,
   year_last = 2027,
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [865ms]
+#> ✔ Processing completed in [918ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -326,13 +326,13 @@ propop(
   year_last = 2026,
   scenarios = c("reference", "high"),
   population = fso_population,
-  subregional = NULL,
+  subregional = FALSE,
   binational = TRUE
 )
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [407ms]
+#> ✔ Processing completed in [441ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

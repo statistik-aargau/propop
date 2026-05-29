@@ -334,7 +334,7 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [9.7s]
+#> ✔ Processing completed in [10s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -345,7 +345,7 @@ projection_2025 <- propop(
 #> Size of starting population: 735808
 #> Projection period: 2025-2055
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
+#> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
 #> - Scenario "reference": 893942

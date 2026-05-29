@@ -1,5 +1,12 @@
 # Changelog
 
+## propop 2.1.1
+
+- Extensive revision of vignette on projections with subregions,
+  including documentation of the new “rate” method.  
+- Bug fixed in
+  [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md).
+
 ## propop 2.1.0
 
 - [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)

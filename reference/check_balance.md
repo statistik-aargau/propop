@@ -39,7 +39,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [973ms]
+#> ✔ Processing completed in [1.1s]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -51,7 +51,7 @@ propop(
 #> Size of starting population: 735808
 #> Projection period: 2025-2027
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
+#> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
 #> - Scenario "high": 767384

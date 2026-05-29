@@ -80,7 +80,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.8s]
+#> ✔ Processing completed in [1.9s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -91,7 +91,7 @@ projection_canton_2030 <- propop(
 #> Size of starting population: 735808
 #> Projection period: 2025-2030
 #> Nationality-specific projection: "yes"
-#> Subregional migration: "yes"
+#> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 781883
@@ -181,7 +181,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [624ms]
+#> ✔ Processing completed in [662ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -192,7 +192,7 @@ projection_int <- propop(
 #> Size of starting population: 204787
 #> Projection period: 2025-2030
 #> Nationality-specific projection: "no"
-#> Subregional migration: "yes"
+#> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 250954
