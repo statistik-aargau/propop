@@ -124,16 +124,18 @@ df_population_shares <- ag_population_subregional |>
 
 ```
 
-<!-- The following example for 29-year old international males shows that the sum of  -->
+<!-- The following example for 29-year old international males shows that the sum of -->
 <!-- all five region's shares is 1. -->
 
 <!-- ```{r show-table-1, message=FALSE, echo = FALSE} -->
 <!-- # Display table -->
-<!-- df_population_shares |> -->
+<!-- check <- df_population_shares |> -->
 <!--   dplyr::mutate(share = round(share, 3)) |> -->
-<!--   dplyr::arrange(year, age, sex, nat) |>  -->
+<!--   dplyr::arrange(year, age, sex, nat) |> -->
 <!--   dplyr::filter(sex == "m" & nat == "int" & age == "29") |> -->
-<!--   dplyr::slice_head(n = 5) |>  -->
+<!--   dplyr::slice_head(n = 5)  -->
+
+<!-- check |> -->
 <!--   DT::datatable( -->
 <!--   rownames = FALSE, -->
 <!--   options = list( -->
@@ -143,6 +145,9 @@ df_population_shares <- ag_population_subregional |>
 <!--   DT::formatStyle(c("share"), -->
 <!--                   backgroundColor = DT::styleRow(c(1:5), "#96D4FF", default = "") -->
 <!--   ) -->
+
+<!-- sum(check$share) -->
+
 <!-- ``` -->
 
 Now all required data are available. We can proceed to distribute the input 
@@ -439,34 +444,7 @@ fso_parameters_sub_distr_hist |>
     backgroundColor = "#96D4FF"
   )
 ```
-\
-
-<!-- This also holds for other groups: The difference between the total migration  -->
-<!-- in the subregions and the whole canton (input parameter) is always equal to zero. -->
-
-<!-- ```{r sum-check, eval = TRUE, echo = TRUE} -->
-<!-- check_sums_subregions <- fso_parameters_sub_distr_hist |> -->
-<!--   # add up number of people in different spatial units -->
-<!--   dplyr::summarise( -->
-<!--     sum_imm_int_sub = round(sum(imm_int_n_distr, na.rm = TRUE), digits = 0), -->
-<!--     sum_imm_nat_sub = round(sum(imm_nat_n_distr, na.rm = TRUE), digits = 0), -->
-<!--     .by = c(nat, sex, age, year) -->
-<!--   ) |> -->
-<!--   # join with original input data (for the whole canton) -->
-<!--   dplyr::left_join(fso_parameters |>  -->
-<!--                      dplyr::filter(scen == "reference"), by = c("nat", "sex", "age", "year")) |> -->
-<!--   # calculate difference between immigration at the level of subregions and canton -->
-<!--   dplyr::mutate( -->
-<!--     diff_int = sum_imm_int_sub - imm_int_n, -->
-<!--     diff_nat = sum_imm_nat_sub - imm_nat_n, -->
-<!--   ) -->
-
-<!-- # All observed differences are equal to zero -->
-<!-- unique(check_sums_subregions$diff_int) -->
-<!-- unique(check_sums_subregions$diff_nat) -->
-<!-- ``` -->
-<!-- \ -->
-
+\ 
 To proceed with the projection, we rename the columns containing the distributed 
 immigration values (`imm_int_n_distr` and `imm_nat_n_distr`) to
 `imm_int_n` and `imm_nat_n`. Otherwise, `propop()` will not recognise the parameters.  
@@ -480,7 +458,6 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub_distr_hist |>
   ) |> 
   dplyr::select(-c(imm_int_n_distr, imm_nat_n_distr))
 ```
-
 
 Now everything is ready to run the projection: 
 
@@ -571,7 +548,7 @@ This procedure is repeated in each year of the projection.
 
 To illustrate the rate approach, we start with aggregated past migration records 
 (2024–2025) for five regions in the Canton of Aargau. We first use `calculate_rates()` 
-to calculate "the rate for each demographic group and year (`emi_rate_year`) and
+to calculate the rate for each demographic group and year (`emi_rate_year`) and
 the mean of these shares over time (`emi_rate`). To make it easy to follow the 
 calculation, we aggregate into 2-year age groups and only use two years. 
 
@@ -590,7 +567,7 @@ emi_rate <- calculate_rates(
   method = "mean"
 ) 
 ```
-\ 
+
 The table below shows the average emigration rate (`emi_rate`) 
 for 28- and 29-year old international men in the five spatial units (highlighted
 in different colours).
@@ -646,7 +623,7 @@ imm_share <- calculate_shares(
   age_group = 2
 ) 
 ```
-\ 
+ 
 The table below shows the result for the group of 28- and 29- year old international 
 men. It includes the number of immigrants for each 2-year age group and spatial 
 unit (`sum_imm_n`), the total number of immigrants across all spatial units 
