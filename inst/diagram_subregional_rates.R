@@ -19,7 +19,7 @@ node [shape = rectangle, style = \"filled,rounded\", fillcolor = deepskyblue, fo
 data1 [label = 'Aggregated\npast migration', shape = folder, fillcolor = gold]
 # data2 [label = 'Dataset 2', shape = folder, fillcolor = gold]
 
-calc_emi [label =  'calculate\n_rate']
+calc_emi [label =  'calculate\n_rates']
 
 data2 [label = 'emi_rate\n= emigration\nrate\n per group', shape = folder, fillcolor = gold]
 
