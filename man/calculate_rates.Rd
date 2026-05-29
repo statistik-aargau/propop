@@ -65,7 +65,7 @@ calculate_rates(
  past_migration = ag_migration_subregional,
  n_jan = n_jan,
  births = births,
- emi_n = emi_n,
+ emi_n = hist_emi_sub_n,
  spatial_unit = spatial_unit,
  method = "mean",
  year_range = c(2022:2024),

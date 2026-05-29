@@ -51,7 +51,7 @@ subregion to another subregion (which can be done with \code{calculate_rates}).
 # Calculate shares to distribute subregional immigration among spatial units
 calculate_shares(
   past_migration = ag_migration_subregional,
-  imm_n = "imm_n",
+  imm_n = hist_imm_sub_n,
   year_range = c(2022:2024),
   age_group = 10,
   binational = TRUE,
