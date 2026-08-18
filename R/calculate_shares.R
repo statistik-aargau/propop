@@ -287,7 +287,7 @@ calculate_shares <- function(
         (sum_imm_n == 0 & total_imm_n == 0) ~ 0,
         .default = imm_share
       ),
-      method = paste0("share ", year_range_string)
+      method = paste0("share ", year_range_string, " for ", !!age_group, "-year age groups")
     ) |>
     # Trim so that only unique values are included
     select(
