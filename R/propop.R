@@ -619,9 +619,9 @@ propop <- function(
     mutate(
       # calculate the annual change per demographic group
       ## total number of people
-      delta_n = round(n_dec - n_jan, 0),
+      delta_n = n_dec - n_jan,
       ## percentage
-      delta_perc = round((delta_n / n_jan) * 100, 3),
+      delta_perc = (delta_n / n_jan) * 100,
       # percentages for newborns are NAs
       delta_perc = ifelse(age == 0, NA, delta_perc),
       # percentages if `n_jan`and `n_dec` are both zero
