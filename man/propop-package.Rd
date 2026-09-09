@@ -7,7 +7,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The purpose of this package is to project the development of the population at different spatial levels (e.g., cantons, districts, municipalities) using the cohort component method and the parameters provided by the Federal Statistical Office (FSO).
+Project the development of the population at different spatial levels (e.g., cantons, districts, municipalities) using the cohort component method, broken down by 101 one-year age classes, gender, and nationality. Includes helper functions to download required population data and projection parameters as open data for Switzerland, plus tools for model evaluation against benchmarks such as population records or a base model.
 }
 \seealso{
 Useful links:
