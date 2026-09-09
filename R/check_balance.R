@@ -9,7 +9,6 @@
 #' created with `propop::propop()`.
 #'
 #' @return data frame containing summary statistics.
-#' @export
 #'
 #' @autoglobal
 #'

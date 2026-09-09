@@ -135,8 +135,6 @@
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
 #'      (only returned if  `binational = TRUE`.)}
 #'
-#' @export
-#'
 #' @autoglobal
 #'
 #' @examples

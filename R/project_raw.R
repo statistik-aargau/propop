@@ -135,8 +135,6 @@
 #'
 #' @autoglobal
 #'
-#' @export
-#'
 #' @examples
 #' # load package data
 #' data(fso_parameters)
