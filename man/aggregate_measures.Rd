@@ -60,6 +60,14 @@ across demographic groups and years. The returned statistics are particularly
 useful for comparing the model performance for different groups or different
 models.
 }
+\examples{
+\dontrun{
+# Get evaluation measures without weights
+aggregate_measures(evaluation)
+# Get evaluation measures weighted for groups
+compute_measures(evaluation, weight_groups = "age")
+}
+}
 \references{
 Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, \url{https://doi.org/10.1007/978-94-017-8990-5_6}
 
