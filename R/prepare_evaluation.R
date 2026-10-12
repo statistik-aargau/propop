@@ -42,23 +42,6 @@
 #' @return Returns a data frame with the number of people from the benchmark and
 #' from the projection. Each row contains a unique combination of year, spatial
 #' unit, and demographic group.
-#'
-#' @export
-#'
-#' @autoglobal
-#'
-#' @examples
-#' \dontrun{
-#' combined <- prepare_evaluation(
-#'   data_benchmark = output_get_population,
-#'   data_projected = output_propop
-#' )
-#' combined_grouped <- prepare_evaluation(
-#'   data_benchmark = output_get_population,
-#'   data_projected = output_propop,
-#'   age_groups = "age_groups_3"
-#' )
-#' }
 prepare_evaluation <- function(
     data_benchmark,
     n_benchmark,

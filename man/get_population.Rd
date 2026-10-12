@@ -67,17 +67,11 @@ Changes to the API interface may break this function.
 }
 \examples{
 \dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontrun{
 get_population(
   number_fso = "px-x-0102010000_101",
   year = 2020,
   year_last = 2023,
   spatial_units = "- Aargau"
 )
-get_population(
-  year = 2023,
-  spatial_units = c("- Aargau", "......0301 Aarberg")
-)
-}
 \dontshow{\}) # examplesIf}
 }

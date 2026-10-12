@@ -127,18 +127,11 @@
 #' @export
 #'
 #' @examplesIf (Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")
-#' \dontrun{
 #' one_canton <- get_parameters(
 #'   year_first = 2025,
 #'   year_last = 2055,
 #'   spatial_units = "Aargau"
 #' )
-#' two_cantons_4years <- get_parameters(
-#'   year_first = 2025,
-#'   year_last = 2028,
-#'   spatial_units = c("Aargau", "Zug")
-#' )
-#' }
 get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
                            number_fso_high = "px-x-0104020000_102",
                            number_fso_low = "px-x-0104020000_103",

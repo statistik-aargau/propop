@@ -62,14 +62,6 @@ high resolution (e.g., 101 age classes, nationality, sex).
 For more details on usage, see
 \code{vignette("evaluate", package = "propop")}.
 }
-\examples{
-\dontrun{
-# Get evaluation measures without weights
-compute_measures(combined)
-# Get evaluation measures weighted for groups
-compute_measures(combined, weight_groups = c("age", "nat"))
-}
-}
 \references{
 Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, \url{https://doi.org/10.1007/978-94-017-8990-5_6}
 
