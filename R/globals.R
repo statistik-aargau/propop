@@ -7,6 +7,13 @@ utils::globalVariables(c(
   "nat", # <advance_population>
   "sex", # <advance_population>
   "spatial_unit", # <advance_population>
+  "pe", # <aggregate_measures>
+  "ape", # <aggregate_measures>
+  "w_ape", # <aggregate_measures>
+  "n_benchmark", # <aggregate_measures>
+  "n_projected", # <aggregate_measures>
+  "n_measure", # <aggregate_measures>
+  "wmape", # <aggregate_measures>
   "int_mothers", # <calculate_newborns>
   "nat", # <calculate_newborns>
   "births_int_int", # <calculate_newborns>
@@ -112,6 +119,13 @@ utils::globalVariables(c(
   "n_dec", # <complement_projection>
   "delta_n", # <complement_projection>
   "delta_perc", # <complement_projection>
+  "n_projected", # <compute_measures>
+  "n_benchmark", # <compute_measures>
+  "error", # <compute_measures>
+  "group_tot", # <compute_measures>
+  "n_tot", # <compute_measures>
+  "ape", # <compute_measures>
+  "weight", # <compute_measures>
   "valueTexts", # <get_parameters>
   "values", # <get_parameters>
   "code", # <get_parameters>
@@ -156,6 +170,11 @@ utils::globalVariables(c(
   "Kanton", # <get_population>
   "nat", # <get_population>
   "age", # <get_population>
+  "year", # <prepare_evaluation>
+  "spatial_unit", # <prepare_evaluation>
+  "age", # <prepare_evaluation>
+  "sex", # <prepare_evaluation>
+  "nat", # <prepare_evaluation>
   "year", # <project_population>
   "age", # <project_population>
   "births", # <project_population>

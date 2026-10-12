@@ -63,3 +63,16 @@ demographic group.}
 }
 }
 
+\examples{
+\dontrun{
+combined <- prepare_evaluation(
+  data_benchmark = output_get_population,
+  data_projected = output_propop
+)
+combined_grouped <- prepare_evaluation(
+  data_benchmark = output_get_population,
+  data_projected = output_propop,
+  age_groups = "age_groups_3"
+)
+}
+}

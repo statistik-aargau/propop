@@ -11,7 +11,7 @@
 #' (e.g., age groups, nationality).
 #'
 #' @return
-#' A data frame. The data frame includes the following summary measures:
+#' #' A data frame. The data frame includes the following summary measures:
 #'
 #' * `mpe` is the mean percentage error
 #' (\bold{mpe}; or mean algebraic percentage error
@@ -50,6 +50,10 @@
 #' proportion of observations that have absolute percentage errors smaller than
 #' 5%.
 #'
+#' @export
+#'
+#' @autoglobal
+#'
 #' @references
 #' Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, [https://doi.org/10.1007/978-94-017-8990-5_6](https://doi.org/10.1007/978-94-017-8990-5_6)
 #'
@@ -61,6 +65,12 @@
 #'
 #' Wilson, T. (2016). Evaluation of alternative cohort-component models for local area population forecasts, Population Research and Policy Review, 35, 241-261, [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
 #'
+#' @examples
+#' \dontrun{
+#' # Get evaluation measures without weights
+#' aggregate_measures(evaluation)
+#' # Get evaluation measures weighted for groups
+#' compute_measures(evaluation, weight_groups = "age")
 #' }
 #' @importFrom stats median
 aggregate_measures <- function(data, weight_groups = NULL) {
