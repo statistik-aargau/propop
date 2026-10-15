@@ -24,7 +24,7 @@ library(propop)
 ```
 # Evaluate projections
 
-`propop` provides a function to **compare projections against a benchmark**. 
+'propop' provides a function to **compare projections against a benchmark**. 
 The benchmark can be the actual (recorded) population development (i.e., official 
 records in population registry) or a base model (e.g., when testing alternative 
 models or when comparing against the official FSO forecast). 
@@ -277,7 +277,7 @@ aggregate_measures(evaluation_3, weight_groups = c("age")) |>
 ## `propop` versus FSO
 
 Instead of comparing the propop projection with population records, we can also
-use the evaluation function to check how close the `propop` projection comes to
+use the evaluation function to check how close the 'propop' projection comes to
 FSO's projection from the 2025 model.
 
 ``` {r fso-population-2024, eval = FALSE, echo = TRUE}
@@ -330,7 +330,7 @@ fso_propop |>
     filter = "top",
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Comparison of projetions from FSO versus `propop`."
+      "Comparison of projetions from FSO versus 'propop'."
     )
   )
 ```

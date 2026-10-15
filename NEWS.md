@@ -18,7 +18,7 @@ uses **migration rates** rather than **net migration** (number of people).
 # propop 2.0.0
 ## Breaking changes
 - The computations of the key function `propop()` are now implemented using data frames
-and `purrr` / `dplyr` rather than base `R` matrices. This change makes the computational
+and 'purrr' / 'dplyr' rather than base 'R' matrices. This change makes the computational
 steps and intermediate results more accessible and easier to follow. Moreover, 
 the new tabular approach facilitates the integration of new features. On the 
 downside, the new approach takes approximately 25% longer to run. The data input 
@@ -55,12 +55,12 @@ helper function will stay operational.
 # propop 1.4.0
 - `propop::propop()` can now perform multiple projection scenarios in a 
 single run. 
-- New function `check_balance` to check population equation for each row in 
+- New function `check_balance()` to check population equation for each row in 
 the output of `propop::propop()` (population at the beginning of the year 
 plus components must be equal to the population at the end of the year).
-- The function `prepare_evaluation` has an additional set of age groups (0-19,
+- The function `prepare_evaluation()` has an additional set of age groups (0-19,
 20-39, 40-59, 60-79, 80 years and older). The output that is created by this 
-function can be used by `compute_measures` and `aggregate_measures` 
+function can be used by `compute_measures()` and `aggregate_measures()` 
 to evaluate projection models against a benchmark. 
 
 # propop 1.3.0
@@ -72,7 +72,7 @@ to evaluate projection models against a benchmark.
 - Projections enabled beyond 2018-2050.
 
 # propop 1.2.1
-- `get_population`: Using clearer, more intuitive name for argument to specify
+- `get_population()`: Using clearer, more intuitive name for argument to specify
 start year; less typing for users; 
 - revised function documentation
 - More detailed feedback after running propop::propop(), stating which arguments 
@@ -80,7 +80,7 @@ were used)
 
 # propop 1.2.0
 
-- Added function `calculate_shares` to distribute FSO estimates expressed as 
+- Added function `calculate_shares()` to distribute FSO estimates expressed as 
 "number of people" among sub-cantonal entitities (e.g., immigration to 
 municipalities). 
 
@@ -125,14 +125,14 @@ the settings used to run the projection.
 
 ## Development history and earlier versions
 
-The `propop` package is a successor of `staagBevProj` (not publicly available), 
-which was last updated in December 2022. `staagBevProj` was developed by 
+The 'propop' package is a successor of 'staagBevProj' (not publicly available), 
+which was last updated in December 2022. 'staagBevProj' was developed by 
 Tina Cornioley, Jan Wunder, and Niklas Haffert. As head of [Official Statistics 
 Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik), Andrea Plüss supported 
 the devlopment as well as the 
-publication of `staagBevProj` and `propop`.
+publication of 'staagBevProj' and 'propop'.
 
-`propop` was developed by Norah Efosa and Adrian Gadient 
+'propop' was developed by Norah Efosa and Adrian Gadient 
 ([Statistik Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik)). 
 The main innovations are:
 
@@ -140,8 +140,8 @@ The main innovations are:
 projection
 -	Centrally united FSO parameters and corrections / adjustments; these are now 
 gathered in a single data frame that is passed to the projection function
--	Only one function to run projections (rather than `projectPop` and 
-`projectAll`)
+-	Only one function to run projections (rather than `projectPop()` and 
+`projectAll()`)
 -	Convenience functions to directly download data and parameters from STAT-TAB
 -	Incorporation of assertions and unit tests
 -	Function to evaluate projection results 
