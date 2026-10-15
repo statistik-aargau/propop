@@ -480,7 +480,7 @@ propop(
 
 # Migration between subregions {#between-subregions}
 
-In `propop`, you may account for migration between subregions by specifying this 
+In 'propop', you may account for migration between subregions by specifying this 
 in the `propop()` argument `subregional = `. You can choose between two mathematical 
 approaches, using either  
 
@@ -498,7 +498,7 @@ The following two sections illustrate how to use the rate and net approaches.
 
 ### Preparation
 
-To use the **rate** method in `propop`, the parameter data frame must include 
+To use the **rate** method in 'propop', the parameter data frame must include 
 emigration and immigration rates:   
 
 - The **emigration rate** (`emi_sub`) is the typical proportion of a chosen
