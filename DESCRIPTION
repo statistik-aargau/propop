@@ -74,7 +74,8 @@ Imports:
     tibble,
     tidyr,
     vctrs,
-    progressr
+    progressr,
+    purrr
 Suggests: 
     constructive (>= 1.3.0),
     devtools,
@@ -82,7 +83,6 @@ Suggests:
     ggplot2,
     htmltools,
     knitr,
-    purrr,
     rmarkdown,
     stringr,
     testthat,
