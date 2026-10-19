@@ -11,7 +11,7 @@
 #' (e.g., age groups, nationality).
 #'
 #' @return
-#' #' A data frame. The data frame includes the following summary measures:
+#' A data frame. The data frame includes the following summary measures:
 #'
 #' * `mpe` is the mean percentage error
 #' (\bold{mpe}; or mean algebraic percentage error
