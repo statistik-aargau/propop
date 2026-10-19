@@ -69,12 +69,17 @@
 #' @autoglobal
 #'
 #' @examples
-#' \dontrun{
-#' # Get evaluation measures without weights
-#' compute_measures(combined)
-#' # Get evaluation measures weighted for groups
-#' compute_measures(combined, weight_groups = c("age", "nat"))
-#' }
+#'combined <- tibble::tibble(
+#'  year = 2020,
+#'  spatial_unit = "Aargau",
+#'  sex = "f",
+#'  age = c("age_00_19", "age_20_64", "age_65_"),
+#'  n_benchmark = c(50020, 17917, 53005),
+#'  n_projected = c(49691, 18519, 52395),
+#' )
+#'
+#'compute_measures(combined)
+#'
 compute_measures <- function(combined, weight_groups = NULL) {
   # Test input ----
   ## Presence of mandatory columns ----

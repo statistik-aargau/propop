@@ -66,12 +66,17 @@
 #' Wilson, T. (2016). Evaluation of alternative cohort-component models for local area population forecasts, Population Research and Policy Review, 35, 241-261, [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
 #'
 #' @examples
-#' \dontrun{
-#' # Get evaluation measures without weights
+#' evaluation <- tibble::tibble(
+#'  year = rep(2020L, 4L),
+#'  n_benchmark = c(2605, 2679, 2650),
+#'  n_projected = c(2526, 2558, 2594),
+#'  error = c(-79, -121, -56),
+#'  pe = c(-3.032629558541267, -4.516610675625234, -2.1132),
+#'  ape = c(3.03, 4.516610675625234, 2.1132075471698113),
+#' )
+#'
 #' aggregate_measures(evaluation)
-#' # Get evaluation measures weighted for groups
-#' compute_measures(evaluation, weight_groups = "age")
-#' }
+#'
 #' @importFrom stats median
 aggregate_measures <- function(data, weight_groups = NULL) {
   results <- data |>
