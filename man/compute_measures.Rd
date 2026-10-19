@@ -63,12 +63,17 @@ For more details on usage, see
 \code{vignette("evaluate", package = "propop")}.
 }
 \examples{
-\dontrun{
-# Get evaluation measures without weights
+combined <- tibble::tibble(
+ year = 2020,
+ spatial_unit = "Aargau",
+ sex = "f",
+ age = c("age_00_19", "age_20_64", "age_65_"),
+ n_benchmark = c(50020, 17917, 53005),
+ n_projected = c(49691, 18519, 52395),
+)
+
 compute_measures(combined)
-# Get evaluation measures weighted for groups
-compute_measures(combined, weight_groups = c("age", "nat"))
-}
+
 }
 \references{
 Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, \url{https://doi.org/10.1007/978-94-017-8990-5_6}

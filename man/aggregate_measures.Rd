@@ -14,7 +14,7 @@ column names to obtain evaluation criteria weighted for specific groups
 (e.g., age groups, nationality).}
 }
 \value{
-#' A data frame. The data frame includes the following summary measures:
+A data frame. The data frame includes the following summary measures:
 \itemize{
 \item \code{mpe} is the mean percentage error
 (\bold{mpe}; or mean algebraic percentage error
@@ -61,12 +61,17 @@ useful for comparing the model performance for different groups or different
 models.
 }
 \examples{
-\dontrun{
-# Get evaluation measures without weights
+evaluation <- tibble::tibble(
+ year = rep(2020L, 4L),
+ n_benchmark = c(2605, 2679, 2650),
+ n_projected = c(2526, 2558, 2594),
+ error = c(-79, -121, -56),
+ pe = c(-3.032629558541267, -4.516610675625234, -2.1132),
+ ape = c(3.03, 4.516610675625234, 2.1132075471698113),
+)
+
 aggregate_measures(evaluation)
-# Get evaluation measures weighted for groups
-compute_measures(evaluation, weight_groups = "age")
-}
+
 }
 \references{
 Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, \url{https://doi.org/10.1007/978-94-017-8990-5_6}

@@ -48,17 +48,30 @@
 #' @autoglobal
 #'
 #' @examples
-#' \dontrun{
+#' data_benchmark <- tibble::tibble(
+#'   year = 2030,
+#'   spatial_unit = "Aargau",
+#'   nat = c("ch", "ch"),
+#'   sex = c("m", "f"),
+#'   age = c(42, 42),
+#'   n = c(3551, 3655)
+#' )
+#'
+#' data_projected <- tibble::tibble(
+#'   year = 2030,
+#'   spatial_unit = "Aargau",
+#'   nat = c("ch", "ch"),
+#'   sex = c("m", "f"),
+#'   age = c(42, 42),
+#'   n = c(3474, 3536)
+#' )
+#'
 #' combined <- prepare_evaluation(
-#'   data_benchmark = output_get_population,
-#'   data_projected = output_propop
+#'   data_benchmark = data_benchmark,
+#'   n_benchmark = "n",
+#'   data_projected = data_projected,
+#'   n_projected = "n"
 #' )
-#' combined_grouped <- prepare_evaluation(
-#'   data_benchmark = output_get_population,
-#'   data_projected = output_propop,
-#'   age_groups = "age_groups_3"
-#' )
-#' }
 prepare_evaluation <- function(
     data_benchmark,
     n_benchmark,
