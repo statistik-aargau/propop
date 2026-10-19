@@ -153,19 +153,11 @@ cantons and the emigration to other cantons.
 }
 
 \examples{
-\dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontrun{
-one_canton <- get_parameters(
-  year_first = 2025,
-  year_last = 2055,
-  spatial_units = "Aargau"
-)
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 two_cantons_4years <- get_parameters(
   year_first = 2025,
   year_last = 2028,
   spatial_units = c("Aargau", "Zug")
 )
-}
 \dontshow{\}) # examplesIf}
 }

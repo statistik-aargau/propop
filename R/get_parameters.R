@@ -126,19 +126,12 @@
 #'
 #' @export
 #'
-#' @examplesIf (Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")
-#' \dontrun{
-#' one_canton <- get_parameters(
-#'   year_first = 2025,
-#'   year_last = 2055,
-#'   spatial_units = "Aargau"
-#' )
+#' @examplesIf interactive()
 #' two_cantons_4years <- get_parameters(
 #'   year_first = 2025,
 #'   year_last = 2028,
 #'   spatial_units = c("Aargau", "Zug")
 #' )
-#' }
 get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
                            number_fso_high = "px-x-0104020000_102",
                            number_fso_low = "px-x-0104020000_103",
@@ -147,6 +140,11 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
                            year_first,
                            year_last,
                            spatial_units) {
+  # Fail if internet connection is missing
+  if (!curl::has_internet()) {
+    message("No internet connection")
+    return(NULL)
+  }
   # Test input
   # convert input in years to integer, results in error if not possible
   year_first <- vctrs::vec_cast(year_first, integer())
