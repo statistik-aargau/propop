@@ -12,7 +12,7 @@ test_that("get population snapshots - 1 region 1 year", {
     spatial_units = "......4232 Geltwil"
   )
 
-  expect_snapshot(constructive::construct(get_population_snapshot))
+  expect_snapshot(dput(get_population_snapshot))
 })
 
 test_that("get population snapshots - 2 regions & 2 years", {
@@ -28,7 +28,7 @@ test_that("get population snapshots - 2 regions & 2 years", {
     spatial_units = c("......4232 Geltwil", "- Aargau")
   )
 
-  expect_snapshot(constructive::construct(get_population_snapshot2))
+  expect_snapshot(dput(get_population_snapshot2))
 })
 
 test_that("error when requesting population for current year", {

@@ -7,7 +7,7 @@
 
 # Default way to create data, contingent on STATPOP availability
 fso_population <- get_population(
-  year = 2024,
+  year = 2025,
   spatial_units = c("- Aargau")
 )
 

@@ -9,13 +9,10 @@ test_that("calculate newborns test", {
   subregional <- NULL
 
   ### Population for one spatial unit ----
-  # population_new |>
-  #   filter(year == 2025) |>
-  #   constructive::construct()
   population_new_short <- tibble::tibble(
-    year = rep(2025L, 400L),
-    scen = rep("reference", 400L),
-    spatial_unit = rep("Aargau", 400L),
+    year = 2025,
+    scen = "reference",
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 200L),
     sex = rep(rep(c("m", "f"), 2), each = 100L),
     age = rep(seq(1, 100, by = 1), 4),
@@ -739,8 +736,6 @@ test_that("calculate newborns test", {
   )
 
   ## Parameters ----
-  # parameters |>
-  #   constructive::construct()
   parameters_short <- tibble::tibble(
     year = rep(2025L, 404L),
     scen = rep("reference", 404L),
@@ -999,7 +994,7 @@ test_that("calculate newborns test", {
     subregional = TRUE
   )
 
-  expect_snapshot(constructive::construct(calculate_newborns_default))
+  expect_snapshot(dput(calculate_newborns_default))
 
   # Several subregions ----
   # snapshot of default option net
@@ -1014,7 +1009,7 @@ test_that("calculate newborns test", {
     subregional = "net"
   )
 
-  expect_snapshot(constructive::construct(calculate_newborns_net))
+  expect_snapshot(dput(calculate_newborns_net))
 
   # snapshot of default option rate
   parameters_short$emi_sub <- 0.7
@@ -1029,7 +1024,7 @@ test_that("calculate newborns test", {
     subregional = "rate"
   )
 
-  expect_snapshot(constructive::construct(calculate_newborns_rate))
+  expect_snapshot(dput(calculate_newborns_rate))
 
   expect_failure(expect_equal(
     calculate_newborns_rate |>
@@ -1064,13 +1059,10 @@ test_that("calculate newborns test only Swiss NA", {
   subregional <- NULL
 
   ### Population for one spatial unit ----
-  # population_new |>
-  #   filter(year == 2025) |>
-  #   constructive::construct()
   population_new_na <- tibble::tibble(
-    year = rep(2025L, 400L),
-    scen = rep("reference", 400L),
-    spatial_unit = rep("Aargau", 400L),
+    year = 2025L,
+    scen = "reference",
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 200L),
     sex = rep(rep(c("m", "f"), 2), each = 100L),
     age = rep(seq(1, 100, by = 1), 4),
@@ -1794,12 +1786,10 @@ test_that("calculate newborns test only Swiss NA", {
   )
 
   ## Parameters ----
-  # parameters |>
-  #   constructive::construct()
   parameters_short <- tibble::tibble(
-    year = rep(2025L, 404L),
-    scen = rep("high", 404L),
-    spatial_unit = rep("Aargau", 404L),
+    year = 2025,
+    scen = "high",
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
     age = rep(seq(0, 100, by = 1), 4),
@@ -2055,5 +2045,5 @@ test_that("calculate newborns test only Swiss NA", {
     subregional = TRUE
   )
 
-  expect_snapshot(constructive::construct(calculate_newborns_na))
+  expect_snapshot(dput(calculate_newborns_na))
 })

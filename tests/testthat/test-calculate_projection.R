@@ -13,12 +13,11 @@ test_that("calculate projection test", {
   #     population_aged,
   #     by = c("year", "spatial_unit", "nat", "sex", "age")
   #   ) |>
-  #   filter(year == 2025) |>
-  #   constructive::construct()
+  #   filter(year == 2025)
   population_and_parameters_short <- tibble::tibble(
-    year = rep(2025L, 400L),
-    scen = rep("high", 400L),
-    spatial_unit = rep("Aargau", 400L),
+    year = 2025,
+    scen = "high",
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 200L),
     sex = rep(rep(c("m", "f"), 2), each = 100L),
     age = rep(seq(1, 100, by = 1), 4),
@@ -296,7 +295,7 @@ test_that("calculate projection test", {
   population_and_parameters_short_default <- population_and_parameters_short |>
     calculate_projection(subregional = FALSE)
 
-  expect_snapshot(constructive::construct(population_and_parameters_short_default))
+  expect_snapshot(dput(population_and_parameters_short_default))
 
   # Several subregions ----
   # snapshot of default option net
@@ -305,7 +304,7 @@ test_that("calculate projection test", {
   population_and_parameters_short_net <- population_and_parameters_short |>
     calculate_projection(subregional = "net")
 
-  expect_snapshot(constructive::construct(population_and_parameters_short_net))
+  expect_snapshot(dput(population_and_parameters_short_net))
 
 
   # # snapshot of default option rate
@@ -315,7 +314,7 @@ test_that("calculate projection test", {
   population_and_parameters_short_rate <- population_and_parameters_short |>
     calculate_projection(subregional = "rate")
 
-  expect_snapshot(constructive::construct(population_and_parameters_short_rate))
+  expect_snapshot(dput(population_and_parameters_short_rate))
 
 
   expect_failure(expect_equal(
