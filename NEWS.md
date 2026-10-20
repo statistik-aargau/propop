@@ -1,3 +1,7 @@
+# propop 2.2.0
+- API queries fail gracefully if no internet connection
+- Updated examples for exported functions
+
 # propop 2.1.1
 - Extensive revision of vignette on projections with subregions, including
 documentation of the new "rate" method.  
