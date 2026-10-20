@@ -12,7 +12,7 @@ test_that("get_parameters snapshots - 1 region 2026-2050", {
     year_last = 2028,
     spatial_units = "Aargau"
   )
-  expect_snapshot(constructive::construct(one_snapshot))
+  expect_snapshot(dput(one_snapshot))
 })
 
 test_that("get_parameters snapshots - 2 regions 2027-2028", {
@@ -29,5 +29,5 @@ test_that("get_parameters snapshots - 2 regions 2027-2028", {
     year_last = 2039,
     spatial_units = c("Aargau", "Zug")
   )
-  expect_snapshot(constructive::construct(two_snapshot))
+  expect_snapshot(dput(two_snapshot))
 })

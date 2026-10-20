@@ -5,13 +5,9 @@ test_that("compute_measures snapshots", {
 
   # Prepare data ----
   # Based on data created in prepare_measures
-  # nolint start
-  # combined_snapshot |>
-  #   constructive::construct()
-  # nolint end
   combined <- tibble::tibble(
-    year = rep(2020L, 404L),
-    spatial_unit = rep("Aargau", 404L),
+    year = 2020,
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
     age = rep(seq(0, 100, by = 1), 4),
@@ -80,14 +76,9 @@ test_that("compute_measures snapshots", {
   )
 
   # # Based on data created in prepare_measures
-  # nolint start
-  # combined_grouped_snapshot |>
-  #   constructive::construct()
-  # nolint end
-
   combined_grouped <- tibble::tibble(
-    year = rep(2020L, 12L),
-    spatial_unit = rep("Aargau", 12L),
+    year = 2020,
+    spatial_unit = "Aargau",
     age = rep(c("age_00_19", "age_20_64", "age_65_"), each = 4L),
     sex = rep(rep(c("f", "m"), 3), each = 2L),
     nat = rep(c("ch", "int"), 6),
@@ -97,14 +88,14 @@ test_that("compute_measures snapshots", {
 
   # Tests ----
   snapshot1 <- compute_measures(combined)
-  expect_snapshot(constructive::construct(snapshot1))
+  expect_snapshot(dput(snapshot1))
 
   snapshot2 <- compute_measures(combined, weight_groups = c("age", "nat"))
-  expect_snapshot(constructive::construct(snapshot2))
+  expect_snapshot(dput(snapshot2))
 
   snapshot3 <- compute_measures(combined_grouped)
-  expect_snapshot(constructive::construct(snapshot3))
+  expect_snapshot(dput(snapshot3))
 
   snapshot4 <- compute_measures(combined_grouped, weight_groups = c("age", "nat"))
-  expect_snapshot(constructive::construct(snapshot4))
+  expect_snapshot(dput(snapshot4))
 })
