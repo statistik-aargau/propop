@@ -34,18 +34,18 @@
 #'
 #' @examples
 #' # Compute mean emigration rate
-#'calculate_rates(
-#'  past_migration = ag_migration_subregional,
-#'  n_jan = n_jan,
-#'  births = births,
-#'  emi_n = hist_emi_sub_n,
-#'  spatial_unit = spatial_unit,
-#'  method = "mean",
-#'  year_range = c(2022:2024),
-#'  age_group = 5,
-#'  binational = TRUE,
-#'  two_sex = TRUE
-#')
+#' calculate_rates(
+#'   past_migration = ag_migration_subregional,
+#'   n_jan = n_jan,
+#'   births = births,
+#'   emi_n = hist_emi_sub_n,
+#'   spatial_unit = spatial_unit,
+#'   method = "mean",
+#'   year_range = c(2022:2024),
+#'   age_group = 5,
+#'   binational = TRUE,
+#'   two_sex = TRUE
+#' )
 
 calculate_rates <- function(
     past_migration,
@@ -280,13 +280,13 @@ calculate_rates <- function(
   if (method == "mean") {
     df_rate_mean <- df_rate |>
       mutate(
-        .by = c(cols_summarize),
+        .by = all_of(cols_summarize),
         emi_rate = mean(emi_rate_year, na.rm = TRUE)
       )
   } else if (method == "median") {
     df_rate_mean <- df_rate |>
       mutate(
-        .by = c(cols_summarize),
+        .by = all_of(cols_summarize),
         emi_rate = median(emi_rate_year, na.rm = TRUE)
       )
   }
