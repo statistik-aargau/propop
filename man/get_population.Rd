@@ -66,7 +66,7 @@ help: \code{data('stattab_pop_snap')}.
 Changes to the API interface may break this function.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 get_population(
   year = 2025,
   spatial_units = c("- Aargau", "......0301 Aarberg")

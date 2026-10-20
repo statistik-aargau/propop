@@ -153,7 +153,7 @@ cantons and the emigration to other cantons.
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 two_cantons_4years <- get_parameters(
   year_first = 2025,
   year_last = 2028,
