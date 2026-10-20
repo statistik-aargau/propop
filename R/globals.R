@@ -100,25 +100,6 @@ utils::globalVariables(c(
   "acq_n", # <check_balance>
   "mig_sub", # <check_balance>
   "n_dec", # <check_balance>
-  "mig_sub", # <complement_projection>
-  "age", # <complement_projection>
-  "n_jan", # <complement_projection>
-  "year", # <complement_projection>
-  "scen", # <complement_projection>
-  "nat", # <complement_projection>
-  "sex", # <complement_projection>
-  "spatial_unit", # <complement_projection>
-  "new_age_group_100", # <complement_projection>
-  "acq", # <complement_projection>
-  "births", # <complement_projection>
-  "mor", # <complement_projection>
-  "emi_int", # <complement_projection>
-  "emi_nat", # <complement_projection>
-  "imm_int", # <complement_projection>
-  "imm_nat", # <complement_projection>
-  "n_dec", # <complement_projection>
-  "delta_n", # <complement_projection>
-  "delta_perc", # <complement_projection>
   "n_projected", # <compute_measures>
   "n_benchmark", # <compute_measures>
   "error", # <compute_measures>
@@ -190,12 +171,6 @@ utils::globalVariables(c(
   "imm_nat_n", # <project_population>
   "acq_n", # <project_population>
   "n_dec", # <project_population>
-  "year", # <project_raw>
-  "age", # <project_raw>
-  "parameter", # <project_raw>
-  "sex", # <project_raw>
-  "nat", # <project_raw>
-  "value", # <project_raw>
   "scen", # <propop>
   "nat", # <propop>
   "sex", # <propop>
@@ -206,14 +181,5 @@ utils::globalVariables(c(
   "delta_n", # <propop>
   "delta_perc", # <propop>
   "total", # <propop>
-  "nat", # <propop_legacy>
-  "sex", # <propop_legacy>
-  "year", # <propop_legacy>
-  "age", # <propop_legacy>
-  "scen", # <propop_legacy>
-  "n_dec", # <propop_legacy>
-  "total", # <propop_legacy>
-  "imm_int_n", # <propop_legacy>
-  "imm_nat_n", # <propop_legacy>
   NULL
 ))
