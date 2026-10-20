@@ -66,8 +66,7 @@ help: \code{data('stattab_pop_snap')}.
 Changes to the API interface may break this function.
 }
 \examples{
-\dontshow{if ((Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 get_population(
   number_fso = "px-x-0102010000_101",
   year = 2020,

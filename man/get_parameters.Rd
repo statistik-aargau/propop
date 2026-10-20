@@ -160,6 +160,7 @@ one_canton <- get_parameters(
   year_last = 2055,
   spatial_units = "Aargau"
 )
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 two_cantons_4years <- get_parameters(
   year_first = 2025,
   year_last = 2028,
