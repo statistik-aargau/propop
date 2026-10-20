@@ -176,7 +176,11 @@ propop <- function(
     binational = TRUE,
     spatial_unit = "spatial_unit") {
   ## Progress feedback ----
+  if (is.null(scenarios)){
   length_scen <- length(parameters |> distinct(scen) |> pull())
+  } else {
+    length_scen <- length(scenarios)
+  }
 
   cli::cli_h1("Running projection for {.val {length_scen}} scenario(s).")
 
