@@ -6,8 +6,10 @@ output:
     toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Evaluate projections}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -35,55 +37,47 @@ demographic groups, spatial units).
 
 To run the evaluation function, we need some benchmark data and the 
 results from the projection. An interesting possibility is to compare 
-real, observed data to predicted data. Because FSO's projection scenarios have
-just been published, there aren't any observed data available yet. 
+real, observed data to predicted data. 
 
-This example therefore uses older data and parameters from the previous FSO 
-model. That is, we run a model with the population from 2018 as starting 
-population and the **population records** from 2019-2022 as benchmark data.
+That is, we run a model with the population from 2023 as starting 
+population and the **population records** from 2023-2025 as benchmark data.
 
 
 ``` {r get-benchmark, message = FALSE, eval = FALSE}
 data_benchmark <- get_population(
   number_fso = "px-x-0102010000_101",
-  year = 2018,
-  year_last = 2022,
+  year = 2024,
+  year_last = 2025,
   spatial_units = "- Aargau"
 )
 ```
 
-Get the parameters for the projection (note that these parameters aren't available
-anymore; i.e., this code will fail from 2025 onwards if you try it for the years 
-2019-2050):
+Get the parameters for the projection:
 
 ``` {r get-parameters, message = FALSE, warning=FALSE, results='hide', eval = FALSE}
 data_parameters <- get_parameters(
-  year_first = 2019,
-  year_last = 2050,
+  year_first = 2024,
+  year_last = 2030,
   spatial_units = "Aargau"
-)
+) |> 
+  dplyr::filter(scen == "reference")
 ```
 
-Run the population projection for 2019-2022:
+Run the population projection for 2023-2025:
 
 ``` {r project-canton, eval = FALSE}
 data_projected <- propop(
   parameters = data_parameters,
-  year_first = 2019,
-  year_last = 2050,
+  year_first = 2025,
+  year_last = 2030,
   scenarios = "reference",
-  age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
-  share_born_female = 100 / 205,
-  # population records from 2018 as starting point
+  # population records from 2024 as starting point
   population = data_benchmark |>
-    dplyr::filter(year == 2018),
+    dplyr::filter(year == 2024),
   subregional = FALSE,
   binational = TRUE
 )
 ```
-
 
 ``` {r save-data, message = FALSE, echo=FALSE, eval = FALSE}
 # Save data once
@@ -94,9 +88,9 @@ save(data_projected, file = "../vignettes/evaluate_data_projected.rda")
 
 ``` {r load-data, message = FALSE, echo=FALSE, eval = TRUE}
 # Get data when building vignette
-load(file = "evaluate_data_benchmark.rda")
-load(file = "evaluate_data_parameters.rda")
-load(file = "evaluate_data_projected.rda")
+load(file = "../vignettes/evaluate_data_benchmark.rda")
+load(file = "../vignettes/evaluate_data_parameters.rda")
+load(file = "../vignettes/evaluate_data_projected.rda")
 ```
 
 ## Evaluate 1-year age classes
@@ -106,8 +100,7 @@ load(file = "evaluate_data_projected.rda")
 Let's first compare the projected population growth against the recorded population
 development (= benchmark) using one-year age classes (default option). Make sure
 to provide matching data frames, especially in terms of the year ranges and spatial 
-units. To remove the starting population (2018) from the projection results, you 
-could also use `drop_start_year = TRUE`. 
+units.
 
 As a result of `prepare_evaluation()`, you get the recorded (`n_bench`) and 
 projected (`n_proj`) population for each demographic group and year as data frame columns next to each
@@ -117,9 +110,9 @@ other:
 # Combine and pre-process the data
 combined <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
   n_benchmark = "n",
-  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  data_projected = data_projected |> dplyr::filter(year > 2024 & year <= 2025),
   n_projected = "n_dec"
 )
 
@@ -189,9 +182,9 @@ using the option `age_groups = "age_groups_3"`.
 # Combine and pre-process the data
 combined_grouped <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
   n_benchmark = "n",
-  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  data_projected = data_projected |> dplyr::filter(year > 2024 & year <= 2025),
   age_groups = "age_groups_3",
   n_projected = "n_dec"
 )
@@ -212,7 +205,7 @@ evaluation_2 |>
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with three age classes for the
-      canton of Aargau 2019-2022; only one demographic group is displayed."
+      canton of Aargau 2024-2025; only one demographic group is displayed."
     )
   )
 ```
@@ -253,7 +246,7 @@ weighted by the total number of people per group (`w_ape`).
 evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age"))
 
 evaluation_3 |>
-  dplyr::filter(year == 2019 & ape > .34 & ape < .39) |>
+  dplyr::filter(year == 2025 & ape > 0.34 & ape < 0.39) |>
   dplyr::mutate(across(pe:w_ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     options = list(dom = "t"),
@@ -281,26 +274,38 @@ aggregate_measures(evaluation_3, weight_groups = c("age")) |>
   DT::datatable(options = list(dom = "t"))
 ```
 
-
-
 ## `propop` versus FSO
 
 Instead of comparing the propop projection with population records, we can also
 use the evaluation function to check how close the `propop` projection comes to
 FSO's projection from the 2025 model.
 
+``` {r fso-population-2024, eval = FALSE, echo = TRUE}
+fso_population_2024 <- get_population(
+  number_fso = "px-x-0102010000_101",
+  year = 2024,
+  spatial_units = "- Aargau"
+)
+```
+
+``` {r save-data2, message = FALSE, echo=FALSE, eval = FALSE}
+# Save data once
+save(fso_population_2024, file = "../vignettes/fso_population_2024.rda")
+```
+
+``` {r load-data2, message = FALSE, echo=FALSE, eval = TRUE}
+# Get data when building vignette
+load(file = "../vignettes/fso_population_2024.rda")
+```
+
 ``` {r project-canton-2025}
 projection_2025 <- propop(
-  parameters = fso_parameters,
+  parameters = fso_parameters |> 
+    dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
-  scenarios = "reference",
-  age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
-  share_born_female = 100 / 205,
-  # population records from 2018 as starting point
-  population = fso_population,
+  # population records from 2025 as starting point
+  population = fso_population_2024,
   subregional = FALSE,
   binational = TRUE
 )
@@ -309,11 +314,11 @@ projection_2025 <- propop(
 ``` {r fso-comparison}
 fso_propop <- prepare_evaluation(
   data_benchmark = fso_parameters |>
-    dplyr::filter(scen == "reference" & year > 2023) |>
+    dplyr::filter(scen == "reference" & year >= 2025) |>
     dplyr::mutate(n = fso_projection_n),
   n_benchmark = "n",
   data_projected = projection_2025 |>
-    dplyr::filter(year > 2023),
+    dplyr::filter(scen == "reference" & year >= 2025),
   age_groups = "age_groups_3",
   n_projected = "n_dec"
 ) |>
