@@ -1,7 +1,8 @@
-# propop 2.2.0
+# propop 2.1.2
 
-- Removed deprecated functions
-- Updated tests and package data
+- Removed deprecated functions.
+- Updated tests, examples and package data.
+- Refined definition for the `birthrate` parameter.
 
 # propop 2.1.1
 - Extensive revision of vignette on projections with subregions, including
