@@ -68,9 +68,7 @@ Imports:
     cli,
     curl,
     dplyr,
-    Matrix,
     stringi,
-    tibble,
     tidyr,
     vctrs,
     progressr
@@ -79,6 +77,7 @@ Suggests:
     DT,
     ggplot2,
     htmltools,
+    tibble,
     knitr,
     purrr,
     rmarkdown,
