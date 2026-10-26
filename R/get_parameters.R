@@ -500,7 +500,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     # change factor levels
     dplyr::mutate(
-      fso_parameter = dplyr::case_match(
+      fso_parameter = dplyr::recode_values(
         fso_parameter,
         stringi::stri_unescape_unicode(
           "Bev\\u00f6lkerungsstand am 1. Januar"
@@ -513,7 +513,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
         "Interkantonale Abwanderungen" ~ "emi_nat_n",
         "Interkantonale Zuwanderungen" ~ "imm_nat_n"
       ),
-      nat = dplyr::case_match(
+      nat = dplyr::recode_values(
         nat,
         "Schweiz" ~ "ch",
         "Ausland" ~ "int"
@@ -686,13 +686,13 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     # change factor levels
     dplyr::mutate(
-      scen = dplyr::case_match(
+      scen = dplyr::recode_values(
         scen,
         "Referenzszenario AR-00-2025" ~ "reference",
         "'hohes' Szenario BR-00-2025" ~ "high",
         "'tiefes' Szenario CR-00-2025" ~ "low"
       ),
-      nat = dplyr::case_match(
+      nat = dplyr::recode_values(
         nat,
         "Schweiz" ~ "ch",
         "Ausland" ~ "int"
@@ -702,7 +702,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
         sex == "Frau" ~ "f"
       ),
       age = as.numeric(stringr::str_extract(age, "\\d+")),
-      fso_parameter = dplyr::case_match(
+      fso_parameter = dplyr::recode_values(
         fso_parameter,
         "Prospektive Sterbewahrscheinlichkeiten" ~ "mor",
         "Auswanderungsziffern" ~ "emi_int", # used to be emi
@@ -863,7 +863,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     ) |>
     # change factor levels
     dplyr::mutate(
-      scen = dplyr::case_match(
+      scen = dplyr::recode_values(
         scen,
         "Referenzszenario AR-00-2025" ~ "reference",
         "'hohes' Szenario BR-00-2025" ~ "high",

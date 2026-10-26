@@ -3,9 +3,6 @@ options(cli.default_handler = function(...) { })
 # Simple snapshot test
 test_that("Simple propop test", {
   # Input data ----
-  # fso_parameters |>
-  #   dplyr::filter(year < 2026 & scen == "reference") |>
-  #   constructive::construct()
   parameters_short_1r <- tibble::tibble(
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -357,8 +354,6 @@ test_that("Simple propop test", {
   )
 
   ## FSO population ----
-  # fso_population |>
-  #   constructive::construct()
   population_short_1r <- tibble::tibble(
     year = rep(2023, 404L),
     spatial_unit = rep("Aargau", 404L),
@@ -414,21 +409,21 @@ test_that("Simple propop test", {
     spatial_unit = "spatial_unit"
   )
 
-  expect_snapshot(constructive::construct(propop_default))
+  expect_snapshot(dput(propop_default))
 })
 
 # Ensure that N_high > N_reference > N_low
 test_that("N_totals of scenarios are ordered plausibly", {
   n_ordered <- propop(
     parameters = fso_parameters,
-    year_first = 2025,
-    year_last = 2025,
+    year_first = 2026,
+    year_last = 2026,
     population = fso_population,
     subregional = FALSE,
     binational = TRUE
   ) |>
     # Get end total per scenario
-    filter(year == 2025) |>
+    filter(year == max(year)) |>
     summarise(total = sum(n_dec), .by = "scen")
 
   n_high <- n_ordered |>
@@ -453,10 +448,6 @@ test_that("tests propop: 1 region vs. 5 regions", {
   skip_on_ci()
 
   ## FSO parameters ----
-  # fso_parameters |>
-  #   dplyr::filter(year == 2025 & scen == "reference") |>
-  #   constructive::construct()
-
   parameters_short_1r <- tibble::tibble(
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
@@ -808,8 +799,6 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   ## FSO population ----
-  # fso_population |>
-  #   constructive::construct()
   population_short_1r <- tibble::tibble(
     year = rep(2023, 404L),
     spatial_unit = rep("Aargau", 404L),
@@ -876,7 +865,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # Run snapshot 1 region ----
-  expect_snapshot(constructive::construct(output_propop_1r))
+  expect_snapshot(dput(output_propop_1r))
 
 
 
@@ -902,8 +891,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   #   # divide the size of parameters with numbers by the number of regions (=5),
   #   # otherwise the multiplication of lines inflates the size of the population
   #   dplyr::mutate_at(dplyr::vars(imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n), ~ ./5) |>
-  #   dplyr::select(-subregion) |>
-  # constructive::construct()
+  #   dplyr::select(-subregion)
 
   parameters_short_5r <- tibble::tibble(
     nat = rep(c("ch", "int"), each = 1010L),
@@ -1341,7 +1329,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   #   dplyr::mutate(spatial_unit = rep(1:5, times = nrow(fso_population))) |>
   #   dplyr::mutate(
   #     # Create fictitious n
-  #     n = dplyr::case_match(
+  #     n = dplyr::recode_values(
   #       spatial_unit,
   #       1 ~ round(n_tot * 0.3),
   #       2 ~ round(n_tot * 0.25),
@@ -1358,15 +1346,14 @@ test_that("tests propop: 1 region vs. 5 regions", {
   #   dplyr::mutate(sum = sum(n, na.rm = TRUE), .by=c(year,nat,sex,age)) |>
   #   ## compute region 5
   #   dplyr::mutate(
-  #     n = dplyr::case_match(
+  #     n = dplyr::recode_values(
   #       spatial_unit,
   #       5 ~ (n_tot - sum),
   #       .default = n
   #     )) |>
   #   dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
   #   dplyr::select(-n_tot, -sum) |>
-  #   # dplyr::filter(age < 51) |>
-  #   constructive::construct()
+  #   # dplyr::filter(age < 51)
 
   population_short_5r <- tibble::tibble(
     year = rep(2023, 2020L),
@@ -1532,7 +1519,7 @@ test_that("tests propop: 1 region vs. 5 regions", {
   )
 
   # run snapshot 5 subregions ----
-  expect_snapshot(constructive::construct(output_propop_5r))
+  expect_snapshot(dput(output_propop_5r))
 
 
   # run propop 5 regions without subregional migration ----
@@ -1700,7 +1687,7 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
       share_born_female = 100 / 205,
       population = fso_population |>
         # replace factor level
-        dplyr::mutate(nat = case_match(
+        dplyr::mutate(nat = recode_values(
           nat,
           "ch" ~ "swiss",
           .default = nat

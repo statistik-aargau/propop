@@ -275,7 +275,7 @@ get_population <- function(number_fso = "px-x-0102010000_101",
     # change factor levels
     dplyr::mutate(
       Kanton = stringr::str_remove_all(Kanton, "- "),
-      nat = dplyr::case_match(
+      nat = dplyr::recode_values(
         nat,
         "Schweiz" ~ "ch",
         "Ausland" ~ "int"

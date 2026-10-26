@@ -2,11 +2,9 @@ test_that("advance population test", {
   # Input data ----
   ## One spatial unit ----
   ### FSO population for one spatial unit ----
-  # population_prev |>
-  #   constructive::construct()
   population_prev_short <- tibble::tibble(
-    year = rep(2023L, 404L),
-    spatial_unit = rep("Aargau", 404L),
+    year = 2024,
+    spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),
     age = rep(seq(0, 100, by = 1), 4),
@@ -47,7 +45,7 @@ test_that("advance population test", {
   population_prev_short_default <- population_prev_short |>
     advance_population()
 
-  expect_snapshot(constructive::construct(population_prev_short_default))
+  expect_snapshot(dput(population_prev_short_default))
 
   # age should not exceed 100 and not go below 0
   expect_equal(nrow(

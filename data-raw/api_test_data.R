@@ -1,3 +1,8 @@
+# Fail if internet connection is missing
+if (!curl::has_internet()) {
+  message("No internet connection")
+  return(NULL)
+}
 # px-x-0104020000_101
 stattab_101_snap <- BFS::bfs_get_metadata(
   number_bfs = "px-x-0104020000_101"
