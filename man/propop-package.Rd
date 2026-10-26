@@ -3,7 +3,7 @@
 \docType{package}
 \name{propop-package}
 \alias{propop-package}
-\title{propop: Project Population Growth in Switzerland using the Cohort Component Method}
+\title{propop: Project Population Growth in Switzerland Using the Cohort Component Method}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
