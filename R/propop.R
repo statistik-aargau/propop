@@ -281,6 +281,13 @@ propop <- function(
       ") are available in `parameters`."
     )
   )
+  # First projected year must be larger than year in population data
+  assertthat::assert_that(
+    (unique(population$year) < year_first),
+    msg = paste0(
+      "`year_first` must be at least one year ahead of the starting population."
+    )
+  )
 
   ## Nationality ----
   assertthat::assert_that(isTRUE(binational) | isFALSE(binational),
