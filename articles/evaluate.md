@@ -23,8 +23,8 @@ To run the evaluation function, we need some benchmark data and the
 results from the projection. An interesting possibility is to compare
 real, observed data to predicted data.
 
-That is, we run a model with the population from 2023 as starting
-population and the **population records** from 2023-2025 as benchmark
+That is, we run a model with the population from 2024 as starting
+population and the **population records** from 2024-2025 as benchmark
 data.
 
 ``` r
@@ -330,7 +330,7 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [3.3s]
+#> ✔ Processing completed in [3.4s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

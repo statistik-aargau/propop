@@ -46,7 +46,7 @@ Here’s an example of how to get the population for the canton of Aargau:
 library(propop)
 ag_population <- get_population(
   number_fso = "px-x-0102010000_101",
-  year = 2023,
+  year = 2025,
   spatial_units = "- Aargau"
 )
 ```
@@ -57,8 +57,8 @@ in the FSO tables; see comment above):
 ``` r
 
 ag_parameters <- get_parameters(
-  year = 2025,
-  year_last = 2026,
+  year = 2026,
+  year_last = 2027,
   spatial_units = "Aargau"
 )
 ```
@@ -73,8 +73,8 @@ ag_parameters_ref <- ag_parameters |>
 
 propop(
   parameters = ag_parameters_ref,
-  year = 2025,
-  year_last = 2026,
+  year = 2026,
+  year_last = 2027,
   age_groups = 101,
   fert_first = 16,
   fert_last = 50,

@@ -27,11 +27,12 @@ input:
 - a data frame with the **starting population**, that is, the most
   up-to-date number of people for each demographic group before the
   first projection year; to illustrate, the example population data in
-  `propop` are from 31. December 2023.
+  `propop` are from 31. December 2025.
 
 - a data frame containing model **parameters**, that is, information
   about how key demographic variables such as mortality are expected to
-  develop in the future; these are available for 2025-2055.
+  develop in the future; the example contains data for the period
+  2026-2055.
 
 - some global arguments which do not change over time or across
   demographic groups (e.g., proportion of female to male newborns).
@@ -54,9 +55,9 @@ Aargau from 2023 and the FSO parameters from the [population development
 scenarios
 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html).
 Using these resources, we can project the population for the canton as a
-whole for 1-year age groups for the period 2025-2055.
+whole for 1-year age groups for the period 2026-2055.
 
-The start and end of women’s fertile period, the proportion of babies
+The start and end of female’s fertile period, the proportion of babies
 born as female, and the share of babies born by mothers who are not
 Swiss are defined in
 [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md).
@@ -71,7 +72,7 @@ returns a projection for all scenarios available in `parameters`.
 projection_canton_2030 <- propop(
   parameters = fso_parameters,
   scenarios = "reference",
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2030,
   population = fso_population,
   subregional = FALSE,
@@ -80,7 +81,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.8s]
+#> ✔ Processing completed in [1.6s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -89,12 +90,12 @@ projection_canton_2030 <- propop(
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
-#> Projection period: 2025-2030
+#> Projection period: 2026-2030
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 2100192
+#> - Scenario "reference": 781837
 #> ════════════════════════════════════════════════════════════════════════════════
 
 projection_canton_2030 |>
@@ -167,7 +168,7 @@ you need to set `binational = FALSE`.
 projection_int <- propop(
   parameters = fso_parameters_int,
   scenarios = "reference",
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2030,
   population = fso_population_int,
   subregional = FALSE,
@@ -176,7 +177,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [619ms]
+#> ✔ Processing completed in [554ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -185,12 +186,12 @@ projection_int <- propop(
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
 #> Size of starting population: 209284
-#> Projection period: 2025-2030
+#> Projection period: 2026-2030
 #> Nationality-specific projection: "no"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 605712
+#> - Scenario "reference": 247945
 #> ════════════════════════════════════════════════════════════════════════════════
 
 projection_int |>
