@@ -65,7 +65,8 @@ propop(
 
   - `age`, numeric, typically ranging from 0 to 100 (incl. \>100).
 
-  - `birthrate`, numeric, number of births per mother
+  - `birthrate`, numeric, number of birth per mother by age, nationality
+    and year.
 
   - `int_mothers`, numeric, proportion of children with Swiss
     nationality born to non-Swiss mothers. Required if binational =
@@ -279,7 +280,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [638ms]
+#> ✔ Processing completed in [866ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -327,7 +328,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [296ms]
+#> ✔ Processing completed in [397ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

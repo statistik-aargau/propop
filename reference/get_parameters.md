@@ -140,8 +140,8 @@ The following parameters are included in the returned data frame:
 - `spatial_unit`: character, indicating the user requested spatial
   unit(s).
 
-- `birthrate`: numeric, total number of live human births per 1,000
-  inhabitants. (formerly `birth_rate`).
+- `birthrate`: numeric, number of birth per mother by age, nationality
+  and year. (formerly `birth_rate`).
 
 - `int_mothers`: numeric, proportion of children with Swiss nationality
   born to non-Swiss mothers (formerly `births_int_ch`).
