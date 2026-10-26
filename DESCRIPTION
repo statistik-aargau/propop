@@ -1,6 +1,6 @@
 Package: propop
 Title: Project Population Growth in Switzerland Using the Cohort Component Method
-Version: 2.1.2
+Version: 2.2.0
 Authors@R: c(
     person(
       "Norah", "Efosa", , "norah.efosa@ag.ch", 
