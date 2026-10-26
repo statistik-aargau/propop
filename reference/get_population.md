@@ -94,18 +94,10 @@ in the returned data frame:
 ## Examples
 
 ``` r
-if (FALSE) { # (Sys.getenv("RUN_EXPENSIVE_TESTS") == "true")
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 get_population(
-  number_fso = "px-x-0102010000_101",
-  year = 2020,
-  year_last = 2023,
-  spatial_units = "- Aargau"
-)
-get_population(
-  year = 2023,
+  year = 2025,
   spatial_units = c("- Aargau", "......0301 Aarberg")
 )
-} # }
 }
 ```

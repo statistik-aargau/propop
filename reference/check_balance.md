@@ -39,24 +39,24 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [958ms]
+#> ✔ Processing completed in [948ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high", "low", and "reference"
-#> Year of starting population: 2024
+#> Year of starting population: 2025
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 735808
+#> Size of starting population: 743768
 #> Projection period: 2025-2027
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
-#> - Scenario "high": 767384
-#> - Scenario "low": 751337
-#> - Scenario "reference": 759508
+#> - Scenario "high": 2189567
+#> - Scenario "low": 2172122
+#> - Scenario "reference": 2181209
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
@@ -65,6 +65,6 @@ propop(
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Result of population equation components check ──────────────────────────────
-#> ℹ Total rows checked: 3636
+#> ℹ Total rows checked: 2424
 #> ✔ Check passed: Equations in all rows add up and there are no missing values.
 ```

@@ -1,5 +1,10 @@
 # Changelog
 
+## propop 2.2.0
+
+- Removed deprecated functions
+- Updated tests and package data
+
 ## propop 2.1.1
 
 - Extensive revision of vignette on projections with subregions,
@@ -51,24 +56,20 @@
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   and helper functions, as well as for comparing the output of
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-  and
-  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md).
-  The comparison is sensitive to differences larger than three people in
-  total by year 2055 (using data for the Canton of Aargau).
+  and `propop_legacy()`. The comparison is sensitive to differences
+  larger than three people in total by year 2055 (using data for the
+  Canton of Aargau).
 
 ### Deprecated
 
 - The old function
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-  was renamed to
-  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md)
-  and was deprecated together with `complement_projection()`,
-  `create_transition_matrix()`, `create_birth_matrix()`,
-  `create_fertility_matrix()`, `create_mortality_matrix()`,
-  `create_empty_vector()` and
-  [`project_raw()`](https://statistik-aargau.github.io/propop/reference/project_raw.md).
-  [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md)
-  and associated helper function will stay operational.
+  was renamed to `propop_legacy()` and was deprecated together with
+  `complement_projection()`, `create_transition_matrix()`,
+  `create_birth_matrix()`, `create_fertility_matrix()`,
+  `create_mortality_matrix()`, `create_empty_vector()` and
+  `project_raw()`. `propop_legacy()` and associated helper function will
+  stay operational.
 
 ## propop 1.4.1
 

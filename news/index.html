@@ -53,6 +53,11 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.0" id="propop-220">propop 2.2.0<a class="anchor" aria-label="anchor" href="#propop-220"></a></h2>
+<ul><li>Removed deprecated functions</li>
+<li>Updated tests and package data</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.1" id="propop-211">propop 2.1.1<a class="anchor" aria-label="anchor" href="#propop-211"></a></h2>
 <ul><li>Extensive revision of vignette on projections with subregions, including documentation of the new “rate” method.<br></li>
 <li>Bug fixed in <code><a href="../reference/calculate_shares.html">calculate_shares()</a></code>.</li>
@@ -73,11 +78,11 @@
 <li><p>Projection output: The components now include the suffix <code>_n</code>, which more clearly<br>
 distinguishes <em>input parameters</em> (e.g. <code>emi_int</code>) from <em>number of people</em> (e.g. <code>emi_nat_n</code>).</p></li>
 <li><p>New helper functions for <code><a href="../reference/propop.html">propop()</a></code>: <code>project_population()</code> is a wrapper function; <code>advance_population()</code> ages the population by one year; <code>calculate_projection()</code> advances the cohort to the next year; <code>calculate_newborns()</code> computes births.</p></li>
-<li><p>New tests have been added for <code><a href="../reference/propop.html">propop()</a></code> and helper functions, as well as for comparing the output of <code><a href="../reference/propop.html">propop()</a></code> and <code><a href="../reference/propop_legacy.html">propop_legacy()</a></code>. The comparison is sensitive to differences larger than three people in total by year 2055 (using data for the Canton of Aargau).</p></li>
+<li><p>New tests have been added for <code><a href="../reference/propop.html">propop()</a></code> and helper functions, as well as for comparing the output of <code><a href="../reference/propop.html">propop()</a></code> and <code>propop_legacy()</code>. The comparison is sensitive to differences larger than three people in total by year 2055 (using data for the Canton of Aargau).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-2-0-0">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-2-0-0"></a></h3>
-<ul><li>The old function <code><a href="../reference/propop.html">propop()</a></code> was renamed to <code><a href="../reference/propop_legacy.html">propop_legacy()</a></code> and was deprecated together with <code>complement_projection()</code>, <code>create_transition_matrix()</code>, <code>create_birth_matrix()</code>, <code>create_fertility_matrix()</code>, <code>create_mortality_matrix()</code>, <code>create_empty_vector()</code> and <code><a href="../reference/project_raw.html">project_raw()</a></code>. <code><a href="../reference/propop_legacy.html">propop_legacy()</a></code> and associated helper function will stay operational.</li>
+<ul><li>The old function <code><a href="../reference/propop.html">propop()</a></code> was renamed to <code>propop_legacy()</code> and was deprecated together with <code>complement_projection()</code>, <code>create_transition_matrix()</code>, <code>create_birth_matrix()</code>, <code>create_fertility_matrix()</code>, <code>create_mortality_matrix()</code>, <code>create_empty_vector()</code> and <code>project_raw()</code>. <code>propop_legacy()</code> and associated helper function will stay operational.</li>
 </ul></div>
 </div>
     <div class="section level2">

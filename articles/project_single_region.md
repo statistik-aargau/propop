@@ -80,21 +80,21 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.7s]
+#> ✔ Processing completed in [1.8s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2024
+#> Year of starting population: 2025
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 735808
+#> Size of starting population: 743768
 #> Projection period: 2025-2030
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 781883
+#> - Scenario "reference": 2100192
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────
@@ -181,21 +181,21 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [601ms]
+#> ✔ Processing completed in [610ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
-#> Year of starting population: 2024
+#> Year of starting population: 2025
 #> Number of age groups: 101
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
-#> Size of starting population: 204787
+#> Size of starting population: 209284
 #> Projection period: 2025-2030
 #> Nationality-specific projection: "no"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
-#> - Scenario "reference": 250954
+#> - Scenario "reference": 605712
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Please note ─────────────────────────────────────────────────────────────────

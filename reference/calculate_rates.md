@@ -85,16 +85,16 @@ A data frame that includes the average emigration rate.
 ``` r
 # Compute mean emigration rate
 calculate_rates(
- past_migration = ag_migration_subregional,
- n_jan = n_jan,
- births = births,
- emi_n = hist_emi_sub_n,
- spatial_unit = spatial_unit,
- method = "mean",
- year_range = c(2022:2024),
- age_group = 5,
- binational = TRUE,
- two_sex = TRUE
+  past_migration = ag_migration_subregional,
+  n_jan = n_jan,
+  births = births,
+  emi_n = hist_emi_sub_n,
+  spatial_unit = spatial_unit,
+  method = "mean",
+  year_range = c(2022:2024),
+  age_group = 5,
+  binational = TRUE,
+  two_sex = TRUE
 )
 #> # A tibble: 6,060 × 13
 #>     year spatial_unit   age age_group nat   sex   n_jan births n_base

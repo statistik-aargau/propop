@@ -145,16 +145,16 @@ does not distinguish between sexes.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Compute mean emigration rate</span></span></span>
 <span class="r-in"><span><span class="fu">calculate_rates</span><span class="op">(</span></span></span>
-<span class="r-in"><span> past_migration <span class="op">=</span> <span class="va">ag_migration_subregional</span>,</span></span>
-<span class="r-in"><span> n_jan <span class="op">=</span> <span class="va">n_jan</span>,</span></span>
-<span class="r-in"><span> births <span class="op">=</span> <span class="va">births</span>,</span></span>
-<span class="r-in"><span> emi_n <span class="op">=</span> <span class="va">hist_emi_sub_n</span>,</span></span>
-<span class="r-in"><span> spatial_unit <span class="op">=</span> <span class="va">spatial_unit</span>,</span></span>
-<span class="r-in"><span> method <span class="op">=</span> <span class="st">"mean"</span>,</span></span>
-<span class="r-in"><span> year_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2022</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span> age_group <span class="op">=</span> <span class="fl">5</span>,</span></span>
-<span class="r-in"><span> binational <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span> two_sex <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  past_migration <span class="op">=</span> <span class="va">ag_migration_subregional</span>,</span></span>
+<span class="r-in"><span>  n_jan <span class="op">=</span> <span class="va">n_jan</span>,</span></span>
+<span class="r-in"><span>  births <span class="op">=</span> <span class="va">births</span>,</span></span>
+<span class="r-in"><span>  emi_n <span class="op">=</span> <span class="va">hist_emi_sub_n</span>,</span></span>
+<span class="r-in"><span>  spatial_unit <span class="op">=</span> <span class="va">spatial_unit</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"mean"</span>,</span></span>
+<span class="r-in"><span>  year_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2022</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  age_group <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  binational <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  two_sex <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6,060 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     year spatial_unit   age age_group nat   sex   n_jan births n_base</span>

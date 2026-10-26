@@ -51,12 +51,3 @@ Sample data from the Federal Statistical Office
   : Sample parameters to run population projection
 - [`fso_population`](https://statistik-aargau.github.io/propop/reference/fso_population.md)
   : Sample population data from the Federal Statistical Office
-
-## Deprecated functions
-
-Functions are still operational but won’t be further maintained
-
-- [`propop_legacy()`](https://statistik-aargau.github.io/propop/reference/propop_legacy.md)
-  : Project population development
-- [`project_raw()`](https://statistik-aargau.github.io/propop/reference/project_raw.md)
-  : Project population development (raw results)

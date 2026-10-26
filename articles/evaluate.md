@@ -21,54 +21,46 @@ years, demographic groups, spatial units).
 
 To run the evaluation function, we need some benchmark data and the
 results from the projection. An interesting possibility is to compare
-real, observed data to predicted data. Because FSO’s projection
-scenarios have just been published, there aren’t any observed data
-available yet.
+real, observed data to predicted data.
 
-This example therefore uses older data and parameters from the previous
-FSO model. That is, we run a model with the population from 2018 as
-starting population and the **population records** from 2019-2022 as
-benchmark data.
+That is, we run a model with the population from 2023 as starting
+population and the **population records** from 2023-2025 as benchmark
+data.
 
 ``` r
 
 data_benchmark <- get_population(
   number_fso = "px-x-0102010000_101",
-  year = 2018,
-  year_last = 2022,
+  year = 2024,
+  year_last = 2025,
   spatial_units = "- Aargau"
 )
 ```
 
-Get the parameters for the projection (note that these parameters aren’t
-available anymore; i.e., this code will fail from 2025 onwards if you
-try it for the years 2019-2050):
+Get the parameters for the projection:
 
 ``` r
 
 data_parameters <- get_parameters(
-  year_first = 2019,
-  year_last = 2050,
+  year_first = 2024,
+  year_last = 2030,
   spatial_units = "Aargau"
-)
+) |> 
+  dplyr::filter(scen == "reference")
 ```
 
-Run the population projection for 2019-2022:
+Run the population projection for 2023-2025:
 
 ``` r
 
 data_projected <- propop(
   parameters = data_parameters,
-  year_first = 2019,
-  year_last = 2050,
+  year_first = 2025,
+  year_last = 2030,
   scenarios = "reference",
-  age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
-  share_born_female = 100 / 205,
-  # population records from 2018 as starting point
+  # population records from 2024 as starting point
   population = data_benchmark |>
-    dplyr::filter(year == 2018),
+    dplyr::filter(year == 2024),
   subregional = FALSE,
   binational = TRUE
 )
@@ -81,9 +73,7 @@ data_projected <- propop(
 Let’s first compare the projected population growth against the recorded
 population development (= benchmark) using one-year age classes (default
 option). Make sure to provide matching data frames, especially in terms
-of the year ranges and spatial units. To remove the starting population
-(2018) from the projection results, you could also use
-`drop_start_year = TRUE`.
+of the year ranges and spatial units.
 
 As a result of
 [`prepare_evaluation()`](https://statistik-aargau.github.io/propop/reference/prepare_evaluation.md),
@@ -96,28 +86,28 @@ other:
 # Combine and pre-process the data
 combined <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
   n_benchmark = "n",
-  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  data_projected = data_projected |> dplyr::filter(year > 2024 & year <= 2025),
   n_projected = "n_dec"
 )
 
 # Show combined data
 combined
-#> # A tibble: 1,616 × 7
+#> # A tibble: 404 × 7
 #>     year spatial_unit nat   sex     age n_benchmark n_projected
 #>    <int> <chr>        <chr> <chr> <dbl>       <dbl>       <dbl>
-#>  1  2019 Aargau       ch    m         0        2622       2510.
-#>  2  2019 Aargau       ch    m         1        2593       2551.
-#>  3  2019 Aargau       ch    m         2        2635       2631.
-#>  4  2019 Aargau       ch    m         3        2596       2609.
-#>  5  2019 Aargau       ch    m         4        2683       2670.
-#>  6  2019 Aargau       ch    m         5        2737       2738.
-#>  7  2019 Aargau       ch    m         6        2636       2633.
-#>  8  2019 Aargau       ch    m         7        2609       2594.
-#>  9  2019 Aargau       ch    m         8        2642       2632.
-#> 10  2019 Aargau       ch    m         9        2657       2654.
-#> # ℹ 1,606 more rows
+#>  1  2025 Aargau       ch    m         0        2313       2490.
+#>  2  2025 Aargau       ch    m         1        2400       2433.
+#>  3  2025 Aargau       ch    m         2        2425       2452.
+#>  4  2025 Aargau       ch    m         3        2578       2621.
+#>  5  2025 Aargau       ch    m         4        2938       2953.
+#>  6  2025 Aargau       ch    m         5        2817       2826.
+#>  7  2025 Aargau       ch    m         6        2834       2838.
+#>  8  2025 Aargau       ch    m         7        2830       2823.
+#>  9  2025 Aargau       ch    m         8        2865       2859.
+#> 10  2025 Aargau       ch    m         9        2782       2791.
+#> # ℹ 394 more rows
 ```
 
 Based on the difference between the observed and projected number of
@@ -198,29 +188,30 @@ over 64 year olds using the option `age_groups = "age_groups_3"`.
 # Combine and pre-process the data
 combined_grouped <- prepare_evaluation(
   # only keep years from projected period
-  data_benchmark = data_benchmark |> dplyr::filter(year > 2018),
+  data_benchmark = data_benchmark |> dplyr::filter(year > 2024),
   n_benchmark = "n",
-  data_projected = data_projected |> dplyr::filter(year > 2018 & year <= 2022),
+  data_projected = data_projected |> dplyr::filter(year > 2024 & year <= 2025),
   age_groups = "age_groups_3",
   n_projected = "n_dec"
 )
 
 # Show combined data
 combined_grouped
-#> # A tibble: 48 × 7
+#> # A tibble: 12 × 7
 #>     year spatial_unit age         sex   nat   n_benchmark n_projected
 #>    <int> <chr>        <chr>       <chr> <chr>       <dbl>       <dbl>
-#>  1  2019 Aargau       age_00_19   f     ch          49279      49129.
-#>  2  2019 Aargau       age_00_19   f     int         17818      18118.
-#>  3  2019 Aargau       age_00_19   m     ch          52389      52076.
-#>  4  2019 Aargau       age_00_19   m     int         19323      19566.
-#>  5  2019 Aargau       age_20_64   f     ch         151860     151781.
-#>  6  2019 Aargau       age_20_64   f     int         56115      56380.
-#>  7  2019 Aargau       age_20_64   m     ch         149279     149263.
-#>  8  2019 Aargau       age_20_64   m     int         66770      67029.
-#>  9  2019 Aargau       age_65_plus f     ch          59729      59846.
-#> 10  2019 Aargau       age_65_plus f     int          6311       6332.
-#> # ℹ 38 more rows
+#>  1  2025 Aargau       age_00_19   f     ch          52337      52487.
+#>  2  2025 Aargau       age_00_19   f     int         20106      20428.
+#>  3  2025 Aargau       age_00_19   m     ch          55354      55622.
+#>  4  2025 Aargau       age_00_19   m     int         22386      22467.
+#>  5  2025 Aargau       age_20_64   f     ch         150738     150493.
+#>  6  2025 Aargau       age_20_64   f     int         67941      67708.
+#>  7  2025 Aargau       age_20_64   m     ch         149176     149061.
+#>  8  2025 Aargau       age_20_64   m     int         80689      80309.
+#>  9  2025 Aargau       age_65_plus f     ch          68478      68532.
+#> 10  2025 Aargau       age_65_plus f     int          8888       8893.
+#> 11  2025 Aargau       age_65_plus m     ch          58401      58515.
+#> 12  2025 Aargau       age_65_plus m     int          9274       9306.
 
 # Compute the performance measures
 evaluation_2 <- compute_measures(combined_grouped)
@@ -235,7 +226,7 @@ evaluation_2 |>
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
       "Performance measures for projections with three age classes for the
-      canton of Aargau 2019-2022; only one demographic group is displayed."
+      canton of Aargau 2024-2025; only one demographic group is displayed."
     )
   )
 ```
@@ -279,7 +270,7 @@ total number of people per group (`w_ape`).
 evaluation_3 <- compute_measures(combined_grouped, weight_groups = c("age"))
 
 evaluation_3 |>
-  dplyr::filter(year == 2019 & ape > .34 & ape < .39) |>
+  dplyr::filter(year == 2025 & ape > 0.34 & ape < 0.39) |>
   dplyr::mutate(across(pe:w_ape, \(x) sprintf(fmt = "%.2f", x))) |>
   DT::datatable(
     options = list(dom = "t"),
@@ -317,24 +308,29 @@ projection comes to FSO’s projection from the 2025 model.
 
 ``` r
 
+fso_population_2024 <- get_population(
+  number_fso = "px-x-0102010000_101",
+  year = 2024,
+  spatial_units = "- Aargau"
+)
+```
+
+``` r
+
 projection_2025 <- propop(
-  parameters = fso_parameters,
+  parameters = fso_parameters |> 
+    dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
-  scenarios = "reference",
-  age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
-  share_born_female = 100 / 205,
-  # population records from 2018 as starting point
-  population = fso_population,
+  # population records from 2025 as starting point
+  population = fso_population_2024,
   subregional = FALSE,
   binational = TRUE
 )
 #> 
-#> ── Running projection for 3 scenario(s). ───────────────────────────────────────
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [8.9s]
+#> ✔ Processing completed in [3.1s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -361,11 +357,11 @@ projection_2025 <- propop(
 
 fso_propop <- prepare_evaluation(
   data_benchmark = fso_parameters |>
-    dplyr::filter(scen == "reference" & year > 2023) |>
+    dplyr::filter(scen == "reference" & year >= 2025) |>
     dplyr::mutate(n = fso_projection_n),
   n_benchmark = "n",
   data_projected = projection_2025 |>
-    dplyr::filter(year > 2023),
+    dplyr::filter(scen == "reference" & year >= 2025),
   age_groups = "age_groups_3",
   n_projected = "n_dec"
 ) |>
