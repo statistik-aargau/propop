@@ -25,22 +25,6 @@
 ---
 
     Code
-      calculate_newborns_default
-    Output
-      # A tibble: 4 x 21
-         year scen      spatial_unit nat   sex   births   age birthrate int_mothers
-        <dbl> <chr>     <chr>        <chr> <chr>  <dbl> <dbl>     <dbl>       <dbl>
-      1  2025 reference Aargau       ch    m      2633.     0         0       0.250
-      2  2025 reference Aargau       ch    f      2508.     0         0       0.250
-      3  2025 reference Aargau       int   m      1228.     0         0       0.250
-      4  2025 reference Aargau       int   f      1170.     0         0       0.250
-      # i 12 more variables: mor <dbl>, emi_int <dbl>, emi_nat <dbl>, acq <dbl>,
-      #   imm_int_n <dbl>, imm_nat_n <dbl>, n_jan <lgl>, mor_n <dbl>,
-      #   emi_int_n <dbl>, emi_nat_n <dbl>, acq_n <dbl>, n_dec <dbl>
-
----
-
-    Code
       dput(calculate_newborns_net)
     Output
       structure(list(year = c(2025, 2025, 2025, 2025), scen = c("reference", 
@@ -61,22 +45,6 @@
       2.99933818307102, -2.0008650527433, -2.99933818307102), n_dec = c(2652.22621432352, 
       2535.84055954427, 1243.27184014746, 1194.79098719646)), row.names = c(NA, 
       -4L), class = c("tbl_df", "tbl", "data.frame"))
-
----
-
-    Code
-      calculate_newborns_net
-    Output
-      # A tibble: 4 x 22
-         year scen      spatial_unit nat   sex   births   age birthrate int_mothers
-        <dbl> <chr>     <chr>        <chr> <chr>  <dbl> <dbl>     <dbl>       <dbl>
-      1  2025 reference Aargau       ch    m      2633.     0         0       0.250
-      2  2025 reference Aargau       ch    f      2508.     0         0       0.250
-      3  2025 reference Aargau       int   m      1228.     0         0       0.250
-      4  2025 reference Aargau       int   f      1170.     0         0       0.250
-      # i 13 more variables: mor <dbl>, emi_int <dbl>, emi_nat <dbl>, acq <dbl>,
-      #   imm_int_n <dbl>, imm_nat_n <dbl>, mig_sub <dbl>, n_jan <lgl>, mor_n <dbl>,
-      #   emi_int_n <dbl>, emi_nat_n <dbl>, acq_n <dbl>, n_dec <dbl>
 
 ---
 
@@ -106,24 +74,6 @@
       525.916740156643, 257.522349942774, 245.345483193888)), row.names = c(NA, 
       -4L), class = c("tbl_df", "tbl", "data.frame"))
 
----
-
-    Code
-      calculate_newborns_rate
-    Output
-      # A tibble: 4 x 27
-         year scen      spatial_unit nat   sex   births   age birthrate int_mothers
-        <dbl> <chr>     <chr>        <chr> <chr>  <dbl> <dbl>     <dbl>       <dbl>
-      1  2025 reference Aargau       ch    m      2633.     0         0       0.250
-      2  2025 reference Aargau       ch    f      2508.     0         0       0.250
-      3  2025 reference Aargau       int   m      1228.     0         0       0.250
-      4  2025 reference Aargau       int   f      1170.     0         0       0.250
-      # i 18 more variables: mor <dbl>, emi_int <dbl>, emi_nat <dbl>, acq <dbl>,
-      #   imm_int_n <dbl>, imm_nat_n <dbl>, mig_sub <dbl>, emi_sub <dbl>,
-      #   imm_sub <dbl>, n_jan <lgl>, mor_n <dbl>, emi_int_n <dbl>, emi_nat_n <dbl>,
-      #   acq_n <dbl>, n_dec <dbl>, emi_sub_n <dbl>, emi_sub_n_total <dbl>,
-      #   imm_sub_n <dbl>
-
 # calculate newborns test only Swiss NA
 
     Code
@@ -146,20 +96,4 @@
       NA_real_), acq_n = c(NA_real_, NA_real_, NA_real_, NA_real_), 
           n_dec = c(NA_real_, NA_real_, NA_real_, NA_real_)), row.names = c(NA, 
       -4L), class = c("tbl_df", "tbl", "data.frame"))
-
----
-
-    Code
-      calculate_newborns_na
-    Output
-      # A tibble: 4 x 21
-         year scen   spatial_unit nat   sex   births   age birthrate int_mothers   mor
-        <dbl> <chr>  <chr>        <chr> <chr>  <dbl> <dbl>     <dbl>       <dbl> <dbl>
-      1  2025 refer~ Aargau       ch    m      2633.     0        NA          NA    NA
-      2  2025 refer~ Aargau       ch    f      2508.     0        NA          NA    NA
-      3  2025 refer~ Aargau       int   m      1228.     0        NA          NA    NA
-      4  2025 refer~ Aargau       int   f      1170.     0        NA          NA    NA
-      # i 11 more variables: emi_int <dbl>, emi_nat <dbl>, acq <dbl>,
-      #   imm_int_n <dbl>, imm_nat_n <dbl>, n_jan <lgl>, mor_n <dbl>,
-      #   emi_int_n <dbl>, emi_nat_n <dbl>, acq_n <dbl>, n_dec <dbl>
 

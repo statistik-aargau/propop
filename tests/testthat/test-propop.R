@@ -416,14 +416,14 @@ test_that("Simple propop test", {
 test_that("N_totals of scenarios are ordered plausibly", {
   n_ordered <- propop(
     parameters = fso_parameters,
-    year_first = 2025,
-    year_last = 2025,
+    year_first = 2026,
+    year_last = 2026,
     population = fso_population,
     subregional = FALSE,
     binational = TRUE
   ) |>
     # Get end total per scenario
-    filter(year == 2025) |>
+    filter(year == max(year)) |>
     summarise(total = sum(n_dec), .by = "scen")
 
   n_high <- n_ordered |>

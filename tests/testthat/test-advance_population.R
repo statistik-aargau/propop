@@ -3,7 +3,7 @@ test_that("advance population test", {
   ## One spatial unit ----
   ### FSO population for one spatial unit ----
   population_prev_short <- tibble::tibble(
-    year = 2023,
+    year = 2024,
     spatial_unit = "Aargau",
     nat = rep(c("ch", "int"), each = 202L),
     sex = rep(rep(c("m", "f"), 2), each = 101L),

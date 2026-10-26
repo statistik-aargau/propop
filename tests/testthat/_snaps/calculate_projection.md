@@ -965,29 +965,6 @@
 ---
 
     Code
-      population_and_parameters_short_default
-    Output
-      # A tibble: 400 x 20
-          year scen  spatial_unit nat   sex     age birthrate int_mothers emi_int
-         <dbl> <chr> <chr>        <chr> <chr> <dbl>     <dbl>       <dbl>   <dbl>
-       1  2025 high  Aargau       ch    m         1         0       0.250 0.00550
-       2  2025 high  Aargau       ch    m         2         0       0.250 0.00511
-       3  2025 high  Aargau       ch    m         3         0       0.250 0.00484
-       4  2025 high  Aargau       ch    m         4         0       0.250 0.0047 
-       5  2025 high  Aargau       ch    m         5         0       0.250 0.00430
-       6  2025 high  Aargau       ch    m         6         0       0.250 0.00395
-       7  2025 high  Aargau       ch    m         7         0       0.250 0.00359
-       8  2025 high  Aargau       ch    m         8         0       0.250 0.00330
-       9  2025 high  Aargau       ch    m         9         0       0.250 0.00317
-      10  2025 high  Aargau       ch    m        10         0       0.250 0.00279
-      # i 390 more rows
-      # i 11 more variables: emi_nat <dbl>, acq <dbl>, imm_int_n <dbl>,
-      #   imm_nat_n <dbl>, n_jan <dbl>, births <dbl>, emi_int_n <dbl>,
-      #   emi_nat_n <dbl>, acq_n <dbl>, mor_n <dbl>, n_dec <dbl>
-
----
-
-    Code
       dput(population_and_parameters_short_net)
     Output
       structure(list(year = c(2025, 2025, 2025, 2025, 2025, 2025, 2025, 
@@ -1967,29 +1944,6 @@
       53.1171269222255, 29.990182588236, 25.988094666665, 18.000004, 
       18.000004, 11.000003, 9, 4, 3.000001, 2.333334)), row.names = c(NA, 
       -400L), class = c("tbl_df", "tbl", "data.frame"))
-
----
-
-    Code
-      population_and_parameters_short_net
-    Output
-      # A tibble: 400 x 21
-          year scen  spatial_unit nat   sex     age birthrate int_mothers emi_int
-         <dbl> <chr> <chr>        <chr> <chr> <dbl>     <dbl>       <dbl>   <dbl>
-       1  2025 high  Aargau       ch    m         1         0       0.250 0.00550
-       2  2025 high  Aargau       ch    m         2         0       0.250 0.00511
-       3  2025 high  Aargau       ch    m         3         0       0.250 0.00484
-       4  2025 high  Aargau       ch    m         4         0       0.250 0.0047 
-       5  2025 high  Aargau       ch    m         5         0       0.250 0.00430
-       6  2025 high  Aargau       ch    m         6         0       0.250 0.00395
-       7  2025 high  Aargau       ch    m         7         0       0.250 0.00359
-       8  2025 high  Aargau       ch    m         8         0       0.250 0.00330
-       9  2025 high  Aargau       ch    m         9         0       0.250 0.00317
-      10  2025 high  Aargau       ch    m        10         0       0.250 0.00279
-      # i 390 more rows
-      # i 12 more variables: emi_nat <dbl>, acq <dbl>, imm_int_n <dbl>,
-      #   imm_nat_n <dbl>, n_jan <dbl>, mig_sub <dbl>, births <dbl>, emi_int_n <dbl>,
-      #   emi_nat_n <dbl>, acq_n <dbl>, mor_n <dbl>, n_dec <dbl>
 
 ---
 
@@ -3308,29 +3262,4 @@
           7.87499925, 6.87499875, 4.7500005, 4.7500005, 2.875000375, 
           2.25, 0.875, 0.625000125, 0.41666675)), row.names = c(NA, 
       -400L), class = c("tbl_df", "tbl", "data.frame"))
-
----
-
-    Code
-      population_and_parameters_short_rate
-    Output
-      # A tibble: 400 x 27
-          year scen  spatial_unit nat   sex     age birthrate int_mothers emi_int
-         <dbl> <chr> <chr>        <chr> <chr> <dbl>     <dbl>       <dbl>   <dbl>
-       1  2025 high  Aargau       ch    m         1         0       0.250 0.00550
-       2  2025 high  Aargau       ch    m         2         0       0.250 0.00511
-       3  2025 high  Aargau       ch    m         3         0       0.250 0.00484
-       4  2025 high  Aargau       ch    m         4         0       0.250 0.0047 
-       5  2025 high  Aargau       ch    m         5         0       0.250 0.00430
-       6  2025 high  Aargau       ch    m         6         0       0.250 0.00395
-       7  2025 high  Aargau       ch    m         7         0       0.250 0.00359
-       8  2025 high  Aargau       ch    m         8         0       0.250 0.00330
-       9  2025 high  Aargau       ch    m         9         0       0.250 0.00317
-      10  2025 high  Aargau       ch    m        10         0       0.250 0.00279
-      # i 390 more rows
-      # i 18 more variables: emi_nat <dbl>, acq <dbl>, imm_int_n <dbl>,
-      #   imm_nat_n <dbl>, n_jan <dbl>, mig_sub <dbl>, emi_sub <dbl>, imm_sub <dbl>,
-      #   births <dbl>, emi_int_n <dbl>, emi_nat_n <dbl>, acq_n <dbl>, mor_n <dbl>,
-      #   n_dec <dbl>, mor <dbl>, emi_sub_n <dbl>, emi_sub_n_total <dbl>,
-      #   imm_sub_n <dbl>
 
