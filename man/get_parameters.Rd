@@ -111,8 +111,8 @@ group on 1st of January.
 \item \code{scen}: character, projection scenario.
 \item \code{spatial_unit}: character, indicating the user requested spatial
 unit(s).
-\item \code{birthrate}: numeric, total number of live human births per 1,000
-inhabitants.
+\item \code{birthrate}: numeric, number of birth per mother by age, nationality
+and year.
 (formerly \code{birth_rate}).
 \item \code{int_mothers}: numeric, proportion of children with Swiss nationality
 born to non-Swiss mothers
