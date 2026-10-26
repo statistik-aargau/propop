@@ -714,15 +714,5 @@ propop <- function(
   cli::cli_div(theme = list(rule = list("line-type" = "double")))
   cli::cli_rule()
 
-  cli::cli_h1("Please note")
-
-  # Temporary info
-  cli::cli_alert_info(
-    "As of propop v2.0.0, {.pkg propop()} uses tables instead of matrices to calculate projections.")
-  cli::cli_alert_info(
-    "The old function is still available as {.pkg propop_legacy()} but won't be further maintained.")
-  cli::cli_rule()
-
-
   return(df_result)
 }
