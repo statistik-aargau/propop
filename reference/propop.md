@@ -279,7 +279,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [831ms]
+#> ✔ Processing completed in [638ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -297,11 +297,6 @@ propop(
 #> - Scenario "high": 2189567
 #> - Scenario "low": 2172122
 #> - Scenario "reference": 2181209
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 2,424 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
@@ -332,7 +327,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [379ms]
+#> ✔ Processing completed in [296ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -349,11 +344,6 @@ propop(
 #> Projected population size by 2026:
 #> - Scenario "high": 2214894
 #> - Scenario "reference": 2209579
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 808 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n

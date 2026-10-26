@@ -330,7 +330,7 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [3.1s]
+#> ✔ Processing completed in [2.5s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -345,11 +345,6 @@ projection_2025 <- propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
 #> - Scenario "reference": 893942
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 ```
 

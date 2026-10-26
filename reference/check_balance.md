@@ -39,7 +39,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [948ms]
+#> ✔ Processing completed in [776ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -57,11 +57,6 @@ propop(
 #> - Scenario "high": 2189567
 #> - Scenario "low": 2172122
 #> - Scenario "reference": 2181209
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Result of population equation components check ──────────────────────────────

@@ -176,7 +176,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [436ms]
+#> ✔ Processing completed in [351ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -191,11 +191,6 @@ propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
 #> - Scenario "reference": 759314
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 4,040 × 17
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
@@ -367,7 +362,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [377ms]
+#> ✔ Processing completed in [391ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -382,11 +377,6 @@ propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
 #> - Scenario "reference": 759346
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 4,040 × 17
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
@@ -580,7 +570,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [6.5s]
+#> ✔ Processing completed in [5.2s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -595,11 +585,6 @@ propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
 #> - Scenario "reference": 894040
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 60,600 × 19
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
@@ -727,7 +712,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [5.7s]
+#> ✔ Processing completed in [4.7s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -742,11 +727,6 @@ propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2055:
 #> - Scenario "reference": 894040
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 60,600 × 18
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n

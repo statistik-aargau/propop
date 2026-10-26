@@ -80,7 +80,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.8s]
+#> ✔ Processing completed in [1.4s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -95,11 +95,6 @@ projection_canton_2030 <- propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 2100192
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 
 projection_canton_2030 |>
@@ -181,7 +176,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [610ms]
+#> ✔ Processing completed in [482ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -196,11 +191,6 @@ projection_int <- propop(
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2030:
 #> - Scenario "reference": 605712
-#> ════════════════════════════════════════════════════════════════════════════════
-#> 
-#> ── Please note ─────────────────────────────────────────────────────────────────
-#> ℹ As of propop v2.0.0, propop() uses tables instead of matrices to calculate projections.
-#> ℹ The old function is still available as propop_legacy() but won't be further maintained.
 #> ════════════════════════════════════════════════════════════════════════════════
 
 projection_int |>
