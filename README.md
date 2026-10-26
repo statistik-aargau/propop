@@ -15,7 +15,7 @@ The goal of 'propop' is to create population projections using the **cohort
 component method** (see e.g., 
 [Preston, Guillot, and Heuveline, 2000](https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512); 
 [Statistik Aargau, 2025a](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprojektion-technischerbegleitbericht-2025.pdf); 
-[Statistik Aargau, 2025b](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bev-lkerungsprohektion-hauptbericht-2025.pdf)). 
+[Statistik Aargau, 2025b](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektion-hauptbericht-2025.pdf)). 
 For a breakdown of the components, see [this vignette](https://statistik-aargau.github.io/propop/articles/project_single_region.html).
 
 The package was developed for use with [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 

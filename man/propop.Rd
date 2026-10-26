@@ -158,7 +158,7 @@ calling the function \code{project_population.R}, which performs the calculation
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
 on how to download this information from
-\href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},
+\href{https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/forschung/stat-tab-online-datenrecherche.html}{STAT-TAB},
 see \code{vignette("prepare_data", package = "propop")}.
 
 The projection parameters need to be passed to \code{propop::propop()} as a
