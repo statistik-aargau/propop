@@ -62,7 +62,7 @@ models.
 }
 \examples{
 evaluation <- tibble::tibble(
- year = rep(2020L, 4L),
+ year = rep(2020L, 3L),
  n_benchmark = c(2605, 2679, 2650),
  n_projected = c(2526, 2558, 2594),
  error = c(-79, -121, -56),
