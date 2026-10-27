@@ -6,8 +6,10 @@ output:
     toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Projections for a single region}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -73,7 +75,7 @@ projection for all scenarios available in `parameters`.
 projection_canton_2030 <- propop(
   parameters = fso_parameters,
   scenarios = "reference",
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2030,
   population = fso_population,
   subregional = FALSE,
@@ -146,7 +148,7 @@ When calling `propop::propop()`, you need to set `binational = FALSE`.
 projection_int <- propop(
   parameters = fso_parameters_int,
   scenarios = "reference",
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2030,
   population = fso_population_int,
   subregional = FALSE,
