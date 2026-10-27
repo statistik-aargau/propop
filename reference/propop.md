@@ -271,7 +271,7 @@ population are also included in the output:
 # Run projection for the sample data (whole canton of Aargau)
 propop(
   parameters = fso_parameters,
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2027,
   population = fso_population,
   subregional = FALSE,
@@ -280,7 +280,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [897ms]
+#> ✔ Processing completed in [427ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -290,36 +290,36 @@ propop(
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
-#> Projection period: 2025-2027
+#> Projection period: 2026-2027
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
-#> - Scenario "high": 2189567
-#> - Scenario "low": 2172122
-#> - Scenario "reference": 2181209
+#> - Scenario "high": 764992
+#> - Scenario "low": 753709
+#> - Scenario "reference": 759453
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 2,424 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
 #>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2026 high  Aargau       ch    m         0    0   7863. 23.2       20.5
-#>  2  2026 high  Aargau       ch    m         1 7312.     0   2.67      38.0
-#>  3  2026 high  Aargau       ch    m         2 7192.     0   2.61      37.0
-#>  4  2026 high  Aargau       ch    m         3 7308.     0   2.86      34.9
-#>  5  2026 high  Aargau       ch    m         4 7633.     0   0         34.6
-#>  6  2026 high  Aargau       ch    m         5 8504.     0   0         37.1
-#>  7  2026 high  Aargau       ch    m         6 8609.     0   0         33.2
-#>  8  2026 high  Aargau       ch    m         7 8519.     0   0         32.7
-#>  9  2026 high  Aargau       ch    m         8 8528.     0   0         29.9
-#> 10  2026 high  Aargau       ch    m         9 8597.     0   0         27.1
+#>  1  2026 high  Aargau       ch    m         0     0  2681. 7.98       6.99
+#>  2  2026 high  Aargau       ch    m         1  2313     0  0.861     12.0 
+#>  3  2026 high  Aargau       ch    m         2  2400     0  0.885     12.3 
+#>  4  2026 high  Aargau       ch    m         3  2425     0  0.948     11.6 
+#>  5  2026 high  Aargau       ch    m         4  2578     0  0         11.7 
+#>  6  2026 high  Aargau       ch    m         5  2938     0  0         12.8 
+#>  7  2026 high  Aargau       ch    m         6  2817     0  0         10.9 
+#>  8  2026 high  Aargau       ch    m         7  2834     0  0         10.9 
+#>  9  2026 high  Aargau       ch    m         8  2830     0  0          9.92
+#> 10  2026 high  Aargau       ch    m         9  2865     0  0          9.02
 #> # ℹ 2,414 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 propop(
   parameters = fso_parameters |>
     dplyr::filter(scen == "reference" | scen == "high"),
-  year_first = 2025,
-  year_last = 2026,
+  year_first = 2026,
+  year_last = 2027,
   scenarios = c("reference", "high"),
   population = fso_population,
   subregional = FALSE,
@@ -328,7 +328,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [408ms]
+#> ✔ Processing completed in [295ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -338,28 +338,28 @@ propop(
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
-#> Projection period: 2025-2026
+#> Projection period: 2026-2027
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
-#> Projected population size by 2026:
-#> - Scenario "high": 2214894
-#> - Scenario "reference": 2209579
+#> Projected population size by 2027:
+#> - Scenario "high": 764992
+#> - Scenario "reference": 759453
 #> ════════════════════════════════════════════════════════════════════════════════
-#> # A tibble: 808 × 17
+#> # A tibble: 1,616 × 17
 #>     year scen  spatial_unit nat   sex     age n_jan births mor_n emi_int_n
 #>    <int> <chr> <chr>        <fct> <fct> <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#>  1  2026 high  Aargau       ch    m         0    0   7863. 23.2       20.5
-#>  2  2026 high  Aargau       ch    m         1 7312.     0   2.67      38.0
-#>  3  2026 high  Aargau       ch    m         2 7192.     0   2.61      37.0
-#>  4  2026 high  Aargau       ch    m         3 7308.     0   2.86      34.9
-#>  5  2026 high  Aargau       ch    m         4 7633.     0   0         34.6
-#>  6  2026 high  Aargau       ch    m         5 8504.     0   0         37.1
-#>  7  2026 high  Aargau       ch    m         6 8609.     0   0         33.2
-#>  8  2026 high  Aargau       ch    m         7 8519.     0   0         32.7
-#>  9  2026 high  Aargau       ch    m         8 8528.     0   0         29.9
-#> 10  2026 high  Aargau       ch    m         9 8597.     0   0         27.1
-#> # ℹ 798 more rows
+#>  1  2026 high  Aargau       ch    m         0     0  2681. 7.98       6.99
+#>  2  2026 high  Aargau       ch    m         1  2313     0  0.861     12.0 
+#>  3  2026 high  Aargau       ch    m         2  2400     0  0.885     12.3 
+#>  4  2026 high  Aargau       ch    m         3  2425     0  0.948     11.6 
+#>  5  2026 high  Aargau       ch    m         4  2578     0  0         11.7 
+#>  6  2026 high  Aargau       ch    m         5  2938     0  0         12.8 
+#>  7  2026 high  Aargau       ch    m         6  2817     0  0         10.9 
+#>  8  2026 high  Aargau       ch    m         7  2834     0  0         10.9 
+#>  9  2026 high  Aargau       ch    m         8  2830     0  0          9.92
+#> 10  2026 high  Aargau       ch    m         9  2865     0  0          9.02
+#> # ℹ 1,606 more rows
 #> # ℹ 7 more variables: emi_nat_n <dbl>, imm_int_n <dbl>, imm_nat_n <dbl>,
 #> #   acq_n <dbl>, n_dec <dbl>, delta_n <dbl>, delta_perc <dbl>
 ```

@@ -5,6 +5,10 @@
 - Removed deprecated functions.
 - Updated tests, examples and package data.
 - Refined definition for the `birthrate` parameter.
+- Added an assertion for
+  [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+  to ensure that the first projected year (`start_year`) is at least one
+  year ahead of the population data.
 
 ## propop 2.1.1
 

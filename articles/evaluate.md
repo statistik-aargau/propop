@@ -322,7 +322,7 @@ projection_2025 <- propop(
     dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
-  # population records from 2025 as starting point
+  # population records from 2024 as starting point
   population = fso_population_2024,
   subregional = FALSE,
   binational = TRUE
@@ -330,7 +330,7 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [3.4s]
+#> ✔ Processing completed in [2.5s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

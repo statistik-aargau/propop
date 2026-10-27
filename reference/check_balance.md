@@ -29,7 +29,7 @@ data frame containing summary statistics.
 ``` r
 propop(
   parameters = fso_parameters,
-  year_first = 2025,
+  year_first = 2026,
   year_last = 2027,
   population = fso_population,
   subregional = FALSE,
@@ -39,7 +39,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.1s]
+#> ✔ Processing completed in [572ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -49,14 +49,14 @@ propop(
 #> Fertile period: 16-50
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
-#> Projection period: 2025-2027
+#> Projection period: 2026-2027
 #> Nationality-specific projection: "yes"
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
-#> - Scenario "high": 2189567
-#> - Scenario "low": 2172122
-#> - Scenario "reference": 2181209
+#> - Scenario "high": 764992
+#> - Scenario "low": 753709
+#> - Scenario "reference": 759453
 #> ════════════════════════════════════════════════════════════════════════════════
 #> 
 #> ── Result of population equation components check ──────────────────────────────
