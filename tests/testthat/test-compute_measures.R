@@ -75,7 +75,7 @@ test_that("compute_measures snapshots", {
     ),
   )
 
-  # # Based on data created in prepare_measures
+  # Based on data created in prepare_measures
   combined_grouped <- tibble::tibble(
     year = 2020,
     spatial_unit = "Aargau",

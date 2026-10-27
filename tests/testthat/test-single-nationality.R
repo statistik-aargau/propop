@@ -7,14 +7,10 @@ options(cli.default_handler = function(...) {})
 test_that("propop single nation projection with 1 region", {
   skip_on_ci()
 
-  # /////////////////////////////////////////////////////
   # 1 region & 1 nationality ----------------------------
-  # /////////////////////////////////////////////////////
-
   ## Prepare FSO parameters ----
-
   ### Population = CH ----
-  # # Run next lines to generate the subsequent data frame
+  # Run next lines to generate the subsequent data frame
   param_sub_F_binat_F_CH <- fso_parameters |>
     dplyr::filter(year < 2027) |>
     dplyr::filter(scen == "reference") |>
@@ -24,7 +20,7 @@ test_that("propop single nation projection with 1 region", {
     select(-c(nat, acq, int_mothers))
 
   ### Population = INT ----
-  # # Run next lines to generate the subsequent data frame
+  # Run next lines to generate the subsequent data frame
   param_sub_F_binat_F_INT <- fso_parameters |>
     dplyr::filter(year < 2027) |>
     dplyr::filter(scen == "reference") |>
@@ -36,8 +32,8 @@ test_that("propop single nation projection with 1 region", {
   ## Prepare starting population ----
 
   ### Population = CH ----
-  # # Run next lines to generate the subsequent data frame
-  # # Create starting population
+  # Run next lines to generate the subsequent data frame
+  # Create starting population
   pop_sub_F_binat_F_CH <- fso_population |>
     # drop non-Swiss people
     dplyr::filter(nat != "int") |>
@@ -45,8 +41,8 @@ test_that("propop single nation projection with 1 region", {
     select(-nat)
 
   ### Population = INT ----
-  # # Run next lines to generate the subsequent data frame
-  # # Create starting population
+  # Run next lines to generate the subsequent data frame
+  # Create starting population
   pop_sub_F_binat_F_INT <- fso_population |>
     # drop Swiss people
     dplyr::filter(nat == "int") |>
