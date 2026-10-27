@@ -146,7 +146,7 @@
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(
 #'   parameters = fso_parameters,
-#'   year_first = 2025,
+#'   year_first = 2026,
 #'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,
@@ -155,8 +155,8 @@
 #' propop(
 #'   parameters = fso_parameters |>
 #'     dplyr::filter(scen == "reference" | scen == "high"),
-#'   year_first = 2025,
-#'   year_last = 2026,
+#'   year_first = 2026,
+#'   year_last = 2027,
 #'   scenarios = c("reference", "high"),
 #'   population = fso_population,
 #'   subregional = FALSE,

@@ -16,7 +16,7 @@ test_that("propop single nation projection with 1 region", {
   ### Population = CH ----
   # # Run next lines to generate the subsequent data frame
   param_sub_F_binat_F_CH <- fso_parameters |>
-  dplyr::filter(year < 2026) |>
+  dplyr::filter(year < 2027) |>
   dplyr::filter(scen == "reference") |>
     # drop non-Swiss people
     dplyr::filter(nat != "int") |>
@@ -26,7 +26,7 @@ test_that("propop single nation projection with 1 region", {
   ### Population = INT ----
   # # Run next lines to generate the subsequent data frame
   param_sub_F_binat_F_INT <-  fso_parameters |>
-  dplyr::filter(year < 2026) |>
+  dplyr::filter(year < 2027) |>
   dplyr::filter(scen == "reference") |>
     # drop Swiss people
     dplyr::filter(nat == "int") |>
@@ -60,8 +60,8 @@ test_that("propop single nation projection with 1 region", {
   sub_F_binat_F_CH <- propop(
     parameters = param_sub_F_binat_F_CH |>
       dplyr::filter(scen == "reference"),
-    year_first = 2025,
-    year_last = 2025,
+    year_first = 2026,
+    year_last = 2026,
     population = pop_sub_F_binat_F_CH,
     subregional = FALSE,
     binational = FALSE
@@ -89,8 +89,8 @@ test_that("propop single nation projection with 1 region", {
     propop(
       parameters = param_sub_F_binat_F_CH |>
         dplyr::filter(scen == "reference"),
-      year_first = 2025,
-      year_last = 2025,
+      year_first = 2026,
+      year_last = 2026,
       population = pop_sub_F_binat_F_CH,
       subregional = FALSE,
       binational = TRUE
@@ -101,8 +101,8 @@ test_that("propop single nation projection with 1 region", {
   sub_F_binat_F_INT <- propop(
     parameters = param_sub_F_binat_F_INT |>
       dplyr::filter(scen == "reference"),
-    year_first = 2025,
-    year_last = 2025,
+    year_first = 2026,
+    year_last = 2026,
     population = pop_sub_F_binat_F_INT,
     subregional = FALSE,
     binational = FALSE
@@ -130,8 +130,8 @@ test_that("propop single nation projection with 1 region", {
     propop(
       parameters = param_sub_F_binat_F_INT |>
         dplyr::filter(scen == "reference"),
-      year_first = 2025,
-      year_last = 2025,
+      year_first = 2026,
+      year_last = 2026,
       population = pop_sub_F_binat_F_INT,
       subregional = FALSE,
       binational = TRUE
