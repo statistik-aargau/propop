@@ -61,15 +61,15 @@
 #' Baker, J., et al. (2015). Sub-county population estimates using administrative
 #' records: A municipal-level case study in New Mexico. In M. N. Hoque &
 #' L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79).
-#' Springer, [https://doi.org/10.1007/978-94-017-8990-5_6](https://doi.org/10.1007/978-94-017-8990-5_6)
+#' Springer, \doi{10.1007/978-94-017-8990-5_6}
 #'
 #' Wilson, T. (2012). Forecast accuracy and uncertainty of Australian Bureau of
 #' Statistics state and territory population projections, International Journal
-#' of Population Research, 1, 419824, [https://doi.org/10.1155/2012/419824](https://doi.org/10.1155/2012/419824)
+#' of Population Research, 1, 419824, \doi{10.1155/2012/419824}
 #'
 #' Wilson, T. (2016). Evaluation of alternative cohort-component models for local
 #' area population forecasts, Population Research and Policy Review, 35, 241-261,
-#' [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
+#' \doi{10.1007/s11113-015-9380-y}
 #'
 #' @export
 #'
