@@ -6,6 +6,6 @@
 ag_population_subregional <-
   data.table::fread("data-raw/ag_population_subregional.csv") |>
   dplyr::mutate(spatial_unit = as.character(spatial_unit)) |>
-  as_tibble()
+  tibble::as_tibble()
 
 usethis::use_data(ag_population_subregional, overwrite = TRUE)

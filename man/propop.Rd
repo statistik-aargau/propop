@@ -33,7 +33,8 @@ foreign / international).
 Required if binational = \code{TRUE}.
 \item \code{sex}, character (\code{f} = female, \code{m} = male).
 \item \code{age}, numeric, typically ranging from 0 to 100 (incl. >100).
-\item \code{birthrate}, numeric, number of births per mother
+\item \code{birthrate}, numeric, number of birth per mother by age, nationality
+and year.
 \item \code{int_mothers}, numeric, proportion of children with
 Swiss nationality born to non-Swiss mothers.
 Required if binational = \code{TRUE}.

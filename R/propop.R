@@ -34,7 +34,8 @@
 #'    Required if binational = `TRUE`.
 #'    * `sex`, character (`f` = female, `m` = male).
 #'    * `age`, numeric, typically ranging from 0 to 100 (incl. >100).
-#'    * `birthrate`, numeric, number of births per mother
+#'    * `birthrate`, numeric, number of birth per mother by age, nationality
+#'      and year.
 #'    * `int_mothers`, numeric, proportion of children with
 #'    Swiss nationality born to non-Swiss mothers.
 #'    Required if binational = `TRUE`.

@@ -40,11 +40,11 @@ To run the function, you need the following input:
 
 -   a data frame with the **starting population**, that is, the most up-to-date
 number of people for each demographic group before the first projection year; to
-illustrate, the example population data in `propop` are from 31. December 2023.
+illustrate, the example population data in `propop` are from 31. December 2025.
 
 -   a data frame containing model **parameters**, that is, information about how
 key demographic variables such as mortality are expected to develop in the 
-future; these are available for 2025-2055.
+future; the example contains data for the period 2026-2055.
 
 -   some global arguments which do not change over time or across demographic 
 groups (e.g., proportion of female to male newborns). `propop` uses FSO's
@@ -61,11 +61,11 @@ ranging from 0 to 100 years (incl. those who are older).
 The package `propop` includes the population data from the canton of Aargau from 
 2023 and the FSO parameters from the [population development scenarios 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html). 
 Using these resources, we can project the population for the canton as a whole 
-for 1-year age groups for the period 2025-2055. 
+for 1-year age groups for the period 2026-2055. 
 
-The start and end of women's fertile period, the proportion of babies born as 
-female, and the share of babies born by mothers who are not Swiss are defined in `propop::propop()`. We use FSO's standard
-values as default for these arguments.
+The start and end of female's fertile period, the proportion of babies born as 
+female, and the share of babies born by mothers who are not Swiss are defined in 
+`propop::propop()`. We use FSO's standard values as default for these arguments.
 
 If the argument `scenarios` is not specified, `propop::propop()` returns a 
 projection for all scenarios available in `parameters`.

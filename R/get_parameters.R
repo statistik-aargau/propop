@@ -53,27 +53,18 @@
 #'    * `scen`: character, projection scenario.
 #'    * `spatial_unit`: character, indicating the user requested spatial
 #'      unit(s).
-#'    * `birthrate`: numeric, total number of live human births per 1,000
-#'      inhabitants.
-#'      (formerly `birth_rate`).
+#'    * `birthrate`: numeric, number of birth per mother by age, nationality
+#'       and year.
 #'    * `int_mothers`: numeric, proportion of children with Swiss nationality
-#'       born to non-Swiss mothers
-#'       (formerly `births_int_ch`).
+#'       born to non-Swiss mothers.
 #'    * `mor`: numeric, prospective mortality (probability of death).
-#'    * `emi_int`: numeric, rate of people emigrating to other countries
-#'      (formerly `emi`).
-#'    * `emi_nat`: numeric, rate of people emigrating to other cantons
-#'      (new parameter).
+#'    * `emi_int`: numeric, rate of people emigrating to other countries.
+#'    * `emi_nat`: numeric, rate of people emigrating to other cantons.
 #'    * `acq`: numeric, rate of acquisition of Swiss citizenship.
-#'    * `imm_int_n`: numeric, number of people immigrating from abroad
-#'      (formelry `imm_int`).
-#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons
-#'      (new parameter).
-#'    * `emi_nat_n`: numeric, number of people emigrating to other cantons
-#'      (parameter previously used to compute `mig_nat_n`).
-#'    * `mig_nat_n`: numeric, national / inter-cantonal net migration
-#'      (number of immigrants minus number of emigrants).
-#'      (formerly `mig_ch`, will soon be obsolete and removed).
+#'    * `imm_int_n`: numeric, number of people immigrating from abroad..
+#'    * `imm_nat_n`: numeric, number of people immigrating from other cantons.
+#'    * `emi_nat_n`: numeric, number of people emigrating to other cantons.
+#'    * `mig_nat_n`: numeric, national / inter-cantonal net migration.
 
 #'
 #' @section Projected population:
