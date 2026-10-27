@@ -61,7 +61,7 @@ Description: Project the development of the population at different spatial leve
     parameters as open data for Switzerland, plus tools for model evaluation 
     against benchmarks such as population records or a base model.
 URL: https://statistik-aargau.github.io/propop, https://statistik-aargau.github.io/propop/
-BugReports: https://github.com/statistik-aargau/propop
+BugReports: https://github.com/statistik-aargau/propop/issues
 License: GPL (>= 3)
 Depends: 
     R (>= 3.5.0)

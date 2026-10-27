@@ -14,7 +14,7 @@ Useful links:
 \itemize{
   \item \url{https://statistik-aargau.github.io/propop}
   \item \url{https://statistik-aargau.github.io/propop/}
-  \item Report bugs at \url{https://github.com/statistik-aargau/propop}
+  \item Report bugs at \url{https://github.com/statistik-aargau/propop/issues}
 }
 
 }
