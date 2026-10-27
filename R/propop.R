@@ -52,6 +52,12 @@
 #'    districts) within the main superordinate projection unit (e.g., a canton).
 #'    Accounts for movements between different subregions. Needs to be provided
 #'    by the user.
+#'    * `emi_sub` \bold{(optional)}, numeric, emigration rate per subregion;
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
+#'     * `imm_sub` \bold{(optional)}, numeric, immigration rate per subregion;
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
 #'
 #' @param population data frame including the starting population of each
 #' demographic group and each spatial unit. Possible values are the same as in
@@ -137,7 +143,13 @@
 #'      \item{imm_nat_n}{numeric, number of people who immigrate
 #'      from other cantons.}
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
-#'      (only returned if  `binational = TRUE`.)}
+#'      (only returned if `binational = TRUE`.)}
+#'      \item{mig_sub}{numeric, migration between subregions
+#'      (only returned if `subregional = "net"`.)}
+#'      \item{emi_sub_n}{numeric, emigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
+#'      \item{imm_sub_n}{numeric, immigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
 #'
 #' @export
 #'

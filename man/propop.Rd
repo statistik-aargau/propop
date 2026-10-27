@@ -51,6 +51,12 @@ is the migration from / to other subregions (e.g., municipalities,
 districts) within the main superordinate projection unit (e.g., a canton).
 Accounts for movements between different subregions. Needs to be provided
 by the user.
+\item \code{emi_sub} \bold{(optional)}, numeric, emigration rate per subregion;
+Accounts for movements between different subregions. Needs to be provided
+by the user.
+* \code{imm_sub} \bold{(optional)}, numeric, immigration rate per subregion;
+Accounts for movements between different subregions. Needs to be provided
+by the user.
 }}
 
 \item{population}{data frame including the starting population of each
@@ -148,7 +154,13 @@ from other countries.}
 \item{imm_nat_n}{numeric, number of people who immigrate
 from other cantons.}
 \item{acq_n}{numeric, number of people who acquire Swiss citizenship
-(only returned if  \code{binational = TRUE}.)}
+(only returned if \code{binational = TRUE}.)}
+\item{mig_sub}{numeric, migration between subregions
+(only returned if \code{subregional = "net"}.)}
+\item{emi_sub_n}{numeric, emigration from subregions
+(only returned if \code{subregional = "rate"}.)}
+\item{imm_sub_n}{numeric, immigration from subregions
+(only returned if \code{subregional = "rate"}.)}
 }
 \description{
 Wrapper function to project population development using the

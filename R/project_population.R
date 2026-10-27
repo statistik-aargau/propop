@@ -73,7 +73,14 @@
 #'      from other countries.}
 #'      \item{imm_nat_n}{numeric, number of people who immigrate
 #'      from other cantons.}
-#'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship.}
+#'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
+#'      (only returned if `binational = TRUE`.)}
+#'      \item{mig_sub}{numeric, migration between subregions
+#'      (only returned if `subregional = "net"`.)}
+#'      \item{emi_sub_n}{numeric, emigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
+#'      \item{imm_sub_n}{numeric, immigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
 #'
 #' @autoglobal
 #' @noRd
@@ -87,6 +94,7 @@ project_population <- function(
     subregional = FALSE,
     binational = TRUE) {
   # Checks ----
+
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
     msg = "Column `scen` is missing in parameters."
