@@ -11,8 +11,8 @@
 #'        the number of people per group in January).
 #' @param births character, column containing the number of births in the group
 #'        of 0-year olds.
-#' @param emi_n character, column containing the total number of people emigrating per
-#'        spatial unit and demographic group.
+#' @param emi_n character, column containing the total number of people
+#'        emigrating per spatial unit and demographic group.
 #' @param spatial_unit character, column containing the spatial units.
 #' @param method character, method to calculate average shares, i.e. `mean` or
 #'        `median`.
@@ -21,9 +21,10 @@
 #' @param age_group \bold{(optional)} integer, divides continuous age values into
 #'        intervals for calculating shares. If the argument is not specified,
 #'        the default uses 1-year age groups.
-#' @param binational \bold{(optional)} boolean, `TRUE` indicates that the calculation
-#'        discriminates between two groups of nationalities. `FALSE` indicates
-#'        that the calculation does not distinguish between nationalities.
+#' @param binational \bold{(optional)} boolean, `TRUE` indicates that the
+#'        calculation discriminates between two groups of nationalities.
+#'        `FALSE` indicates that the calculation does not distinguish between
+#'        nationalities.
 #' @param two_sex \bold{(optional)} boolean, `TRUE` indicates that the calculation
 #'        discriminates between two sexes. `FALSE` indicates that the calculation
 #'        does not distinguish between sexes.
@@ -102,7 +103,9 @@ calculate_rates <- function(
 
   # Age group contains no digits after the comma
   assertthat::assert_that(grepl("^[^.]*\\.?0*$", age_group),
-    msg = paste0("Value for `age_group` must not contain any digits after the comma.")
+    msg = paste0(
+      "Value for `age_group` must not contain any digits after the comma."
+    )
   )
   assertthat::assert_that(age_group > 0,
     msg = paste0("Value for `age_group` must be larger than zero.")
@@ -299,7 +302,6 @@ calculate_rates <- function(
   df_result <- df_rate_mean |>
     dplyr::mutate(
       spatial_unit = as.character(spatial_unit),
-      # age = as.character(age),
       method = paste0(method, " ", year_range_string)
     ) |>
     # prune columns

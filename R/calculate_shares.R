@@ -32,8 +32,9 @@
 #' `subregional = "rate"`.
 #'
 #' @seealso
-#' [propop()] for details on how to account for subregional migration using the rate method,
-#' [calculate_rates()] for calculating the associated emigration rate `emi_sub`.
+#' [propop()] for details on how to account for subregional migration using the
+#' rate method, [calculate_rates()] for calculating the associated emigration
+#' rate `emi_sub`.
 #'
 #' @export
 #'
@@ -107,7 +108,9 @@ calculate_shares <- function(
 
   # Age group contains no digits after the comma
   assertthat::assert_that(grepl("^[^.]*\\.?0*$", age_group),
-    msg = paste0("Value for `age_group` must not contain any digits after the comma.")
+    msg = paste0(
+      "Value for `age_group` must not contain any digits after the comma."
+    )
   )
   assertthat::assert_that(age_group > 0,
     msg = paste0("Value for `age_group` must be larger than zero.")
@@ -276,7 +279,8 @@ calculate_shares <- function(
 
   # Calculate mean shares ----
   df_result <- df_prep |>
-    # Step 1: Immigration for specified age group within spatial unit (across all years)
+    # Step 1: Immigration for specified age group within spatial unit
+    # (across all years)
     mutate(
       sum_imm_n = sum(imm_n),
       .by = any_of(c("spatial_unit", "nat", "sex", "age_group"))
@@ -292,7 +296,9 @@ calculate_shares <- function(
         (sum_imm_n == 0 & total_imm_n == 0) ~ 0,
         .default = imm_share
       ),
-      method = paste0("share ", year_range_string, " for ", !!age_group, "-year age groups")
+      method = paste0(
+        "share ", year_range_string, " for ", !!age_group, "-year age groups"
+      )
     ) |>
     # Trim so that only unique values are included
     select(

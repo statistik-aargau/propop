@@ -338,13 +338,7 @@ data_distr_hist_int |>
   # Display rounded numbers to save space
   dplyr::mutate(imm_share = round(imm_share, 3)) |>
   dplyr::filter(sex == "m" & nat == "int" & age == "29") |>
-  DT::datatable(
-    # rownames = FALSE,
-    # options = list(
-    #   dom = "t",
-    #   paging = FALSE
-    # )
-  ) |>
+  DT::datatable() |>
   DT::formatStyle(
     "sum_imm_n",
     backgroundColor = "#96D4FF"
