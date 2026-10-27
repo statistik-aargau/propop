@@ -304,7 +304,7 @@ projection_2025 <- propop(
     dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
-  # population records from 2025 as starting point
+  # population records from 2024 as starting point
   population = fso_population_2024,
   subregional = FALSE,
   binational = TRUE
