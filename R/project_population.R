@@ -226,6 +226,18 @@ project_population <- function(
     ) |>
     arrange(spatial_unit, year, scen, age, nat, desc(sex))
 
+  # The population equation should add up to zero
+  balance_check <- suppressMessages(
+    check_balance(population_out |> dplyr::filter(year == max(year)))
+  )
+
+  assertthat::assert_that(
+    balance_check$nonzeros == 0 && balance_check$missings == 0,
+    msg = paste0(
+      "The population equation does not add up to zero in projection year ",
+      pop_year + 1, "."
+    )
+  )
 
   return(population_out)
 }
