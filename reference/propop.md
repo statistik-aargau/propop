@@ -301,7 +301,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [490ms]
+#> ✔ Processing completed in [625ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -349,7 +349,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [344ms]
+#> ✔ Processing completed in [424ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
