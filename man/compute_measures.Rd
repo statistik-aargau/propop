@@ -64,12 +64,12 @@ For more details on usage, see
 }
 \examples{
 combined <- tibble::tibble(
- year = 2020,
- spatial_unit = "Aargau",
- sex = "f",
- age = c("age_00_19", "age_20_64", "age_65_"),
- n_benchmark = c(50020, 17917, 53005),
- n_projected = c(49691, 18519, 52395),
+  year = 2020,
+  spatial_unit = "Aargau",
+  sex = "f",
+  age = c("age_00_19", "age_20_64", "age_65_"),
+  n_benchmark = c(50020, 17917, 53005),
+  n_projected = c(49691, 18519, 52395),
 )
 
 compute_measures(combined)
