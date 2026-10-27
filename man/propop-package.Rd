@@ -19,19 +19,19 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Norah Efosa
+\strong{Maintainer}: Norah Efosa \email{norah.efosa@ag.ch}
 
 Authors:
 \itemize{
-  \item Adrian Gadient (\href{https://orcid.org/0000-0003-0026-3153}{ORCID})
-  \item Tina Cornioley
-  \item Jan Wunder
-  \item Niklas Haffert
+  \item Adrian Gadient \email{adrian.gadient@ag.ch} (\href{https://orcid.org/0000-0003-0026-3153}{ORCID})
+  \item Tina Cornioley \email{tina.cornioley@vd.ch}
+  \item Jan Wunder \email{jan.wunder@sg.ch}
+  \item Niklas Haffert \email{niklas.haffert@sg.ch}
 }
 
 Other contributors:
 \itemize{
-  \item Andrea Plüss [contributor]
+  \item Andrea Plüss \email{andrea.pluess@ag.ch} [contributor]
   \item Nadine Herrmann [contributor]
   \item Lutz Benson [contributor]
   \item Eric Meyer [contributor]
