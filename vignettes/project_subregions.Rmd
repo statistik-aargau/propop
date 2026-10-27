@@ -120,8 +120,12 @@ of people across all spatial units in the respective demographic group (`sum_n`)
 # Calculate shares
 df_population_shares <- ag_population_subregional |>
   dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
-  dplyr::mutate(share = n / sum_n)
-
+  dplyr::mutate(share = n / sum_n) |> 
+  # The population and group sum of a few elderly groups is zero, thus the
+  # share must also be zero
+  dplyr::mutate(share = dplyr::case_when(
+    sum_n == 0 & n == 0 ~ 0, .default = share)
+  )
 ```
 
 <!-- The following example for 29-year old international males shows that the sum of -->
