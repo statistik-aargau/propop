@@ -3,30 +3,27 @@ Title: Project Population Growth in Switzerland Using the Cohort Component Metho
 Version: 2.2.0
 Authors@R: c(
     person(
-      "Norah", "Efosa", , "norah.efosa@ag.ch", 
+      "Norah", "Efosa", 
       role = c("aut", "cre")),
     person(
-      "Adrian", "Gadient", , "adrian.gadient@ag.ch", role = c("aut"), 
-    comment = c(ORCID = "0000-0003-0026-3153")),
+      "Adrian", "Gadient", 
+      role = c("aut"), 
+      comment = c(ORCID = "0000-0003-0026-3153")),
     person(
       "Tina", "Cornioley",
-      role = "aut",
-      email = "tina.cornioley@vd.ch"
+      role = "aut"
     ),
     person(
       "Jan", "Wunder",
-      role = "aut",
-      email = "jan.wunder@sg.ch"
+      role = "aut"
     ),
     person(
       "Niklas", "Haffert", 
-      role = c("aut"),  
-      email = "niklas.haffert@sg.ch"
+      role = c("aut")
     ),
     person(
       "Andrea", "Plüss",
-      role = "ctb",
-      email = "andrea.pluess@ag.ch"
+      role = "ctb"
     ),
     person(
       "Nadine", "Herrmann",
@@ -53,10 +50,11 @@ Authors@R: c(
     role = c("fnd", "cph")
     )
     )
+Maintainer: Norah Efosa <norah-efosa@protonmail.com>
 Description: Project the development of the population at different spatial levels 
     (e.g., cantons, districts, municipalities) using the cohort component method, 
     broken down by 101 one-year age classes, gender, and nationality (see e.g.
-    [Preston, Guillot, and Heuveline, 2000](https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512)). 
+    [Preston, Guillot, and Heuveline, 2000](<https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512>)). 
     Includes helper functions to download required population data and projection 
     parameters as open data for Switzerland, plus tools for model evaluation 
     against benchmarks such as population records or a base model.
@@ -88,7 +86,8 @@ Suggests:
     testthat,
     rlang,
     lifecycle,
-    colorspace
+    colorspace,
+    qpdf
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
