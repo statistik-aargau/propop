@@ -27,7 +27,7 @@ input:
 - a data frame with the **starting population**, that is, the most
   up-to-date number of people for each demographic group before the
   first projection year; to illustrate, the example population data in
-  `propop` are from 31. December 2025.
+  ‘propop’ are from 31. December 2025.
 
 - a data frame containing model **parameters**, that is, information
   about how key demographic variables such as mortality are expected to
@@ -36,7 +36,7 @@ input:
 
 - some global arguments which do not change over time or across
   demographic groups (e.g., proportion of female to male newborns).
-  `propop` uses FSO’s standard values as default option for these
+  ‘propop’ uses FSO’s standard values as default option for these
   arguments.
 
 Importantly, the two data frames’ structure (number, names, type of
@@ -50,7 +50,7 @@ older).
 
 ## Projections for a single region
 
-The package `propop` includes the population data from the canton of
+The package ‘propop’ includes the population data from the canton of
 Aargau from 2023 and the FSO parameters from the [population development
 scenarios
 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.assetdetail.14963221.html).
@@ -79,9 +79,9 @@ projection_canton_2030 <- propop(
   binational = TRUE
 )
 #> 
-#> ── Running projection for 3 scenario(s). ───────────────────────────────────────
+#> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.2s]
+#> ✔ Processing completed in [1.3s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -177,7 +177,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [417ms]
+#> ✔ Processing completed in [415ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

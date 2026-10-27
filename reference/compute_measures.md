@@ -94,10 +94,20 @@ local area population forecasts, Population Research and Policy Review,
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Get evaluation measures without weights
+combined <- tibble::tibble(
+  year = 2020,
+  spatial_unit = "Aargau",
+  sex = "f",
+  age = c("age_00_19", "age_20_64", "age_65_"),
+  n_benchmark = c(50020, 17917, 53005),
+  n_projected = c(49691, 18519, 52395),
+)
+
 compute_measures(combined)
-# Get evaluation measures weighted for groups
-compute_measures(combined, weight_groups = c("age", "nat"))
-} # }
+#> # A tibble: 3 × 9
+#>    year spatial_unit sex   age       n_benchmark n_projected error     pe   ape
+#>   <dbl> <chr>        <chr> <chr>           <dbl>       <dbl> <dbl>  <dbl> <dbl>
+#> 1  2020 Aargau       f     age_00_19       50020       49691  -329 -0.658 0.658
+#> 2  2020 Aargau       f     age_20_64       17917       18519   602  3.36  3.36 
+#> 3  2020 Aargau       f     age_65_         53005       52395  -610 -1.15  1.15 
 ```

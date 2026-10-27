@@ -41,7 +41,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,7 +158,7 @@ but the core idea is the same.</p>
 <code>ag_population_subregional</code> (included in the package)
 contains the population of five subregions at the end of 2025.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load package data </span></span>
+<code class="sourceCode R"><span><span class="co"># Load package data</span></span>
 <span><span class="co">## Population of 5 subregions</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ag_population_subregional"</span><span class="op">)</span></span>
 <span><span class="co">## FSO data containing parameters for the entire canton</span></span>
@@ -178,7 +178,8 @@ subregions are identical to those for the entire canton.</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    spatial_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, length.out <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>To calculate the shares for the five subregions, we count the number
 of people in each demographic group across all spatial units
 (<code>sum_n</code>). Then <code>share</code> is obtained by dividing
@@ -189,7 +190,13 @@ all spatial units in the respective demographic group
 <code class="sourceCode R"><span><span class="co"># Calculate shares</span></span>
 <span><span class="va">df_population_shares</span> <span class="op">&lt;-</span> <span class="va">ag_population_subregional</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sum_n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="va">sum_n</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="va">sum_n</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># The population and group sum of a few elderly groups is zero, thus the</span></span>
+<span>  <span class="co"># share must also be zero</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>share <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">sum_n</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">n</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">~</span> <span class="fl">0</span>,</span>
+<span>    .default <span class="op">=</span> <span class="va">share</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <!-- The following example for 29-year old international males shows that the sum of -->
 <!-- all five region's shares is 1. -->
 <!-- ```{r show-table-1, message=FALSE, echo = FALSE} -->
@@ -278,7 +285,7 @@ recognise the parameters.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[369ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[367ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -292,7 +299,7 @@ recognise the parameters.</p>
 <span><span class="co">#&gt; Subregional migration: <span style="color: #0000BB;">"no"</span></span></span>
 <span><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; <span style="font-style: italic;">Projected</span> population size by <span style="color: #0000BB;">2027</span>:</span></span>
-<span><span class="co">#&gt; - Scenario <span style="color: #0000BB;">"reference"</span>: <span style="color: #0000BB; font-style: italic;">759314</span></span></span>
+<span><span class="co">#&gt; - Scenario <span style="color: #0000BB;">"reference"</span>: <span style="color: #0000BB; font-style: italic;">759346</span></span></span>
 <span><span class="co">#&gt; ════════════════════════════════════════════════════════════════════════════════</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4,040 × 17</span></span></span>
 <span><span class="co">#&gt;     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n</span></span>
@@ -355,13 +362,14 @@ provide a data frame containing <code>imm_n</code>, a column with the
 number of immigrants per demographic group (e.g.,
 <code>hist_imm_int_n</code>, as calculated above).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_distr_hist_int</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">data_distr_hist_int</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate_shares.html">calculate_shares</a></span><span class="op">(</span></span>
-<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_int_n"</span>, </span>
+<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_int_n"</span>,</span>
 <span>    age_group <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>    year_range <span class="op">=</span> <span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span>,</span>
 <span>    binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    two_sex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>    two_sex <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>Under the hood, <code><a href="../reference/calculate_shares.html">propop::calculate_shares()</a></code> computes the
 <span style="color: #96D4FF;">historical sum for the requested
 demographic group and years in each spatial unit</span>
@@ -379,35 +387,37 @@ size. That is, the share is multiplied by the numbers estimated by the
 FSO for the whole canton.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the historical shares for immigration from other cantons</span></span>
-<span><span class="va">data_distr_hist_nat</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">data_distr_hist_nat</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate_shares.html">calculate_shares</a></span><span class="op">(</span></span>
-<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_nat_n"</span>, </span>
+<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_nat_n"</span>,</span>
 <span>    age_group <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>    year_range <span class="op">=</span> <span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span>,</span>
 <span>    binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    two_sex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    two_sex <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add both shares to the data frame that holds the parameters for the whole canton</span></span>
 <span><span class="co"># Start from the original duplicated parameters</span></span>
 <span><span class="va">fso_parameters_sub_distr_hist</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_distr_hist_int</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>, </span>
-<span>                    share_imm_int <span class="op">=</span> <span class="va">imm_share</span><span class="op">)</span>,</span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>,</span>
+<span>        share_imm_int <span class="op">=</span> <span class="va">imm_share</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_distr_hist_nat</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>, </span>
-<span>                    share_imm_nat <span class="op">=</span> <span class="va">imm_share</span><span class="op">)</span>,</span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>,</span>
+<span>        share_imm_nat <span class="op">=</span> <span class="va">imm_share</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Compute immigration-`n` for subregions</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    imm_int_n_distr <span class="op">=</span> <span class="va">imm_int_n</span> <span class="op">*</span> <span class="va">share_imm_int</span>,</span>
 <span>    imm_nat_n_distr <span class="op">=</span> <span class="va">imm_nat_n</span> <span class="op">*</span> <span class="va">share_imm_nat</span></span>
-<span>  <span class="op">)</span></span>
-<span>  </span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>As in the first version, we can inspect the result for the parameter
 “immigration from other countries”. The table compares the figures
 provided by the FSO for the whole canton (<code>imm_int_n</code>) with
@@ -429,7 +439,7 @@ recognise the parameters.</p>
 <span>    <span class="co"># Rename variables</span></span>
 <span>    imm_int_n <span class="op">=</span> <span class="va">imm_int_n_distr</span>,</span>
 <span>    imm_nat_n <span class="op">=</span> <span class="va">imm_nat_n_distr</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">imm_int_n_distr</span>, <span class="va">imm_nat_n_distr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now everything is ready to run the projection:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -449,7 +459,7 @@ recognise the parameters.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[308ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[390ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -486,8 +496,8 @@ recognise the parameters.</p>
 <div class="section level2">
 <h2 id="between-subregions">Migration between subregions<a class="anchor" aria-label="anchor" href="#between-subregions"></a>
 </h2>
-<p>In <code>propop</code>, you may account for migration between
-subregions by specifying this in the <code><a href="../reference/propop.html">propop()</a></code> argument
+<p>In ‘propop’, you may account for migration between subregions by
+specifying this in the <code><a href="../reference/propop.html">propop()</a></code> argument
 <code>subregional =</code>. You can choose between two mathematical
 approaches, using either</p>
 <ul>
@@ -508,8 +518,8 @@ approaches.</p>
 <div class="section level4">
 <h4 id="preparation">Preparation<a class="anchor" aria-label="anchor" href="#preparation"></a>
 </h4>
-<p>To use the <strong>rate</strong> method in <code>propop</code>, the
-parameter data frame must include emigration and immigration rates:</p>
+<p>To use the <strong>rate</strong> method in ‘propop’, the parameter
+data frame must include emigration and immigration rates:</p>
 <ul>
 <li>The <strong>emigration rate</strong> (<code>emi_sub</code>) is the
 typical proportion of a chosen demographic group at a given spatial
@@ -573,7 +583,7 @@ mean of these shares over time (<code>emi_rate</code>). To make it easy
 to follow the calculation, we aggregate into 2-year age groups and only
 use two years.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ag_migration_subregional"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ag_migration_subregional"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute mean for each demographic group</span></span>
 <span><span class="va">emi_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_rates.html">calculate_rates</a></span><span class="op">(</span></span>
@@ -585,7 +595,7 @@ use two years.</p>
 <span>  spatial_unit <span class="op">=</span> <span class="va">spatial_unit</span>,</span>
 <span>  age_group <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"mean"</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The table below shows the average emigration rate
 (<code>emi_rate</code>) for 28- and 29-year old international men in the
 five spatial units (highlighted in different colours).</p>
@@ -601,7 +611,7 @@ migration</a>).</p>
 <span>  year_range <span class="op">=</span> <span class="fl">2024</span><span class="op">:</span><span class="fl">2025</span>,</span>
 <span>  imm_n <span class="op">=</span> <span class="st">"hist_imm_sub_n"</span>,</span>
 <span>  age_group <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The table below shows the result for the group of 28- and 29- year
 old international men. It includes the number of immigrants for each
 2-year age group and spatial unit (<code>sum_imm_n</code>), the total
@@ -613,19 +623,21 @@ unit (<code>imm_share</code>).</p>
 <code>imm_sub</code> to the data frame that contains the parameters (we
 can re-use <code>fso_parameters_sub_distr_hist</code>).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">parameters_rate</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub_distr_hist</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">parameters_rate</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub_distr_hist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">emi_rate</span> <span class="op">|&gt;</span> </span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">emi_rate</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="va">emi_rate</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">emi_rate</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>, <span class="va">spatial_unit</span><span class="op">)</span>,</span>
-<span>    relationship <span class="op">=</span> <span class="st">"many-to-many"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    relationship <span class="op">=</span> <span class="st">"many-to-many"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">imm_share</span> <span class="op">|&gt;</span> </span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">imm_share</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="va">imm_share</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">imm_share</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">nat</span>, <span class="va">sex</span>, <span class="va">age</span>, <span class="va">spatial_unit</span><span class="op">)</span>,</span>
-<span>    relationship <span class="op">=</span> <span class="st">"many-to-many"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    relationship <span class="op">=</span> <span class="st">"many-to-many"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Use names expected in propop()</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>emi_sub <span class="op">=</span> <span class="va">emi_rate</span>, imm_sub <span class="op">=</span> <span class="va">imm_share</span><span class="op">)</span></span></code></pre></div>
 <p>Then we set <code>subregional</code> to <code>rate</code> and run
@@ -646,7 +658,7 @@ can re-use <code>fso_parameters_sub_distr_hist</code>).</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[5.4s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[5.3s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>
@@ -704,10 +716,10 @@ provides a convenient way to obtain the number of migrants for custom
 age groups and year ranges.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Historical subregional immigration</span></span>
-<span><span class="va">subregional_imm_share</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">hist_imm_sub_n</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">subregional_imm_share</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">hist_imm_sub_n</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate_shares.html">calculate_shares</a></span><span class="op">(</span></span>
-<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_sub_n"</span>, </span>
+<span>    imm_n <span class="op">=</span> <span class="st">"hist_imm_sub_n"</span>,</span>
 <span>    age_group <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>    year_range <span class="op">=</span> <span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span>,</span>
 <span>    binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -715,10 +727,10 @@ age groups and year ranges.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Historical subregional emigration</span></span>
-<span><span class="va">subregional_emi_share</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">subregional_emi_share</span> <span class="op">&lt;-</span> <span class="va">ag_migration_subregional</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">hist_emi_sub_n</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate_shares.html">calculate_shares</a></span><span class="op">(</span></span>
-<span>    imm_n <span class="op">=</span> <span class="st">"hist_emi_sub_n"</span>, </span>
+<span>    imm_n <span class="op">=</span> <span class="st">"hist_emi_sub_n"</span>,</span>
 <span>    age_group <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>    year_range <span class="op">=</span> <span class="fl">2022</span><span class="op">:</span><span class="fl">2025</span>,</span>
 <span>    binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -729,28 +741,30 @@ subregional emigration (<code>hist_emi_sub_n</code>) from the
 subregional immigration (<code>hist_imm_sub_n</code>).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subregional_net_migration</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span><span class="op">(</span></span>
-<span>  <span class="va">subregional_imm_share</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="va">subregional_imm_share</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>      <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">age_group</span>, <span class="va">nat</span>, <span class="va">sex</span>, sum_imm_sub_n <span class="op">=</span> <span class="va">sum_imm_n</span>, </span>
+<span>      <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">age_group</span>, <span class="va">nat</span>, <span class="va">sex</span>,</span>
+<span>      sum_imm_sub_n <span class="op">=</span> <span class="va">sum_imm_n</span>,</span>
 <span>      total_imm_sub_n <span class="op">=</span> <span class="va">total_imm_n</span>, imm_sub_share <span class="op">=</span> <span class="va">imm_share</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>  <span class="va">subregional_emi_share</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="va">subregional_emi_share</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>      <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">age_group</span>, <span class="va">nat</span>, <span class="va">sex</span>, sum_emi_sub_n <span class="op">=</span> <span class="va">sum_imm_n</span>, </span>
+<span>      <span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">age_group</span>, <span class="va">nat</span>, <span class="va">sex</span>,</span>
+<span>      sum_emi_sub_n <span class="op">=</span> <span class="va">sum_imm_n</span>,</span>
 <span>      total_emi_sub_n <span class="op">=</span> <span class="va">total_imm_n</span>, emi_sub_share <span class="op">=</span> <span class="va">imm_share</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>  by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">age_group</span>, <span class="va">nat</span>, <span class="va">sex</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># calculate net migration</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sum_mig_sub_n <span class="op">=</span> <span class="va">sum_imm_sub_n</span> <span class="op">-</span> <span class="va">sum_emi_sub_n</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sum_mig_sub_n <span class="op">=</span> <span class="va">sum_imm_sub_n</span> <span class="op">-</span> <span class="va">sum_emi_sub_n</span><span class="op">)</span></span></code></pre></div>
 <p>Since the two values are based on aggregated data, no further
 aggregation is required. We can add <code>mig_sub</code> as a column to
 the parameters:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">parameters_net</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub_distr_hist</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">parameters_net</span> <span class="op">&lt;-</span> <span class="va">fso_parameters_sub_distr_hist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">subregional_net_migration</span> <span class="op">|&gt;</span> </span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mig_sub <span class="op">=</span> <span class="va">sum_mig_sub_n</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="va">subregional_net_migration</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mig_sub <span class="op">=</span> <span class="va">sum_mig_sub_n</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span>, <span class="va">mig_sub</span><span class="op">)</span>,</span>
 <span>    by <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">spatial_unit</span>, <span class="va">age</span>, <span class="va">nat</span>, <span class="va">sex</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -769,11 +783,11 @@ the parameters:</p>
 <span>  population <span class="op">=</span> <span class="va">ag_population_subregional</span>,</span>
 <span>  binational <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  subregional <span class="op">=</span> <span class="st">"net"</span></span>
-<span><span class="op">)</span> </span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Running projection for </span><span style="color: #0000BB; font-weight: bold;">1</span><span style="font-weight: bold;"> scenario(s).</span> <span style="color: #00BBBB;">───────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Process...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[4.6s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Processing completed in <span style="color: #B2B2B2;">[4.5s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Settings used for the projection</span> <span style="color: #00BBBB;">────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; Scenario(s): <span style="color: #0000BB;">"reference"</span></span></span>

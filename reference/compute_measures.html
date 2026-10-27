@@ -23,7 +23,7 @@ a benchmark to compute performance measures."><meta property="og:image" content=
 
     <a class="navbar-brand me-2" href="../index.html">propop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,19 +120,37 @@ high resolution (e.g., 101 age classes, nationality, sex).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque &amp; L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, <a href="https://doi.org/10.1007/978-94-017-8990-5_6" class="external-link">https://doi.org/10.1007/978-94-017-8990-5_6</a></p>
-<p>Wilson, T. (2012). Forecast accuracy and uncertainty of Australian Bureau of Statistics state and territory population projections, International Journal of Population Research, 1, 419824, <a href="https://doi.org/10.1155/2012/419824" class="external-link">https://doi.org/10.1155/2012/419824</a></p>
-<p>Wilson, T. (2016). Evaluation of alternative cohort-component models for local area population forecasts, Population Research and Policy Review, 35, 241-261, <a href="https://doi.org/10.1007/s11113-015-9380-y" class="external-link">https://doi.org/10.1007/s11113-015-9380-y</a></p>
+    <p>Baker, J., et al. (2015). Sub-county population estimates using administrative
+records: A municipal-level case study in New Mexico. In M. N. Hoque &amp;
+L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79).
+Springer, <a href="https://doi.org/10.1007/978-94-017-8990-5_6" class="external-link">https://doi.org/10.1007/978-94-017-8990-5_6</a></p>
+<p>Wilson, T. (2012). Forecast accuracy and uncertainty of Australian Bureau of
+Statistics state and territory population projections, International Journal
+of Population Research, 1, 419824, <a href="https://doi.org/10.1155/2012/419824" class="external-link">https://doi.org/10.1155/2012/419824</a></p>
+<p>Wilson, T. (2016). Evaluation of alternative cohort-component models for local
+area population forecasts, Population Research and Policy Review, 35, 241-261,
+<a href="https://doi.org/10.1007/s11113-015-9380-y" class="external-link">https://doi.org/10.1007/s11113-015-9380-y</a></p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Get evaluation measures without weights</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">combined</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2020</span>,</span></span>
+<span class="r-in"><span>  spatial_unit <span class="op">=</span> <span class="st">"Aargau"</span>,</span></span>
+<span class="r-in"><span>  sex <span class="op">=</span> <span class="st">"f"</span>,</span></span>
+<span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age_00_19"</span>, <span class="st">"age_20_64"</span>, <span class="st">"age_65_"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  n_benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50020</span>, <span class="fl">17917</span>, <span class="fl">53005</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  n_projected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49691</span>, <span class="fl">18519</span>, <span class="fl">52395</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">compute_measures</span><span class="op">(</span><span class="va">combined</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Get evaluation measures weighted for groups</span></span></span>
-<span class="r-in"><span><span class="fu">compute_measures</span><span class="op">(</span><span class="va">combined</span>, weight_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"nat"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    year spatial_unit sex   age       n_benchmark n_projected error     pe   ape</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>020 Aargau       f     age_00_19       <span style="text-decoration: underline;">50</span>020       <span style="text-decoration: underline;">49</span>691  -<span style="color: #BB0000;">329</span> -<span style="color: #BB0000;">0.658</span> 0.658</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>020 Aargau       f     age_20_64       <span style="text-decoration: underline;">17</span>917       <span style="text-decoration: underline;">18</span>519   602  3.36  3.36 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>020 Aargau       f     age_65_         <span style="text-decoration: underline;">53</span>005       <span style="text-decoration: underline;">52</span>395  -<span style="color: #BB0000;">610</span> -<span style="color: #BB0000;">1.15</span>  1.15 </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

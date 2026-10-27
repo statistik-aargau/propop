@@ -8,7 +8,7 @@ calculations.
 You can either use your own parameters and starting population or
 download these data from the Swiss Federal Statistical Office (FSO). For
 instructions on how to download this information from
-[STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
+[STAT-TAB](https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/forschung/stat-tab-online-datenrecherche.html),
 see
 [`vignette("prepare_data", package = "propop")`](https://statistik-aargau.github.io/propop/articles/prepare_data.md).
 
@@ -92,6 +92,12 @@ propop(
     districts) within the main superordinate projection unit (e.g., a
     canton). Accounts for movements between different subregions. Needs
     to be provided by the user.
+
+  - `emi_sub` **(optional)**, numeric, emigration rate per subregion;
+    Accounts for movements between different subregions. Needs to be
+    provided by the user. \* `imm_sub` **(optional)**, numeric,
+    immigration rate per subregion; Accounts for movements between
+    different subregions. Needs to be provided by the user.
 
 - population:
 
@@ -265,6 +271,21 @@ population are also included in the output:
   numeric, number of people who acquire Swiss citizenship (only returned
   if `binational = TRUE`.)
 
+- mig_sub:
+
+  numeric, migration between subregions (only returned if
+  `subregional = "net"`.)
+
+- emi_sub_n:
+
+  numeric, emigration from subregions (only returned if
+  `subregional = "rate"`.)
+
+- imm_sub_n:
+
+  numeric, immigration from subregions (only returned if
+  `subregional = "rate"`.)
+
 ## Examples
 
 ``` r
@@ -280,7 +301,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [427ms]
+#> ✔ Processing completed in [490ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
@@ -328,7 +349,7 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [295ms]
+#> ✔ Processing completed in [344ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

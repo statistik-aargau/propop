@@ -25,8 +25,7 @@ aggregate_measures(data, weight_groups = NULL)
 
 ## Value
 
-\#' A data frame. The data frame includes the following summary
-measures:
+A data frame. The data frame includes the following summary measures:
 
 - `mpe` is the mean percentage error (**mpe**; or mean algebraic
   percentage error **malpe**); it is a bias indicator as it takes the
@@ -99,3 +98,22 @@ International Journal of Population Research, 1, 419824,
 Wilson, T. (2016). Evaluation of alternative cohort-component models for
 local area population forecasts, Population Research and Policy Review,
 35, 241-261, <https://doi.org/10.1007/s11113-015-9380-y>
+
+## Examples
+
+``` r
+evaluation <- tibble::tibble(
+  year = rep(2020L, 3L),
+  n_benchmark = c(2605, 2679, 2650),
+  n_projected = c(2526, 2558, 2594),
+  error = c(-79, -121, -56),
+  pe = c(-3.032629558541267, -4.516610675625234, -2.1132),
+  ape = c(3.03, 4.516610675625234, 2.1132075471698113),
+)
+
+aggregate_measures(evaluation)
+#> # A tibble: 1 × 8
+#>     mpe medpe  mape medape  rmse n_measure ape_under_1 ape_under_5
+#>   <dbl> <dbl> <dbl>  <dbl> <dbl>     <int>       <dbl>       <dbl>
+#> 1 -3.22 -3.03  3.22   3.03  89.5         3           0           1
+```

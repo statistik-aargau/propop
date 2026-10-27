@@ -7,7 +7,7 @@ library(propop)
 
 ## Evaluate projections
 
-`propop` provides a function to **compare projections against a
+‘propop’ provides a function to **compare projections against a
 benchmark**. The benchmark can be the actual (recorded) population
 development (i.e., official records in population registry) or a base
 model (e.g., when testing alternative models or when comparing against
@@ -45,7 +45,7 @@ data_parameters <- get_parameters(
   year_first = 2024,
   year_last = 2030,
   spatial_units = "Aargau"
-) |> 
+) |>
   dplyr::filter(scen == "reference")
 ```
 
@@ -303,7 +303,7 @@ aggregate_measures(evaluation_3, weight_groups = c("age")) |>
 ### `propop` versus FSO
 
 Instead of comparing the propop projection with population records, we
-can also use the evaluation function to check how close the `propop`
+can also use the evaluation function to check how close the ‘propop’
 projection comes to FSO’s projection from the 2025 model.
 
 ``` r
@@ -318,7 +318,7 @@ fso_population_2024 <- get_population(
 ``` r
 
 projection_2025 <- propop(
-  parameters = fso_parameters |> 
+  parameters = fso_parameters |>
     dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
@@ -330,7 +330,7 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [2.5s]
+#> ✔ Processing completed in [2.6s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -368,7 +368,7 @@ fso_propop |>
     filter = "top",
     caption = htmltools::tags$caption(
       style = "caption-side: top; text-align: left; font-weight: bold",
-      "Comparison of projetions from FSO versus `propop`."
+      "Comparison of projetions from FSO versus 'propop'."
     )
   )
 ```

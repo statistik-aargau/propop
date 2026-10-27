@@ -1,5 +1,11 @@
 # Changelog
 
+## propop 2.2.0
+
+- API queries fail gracefully if no internet connection
+- Updated examples for exported functions
+- Increased test coverage
+
 ## propop 2.1.2
 
 - Removed deprecated functions.
@@ -33,8 +39,8 @@
 
 - The computations of the key function
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
-  are now implemented using data frames and `purrr` / `dplyr` rather
-  than base `R` matrices. This change makes the computational steps and
+  are now implemented using data frames and ‘purrr’ / ‘dplyr’ rather
+  than base ‘R’ matrices. This change makes the computational steps and
   intermediate results more accessible and easier to follow. Moreover,
   the new tabular approach facilitates the integration of new features.
   On the downside, the new approach takes approximately 25% longer to
@@ -84,16 +90,21 @@
 
 - [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   can now perform multiple projection scenarios in a single run.
-- New function `check_balance` to check population equation for each row
-  in the output of
+- New function
+  [`check_balance()`](https://statistik-aargau.github.io/propop/reference/check_balance.md)
+  to check population equation for each row in the output of
   [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
   (population at the beginning of the year plus components must be equal
   to the population at the end of the year).
-- The function `prepare_evaluation` has an additional set of age groups
-  (0-19, 20-39, 40-59, 60-79, 80 years and older). The output that is
-  created by this function can be used by `compute_measures` and
-  `aggregate_measures` to evaluate projection models against a
-  benchmark.
+- The function
+  [`prepare_evaluation()`](https://statistik-aargau.github.io/propop/reference/prepare_evaluation.md)
+  has an additional set of age groups (0-19, 20-39, 40-59, 60-79, 80
+  years and older). The output that is created by this function can be
+  used by
+  [`compute_measures()`](https://statistik-aargau.github.io/propop/reference/compute_measures.md)
+  and
+  [`aggregate_measures()`](https://statistik-aargau.github.io/propop/reference/aggregate_measures.md)
+  to evaluate projection models against a benchmark.
 
 ## propop 1.3.0
 
@@ -107,17 +118,19 @@
 
 ## propop 1.2.1
 
-- `get_population`: Using clearer, more intuitive name for argument to
-  specify start year; less typing for users;
+- [`get_population()`](https://statistik-aargau.github.io/propop/reference/get_population.md):
+  Using clearer, more intuitive name for argument to specify start year;
+  less typing for users;
 - revised function documentation
 - More detailed feedback after running propop::propop(), stating which
   arguments were used)
 
 ## propop 1.2.0
 
-- Added function `calculate_shares` to distribute FSO estimates
-  expressed as “number of people” among sub-cantonal entitities (e.g.,
-  immigration to municipalities).
+- Added function
+  [`calculate_shares()`](https://statistik-aargau.github.io/propop/reference/calculate_shares.md)
+  to distribute FSO estimates expressed as “number of people” among
+  sub-cantonal entitities (e.g., immigration to municipalities).
 
 ## propop 1.1.0
 
@@ -166,15 +179,15 @@
 
 ### Development history and earlier versions
 
-The `propop` package is a successor of `staagBevProj` (not publicly
-available), which was last updated in December 2022. `staagBevProj` was
+The ‘propop’ package is a successor of ‘staagBevProj’ (not publicly
+available), which was last updated in December 2022. ‘staagBevProj’ was
 developed by Tina Cornioley, Jan Wunder, and Niklas Haffert. As head of
 [Official Statistics
 Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik), Andrea Plüss
-supported the devlopment as well as the publication of `staagBevProj`
-and `propop`.
+supported the devlopment as well as the publication of ‘staagBevProj’
+and ‘propop’.
 
-`propop` was developed by Norah Efosa and Adrian Gadient ([Statistik
+‘propop’ was developed by Norah Efosa and Adrian Gadient ([Statistik
 Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik)). The main
 innovations are:
 
@@ -183,8 +196,8 @@ innovations are:
 - Centrally united FSO parameters and corrections / adjustments; these
   are now gathered in a single data frame that is passed to the
   projection function
-- Only one function to run projections (rather than `projectPop` and
-  `projectAll`)
+- Only one function to run projections (rather than `projectPop()` and
+  `projectAll()`)
 - Convenience functions to directly download data and parameters from
   STAT-TAB
 - Incorporation of assertions and unit tests

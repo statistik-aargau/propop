@@ -3,19 +3,20 @@
 Function to check if the components in the
 [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
 output add up. Takes the population at the beginning of the year
-(`n_jan`), adds all components (births - mor - emi_int - emi_nat +
-imm_int + imm_nat + acq) and checks if the sum is equal to the
+(`n_jan`), adds all obligatory components (births - mor_n - emi_int_n -
+emi_nat_n + imm_int_n + imm_nat_n) and optional components (acq_n,
+mig_sub, emi_sub_n, imm_sub_n) and checks if the sum is equal to the
 population at the end of the year (`n_dec`).
 
 ## Usage
 
 ``` r
-check_balance(data)
+check_balance(.data)
 ```
 
 ## Arguments
 
-- data:
+- .data:
 
   data frame containing population projections; can be created with
   [`propop::propop()`](https://statistik-aargau.github.io/propop/reference/propop.md).
@@ -39,7 +40,7 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [572ms]
+#> ✔ Processing completed in [670ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────

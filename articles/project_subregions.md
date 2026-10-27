@@ -63,7 +63,7 @@ contains the population of five subregions at the end of 2025.
 
 ``` r
 
-# Load package data 
+# Load package data
 ## Population of 5 subregions
 data("ag_population_subregional")
 ## FSO data containing parameters for the entire canton
@@ -87,7 +87,8 @@ fso_parameters_sub <- fso_parameters |>
   dplyr::mutate(
     spatial_unit = as.character(
       rep(1:5, length.out = dplyr::n())
-  ))
+    )
+  )
 ```
 
 To calculate the shares for the five subregions, we count the number of
@@ -101,7 +102,13 @@ group (`sum_n`).
 # Calculate shares
 df_population_shares <- ag_population_subregional |>
   dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
-  dplyr::mutate(share = n / sum_n)
+  dplyr::mutate(share = n / sum_n) |>
+  # The population and group sum of a few elderly groups is zero, thus the
+  # share must also be zero
+  dplyr::mutate(share = dplyr::case_when(
+    sum_n == 0 & n == 0 ~ 0,
+    .default = share
+  ))
 ```
 
 Now all required data are available. We can proceed to distribute the
@@ -176,7 +183,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [369ms]
+#> ✔ Processing completed in [367ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -190,7 +197,7 @@ propop(
 #> Subregional migration: "no"
 #> ────────────────────────────────────────────────────────────────────────────────
 #> Projected population size by 2027:
-#> - Scenario "reference": 759314
+#> - Scenario "reference": 759346
 #> ════════════════════════════════════════════════════════════════════════════════
 #> # A tibble: 4,040 × 17
 #>     year scen      spatial_unit nat   sex     age n_jan births mor_n emi_int_n
@@ -257,13 +264,14 @@ calculated above).
 
 ``` r
 
-data_distr_hist_int <- ag_migration_subregional |> 
+data_distr_hist_int <- ag_migration_subregional |>
   calculate_shares(
-    imm_n = "hist_imm_int_n", 
+    imm_n = "hist_imm_int_n",
     age_group = 5,
     year_range = 2022:2025,
     binational = TRUE,
-    two_sex = TRUE)
+    two_sex = TRUE
+  )
 ```
 
 Under the hood,
@@ -285,27 +293,30 @@ FSO for the whole canton.
 ``` r
 
 # Calculate the historical shares for immigration from other cantons
-data_distr_hist_nat <- ag_migration_subregional |> 
+data_distr_hist_nat <- ag_migration_subregional |>
   calculate_shares(
-    imm_n = "hist_imm_nat_n", 
+    imm_n = "hist_imm_nat_n",
     age_group = 5,
     year_range = 2022:2025,
     binational = TRUE,
-    two_sex = TRUE)
+    two_sex = TRUE
+  )
 
 # Add both shares to the data frame that holds the parameters for the whole canton
 # Start from the original duplicated parameters
 fso_parameters_sub_distr_hist <- fso_parameters_sub |>
   dplyr::left_join(
     data_distr_hist_int |>
-      dplyr::select(spatial_unit, nat, sex, age, 
-                    share_imm_int = imm_share),
+      dplyr::select(spatial_unit, nat, sex, age,
+        share_imm_int = imm_share
+      ),
     by = dplyr::join_by(spatial_unit, nat, sex, age)
   ) |>
   dplyr::left_join(
     data_distr_hist_nat |>
-      dplyr::select(spatial_unit, nat, sex, age, 
-                    share_imm_nat = imm_share),
+      dplyr::select(spatial_unit, nat, sex, age,
+        share_imm_nat = imm_share
+      ),
     by = dplyr::join_by(spatial_unit, nat, sex, age)
   ) |>
   # Compute immigration-`n` for subregions
@@ -313,7 +324,6 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub |>
     imm_int_n_distr = imm_int_n * share_imm_int,
     imm_nat_n_distr = imm_nat_n * share_imm_nat
   )
-  
 ```
 
 As in the first version, we can inspect the result for the parameter
@@ -338,7 +348,7 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub_distr_hist |>
     # Rename variables
     imm_int_n = imm_int_n_distr,
     imm_nat_n = imm_nat_n_distr
-  ) |> 
+  ) |>
   dplyr::select(-c(imm_int_n_distr, imm_nat_n_distr))
 ```
 
@@ -362,7 +372,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [308ms]
+#> ✔ Processing completed in [390ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -398,7 +408,7 @@ propop(
 
 ## Migration between subregions
 
-In `propop`, you may account for migration between subregions by
+In ‘propop’, you may account for migration between subregions by
 specifying this in the
 [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
 argument `subregional =`. You can choose between two mathematical
@@ -418,7 +428,7 @@ approaches.
 
 #### Preparation
 
-To use the **rate** method in `propop`, the parameter data frame must
+To use the **rate** method in ‘propop’, the parameter data frame must
 include emigration and immigration rates:
 
 - The **emigration rate** (`emi_sub`) is the typical proportion of a
@@ -485,7 +495,7 @@ groups and only use two years.
 
 ``` r
 
-data("ag_migration_subregional") 
+data("ag_migration_subregional")
 
 # Compute mean for each demographic group
 emi_rate <- calculate_rates(
@@ -497,7 +507,7 @@ emi_rate <- calculate_rates(
   spatial_unit = spatial_unit,
   age_group = 2,
   method = "mean"
-) 
+)
 ```
 
 The table below shows the average emigration rate (`emi_rate`) for 28-
@@ -518,7 +528,7 @@ imm_share <- calculate_shares(
   year_range = 2024:2025,
   imm_n = "hist_imm_sub_n",
   age_group = 2
-) 
+)
 ```
 
 The table below shows the result for the group of 28- and 29- year old
@@ -533,19 +543,21 @@ frame that contains the parameters (we can re-use
 
 ``` r
 
-parameters_rate <- fso_parameters_sub_distr_hist |> 
+parameters_rate <- fso_parameters_sub_distr_hist |>
   dplyr::left_join(
-    emi_rate |> 
-      dplyr::select(spatial_unit, age, nat, sex, emi_rate) |> 
+    emi_rate |>
+      dplyr::select(spatial_unit, age, nat, sex, emi_rate) |>
       dplyr::distinct(),
     by = dplyr::join_by(nat, sex, age, spatial_unit),
-    relationship = "many-to-many") |> 
+    relationship = "many-to-many"
+  ) |>
   dplyr::left_join(
-    imm_share |> 
-      dplyr::select(spatial_unit, age, nat, sex, imm_share) |> 
+    imm_share |>
+      dplyr::select(spatial_unit, age, nat, sex, imm_share) |>
       dplyr::distinct(),
     by = dplyr::join_by(nat, sex, age, spatial_unit),
-    relationship = "many-to-many") |> 
+    relationship = "many-to-many"
+  ) |>
   # Use names expected in propop()
   dplyr::rename(emi_sub = emi_rate, imm_sub = imm_share)
 ```
@@ -570,7 +582,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [5.4s]
+#> ✔ Processing completed in [5.3s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -631,10 +643,10 @@ for custom age groups and year ranges.
 ``` r
 
 # Historical subregional immigration
-subregional_imm_share <- ag_migration_subregional |> 
-  dplyr::select(year, spatial_unit, age, nat, sex, hist_imm_sub_n) |> 
+subregional_imm_share <- ag_migration_subregional |>
+  dplyr::select(year, spatial_unit, age, nat, sex, hist_imm_sub_n) |>
   calculate_shares(
-    imm_n = "hist_imm_sub_n", 
+    imm_n = "hist_imm_sub_n",
     age_group = 5,
     year_range = 2022:2025,
     binational = TRUE,
@@ -642,10 +654,10 @@ subregional_imm_share <- ag_migration_subregional |>
   )
 
 # Historical subregional emigration
-subregional_emi_share <- ag_migration_subregional |> 
+subregional_emi_share <- ag_migration_subregional |>
   dplyr::select(year, spatial_unit, age, nat, sex, hist_emi_sub_n) |>
   calculate_shares(
-    imm_n = "hist_emi_sub_n", 
+    imm_n = "hist_emi_sub_n",
     age_group = 5,
     year_range = 2022:2025,
     binational = TRUE,
@@ -660,20 +672,22 @@ emigration (`hist_emi_sub_n`) from the subregional immigration
 ``` r
 
 subregional_net_migration <- dplyr::full_join(
-  subregional_imm_share |> 
+  subregional_imm_share |>
     dplyr::select(
-      spatial_unit, age, age_group, nat, sex, sum_imm_sub_n = sum_imm_n, 
+      spatial_unit, age, age_group, nat, sex,
+      sum_imm_sub_n = sum_imm_n,
       total_imm_sub_n = total_imm_n, imm_sub_share = imm_share
     ),
-  subregional_emi_share |> 
+  subregional_emi_share |>
     dplyr::select(
-      spatial_unit, age, age_group, nat, sex, sum_emi_sub_n = sum_imm_n, 
+      spatial_unit, age, age_group, nat, sex,
+      sum_emi_sub_n = sum_imm_n,
       total_emi_sub_n = total_imm_n, emi_sub_share = imm_share
     ),
   by = dplyr::join_by(spatial_unit, age, age_group, nat, sex)
-  ) |> 
+) |>
   # calculate net migration
-  dplyr::mutate(sum_mig_sub_n = sum_imm_sub_n - sum_emi_sub_n) 
+  dplyr::mutate(sum_mig_sub_n = sum_imm_sub_n - sum_emi_sub_n)
 ```
 
 Since the two values are based on aggregated data, no further
@@ -682,10 +696,10 @@ parameters:
 
 ``` r
 
-parameters_net <- fso_parameters_sub_distr_hist |> 
+parameters_net <- fso_parameters_sub_distr_hist |>
   dplyr::left_join(
-    subregional_net_migration |> 
-      dplyr::mutate(mig_sub = sum_mig_sub_n) |> 
+    subregional_net_migration |>
+      dplyr::mutate(mig_sub = sum_mig_sub_n) |>
       dplyr::select(spatial_unit, age, nat, sex, mig_sub),
     by = dplyr::join_by(spatial_unit, age, nat, sex)
   )
@@ -708,11 +722,11 @@ propop(
   population = ag_population_subregional,
   binational = TRUE,
   subregional = "net"
-) 
+)
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [4.6s]
+#> ✔ Processing completed in [4.5s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
