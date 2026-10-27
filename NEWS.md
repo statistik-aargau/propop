@@ -1,6 +1,7 @@
 # propop 2.2.0
 - API queries fail gracefully if no internet connection
 - Updated examples for exported functions
+- Increased test coverage
 
 # propop 2.1.2
 - Removed deprecated functions.
