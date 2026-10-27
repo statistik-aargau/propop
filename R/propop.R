@@ -7,7 +7,7 @@
 #' You can either use your own parameters and starting population or download
 #' these data from the Swiss Federal Statistical Office (FSO). For instructions
 #' on how to download this information from
-#' [STAT-TAB](https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html),
+#' [STAT-TAB](https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/forschung/stat-tab-online-datenrecherche.html),
 #' see \code{vignette("prepare_data", package = "propop")}.
 #'
 #' The projection parameters need to be passed to `propop::propop()` as a
@@ -50,6 +50,12 @@
 #'    * `mig_sub` \bold{(optional)}, numeric, net migration per subregion; this
 #'    is the migration from / to other subregions (e.g., municipalities,
 #'    districts) within the main superordinate projection unit (e.g., a canton).
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
+#'    * `emi_sub` \bold{(optional)}, numeric, emigration rate per subregion;
+#'    Accounts for movements between different subregions. Needs to be provided
+#'    by the user.
+#'     * `imm_sub` \bold{(optional)}, numeric, immigration rate per subregion;
 #'    Accounts for movements between different subregions. Needs to be provided
 #'    by the user.
 #'
@@ -137,7 +143,13 @@
 #'      \item{imm_nat_n}{numeric, number of people who immigrate
 #'      from other cantons.}
 #'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
-#'      (only returned if  `binational = TRUE`.)}
+#'      (only returned if `binational = TRUE`.)}
+#'      \item{mig_sub}{numeric, migration between subregions
+#'      (only returned if `subregional = "net"`.)}
+#'      \item{emi_sub_n}{numeric, emigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
+#'      \item{imm_sub_n}{numeric, immigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
 #'
 #' @export
 #'
@@ -164,20 +176,25 @@
 #'   binational = TRUE
 #' )
 propop <- function(
-    parameters,
-    population,
-    year_first,
-    year_last,
-    scenarios = NULL,
-    age_groups = 101,
-    fert_first = 16,
-    fert_last = 50,
-    share_born_female = 100 / 205,
-    subregional = FALSE,
-    binational = TRUE,
-    spatial_unit = "spatial_unit") {
+  parameters,
+  population,
+  year_first,
+  year_last,
+  scenarios = NULL,
+  age_groups = 101,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  subregional = FALSE,
+  binational = TRUE,
+  spatial_unit = "spatial_unit"
+) {
   ## Progress feedback ----
-  length_scen <- length(parameters |> distinct(scen) |> pull())
+  if (is.null(scenarios)) {
+    length_scen <- length(parameters |> distinct(scen) |> pull())
+  } else {
+    length_scen <- length(scenarios)
+  }
 
   cli::cli_h1("Running projection for {.val {length_scen}} scenario(s).")
 
@@ -454,18 +471,21 @@ propop <- function(
       msg = paste0(
         "Column `mig_sub` is missing in parameters but is required for ",
         "subregional migration."
-    ))
+      )
+    )
   } else if (!isFALSE(subregional) && subregional == "rate") {
     assertthat::assert_that("emi_sub" %in% names(parameters),
       msg = paste0(
         "Column `emi_sub` is missing in parameters but is required for ",
-      "subregional migration."
-    ))
+        "subregional migration."
+      )
+    )
     assertthat::assert_that("imm_sub" %in% names(parameters),
       msg = paste0(
         "Column `imm_sub` is missing in parameters but is required for ",
         "subregional migration."
-    ))
+      )
+    )
   } else {
     parameters <- parameters
   }
@@ -577,7 +597,8 @@ propop <- function(
   # Prepare projection ----
   # Projection period
   cli::cli_progress_step("Process...",
-                         msg_done = "Processing completed in")
+    msg_done = "Processing completed in"
+  )
 
   proj_years <- year_first:year_last
   # filter for years within in the range between year_first and year_last
@@ -586,40 +607,39 @@ propop <- function(
   init_population <- population |> rename(n_dec = n)
 
   # Split parameters by scenario
- list_parameters_scen <- split(parameters, parameters$scen)
+  list_parameters_scen <- split(parameters, parameters$scen)
 
- list_out <- lapply(list_parameters_scen, function(parameters_scen) {
-   # Split parameters for each scenario into a list by year to iterate across
-   list_parameters <- split(parameters_scen, parameters_scen$year)
+  list_out <- lapply(list_parameters_scen, function(parameters_scen) {
+    # Split parameters for each scenario into a list by year to iterate across
+    list_parameters <- split(parameters_scen, parameters_scen$year)
 
-   # Progress bar
-   progressr::with_progress({
+    # Progress bar
+    progressr::with_progress({
+      # define progress bar steps
+      p <- progressr::progressor(steps = (length(year_first:year_last)))
 
-     # define progress bar steps
-     p <- progressr::progressor(steps = (length(year_first:year_last)))
-
-     # Run projection ----
-     # iterate across years
-     df_result <- purrr::reduce(
-       .x = list_parameters,
-       .f = \(population, parameters) {
-         # progress bar status
-         suppressWarnings({
-           progressr::handlers("cli")
-           p()
-         })
-         # projection
-         project_population(
-           population, parameters,
-           subregional = subregional
-         )
-       },
-       .init = init_population
-     ) |>
-       # remove initial population's year
-       filter(year != unique(init_population$year))
-   })
- })
+      # Run projection ----
+      # iterate across years
+      df_result <- purrr::reduce(
+        .x = list_parameters,
+        .f = \(population, parameters) {
+          # progress bar status
+          suppressWarnings({
+            progressr::handlers("cli")
+            p()
+          })
+          # projection
+          project_population(
+            population, parameters,
+            subregional = subregional
+          )
+        },
+        .init = init_population
+      ) |>
+        # remove initial population's year
+        filter(year != unique(init_population$year))
+    })
+  })
 
   # Combine all groups back into one data frame
   df_result <- do.call(rbind, list_out) |>
@@ -640,7 +660,7 @@ propop <- function(
     ) |>
     select(any_of(c(
       "year", "scen", "spatial_unit", "nat", "sex", "age", "n_jan", "births",
-      "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n",  "acq_n",
+      "mor_n", "emi_int_n", "emi_nat_n", "imm_int_n", "imm_nat_n", "acq_n",
       "mig_sub", "emi_sub_n", "imm_sub_n", "n_dec", "delta_n", "delta_perc"
     )))
 
@@ -694,7 +714,7 @@ propop <- function(
     "-",
     "{.val {year_last}}"
   )
-  binational_feedback  <- if (isTRUE(binational)) "yes" else "no"
+  binational_feedback <- if (isTRUE(binational)) "yes" else "no"
   subregional_feedback <- if (isFALSE(subregional)) "no" else subregional
 
   cli::cli_text("Nationality-specific projection: {.val {binational_feedback}}")

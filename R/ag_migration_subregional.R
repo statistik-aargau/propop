@@ -1,6 +1,7 @@
 #' Subregional migration records for the canton of Aargau (five subregions)
 #'
-#' @description Raw migration data from the canton of Aargau divided into five subregions.
+#' @description Raw migration data from the canton of Aargau divided into five
+#' subregions.
 #'
 #' @format
 #' The example data includes historic migration records for immigration and

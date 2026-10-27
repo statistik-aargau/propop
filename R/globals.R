@@ -99,6 +99,8 @@ utils::globalVariables(c(
   "pop_balance", # <check_balance>
   "acq_n", # <check_balance>
   "mig_sub", # <check_balance>
+  "emi_sub_n", # <check_balance>
+  "imm_sub_n", # <check_balance>
   "n_dec", # <check_balance>
   "n_projected", # <compute_measures>
   "n_benchmark", # <compute_measures>

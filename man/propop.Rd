@@ -51,6 +51,12 @@ is the migration from / to other subregions (e.g., municipalities,
 districts) within the main superordinate projection unit (e.g., a canton).
 Accounts for movements between different subregions. Needs to be provided
 by the user.
+\item \code{emi_sub} \bold{(optional)}, numeric, emigration rate per subregion;
+Accounts for movements between different subregions. Needs to be provided
+by the user.
+* \code{imm_sub} \bold{(optional)}, numeric, immigration rate per subregion;
+Accounts for movements between different subregions. Needs to be provided
+by the user.
 }}
 
 \item{population}{data frame including the starting population of each
@@ -148,7 +154,13 @@ from other countries.}
 \item{imm_nat_n}{numeric, number of people who immigrate
 from other cantons.}
 \item{acq_n}{numeric, number of people who acquire Swiss citizenship
-(only returned if  \code{binational = TRUE}.)}
+(only returned if \code{binational = TRUE}.)}
+\item{mig_sub}{numeric, migration between subregions
+(only returned if \code{subregional = "net"}.)}
+\item{emi_sub_n}{numeric, emigration from subregions
+(only returned if \code{subregional = "rate"}.)}
+\item{imm_sub_n}{numeric, immigration from subregions
+(only returned if \code{subregional = "rate"}.)}
 }
 \description{
 Wrapper function to project population development using the
@@ -158,7 +170,7 @@ calling the function \code{project_population.R}, which performs the calculation
 You can either use your own parameters and starting population or download
 these data from the Swiss Federal Statistical Office (FSO). For instructions
 on how to download this information from
-\href{https://www.bfs.admin.ch/bfs/en/home/services/recherche/stat-tab-online-data-search.html}{STAT-TAB},
+\href{https://www.bfs.admin.ch/bfs/de/home/dienstleistungen/forschung/stat-tab-online-datenrecherche.html}{STAT-TAB},
 see \code{vignette("prepare_data", package = "propop")}.
 
 The projection parameters need to be passed to \code{propop::propop()} as a

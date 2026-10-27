@@ -1,5 +1,5 @@
 test_that("compute_measures snapshots", {
-  options(cli.default_handler = function(...) { })
+  options(cli.default_handler = function(...) {})
 
   skip_on_ci()
 
@@ -75,7 +75,7 @@ test_that("compute_measures snapshots", {
     ),
   )
 
-  # # Based on data created in prepare_measures
+  # Based on data created in prepare_measures
   combined_grouped <- tibble::tibble(
     year = 2020,
     spatial_unit = "Aargau",

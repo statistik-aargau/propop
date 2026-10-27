@@ -307,7 +307,7 @@ test_that("calculate projection test", {
   expect_snapshot(dput(population_and_parameters_short_net))
 
 
-  # # snapshot of default option rate
+  # snapshot of default option rate
   population_and_parameters_short$emi_sub <- 0.5
   population_and_parameters_short$imm_sub <- 0.5
 

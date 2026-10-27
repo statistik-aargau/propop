@@ -33,12 +33,13 @@
 #' @noRd
 #'
 calculate_newborns <- function(
-    population,
-    parameters,
-    fert_first,
-    fert_last,
-    share_born_female,
-    subregional = subregional) {
+  population,
+  parameters,
+  fert_first,
+  fert_last,
+  share_born_female,
+  subregional = subregional
+) {
   # Define ID-columns for joins
   id_cols <- c("year", "nat", "sex", "age", "spatial_unit", "scen")
 

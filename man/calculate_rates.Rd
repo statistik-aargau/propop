@@ -28,8 +28,8 @@ the number of people per group in January).}
 \item{births}{character, column containing the number of births in the group
 of 0-year olds.}
 
-\item{emi_n}{character, column containing the total number of people emigrating per
-spatial unit and demographic group.}
+\item{emi_n}{character, column containing the total number of people
+emigrating per spatial unit and demographic group.}
 
 \item{spatial_unit}{character, column containing the spatial units.}
 
@@ -43,9 +43,10 @@ calculate historical shares. Default uses all years present in the data.}
 intervals for calculating shares. If the argument is not specified,
 the default uses 1-year age groups.}
 
-\item{binational}{\bold{(optional)} boolean, \code{TRUE} indicates that the calculation
-discriminates between two groups of nationalities. \code{FALSE} indicates
-that the calculation does not distinguish between nationalities.}
+\item{binational}{\bold{(optional)} boolean, \code{TRUE} indicates that the
+calculation discriminates between two groups of nationalities.
+\code{FALSE} indicates that the calculation does not distinguish between
+nationalities.}
 
 \item{two_sex}{\bold{(optional)} boolean, \code{TRUE} indicates that the calculation
 discriminates between two sexes. \code{FALSE} indicates that the calculation

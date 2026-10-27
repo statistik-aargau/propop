@@ -58,23 +58,35 @@
 #' weighted absolute percentage error.
 #'
 #' @references
-#' Baker, J., et al. (2015). Sub-county population estimates using administrative records: A municipal-level case study in New Mexico. In M. N. Hoque & L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79). Springer, [https://doi.org/10.1007/978-94-017-8990-5_6](https://doi.org/10.1007/978-94-017-8990-5_6)
+#' Baker, J., et al. (2015). Sub-county population estimates using administrative
+#' records: A municipal-level case study in New Mexico. In M. N. Hoque &
+#' L. B. Potter (Eds.), Emerging techniques in applied demography (pp. 63-79).
+#' Springer, [https://doi.org/10.1007/978-94-017-8990-5_6](https://doi.org/10.1007/978-94-017-8990-5_6)
 #'
-#' Wilson, T. (2012). Forecast accuracy and uncertainty of Australian Bureau of Statistics state and territory population projections, International Journal of Population Research, 1, 419824, [https://doi.org/10.1155/2012/419824](https://doi.org/10.1155/2012/419824)
+#' Wilson, T. (2012). Forecast accuracy and uncertainty of Australian Bureau of
+#' Statistics state and territory population projections, International Journal
+#' of Population Research, 1, 419824, [https://doi.org/10.1155/2012/419824](https://doi.org/10.1155/2012/419824)
 #'
-#' Wilson, T. (2016). Evaluation of alternative cohort-component models for local area population forecasts, Population Research and Policy Review, 35, 241-261, [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
+#' Wilson, T. (2016). Evaluation of alternative cohort-component models for local
+#' area population forecasts, Population Research and Policy Review, 35, 241-261,
+#' [https://doi.org/10.1007/s11113-015-9380-y](https://doi.org/10.1007/s11113-015-9380-y)
 #'
 #' @export
 #'
 #' @autoglobal
 #'
 #' @examples
-#' \dontrun{
-#' # Get evaluation measures without weights
+#' combined <- tibble::tibble(
+#'   year = 2020,
+#'   spatial_unit = "Aargau",
+#'   sex = "f",
+#'   age = c("age_00_19", "age_20_64", "age_65_"),
+#'   n_benchmark = c(50020, 17917, 53005),
+#'   n_projected = c(49691, 18519, 52395),
+#' )
+#'
 #' compute_measures(combined)
-#' # Get evaluation measures weighted for groups
-#' compute_measures(combined, weight_groups = c("age", "nat"))
-#' }
+#'
 compute_measures <- function(combined, weight_groups = NULL) {
   # Test input ----
   ## Presence of mandatory columns ----
@@ -122,7 +134,10 @@ compute_measures <- function(combined, weight_groups = NULL) {
         # Compute total number of people
         n_tot = sum(n_benchmark, na.rm = TRUE)
       ) |>
-      mutate(group_tot = sum(n_benchmark, na.rm = TRUE), .by = any_of(weight_groups)) |>
+      mutate(
+        group_tot = sum(n_benchmark, na.rm = TRUE),
+        .by = any_of(weight_groups)
+      ) |>
       mutate(
         # Compute size of focal unit relative to overall population size
         weight = group_tot / n_tot,

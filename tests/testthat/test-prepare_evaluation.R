@@ -816,9 +816,9 @@ test_that("prepare_evaluation snapshots", {
     year = rep(c(2025, 2026), each = 404L),
     scen = "reference",
     spatial_unit = "Aargau",
-    age  = rep(seq(0, 100, by = 1), 8),
-    sex  = factor(rep(rep(c("m", "f"), 4), each = 101L), levels = c("m", "f")),
-    nat  = factor(rep(rep(c("ch", "int"), each = 202L), 2)),
+    age = rep(seq(0, 100, by = 1), 8),
+    sex = factor(rep(rep(c("m", "f"), 4), each = 101L), levels = c("m", "f")),
+    nat = factor(rep(rep(c("ch", "int"), each = 202L), 2)),
     n_jan = c(
       0, 2369, 2402, 2576, 2916, 2793, 2807, 2794,
       2828, 2757, 2853, 2908, 2799, 2809, 2841, 2870, 2750, 2805,
@@ -2403,7 +2403,7 @@ test_that("prepare_evaluation snapshots", {
     filter(year == 2025) |>
     mutate(year = as.numeric(year))
 
-  data_projected_2025 = data_projected |>
+  data_projected_2025 <- data_projected |>
     filter(year == 2025)
 
   combined_snapshot <- prepare_evaluation(

@@ -73,20 +73,29 @@
 #'      from other countries.}
 #'      \item{imm_nat_n}{numeric, number of people who immigrate
 #'      from other cantons.}
-#'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship.}
+#'      \item{acq_n}{numeric, number of people who acquire Swiss citizenship
+#'      (only returned if `binational = TRUE`.)}
+#'      \item{mig_sub}{numeric, migration between subregions
+#'      (only returned if `subregional = "net"`.)}
+#'      \item{emi_sub_n}{numeric, emigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
+#'      \item{imm_sub_n}{numeric, immigration from subregions
+#'      (only returned if `subregional = "rate"`.)}
 #'
 #' @autoglobal
 #' @noRd
 #'
 project_population <- function(
-    population,
-    parameters,
-    fert_first = 16,
-    fert_last = 50,
-    share_born_female = 100 / 205,
-    subregional = FALSE,
-    binational = TRUE) {
+  population,
+  parameters,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  subregional = FALSE,
+  binational = TRUE
+) {
   # Checks ----
+
   ## Mandatory parameters ----
   assertthat::assert_that("scen" %in% names(parameters),
     msg = "Column `scen` is missing in parameters."
@@ -226,6 +235,18 @@ project_population <- function(
     ) |>
     arrange(spatial_unit, year, scen, age, nat, desc(sex))
 
+  # The population equation should add up to zero
+  balance_check <- suppressMessages(
+    check_balance(population_out |> dplyr::filter(year == max(year)))
+  )
+
+  assertthat::assert_that(
+    balance_check$nonzeros == 0 && balance_check$missings == 0,
+    msg = paste0(
+      "The population equation does not add up to zero in projection year ",
+      pop_year + 1, "."
+    )
+  )
 
   return(population_out)
 }

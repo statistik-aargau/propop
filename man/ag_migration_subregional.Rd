@@ -14,6 +14,7 @@ spatial units of the canton of Aargau in 2025.
 ag_migration_subregional
 }
 \description{
-Raw migration data from the canton of Aargau divided into five subregions.
+Raw migration data from the canton of Aargau divided into five
+subregions.
 }
 \keyword{datasets}

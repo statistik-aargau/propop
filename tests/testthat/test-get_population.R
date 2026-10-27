@@ -1,4 +1,9 @@
-options(cli.default_handler = function(...) { })
+options(cli.default_handler = function(...) {})
+
+test_that("get_population() rejects invalid input", {
+  expect_error(get_population(year_first = "abc"))
+  expect_error(get_population(year_first = 2030, year_last = 2025))
+})
 
 test_that("get population snapshots - 1 region 1 year", {
   # don't run on gitlab ci
@@ -10,6 +15,13 @@ test_that("get population snapshots - 1 region 1 year", {
     number_fso = "px-x-0102010000_101",
     year = 2022,
     spatial_units = "......4232 Geltwil"
+  )
+
+  expect_s3_class(get_population_snapshot, "data.frame")
+  expect_named(
+    get_population_snapshot,
+    c("year", "spatial_unit", "nat", "sex", "age", "n"),
+    ignore.order = FALSE
   )
 
   expect_snapshot(dput(get_population_snapshot))

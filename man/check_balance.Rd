@@ -4,10 +4,10 @@
 \alias{check_balance}
 \title{Check if population equation components add up within one year}
 \usage{
-check_balance(data)
+check_balance(.data)
 }
 \arguments{
-\item{data}{data frame containing population projections; can be
+\item{.data}{data frame containing population projections; can be
 created with \code{propop::propop()}.}
 }
 \value{
@@ -16,7 +16,8 @@ data frame containing summary statistics.
 \description{
 Function to check if the components in the \code{propop::propop()} output add up.
 Takes the population at the beginning of the year (\code{n_jan}), adds all
-components (births - mor - emi_int - emi_nat + imm_int + imm_nat + acq) and
+obligatory components (births - mor_n - emi_int_n - emi_nat_n + imm_int_n +
+imm_nat_n) and optional components (acq_n, mig_sub, emi_sub_n, imm_sub_n) and
 checks if the sum is equal to the population at the end of the year (\code{n_dec}).
 }
 \examples{
