@@ -147,7 +147,7 @@
 #' # Run projection for the sample data (whole canton of Aargau)
 #' propop(
 #'   parameters = fso_parameters,
-#'   year_first = 2025,
+#'   year_first = 2026,
 #'   year_last = 2027,
 #'   population = fso_population,
 #'   subregional = FALSE,
@@ -156,8 +156,8 @@
 #' propop(
 #'   parameters = fso_parameters |>
 #'     dplyr::filter(scen == "reference" | scen == "high"),
-#'   year_first = 2025,
-#'   year_last = 2026,
+#'   year_first = 2026,
+#'   year_last = 2027,
 #'   scenarios = c("reference", "high"),
 #'   population = fso_population,
 #'   subregional = FALSE,
@@ -280,6 +280,13 @@ propop <- function(
     msg = paste0(
       "Not all requested years (", year_first, "-", year_last,
       ") are available in `parameters`."
+    )
+  )
+  # First projected year must be larger than year in population data
+  assertthat::assert_that(
+    (unique(population$year) < year_first),
+    msg = paste0(
+      "`year_first` must be at least one year ahead of the starting population."
     )
   )
 
