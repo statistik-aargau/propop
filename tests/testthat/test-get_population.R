@@ -1,4 +1,4 @@
-options(cli.default_handler = function(...) { })
+options(cli.default_handler = function(...) {})
 
 test_that("get_population() rejects invalid input", {
   expect_error(get_population(year_first = "abc"))

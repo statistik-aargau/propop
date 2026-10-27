@@ -59,7 +59,7 @@ data_parameters <- get_parameters(
   year_first = 2024,
   year_last = 2030,
   spatial_units = "Aargau"
-) |> 
+) |>
   dplyr::filter(scen == "reference")
 ```
 
@@ -300,7 +300,7 @@ load(file = "../vignettes/fso_population_2024.rda")
 
 ``` {r project-canton-2025}
 projection_2025 <- propop(
-  parameters = fso_parameters |> 
+  parameters = fso_parameters |>
     dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,

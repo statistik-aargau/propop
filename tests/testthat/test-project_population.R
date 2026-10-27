@@ -1318,7 +1318,6 @@ test_that("calculate project population", {
 })
 
 
-
 # Prepare snapshot 1 region ----
 test_that("tests propop: 1 region vs. 5 regions", {
   skip_on_ci()
@@ -2482,7 +2481,6 @@ test_that("tests propop: 1 region vs. 5 regions", {
 })
 
 options(cli.default_handler = NULL)
-
 
 
 # Unexpected input regarding nationalities ----

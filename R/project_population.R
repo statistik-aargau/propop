@@ -86,13 +86,14 @@
 #' @noRd
 #'
 project_population <- function(
-    population,
-    parameters,
-    fert_first = 16,
-    fert_last = 50,
-    share_born_female = 100 / 205,
-    subregional = FALSE,
-    binational = TRUE) {
+  population,
+  parameters,
+  fert_first = 16,
+  fert_last = 50,
+  share_born_female = 100 / 205,
+  subregional = FALSE,
+  binational = TRUE
+) {
   # Checks ----
 
   ## Mandatory parameters ----

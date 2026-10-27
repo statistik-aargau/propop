@@ -1,4 +1,4 @@
-options(cli.default_handler = function(...) { })
+options(cli.default_handler = function(...) {})
 
 # Simple snapshot test
 test_that("Simple propop test", {
@@ -868,7 +868,6 @@ test_that("tests propop: 1 region vs. 5 regions", {
 
   # Run snapshot 1 region ----
   expect_snapshot(dput(output_propop_1r))
-
 
 
   # Prepare snapshot for 5 subregions -----

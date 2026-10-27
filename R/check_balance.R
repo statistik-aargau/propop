@@ -25,11 +25,10 @@
 #' ) |>
 #'   check_balance()
 check_balance <- function(.data) {
-
   # Data must not contain `mig_sub` and `emi_sub_n`+`imm_sub_n` at the same time
   assertthat::assert_that(
     !("mig_sub" %in% names(.data) &&
-        all(c("emi_sub_n", "imm_sub_n") %in% names(.data))),
+      all(c("emi_sub_n", "imm_sub_n") %in% names(.data))),
     msg = paste0(
       "Data contains both `mig_sub` and `emi_sub_n`/`imm_sub_n`. ",
       "Use only one of the two ways of representing subregional migration."
@@ -37,7 +36,7 @@ check_balance <- function(.data) {
   )
 
   # If the data contains emi_sub_n` or `imm_sub_n`, both columns must be present
-  if ("emi_sub_n" %in% names(.data)){
+  if ("emi_sub_n" %in% names(.data)) {
     assertthat::assert_that(
       ("imm_sub_n" %in% names(.data)),
       msg = paste0(
@@ -46,7 +45,7 @@ check_balance <- function(.data) {
     )
   }
 
-  if ("imm_sub_n" %in% names(.data)){
+  if ("imm_sub_n" %in% names(.data)) {
     assertthat::assert_that(
       ("emi_sub_n" %in% names(.data)),
       msg = paste0(

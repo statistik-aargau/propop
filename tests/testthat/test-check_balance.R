@@ -173,7 +173,7 @@ test_that("check_balance() handles optional columns together", {
       emi_sub_n = 3,
       imm_sub_n = 5,
       n_dec = n_jan + births - mor_n - emi_int_n - emi_nat_n + imm_int_n +
-        imm_nat_n + acq_n - emi_sub_n +imm_sub_n
+        imm_nat_n + acq_n - emi_sub_n + imm_sub_n
     )
   res <- suppressMessages(check_balance(balanced_combined2))
   expect_equal(res$nonzeros, 0)

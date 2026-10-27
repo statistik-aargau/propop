@@ -1,37 +1,33 @@
-
-
 test_that("calculate_rates snapshot - mean, age_group=5, binational, two_sex", {
-
   result <- calculate_rates(
     past_migration = ag_migration_subregional,
-    n_jan         = n_jan,
-    births        = births,
-    emi_n         = hist_emi_sub_n,
-    spatial_unit  = spatial_unit,
-    method        = "mean",
-    year_range    = c(2024, 2025),
-    age_group     = 5,
-    binational    = TRUE,
-    two_sex       = TRUE
+    n_jan = n_jan,
+    births = births,
+    emi_n = hist_emi_sub_n,
+    spatial_unit = spatial_unit,
+    method = "mean",
+    year_range = c(2024, 2025),
+    age_group = 5,
+    binational = TRUE,
+    two_sex = TRUE
   )
 
   expect_snapshot(print(as.data.frame(result)))
 })
 
 test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex", {
-
   result2 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
-    n_jan         = n_jan,
-    births        = births,
-    emi_n         = hist_emi_sub_n,
-    spatial_unit  = spatial_unit,
-    method        = "median",
-    year_range    = c(2022, 2025),
-    age_group     = 7,
-    binational    = TRUE,
-    two_sex       = FALSE
+    n_jan = n_jan,
+    births = births,
+    emi_n = hist_emi_sub_n,
+    spatial_unit = spatial_unit,
+    method = "median",
+    year_range = c(2022, 2025),
+    age_group = 7,
+    binational = TRUE,
+    two_sex = FALSE
   )
 
   expect_snapshot(print(as.data.frame(result2)))
@@ -39,37 +35,35 @@ test_that("calculate_rates snapshot - median, age_group=7, 2023 & 2025, one sex"
 
 
 test_that("calculate_rates snapshots should differ - median vs. mean", {
-
   result2 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
-    n_jan         = n_jan,
-    births        = births,
-    emi_n         = hist_emi_sub_n,
-    spatial_unit  = spatial_unit,
-    method        = "median",
-    year_range    = c(2022, 2025),
-    age_group     = 7,
-    binational    = TRUE,
-    two_sex       = FALSE
+    n_jan = n_jan,
+    births = births,
+    emi_n = hist_emi_sub_n,
+    spatial_unit = spatial_unit,
+    method = "median",
+    year_range = c(2022, 2025),
+    age_group = 7,
+    binational = TRUE,
+    two_sex = FALSE
   )
 
   result3 <- calculate_rates(
     past_migration = ag_migration_subregional |>
       dplyr::select(-sex),
-    n_jan         = n_jan,
-    births        = births,
-    emi_n         = hist_emi_sub_n,
-    spatial_unit  = spatial_unit,
-    method        = "mean",
-    year_range    = c(2022, 2025),
-    age_group     = 7,
-    binational    = TRUE,
-    two_sex       = FALSE
+    n_jan = n_jan,
+    births = births,
+    emi_n = hist_emi_sub_n,
+    spatial_unit = spatial_unit,
+    method = "mean",
+    year_range = c(2022, 2025),
+    age_group = 7,
+    binational = TRUE,
+    two_sex = FALSE
   )
 
   expect_failure(expect_equal(
-    result2, result3)
-  )
-
+    result2, result3
+  ))
 })

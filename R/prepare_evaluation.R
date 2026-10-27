@@ -73,11 +73,12 @@
 #'   n_projected = "n"
 #' )
 prepare_evaluation <- function(
-    data_benchmark,
-    n_benchmark,
-    data_projected,
-    n_projected,
-    age_groups = NULL) {
+  data_benchmark,
+  n_benchmark,
+  data_projected,
+  n_projected,
+  age_groups = NULL
+) {
   # Get earliest year in data_projected
   base_year <- data_projected |>
     distinct(year) |>
