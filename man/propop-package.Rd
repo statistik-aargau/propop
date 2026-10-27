@@ -7,7 +7,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Project the development of the population at different spatial levels (e.g., cantons, districts, municipalities) using the cohort component method, broken down by 101 one-year age classes, gender, and nationality (see e.g. [Preston, Guillot, and Heuveline, 2000](https://www.wiley.com/en-us/Demography%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512)). Includes helper functions to download required population data and projection parameters as open data for Switzerland, plus tools for model evaluation against benchmarks such as population records or a base model.
+Project the development of the population at different spatial levels (e.g., cantons, districts, municipalities) using the cohort component method, broken down by 101 one-year age classes, gender, and nationality (see e.g. [Preston, Guillot, and Heuveline, 2000](\url{https://www.wiley.com/en-us/Demography\%3A+Measuring+and+Modeling+Population+Processes-p-9781557864512})). Includes helper functions to download required population data and projection parameters as open data for Switzerland, plus tools for model evaluation against benchmarks such as population records or a base model.
 }
 \seealso{
 Useful links:
@@ -19,19 +19,19 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Norah Efosa \email{norah.efosa@ag.ch}
+\strong{Maintainer}: Norah Efosa
 
 Authors:
 \itemize{
-  \item Adrian Gadient \email{adrian.gadient@ag.ch} (\href{https://orcid.org/0000-0003-0026-3153}{ORCID})
-  \item Tina Cornioley \email{tina.cornioley@vd.ch}
-  \item Jan Wunder \email{jan.wunder@sg.ch}
-  \item Niklas Haffert \email{niklas.haffert@sg.ch}
+  \item Adrian Gadient (\href{https://orcid.org/0000-0003-0026-3153}{ORCID})
+  \item Tina Cornioley
+  \item Jan Wunder
+  \item Niklas Haffert
 }
 
 Other contributors:
 \itemize{
-  \item Andrea Plüss \email{andrea.pluess@ag.ch} [contributor]
+  \item Andrea Plüss [contributor]
   \item Nadine Herrmann [contributor]
   \item Lutz Benson [contributor]
   \item Eric Meyer [contributor]
