@@ -316,9 +316,5 @@ calculate_shares <- function(
     )
   )
 
-  # TODO Ensure that the sum of distributed shares is equal to FSO input
-
-  # TODO Ensure that the shares in the spatial regions add up to 1
-
   return(df_result)
 }
