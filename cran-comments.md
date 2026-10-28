@@ -4,6 +4,8 @@
 
 ## R CMD check results
 
-0 errors | 1 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-* This is a new submission.
+* Replaced one malformed URL and one outdated URL.
+* Changed spelling of the literature reference in the DESCRIPTION file.
+* Added non-standard files on top-level to buildignore.
