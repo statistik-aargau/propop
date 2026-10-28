@@ -1,5 +1,10 @@
 # Changelog
 
+## propop 2.2.1
+
+- Replaced one malformed URL and one outdated URL.
+- Added non-standard files on top-level to buildignore.
+
 ## propop 2.2.0
 
 - API queries fail gracefully if no internet connection
