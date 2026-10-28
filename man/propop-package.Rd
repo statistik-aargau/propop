@@ -12,7 +12,6 @@ Project the development of the population at different spatial levels (e.g., can
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://statistik-aargau.github.io/propop}
   \item \url{https://statistik-aargau.github.io/propop/}
   \item Report bugs at \url{https://github.com/statistik-aargau/propop/issues}
 }
