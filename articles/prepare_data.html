@@ -91,12 +91,12 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>To run projections with <a href="https://statistik-aargau.github.io/propop">propop</a>, you need a starting
+<p>To run projections with <a href="https://statistik-aargau.github.io/propop/">propop</a>, you need a starting
 population and projection parameters. You can either use your own data
 or download them from the Federal Statistical Office (FSO). This
 vignette explains how to get the data from FSO. You’ll also learn how to
 prepare the relevant information to run population projections
-<a href="https://statistik-aargau.github.io/propop">propop</a>.</p>
+<a href="https://statistik-aargau.github.io/propop/">propop</a>.</p>
 <p><em>Note that some data are only available for certain administrative
 levels.</em></p>
 </div>
@@ -180,7 +180,7 @@ STAT-TAB are provided as arguments</td>
 <div class="section level2">
 <h2 id="convenient-way-to-get-fso-data">Convenient way to get FSO data<a class="anchor" aria-label="anchor" href="#convenient-way-to-get-fso-data"></a>
 </h2>
-<p><a href="https://statistik-aargau.github.io/propop">propop</a> provides two convenience functions to download
+<p><a href="https://statistik-aargau.github.io/propop/">propop</a> provides two convenience functions to download
 data from the FSO. These are strongly based on the <code>BFS</code>
 package and its documentation.</p>
 <p>To get the <strong>starting population</strong> for a spatial unit,
@@ -192,7 +192,7 @@ required spelling(s).</p>
 <p>Here’s an example of how to get the population for the canton of
 Aargau:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop">propop</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik-aargau.github.io/propop/">propop</a></span><span class="op">)</span></span>
 <span><span class="va">ag_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_population.html">get_population</a></span><span class="op">(</span></span>
 <span>  number_fso <span class="op">=</span> <span class="st">"px-x-0102010000_101"</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2025</span>,</span>

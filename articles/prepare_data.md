@@ -3,12 +3,12 @@
 ## Overview
 
 To run projections with
-[propop](https://statistik-aargau.github.io/propop), you need a starting
-population and projection parameters. You can either use your own data
-or download them from the Federal Statistical Office (FSO). This
-vignette explains how to get the data from FSO. You’ll also learn how to
-prepare the relevant information to run population projections
-[propop](https://statistik-aargau.github.io/propop).
+[propop](https://statistik-aargau.github.io/propop/), you need a
+starting population and projection parameters. You can either use your
+own data or download them from the Federal Statistical Office (FSO).
+This vignette explains how to get the data from FSO. You’ll also learn
+how to prepare the relevant information to run population projections
+[propop](https://statistik-aargau.github.io/propop/).
 
 *Note that some data are only available for certain administrative
 levels.*
@@ -27,7 +27,7 @@ Overview of required FSO tables (STAT-TAB) {.table style="width:99%;"}
 
 ## Convenient way to get FSO data
 
-[propop](https://statistik-aargau.github.io/propop) provides two
+[propop](https://statistik-aargau.github.io/propop/) provides two
 convenience functions to download data from the FSO. These are strongly
 based on the `BFS` package and its documentation.
 
