@@ -133,13 +133,12 @@ the settings used to run the projection.
 
 The 'propop' package is a successor of 'staagBevProj' (not publicly available), 
 which was last updated in December 2022. 'staagBevProj' was developed by 
-Tina Cornioley, Jan Wunder, and Niklas Haffert. As head of [Official Statistics 
-Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik), Andrea Plüss supported 
-the devlopment as well as the 
-publication of 'staagBevProj' and 'propop'.
+Tina Cornioley, Jan Wunder, and Niklas Haffert. As head of Official Statistics 
+Aargau, Andrea Plüss supported the devlopment as well as the  publication of 
+'staagBevProj' and 'propop'.
 
 'propop' was developed by Norah Efosa and Adrian Gadient 
-([Statistik Aargau](https://www.ag.ch/de/verwaltung/dfr/statistik)). 
+([Statistik Aargau](https://www.ag.ch/de/themen/staat-politik/statistik)). 
 The main innovations are:
 
 - Clearer separation between code that prepares data and code that runs the 
