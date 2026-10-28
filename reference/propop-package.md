@@ -14,6 +14,8 @@ Useful links:
 
 - <https://statistik-aargau.github.io/propop/>
 
+- <https://github.com/statistik-aargau/propop>
+
 - Report bugs at <https://github.com/statistik-aargau/propop/issues>
 
 ## Author
