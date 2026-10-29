@@ -60,7 +60,7 @@ The following parameters are included in the returned data frame:
 - `spatial_unit`: character, indicating the user requested spatial
   unit(s).
 
-- `birthrate`: numeric, number of birth per mother by age, nationality
+- `birthrate`: numeric, number of births per mother by age, nationality
   and year.
 
 - `int_mothers`: numeric, proportion of children with Swiss nationality
@@ -74,7 +74,7 @@ The following parameters are included in the returned data frame:
 
 - `acq`: numeric, rate of acquisition of Swiss citizenship.
 
-- `imm_int_n`: numeric, number of people immigrating from abroad..
+- `imm_int_n`: numeric, number of people immigrating from abroad.
 
 - `imm_nat_n`: numeric, number of people immigrating from other cantons.
 
