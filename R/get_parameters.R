@@ -53,7 +53,7 @@
 #'    * `scen`: character, projection scenario.
 #'    * `spatial_unit`: character, indicating the user requested spatial
 #'      unit(s).
-#'    * `birthrate`: numeric, number of birth per mother by age, nationality
+#'    * `birthrate`: numeric, number of births per mother by age, nationality
 #'       and year.
 #'    * `int_mothers`: numeric, proportion of children with Swiss nationality
 #'       born to non-Swiss mothers.
@@ -61,7 +61,7 @@
 #'    * `emi_int`: numeric, rate of people emigrating to other countries.
 #'    * `emi_nat`: numeric, rate of people emigrating to other cantons.
 #'    * `acq`: numeric, rate of acquisition of Swiss citizenship.
-#'    * `imm_int_n`: numeric, number of people immigrating from abroad..
+#'    * `imm_int_n`: numeric, number of people immigrating from abroad.
 #'    * `imm_nat_n`: numeric, number of people immigrating from other cantons.
 #'    * `emi_nat_n`: numeric, number of people emigrating to other cantons.
 #'    * `mig_nat_n`: numeric, national / inter-cantonal net migration.

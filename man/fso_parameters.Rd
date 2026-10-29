@@ -51,7 +51,7 @@ group on 1st of January.
 \item \code{scen}: character, projection scenario.
 \item \code{spatial_unit}: character, indicating the user requested spatial
 unit(s).
-\item \code{birthrate}: numeric, number of birth per mother by age, nationality
+\item \code{birthrate}: numeric, number of births per mother by age, nationality
 and year.
 \item \code{int_mothers}: numeric, proportion of children with Swiss nationality
 born to non-Swiss mothers.
@@ -59,7 +59,7 @@ born to non-Swiss mothers.
 \item \code{emi_int}: numeric, rate of people emigrating to other countries.
 \item \code{emi_nat}: numeric, rate of people emigrating to other cantons.
 \item \code{acq}: numeric, rate of acquisition of Swiss citizenship.
-\item \code{imm_int_n}: numeric, number of people immigrating from abroad..
+\item \code{imm_int_n}: numeric, number of people immigrating from abroad.
 \item \code{imm_nat_n}: numeric, number of people immigrating from other cantons.
 \item \code{emi_nat_n}: numeric, number of people emigrating to other cantons.
 \item \code{mig_nat_n}: numeric, national / inter-cantonal net migration.
