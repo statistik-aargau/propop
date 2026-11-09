@@ -1,3 +1,7 @@
+# propop 2.2.2
+
+- Updated the fertile age range of women from 16-50 years to 15-49 years.
+
 # propop 2.2.1
 
 - Replaced one malformed URL and one outdated URL.
