@@ -79,9 +79,9 @@
 #' @param age_groups numeric, number of age classes. Creates a vector with
 #'        1-year age classes running from `0` to (`age_groups` - 1). Must
 #'        currently be set to `= 101` (FSO standard number of age groups).
-#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#' @param fert_first numeric, first year of female fertility. Defaults to 15
 #'        (FSO standard value).
-#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#' @param fert_last numeric, last year of female fertility. Defaults to 49
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
@@ -182,8 +182,8 @@ propop <- function(
   year_last,
   scenarios = NULL,
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   subregional = FALSE,
   binational = TRUE,
@@ -568,11 +568,11 @@ propop <- function(
     non_conform <- c(non_conform, "age_groups")
   }
 
-  if (fert_first != 16) {
+  if (fert_first != 15) {
     non_conform <- c(non_conform, "fert_first")
   }
 
-  if (fert_last != 50) {
+  if (fert_last != 49) {
     non_conform <- c(non_conform, "fert_last")
   }
 

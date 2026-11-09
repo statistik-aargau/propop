@@ -17,9 +17,9 @@
 #' projected year.
 #' @param parameters list, data frames containing the FSO rates and numbers to
 #' run the projection for a specific spatial level (e.g., canton, municipality).
-#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#' @param fert_first numeric, first year of female fertility. Defaults to 15
 #'        (FSO standard value).
-#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#' @param fert_last numeric, last year of female fertility. Defaults to 49
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).
@@ -88,8 +88,8 @@
 project_population <- function(
   population,
   parameters,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   subregional = FALSE,
   binational = TRUE

@@ -2,8 +2,8 @@
 test_that("calculate project population", {
   # Input data ----
   ## Define stable parameters ----
-  fert_first <- 16
-  fert_last <- 50
+  fert_first <- 15
+  fert_last <- 49
   share_born_female <- 100 / 205
 
   ## One spatial unit ----
@@ -1716,8 +1716,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   ## Run propop with 1 region ----
   output_propop_1r <- project_population(
     parameters = parameters_short_1r,
-    fert_first = 16,
-    fert_last = 50,
+    fert_first = 15,
+    fert_last = 49,
     share_born_female = 100 / 205,
     population = population_short_1r,
     binational = TRUE,
@@ -2365,8 +2365,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # run propop 5 regions with subregional migration ----
   output_propop_5r <- project_population(
     parameters = parameters_short_5r,
-    fert_first = 16,
-    fert_last = 50,
+    fert_first = 15,
+    fert_last = 49,
     share_born_female = 100 / 205,
     population = population_short_5r,
     binational = TRUE,
@@ -2393,8 +2393,8 @@ test_that("tests propop: 1 region vs. 5 regions", {
   # run propop 5 regions without subregional migration ----
   output_propop_5r_F <- project_population(
     parameters = parameters_short_5r,
-    fert_first = 16,
-    fert_last = 50,
+    fert_first = 15,
+    fert_last = 49,
     share_born_female = 100 / 205,
     population = population_short_5r,
     binational = TRUE,
@@ -2489,8 +2489,8 @@ test_that("Error when binational is FALSE but column `nat` is present", {
   expect_error(
     project_population(
       parameters = fso_parameters,
-      fert_first = 16,
-      fert_last = 50,
+      fert_first = 15,
+      fert_last = 49,
       share_born_female = 100 / 205,
       population = fso_population,
       binational = FALSE,
@@ -2507,8 +2507,8 @@ test_that("Error when only 1 nationality in parameters", {
       parameters = fso_parameters |>
         # remove non-Swiss nationals
         dplyr::filter(nat != "int"),
-      fert_first = 16,
-      fert_last = 50,
+      fert_first = 15,
+      fert_last = 49,
       share_born_female = 100 / 205,
       population = fso_population,
       binational = TRUE,
@@ -2522,8 +2522,8 @@ test_that("Error when only 1 nationality in population", {
     project_population(
       # remove non-Swiss nationals
       parameters = fso_parameters,
-      fert_first = 16,
-      fert_last = 50,
+      fert_first = 15,
+      fert_last = 49,
       share_born_female = 100 / 205,
       population = fso_population |>
         # remove Swiss nationals
@@ -2539,8 +2539,8 @@ test_that("Error if there are unexpected factor levels in pop `nat`", {
     project_population(
       # remove non-Swiss nationals
       parameters = fso_parameters,
-      fert_first = 16,
-      fert_last = 50,
+      fert_first = 15,
+      fert_last = 49,
       share_born_female = 100 / 205,
       population = fso_population |>
         # replace factor level
