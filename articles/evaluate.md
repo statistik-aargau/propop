@@ -322,6 +322,8 @@ projection_2025 <- propop(
     dplyr::filter(scen == "reference"),
   year_first = 2025,
   year_last = 2055,
+  fert_first = 15,
+  fert_last = 49,
   # population records from 2024 as starting point
   population = fso_population_2024,
   subregional = FALSE,
@@ -330,13 +332,13 @@ projection_2025 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [3.6s]
+#> ✔ Processing completed in [4s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2024
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 735808
 #> Projection period: 2025-2055

@@ -40,14 +40,14 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [684ms]
+#> ✔ Processing completed in [731ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high", "low", and "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
 #> Projection period: 2026-2027

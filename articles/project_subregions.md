@@ -173,8 +173,8 @@ propop(
   year_last = 2027,
   scenarios = "reference",
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   population = ag_population_subregional,
   binational = TRUE,
@@ -183,13 +183,13 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [493ms]
+#> ✔ Processing completed in [517ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743643
 #> Projection period: 2026-2027
@@ -362,8 +362,8 @@ propop(
   year_last = 2027,
   scenarios = "reference",
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   population = ag_population_subregional,
   binational = TRUE,
@@ -372,13 +372,13 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [500ms]
+#> ✔ Processing completed in [438ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743643
 #> Projection period: 2026-2027
@@ -572,8 +572,8 @@ propop(
   year_first = 2026,
   year_last = 2055,
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   population = ag_population_subregional,
   binational = TRUE,
@@ -582,13 +582,13 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [7.1s]
+#> ✔ Processing completed in [7.4s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743643
 #> Projection period: 2026-2055
@@ -716,8 +716,8 @@ propop(
   year_first = 2026,
   year_last = 2055,
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100 / 205,
   population = ag_population_subregional,
   binational = TRUE,
@@ -726,13 +726,13 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [6.5s]
+#> ✔ Processing completed in [6.8s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743643
 #> Projection period: 2026-2055

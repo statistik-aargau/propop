@@ -34,8 +34,8 @@ propop(
   year_last,
   scenarios = NULL,
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100/205,
   subregional = FALSE,
   binational = TRUE,
@@ -141,12 +141,12 @@ propop(
 
 - fert_first:
 
-  numeric, first year of female fertility. Defaults to 16 (FSO standard
+  numeric, first year of female fertility. Defaults to 15 (FSO standard
   value).
 
 - fert_last:
 
-  numeric, last year of female fertility. Defaults to 50 (FSO standard
+  numeric, last year of female fertility. Defaults to 49 (FSO standard
   value).
 
 - share_born_female:
@@ -301,14 +301,14 @@ propop(
 #> 
 #> ── Running projection for 3 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [643ms]
+#> ✔ Processing completed in [680ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high", "low", and "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
 #> Projection period: 2026-2027
@@ -349,14 +349,14 @@ propop(
 #> 
 #> ── Running projection for 2 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [446ms]
+#> ✔ Processing completed in [455ms]
 #> 
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "high" and "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
 #> Projection period: 2026-2027

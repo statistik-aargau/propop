@@ -81,13 +81,13 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [1.7s]
+#> ✔ Processing completed in [1.8s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 743768
 #> Projection period: 2026-2030
@@ -177,13 +177,13 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [586ms]
+#> ✔ Processing completed in [636ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
 #> Year of starting population: 2025
 #> Number of age groups: 101
-#> Fertile period: 16-50
+#> Fertile period: 15-49
 #> Share of female newborns: 0.488
 #> Size of starting population: 209284
 #> Projection period: 2026-2030
