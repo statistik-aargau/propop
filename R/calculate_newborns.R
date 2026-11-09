@@ -10,9 +10,9 @@
 #'        projected year.
 #' @param parameters data frame containing the FSO rates and numbers to run the
 #'        projection for a specific spatial level (e.g., canton, municipality).
-#' @param fert_first numeric, first year of female fertility. Defaults to 16
+#' @param fert_first numeric, first year of female fertility. Defaults to 15
 #'        (FSO standard value).
-#' @param fert_last numeric, last year of female fertility. Defaults to 50
+#' @param fert_last numeric, last year of female fertility. Defaults to 49
 #'        (FSO standard value).
 #' @param share_born_female numeric, fraction of female babies. Defaults to
 #'        100 / 205 (FSO standard value).

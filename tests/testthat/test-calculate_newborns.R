@@ -1,8 +1,8 @@
 test_that("calculate newborns test", {
   # Input data ----
   ## Define stable parameters ----
-  fert_first <- 16
-  fert_last <- 50
+  fert_first <- 15
+  fert_last <- 49
   share_born_female <- 100 / 205
 
   ## One spatial unit ----
@@ -1051,8 +1051,8 @@ test_that("calculate newborns test", {
 test_that("calculate newborns test only Swiss NA", {
   # Input data ----
   ## Define stable parameters ----
-  fert_first <- 16
-  fert_last <- 50
+  fert_first <- 15
+  fert_last <- 49
   share_born_female <- 100 / 205
 
   ## One spatial unit ----

@@ -11,8 +11,8 @@ propop(
   year_last,
   scenarios = NULL,
   age_groups = 101,
-  fert_first = 16,
-  fert_last = 50,
+  fert_first = 15,
+  fert_last = 49,
   share_born_female = 100/205,
   subregional = FALSE,
   binational = TRUE,
@@ -85,10 +85,10 @@ Defaults to the values in variable \code{scen} in \code{parameters}.}
 1-year age classes running from \code{0} to (\code{age_groups} - 1). Must
 currently be set to \verb{= 101} (FSO standard number of age groups).}
 
-\item{fert_first}{numeric, first year of female fertility. Defaults to 16
+\item{fert_first}{numeric, first year of female fertility. Defaults to 15
 (FSO standard value).}
 
-\item{fert_last}{numeric, last year of female fertility. Defaults to 50
+\item{fert_last}{numeric, last year of female fertility. Defaults to 49
 (FSO standard value).}
 
 \item{share_born_female}{numeric, fraction of female babies. Defaults to
