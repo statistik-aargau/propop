@@ -201,6 +201,9 @@ propop <- function(
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>
+    # filter for scenarios
+    filter(scen %in% scenarios) |>
+    # select columns
     select(any_of(c(
       "year", "scen", "spatial_unit", "nat", "sex", "age", "birthrate",
       "int_mothers", "mor", "emi_int", "emi_nat", "emi_sub", "acq", "imm_int_n",
