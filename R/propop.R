@@ -201,8 +201,6 @@ propop <- function(
   # Select relevant columns ----
   # Parameters
   parameters <- parameters |>
-    # filter for scenarios
-    filter(scen %in% scenarios) |>
     # select columns
     select(any_of(c(
       "year", "scen", "spatial_unit", "nat", "sex", "age", "birthrate",
@@ -233,6 +231,13 @@ propop <- function(
       "are available in `parameters`."
     )
   )
+
+  # Filter for scenarios
+  if (!is.null(scenarios)){
+  parameters <- parameters |>
+    # filter for scenarios
+    dplyr::filter(scen %in% scenarios)
+  }
 
   ## Function arguments ----
   # Convert input in years to integer, results in error if not possible
@@ -294,6 +299,7 @@ propop <- function(
       "one value (i.e., one year)."
     )
   )
+
   # All requested years available in parameters
   assertthat::assert_that(
     all(year_first:year_last %in% parameters$year),
