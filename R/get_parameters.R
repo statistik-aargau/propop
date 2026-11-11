@@ -12,7 +12,7 @@
 #' population (i.e., number of people estimated in the FSO model released in 2025).
 #' All parameters and projections are from the
 #' [FSO model published in 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
-#' The parameters are available for the years 2025-2055.
+#' The parameters are available for the years 2024-2055.
 #' The variables `int_mothers` and `mig_nat_n` are not directly available from
 #' the FSO. They are calculated within this function.
 #'
@@ -47,8 +47,6 @@
 #'
 #' @section Parameters:
 #' The following parameters are included in the returned data frame:
-#'    * `start_n`: numeric, number of people in the corresponding demographic
-#'      group on 1st of January.
 #'    * `year`: numeric, year of projection.
 #'    * `scen`: character, projection scenario.
 #'    * `spatial_unit`: character, indicating the user requested spatial
@@ -493,9 +491,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(
       fso_parameter = dplyr::recode_values(
         fso_parameter,
-        stringi::stri_unescape_unicode(
-          "Bev\\u00f6lkerungsstand am 1. Januar"
-        ) ~ "start_n",
         "Auswanderungen" ~ "emi_n",
         stringi::stri_unescape_unicode(
           "Bev\\u00f6lkerungsstand am 31. Dezember"
@@ -887,7 +882,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(spatial_unit = Kanton) |>
     dplyr::mutate(year = as.numeric(year)) |>
     dplyr::select(
-      nat, sex, age, start_n,
+      nat, sex, age,
       year, scen, spatial_unit,
       birthrate, int_mothers, mor, emi_int, emi_nat, acq,
       imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n,
@@ -896,13 +891,13 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     )
 
   # Feedback if years are outside current FSO projection period----
-  if (year_first < 2025 |
+  if (year_first < 2024 |
     year_first > 2055 |
-    year_last < 2025 |
+    year_last < 2024 |
     year_last > 2055) {
     cli::cli_text(cli::col_red("Warning message:"))
     cli::cli_text("`year_first` or `year_last` is outside FSO's current
-                    projection period (2025-2055).")
+                    projection period (2024-2055).")
     cli::cli_alert_info("You might want to double-check your input variables.")
   }
 
