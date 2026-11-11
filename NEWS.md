@@ -2,6 +2,7 @@
 
 - Updated the fertile age range of women from 16-50 years to 15-49 years.
 - Fixed inactive filtering for scenarios in `propop()`
+- Removed outdated column `start_n` from parameters.
 
 # propop 2.2.1
 
