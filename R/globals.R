@@ -132,7 +132,6 @@ utils::globalVariables(c(
   "imm_nat_n", # <get_parameters>
   "emi_nat_n", # <get_parameters>
   "sex", # <get_parameters>
-  "start_n", # <get_parameters>
   "spatial_unit", # <get_parameters>
   "birthrate", # <get_parameters>
   "mor", # <get_parameters>

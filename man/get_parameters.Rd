@@ -105,8 +105,6 @@ older than 100).
 
 The following parameters are included in the returned data frame:
 \itemize{
-\item \code{start_n}: numeric, number of people in the corresponding demographic
-group on 1st of January.
 \item \code{year}: numeric, year of projection.
 \item \code{scen}: character, projection scenario.
 \item \code{spatial_unit}: character, indicating the user requested spatial

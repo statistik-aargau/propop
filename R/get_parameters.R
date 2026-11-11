@@ -47,8 +47,6 @@
 #'
 #' @section Parameters:
 #' The following parameters are included in the returned data frame:
-#'    * `start_n`: numeric, number of people in the corresponding demographic
-#'      group on 1st of January.
 #'    * `year`: numeric, year of projection.
 #'    * `scen`: character, projection scenario.
 #'    * `spatial_unit`: character, indicating the user requested spatial
@@ -493,9 +491,6 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(
       fso_parameter = dplyr::recode_values(
         fso_parameter,
-        stringi::stri_unescape_unicode(
-          "Bev\\u00f6lkerungsstand am 1. Januar"
-        ) ~ "start_n",
         "Auswanderungen" ~ "emi_n",
         stringi::stri_unescape_unicode(
           "Bev\\u00f6lkerungsstand am 31. Dezember"
@@ -887,7 +882,7 @@ get_parameters <- function(number_fso_ref = "px-x-0104020000_101",
     dplyr::mutate(spatial_unit = Kanton) |>
     dplyr::mutate(year = as.numeric(year)) |>
     dplyr::select(
-      nat, sex, age, start_n,
+      nat, sex, age,
       year, scen, spatial_unit,
       birthrate, int_mothers, mor, emi_int, emi_nat, acq,
       imm_int_n, imm_nat_n, emi_nat_n, mig_nat_n,
