@@ -7,10 +7,10 @@ This vignette explains how to use
 to carry out population projections for multiple regions, particularly
 for subregions within a larger spatial unit (e.g., municipalities within
 a canton). It highlights **two key challenges** that arise when
-producing such projections and presents strategies for addressing them.
+producing such projections and presents strategies for addressing them:
 
 1.  Obtain the **required input data** for spatial entities below the
-    level of cantons (got to [Breaking down projection parameters to
+    level of cantons (go to [Breaking down projection parameters to
     subregions](#breaking-down)).  
 2.  Account for **migration between subregions** (go to [Migration
     between subregions](#between-subregions)).  
@@ -30,13 +30,13 @@ available only for cantons, not for spatial entities at smaller scales.
 Supplying input data for spatial units at the sub-cantonal level (e.g.
 municipalities) can be straightforward when the data are expressed as
 rates (e.g. mortality rates): the simplest approach is to use the same
-figures for the subregions as for the canton, unless those figures are
+values for the subregions as for the canton, unless those values are
 implausible for theoretical or empirical reasons.
 
 The task is more demanding, however, if you want to **adjust rates** for
 subregions or if you need to downscale input data expressed as
-**“numbers of people”**. To address these challenges, consider the
-following options:
+**“numbers of people”** (e.g. immigration from other cantons). To
+address these challenges, consider the following options:
 
 - To adjust the cantonal “number of people” estimates among subregions,
   check the next two subsections.  
@@ -49,17 +49,18 @@ following options:
 ### Distribution of people according to population size
 
 A very simple approach to allocating canton-wide “number of people”
-estimates to subregions is to determine each subregion’s population size
-relative to the canton’s total population and distribute the numbers
-accordingly. Put simply, if a municipality represents 10% of the
-canton’s population, it would proportionally receive 10% of the canton’s
-incoming migrants. The approach described below is more sophisticated
-because it uses the spatial units’ shares for each demographic group,
-but the core idea is the same.
+estimates such as immigration from other cantons to subregions is to
+determine each subregion’s population size relative to the canton’s
+total population and distribute the numbers accordingly. Put simply, if
+a municipality represents 10% of the canton’s population, it would
+proportionally receive 10% of the canton’s incoming migrants. The
+approach described below is more sophisticated because it uses the
+spatial units’ shares for each demographic group, but the core idea is
+the same.
 
 Let us look at a concrete, numerical example. The `spatial_unit` column
 in the data set `ag_population_subregional` (included in the package)
-contains the population of five subregions at the end of 2025.
+contains the population of five exemplary subregions at the end of 2025.
 
 ``` r
 
@@ -71,10 +72,9 @@ data("fso_parameters")
 ```
 
 As a starting point for the **input parameters** we use the FSO
-parameters for the entire canton (`fso_parameters`). The first step is
-to duplicate the existing parameters for each of the five subregions.
-After this step, the rates and numbers for the subregions are identical
-to those for the entire canton.
+parameters for the entire canton (`fso_parameters`). First, the existing
+parameters are copied to each of the five subregions, so every subregion
+starts with the same rates and numbers as the whole canton.
 
 ``` r
 
@@ -103,25 +103,24 @@ group (`sum_n`).
 df_population_shares <- ag_population_subregional |>
   dplyr::mutate(sum_n = sum(n), .by = c(nat, sex, age)) |>
   dplyr::mutate(share = n / sum_n) |>
-  # The population and group sum of a few elderly groups is zero, thus the
-  # share must also be zero
+  # The population and group sum of a few groups is zero, 
+  # thus the corresponding shares must also be zero
   dplyr::mutate(share = dplyr::case_when(
     sum_n == 0 & n == 0 ~ 0,
     .default = share
   ))
 ```
 
-Now all required data are available. We can proceed to distribute the
-input variables expressed as “number of people” among the subregions.
-
-Let us do this for immigration from other countries (`imm_int_n`) and
-immigration from other cantons (`imm_nat_n`). We first join the data
-frame containing the projection parameters (`fso_parameters_sub`) and
-the data frame containing the shares (`df_population_shares`). The
-actual distribution involves only a single line per parameter, in which
-the canton-wide numbers of immigrants (`imm_int_n` and `imm_nat_n`) is
-multiplied by the share (`share`), which in this simple approach is
-identical for both types of immigration.
+Next we distribute the input variables expressed as “number of people”
+among the subregions. Let us do this for immigration from other
+countries (`imm_int_n`) and immigration from other cantons
+(`imm_nat_n`). We first join the data frame containing the projection
+parameters (`fso_parameters_sub`) and the data frame containing the
+shares (`df_population_shares`). The actual distribution involves only a
+single line per parameter, in which the canton-wide numbers of
+immigrants (`imm_int_n` and `imm_nat_n`) is multiplied by the
+subregions’ shares (`share`), which in this simple approach is identical
+for both types of immigration.
 
 ``` r
 
@@ -140,10 +139,10 @@ parameters_sub_size <- fso_parameters_sub |>
 
 Let us take a closer look at the result of this, focusing on immigration
 from other countries. In the table below, we compare `imm_int_n` – the
-original figures provided by the FSO for the entire canton – with the
-sum of the distributed parameter `imm_int_n_distr`. The table confirms
-that the `group_sum` in the blue column is equal to the original number
-of people `imm_int_n` in the orange column.
+original values provided by the FSO for the entire canton – with the sum
+of the distributed parameter `imm_int_n_distr`. The table confirms that
+the `group_sum` in the blue column is equal to the original number of
+people `imm_int_n` in the orange column.
 
   
 To proceed with the projection, we rename the columns containing the
@@ -183,7 +182,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [322ms]
+#> ✔ Processing completed in [492ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -282,7 +281,8 @@ years in each spatial unit (`sum_imm_n`) and across all regions
 to the respective group and spatial unit is calculated
 (`imm_share = sum_imm_n / total_imm_n`).
 
-This table shows the result for a sample group in the five subregions:
+This table shows the input variables and the result for a sample group
+in the five subregions:
 
   
 From now on, the procedure is identical to that used in in the first
@@ -327,7 +327,7 @@ fso_parameters_sub_distr_hist <- fso_parameters_sub |>
 ```
 
 As in the first version, we can inspect the result for the parameter
-“immigration from other countries”. The table compares the figures
+“immigration from other countries”. The table compares the values
 provided by the FSO for the whole canton (`imm_int_n`) with the sum of
 the distributed parameter `imm_int_n_distr`.
 
@@ -372,7 +372,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [377ms]
+#> ✔ Processing completed in [420ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -582,7 +582,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [5.2s]
+#> ✔ Processing completed in [7.1s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -726,7 +726,7 @@ propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [4.7s]
+#> ✔ Processing completed in [6.4s]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
