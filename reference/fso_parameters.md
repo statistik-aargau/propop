@@ -50,9 +50,6 @@ of the following demographic variables:
 
 The following parameters are included in the returned data frame:
 
-- `start_n`: numeric, number of people in the corresponding demographic
-  group on 1st of January.
-
 - `year`: numeric, year of projection.
 
 - `scen`: character, projection scenario.

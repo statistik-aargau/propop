@@ -6,6 +6,7 @@
   years.
 - Fixed inactive filtering for scenarios in
   [`propop()`](https://statistik-aargau.github.io/propop/reference/propop.md)
+- Removed outdated column `start_n` from parameters.
 
 ## propop 2.2.1
 

@@ -10,7 +10,7 @@ projected population (i.e., number of people estimated in the FSO model
 released in 2025). All parameters and projections are from the [FSO
 model published in
 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
-The parameters are available for the years 2025-2055. The variables
+The parameters are available for the years 2024-2055. The variables
 `int_mothers` and `mig_nat_n` are not directly available from the FSO.
 They are calculated within this function.
 
@@ -129,9 +129,6 @@ of the following demographic variables:
 ## Parameters
 
 The following parameters are included in the returned data frame:
-
-- `start_n`: numeric, number of people in the corresponding demographic
-  group on 1st of January.
 
 - `year`: numeric, year of projection.
 
