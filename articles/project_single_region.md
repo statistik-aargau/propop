@@ -81,7 +81,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [988ms]
+#> ✔ Processing completed in [441ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -114,9 +114,6 @@ projection_canton_2030 |>
     "n_dec",
     backgroundColor = "#007AB8"
   )
-#> Warning in instance$preRenderHook(instance): It seems your data is too big for
-#> client-side DataTables. You may consider server-side processing:
-#> https://rstudio.github.io/DT/server.html
 ```
 
   
@@ -177,7 +174,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [342ms]
+#> ✔ Processing completed in [457ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
