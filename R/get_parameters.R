@@ -11,7 +11,7 @@
 #' In addition to the parameters, the function also returns the projected
 #' population (i.e., number of people estimated in the FSO model released in 2025).
 #' All parameters and projections are from the
-#' [FSO model published in 2025](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html).
+#' [FSO model published in 2025](https://statistik.admin.ch/de/news/2025-0560).
 #' The parameters are available for the years 2024-2055.
 #' The variables `int_mothers` and `mig_nat_n` are not directly available from
 #' the FSO. They are calculated within this function.
@@ -31,7 +31,7 @@
 #' \code{vignette("prepare_data", package = "propop")}.
 #'
 #' @return A data frame with the rates and number of people from the
-#' [Federal Statistical Office (FSO)](https://www.bfs.admin.ch/bfs/en/home.html)
+#' [Federal Statistical Office (FSO)](https://www.bfs.admin.ch/en/)
 #' required to project the population development of the requested spatial
 #' entities. For each of the four demographic groups (nationality x sex),
 #' there are 101 age classes, resulting in a total of 404 rows per requested

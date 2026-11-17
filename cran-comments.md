@@ -12,4 +12,5 @@ the outdated `start_n` column from the parameters.
 
 0 errors | 0 warnings | 0 note
 
-* Resolved failure of `test-prepare_evaluation.R` by rounding results to five digits.
+* Resolved failure of `test-prepare_evaluation` by rounding results to five digits.
+* Replaced or removed outdated URLs in `fso_parameters` and `get_parameters`.

@@ -23,11 +23,10 @@ fso_parameters
 }
 \description{
 Data frame containing the rates and number of people from the
-\href{https://www.bfs.admin.ch/bfs/en/home.html}{Federal Statistical Office (FSO)}
+\href{https://www.bfs.admin.ch/en/}{Federal Statistical Office (FSO)}
 required to project the development of four demographic groups for a selected
-canton (Aargau). The parameters are from the
-\href{https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html}{model published in 2025}.
-The sample data include three scenarios for the years 2025-2055.
+canton (Aargau). The sample data include three scenarios for the years
+2025-2055.
 }
 \section{Demographic groups}{
 
