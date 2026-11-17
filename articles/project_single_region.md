@@ -81,7 +81,7 @@ projection_canton_2030 <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [608ms]
+#> ✔ Processing completed in [593ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"
@@ -174,7 +174,7 @@ projection_int <- propop(
 #> 
 #> ── Running projection for 1 scenario(s). ───────────────────────────────────────
 #> ℹ Process...
-#> ✔ Processing completed in [586ms]
+#> ✔ Processing completed in [553ms]
 #> 
 #> ── Settings used for the projection ────────────────────────────────────────────
 #> Scenario(s): "reference"

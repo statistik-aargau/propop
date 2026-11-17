@@ -37,12 +37,19 @@ form](https://statistik-aargau.github.io/propop/articles/prepare_data.html).
 
 ## Installation
 
-To install the current github version of the package, make sure you have
-devtools installed and type:
+You can install the package with:
 
 ``` r
 
-devtools::install_github("statistik-aargau/propop")
+install.packages("propop")
+```
+
+Or to install the development version from Github:
+
+``` r
+
+# install.packages("pak")
+pak::pak("statistik-aargau/propop")
 ```
 
 ## Vignettes
