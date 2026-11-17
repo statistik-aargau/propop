@@ -10,6 +10,8 @@
 
 ## propop 2.2.1
 
+CRAN release: 2026-11-12
+
 - Replaced one malformed URL and one outdated URL.
 - Added non-standard files on top-level to buildignore.
 
