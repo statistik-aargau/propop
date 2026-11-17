@@ -18,7 +18,7 @@ component method** (see e.g.,
 [Statistik Aargau, 2025b](https://www.ag.ch/media/kanton-aargau/dfr/dokumente/statistik/statistische-daten/oeffentliche-statistik/01-bevoelkerung/kantonsdaten/bevoelkerungsprognosen/bevoelkerungsprojektion-hauptbericht-2025.pdf)). 
 For a breakdown of the components, see [this vignette](https://statistik-aargau.github.io/propop/articles/project_single_region.html).
 
-The package was developed for use with [projection scenarios](https://www.bfs.admin.ch/bfs/en/home/statistics/population/population-projections/national-projections.html) 
+The package was developed for use with [projection scenarios](https://statistik.admin.ch/de/news/2025-0560) 
 from the Swiss Federal Statistical Office (FSO). The current scenarios are 
 available for the years 2025-2055. As starting population, you can either use
 [population data from the FSO](https://www.pxweb.bfs.admin.ch/pxweb) or your own
