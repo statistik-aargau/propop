@@ -41,11 +41,16 @@ in the
 
 ## Installation
 
-To install the current github version of the package, make sure you have devtools
-installed and type:
+You can install the package with:
+
+```r
+install.packages("propop")
+```
+Or to install the development version from Github:
 
 ``` r
-devtools::install_github("statistik-aargau/propop")
+# install.packages("pak")
+pak::pak("statistik-aargau/propop")
 ```
 
 ## Vignettes
